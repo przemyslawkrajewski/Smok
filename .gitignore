@@ -28,3 +28,6 @@
 *.app
 
 build
+
+.project
+.cproject

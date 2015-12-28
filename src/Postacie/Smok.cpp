@@ -134,7 +134,7 @@ void Smok::wyznaczLot(Klawiatura *klawiatura, Myszka *myszka)
 			}
 		}
 	}
-	else if(klawiatura->czyWcisnietoLewo() && klawiatura->czyWcisnietoDol())
+	else if(klawiatura->czyWcisnietoLewo() && klawiatura->czyWcisnietoDol() && pozycja.x>500)
 	{
 		if(predkosc.x<0 && myszka->zwrocX()>0) zwroconyWPrawo=false;
 		if(pozycja.y==parametryObiektow.poziomZiemi+parametry.wysokosc)
@@ -159,7 +159,7 @@ void Smok::wyznaczLot(Klawiatura *klawiatura, Myszka *myszka)
 			}
 		}
 	}
-	else if(klawiatura->czyWcisnietoLewo() && klawiatura->czyWcisnietoGora())
+	else if(klawiatura->czyWcisnietoLewo() && klawiatura->czyWcisnietoGora() && pozycja.x>500)
 	{
 		if(predkosc.x<0 && myszka->zwrocX()>0) zwroconyWPrawo=false;
 		if(pozycja.y==parametryObiektow.poziomZiemi+parametry.wysokosc)
@@ -304,7 +304,7 @@ void Smok::wyznaczLot(Klawiatura *klawiatura, Myszka *myszka)
 			}
 		}
 	}
-	else if(klawiatura->czyWcisnietoLewo())
+	else if(klawiatura->czyWcisnietoLewo()  && pozycja.x>500)
 	{
 		if(predkosc.x<0 && myszka->zwrocX()>0) zwroconyWPrawo=false;
 		if(pozycja.y==parametryObiektow.poziomZiemi+parametry.wysokosc)
@@ -586,10 +586,15 @@ void Smok::wyznaczPrzestrzenKolizji()
 	}
 	else if(klatkaAnimacji.x==5)
 	{
+		f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-45*prawo,-10),30));
+		f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-8*prawo,-22),25));
+	}
+	else if(klatkaAnimacji.x==6 && klatkaAnimacji.y==1)
+	{
 		f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-35*prawo,10),30));
 		f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-35*prawo,-30),25));
 	}
-	else if(klatkaAnimacji.x==6)
+	else if(klatkaAnimacji.x==6 && klatkaAnimacji.y==0)
 	{
 		f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-10*prawo,10),30));
 		f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-00*prawo,-30),25));
@@ -633,6 +638,9 @@ void Smok::wyznaczPrzestrzenKolizji()
 //#####################################################################################################
 void Smok::wyznaczKlatkeAnimacji()
 {
+	int prawo = -1;
+	if(zwroconyWPrawo) prawo=1;
+
 	switch(stan)
 	{
 	case unosi:
@@ -730,8 +738,8 @@ void Smok::wyznaczKlatkeAnimacji()
 			maksKatGlowy=2;
 			pozycjaGlowy.x=23;
 			pozycjaGlowy.y=-100;
-			klatkaAnimacji.x=5;
-			klatkaAnimacji.y=0;
+			klatkaAnimacji.x=6;
+			klatkaAnimacji.y=1;
 		}
 		else
 		{
@@ -879,20 +887,34 @@ void Smok::wyznaczKlatkeAnimacji()
 		}
 		break;
 	case stoi:
-		minKatGlowy=5.3;
-		maksKatGlowy=2;
-		pozycjaGlowy.x=95;
-		pozycjaGlowy.y=-40;
-		klatkaAnimacji.x=3;
-		klatkaAnimacji.y=1;
+		if(predkosc.x>4)
+		{
+			minKatGlowy=5.3;
+			maksKatGlowy=0.6;
+			pozycjaGlowy.x=105;
+			pozycjaGlowy.y=-26;
+			klatkaAnimacji.x=5;
+			if(zwroconyWPrawo) klatkaAnimacji.y=(((int)pozycja.x)%180)/30;
+			else klatkaAnimacji.y=5-(((int)pozycja.x)%180)/30;
+		}
+		else
+		{
+			minKatGlowy=5.3;
+			maksKatGlowy=2;
+			pozycjaGlowy.x=95;
+			pozycjaGlowy.y=-40;
+			klatkaAnimacji.x=3;
+			klatkaAnimacji.y=1;
+		}
 		break;
 	case idzie:
 		minKatGlowy=5.3;
-		maksKatGlowy=2;
-		pozycjaGlowy.x=95;
-		pozycjaGlowy.y=-40;
-		klatkaAnimacji.x=3;
-		klatkaAnimacji.y=1;
+		maksKatGlowy=0.6;
+		pozycjaGlowy.x=105;
+		pozycjaGlowy.y=-26;
+		klatkaAnimacji.x=5;
+		if(zwroconyWPrawo) klatkaAnimacji.y=(((int)pozycja.x)%180)/30;
+		else klatkaAnimacji.y=5-(((int)pozycja.x)%180)/30;
 		break;
 	default:
 		minKatGlowy=5.3;

@@ -65,6 +65,7 @@ private:
 };
 
 void zniszcz(Obiekt *o);
+void usun(Obiekt *o);
 void nic(Obiekt *o);
 
 #endif /* MODEL_H_ */

@@ -22,6 +22,7 @@ public:
 	virtual void wyznaczKolejnyStan();
 	virtual void wyznaczKlatkeAnimacji();
 	virtual void wyznaczPrzestrzenKolizji();
+	virtual void zniszcz();
 
 	int zwrocCzasTrwania() {return czasTrwania;}
 	double zwrocKat();

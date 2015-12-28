@@ -30,6 +30,13 @@ Plomien::~Plomien()
 
 }
 
+void Plomien::zniszcz()
+{
+	Obiekt::zniszcz();
+	pozycja.y=parametryObiektow.poziomZiemi;
+	predkosc.x=predkosc.y=0;
+}
+
 double Plomien::zwrocKat()
 {
 	//double k = atan2(-(predkosc.y),(predkosc.x))+3.14 + 1.57;
@@ -40,21 +47,32 @@ double Plomien::zwrocKat()
 
 void Plomien::wyznaczKolejnyStan()
 {
-	pozycja.x+=predkosc.x;
-	pozycja.y+=predkosc.y;
+	if(!zniszczony)
+	{
+		pozycja.x+=predkosc.x;
+		pozycja.y+=predkosc.y;
+	}
 	//predkosc.y-=0.51;
 	czasTrwania--;
-	if(pozycja.y<parametryObiektow.poziomZiemi) usun();
+	if(pozycja.y<parametryObiektow.poziomZiemi)	zniszcz();
 	if(czasTrwania<0) usun();
 }
 
 void Plomien::wyznaczKlatkeAnimacji()
 {
-
-	klatkaAnimacji.x=1;
-	klatkaAnimacji.x=(0.5+(double)(katNachylenia)/(6.28/32));
-	klatkaAnimacji.x=(int)klatkaAnimacji.x;
-	if(klatkaAnimacji.x>31) klatkaAnimacji.x=0;
+	if(!zniszczony)
+	{
+		klatkaAnimacji.x=1;
+		klatkaAnimacji.x=(0.5+(double)(katNachylenia)/(6.28/32));
+		klatkaAnimacji.x=(int)klatkaAnimacji.x;
+		if(klatkaAnimacji.x>31) klatkaAnimacji.x=0;
+	}
+	else
+	{
+		if(klatkaAnimacji.x==32) klatkaAnimacji.x=33;
+		else if(klatkaAnimacji.x==33) klatkaAnimacji.x=34;
+		else  klatkaAnimacji.x=32;
+	}
 }
 
 void Plomien::wyznaczPrzestrzenKolizji()
