@@ -526,18 +526,22 @@ void Smok::rozpedzanieNaZiemi(double przyspieszenie)
 	}
 	else
 	{
-		if(przyspieszenie>0) predkosc.x=parametry.maksPredkoscChodu;
-		else predkosc.x=-parametry.maksPredkoscChodu;
+		if(abs(predkosc.x)<parametry.przyspieszenieChodu) predkosc.x=0;
+		else
+		{
+			if(predkosc.x>0) predkosc.x-=parametry.przyspieszenieChodu;
+			else predkosc.x+=parametry.przyspieszenieChodu;
+		}
 	}
 }
 
 void Smok::hamowanieNaZiemi()
 {
-	if(abs(predkosc.x)<parametry.przyspieszenieChodu) predkosc.x=0;
+	if(abs(predkosc.x)<parametry.hamowanieChodu) predkosc.x=0;
 	else
 	{
-		if(predkosc.x>0) predkosc.x-=parametry.przyspieszenieChodu;
-		else predkosc.x+=parametry.przyspieszenieChodu;
+		if(predkosc.x>0) predkosc.x-=parametry.hamowanieChodu;
+		else predkosc.x+=parametry.hamowanieChodu;
 	}
 }
 //#####################################################################################################
@@ -887,7 +891,7 @@ void Smok::wyznaczKlatkeAnimacji()
 		}
 		break;
 	case stoi:
-		if(predkosc.x>4)
+		if(abs(predkosc.x)>4)
 		{
 			minKatGlowy=5.3;
 			maksKatGlowy=0.6;

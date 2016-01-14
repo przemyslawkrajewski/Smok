@@ -59,7 +59,7 @@ void Model::wyznaczKolejnyStan()
 		if(i->y<90) fabrykaLudzi.stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(i->x,130));
 	}//*/
 	//Losowe tworzenie krzyzowcow
-	if(strzelcy.zwrocObiekty()->size()<3000)
+	if(strzelcy.zwrocObiekty()->size()<100)
 	{
 		int x = rand()%10000+1000;
 		fabrykaLudzi.stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(x,130));
