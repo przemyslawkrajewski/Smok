@@ -12,24 +12,25 @@ PrzestrzenKolizji::PrzestrzenKolizji()
 	figury.clear();
 }
 
-bool PrzestrzenKolizji::sprawdzKolizje(PrzestrzenKolizji *przestrzen)
+std::pair<bool,Punkt> PrzestrzenKolizji::sprawdzKolizje(PrzestrzenKolizji *przestrzen)
 {
 	int sumaPromieni = promien+przestrzen->zwrocPromien();
 	int roznicaX = zwrocPozycje().x-przestrzen->zwrocPozycje().x;
 	if(roznicaX<0) roznicaX=-roznicaX;
 	int roznicaY = zwrocPozycje().y-przestrzen->zwrocPozycje().y;
 	if(roznicaY<0) roznicaY=-roznicaY;
-	if(roznicaY>sumaPromieni || roznicaX>sumaPromieni) return false;
+	if(roznicaY>sumaPromieni || roznicaX>sumaPromieni) return std::pair<bool,Punkt>(false,Punkt());
 
 	std::vector<OkragKolizji> *figury2=przestrzen->zwrocFigury();
 	for(std::vector<OkragKolizji>::iterator i = figury.begin(); i!=figury.end(); i++)
 	{
 		for(std::vector<OkragKolizji>::iterator j = figury2->begin(); j!=figury2->end(); j++)
 		{
-			if(i->sprawdzKolizje(&(*j))) return true;
+			std::pair<bool,Punkt> kolizja = i->sprawdzKolizje(&(*j));
+			if(kolizja.first) return std::pair<bool,Punkt>(true,Punkt(kolizja.second));
 		}
 	}
-	return false;
+	return std::pair<bool,Punkt>(false,Punkt());
 }
 
 void PrzestrzenKolizji::ustawFigury(std::vector<OkragKolizji> f, Punkt* p)

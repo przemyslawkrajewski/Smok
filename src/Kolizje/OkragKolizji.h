@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include <math.h>
+#include <utility>
 #include "../Obiekty/Punkt.h"
 
 class OkragKolizji
@@ -26,7 +27,7 @@ public:
 	Punkt zwrocPozycjeObiektu() {return *pozycjaObiektu;}
 	Punkt zwrocPredkoscObiektu() {return * predkoscObiektu;}
 
-	bool sprawdzKolizje(OkragKolizji *okrag);
+	std::pair<bool,Punkt> sprawdzKolizje(OkragKolizji *okrag);
 
 private:
 	const Punkt *pozycjaObiektu;

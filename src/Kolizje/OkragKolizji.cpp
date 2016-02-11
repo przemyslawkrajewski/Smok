@@ -15,13 +15,14 @@ OkragKolizji::OkragKolizji(const Punkt *po, const Punkt *v, Punkt p, double r)
 	promien = r;
 }
 
-bool OkragKolizji::sprawdzKolizje(OkragKolizji *okrag)
+std::pair<bool,Punkt> OkragKolizji::sprawdzKolizje(OkragKolizji *okrag)
 {
 	//
 	double sumaPromieni = promien+okrag->zwrocPromien();
+
 	Wektor wektor=zwrocPredkoscObiektu();
-	wektor.x=wektor.x-okrag->zwrocPredkoscObiektu().x;
-	wektor.y=wektor.y-okrag->zwrocPredkoscObiektu().y;
+	wektor.x=-wektor.x+okrag->zwrocPredkoscObiektu().x;
+	wektor.y=-wektor.y+okrag->zwrocPredkoscObiektu().y;
 			//wektor.x=-2;wektor.y=0;
 	Punkt srodekOkregu;
 	srodekOkregu.x=okrag->zwrocPozycje().x-zwrocPozycje().x;
@@ -74,13 +75,14 @@ bool OkragKolizji::sprawdzKolizje(OkragKolizji *okrag)
 			p2 = wektor;
 		}
 	}
-
 	double r = (p1.x-p2.x)*(p1.x-p2.x) + (p1.y-p2.y)*(p1.y-p2.y);
 
+	Punkt punktKolizji = Punkt(zwrocPozycje().x+(p1.x+p2.x)/2,zwrocPozycje().y+(p1.y+p2.y)/2);
+
 	if(r<sumaPromieni*sumaPromieni)
-		return true;
+		return std::pair<bool,Punkt>(true,Punkt(punktKolizji));
 	else
-		return false;
+		return std::pair<bool,Punkt>(false,Punkt());
 
 	/*
 	int sumaPromieni = promien+okrag->zwrocPromien();

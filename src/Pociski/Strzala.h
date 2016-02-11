@@ -12,6 +12,14 @@
 #include <math.h>
 #include "Pocisk.h"
 
+struct ParametryStrzaly
+{
+	ParametryStrzaly()
+	{
+
+	}
+};
+
 class Strzala: public Pocisk
 {
 public:
@@ -21,10 +29,13 @@ public:
 	virtual void wyznaczKolejnyStan();
 	virtual void wyznaczKlatkeAnimacji();
 	virtual void wyznaczPrzestrzenKolizji();
+	virtual void zniszcz();
 
 	int zwrocCzasTrwania() {return czasTrwania;}
 	double zwrocKat();
 private:
+	static ParametryStrzaly parametry;
+
 	int czasTrwania;
 };
 

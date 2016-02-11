@@ -7,6 +7,8 @@
 
 #include "Strzala.h"
 
+ParametryStrzaly Strzala::parametry;
+
 Strzala::Strzala(double nx,double ny, double nvx, double nvy, double nczasTrwania,double nKat): Pocisk()
 {
 	czasTrwania=nczasTrwania;
@@ -25,11 +27,15 @@ Strzala::Strzala(Punkt nPozycja, Punkt nPredkosc, double nczasTrwania,double nKa
 	katNachylenia = nKat;
 }
 
+void Strzala::zniszcz()
+{
+	Obiekt::zniszcz();
+	predkosc.x=predkosc.y=0;
+	czasTrwania=-1;
+}
+
 double Strzala::zwrocKat()
 {
-	//double k = atan2(-(predkosc.y),(predkosc.x))+3.14 + 1.57;
-	//if(k>6.28) k-=6.28;
-
 	return katNachylenia;
 }
 
@@ -39,10 +45,9 @@ void Strzala::wyznaczKolejnyStan()
 	{
 		pozycja.x+=predkosc.x;
 		pozycja.y+=predkosc.y;
-		//predkosc.y-=0.51;
-		czasTrwania--;
 	}
-	if(pozycja.y<parametryObiektow.poziomZiemi) usun();
+	czasTrwania--;
+	if(pozycja.y<parametryObiektow.poziomZiemi) zniszcz();
 	if(czasTrwania<0) usun();
 }
 
@@ -56,8 +61,9 @@ void Strzala::wyznaczKlatkeAnimacji()
 
 void Strzala::wyznaczPrzestrzenKolizji()
 {
+	double rozmiarKlatki = 30/2;
 	std::vector<OkragKolizji> f;
 	f.clear();
-	f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(15,-15),7));
+	f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(15-rozmiarKlatki,-15+rozmiarKlatki),7));
 	ustawPrzestrzenKolizji(f);
 }

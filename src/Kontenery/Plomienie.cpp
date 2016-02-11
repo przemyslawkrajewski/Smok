@@ -90,14 +90,18 @@ std::list< PrzestrzenKolizji > Plomienie::zwrocPrzestrzenKolizji()
 	return przestrzen;
 }
 
-void Plomienie::sprawdzKolizje(Obiekt* obiekt,void (obsluzKolizjePocisku)(Obiekt*),void (obsluzKolizjeObiektu)(Obiekt*))
+void Plomienie::sprawdzKolizje(Obiekt* obiekt,void (obsluzKolizjePocisku)(Obiekt*,Obiekt*,Punkt),void (obsluzKolizjeObiektu)(Obiekt*,Obiekt*,Punkt))
 {
 	for(std::list<Plomien>::iterator i=plomienie.begin();i!=plomienie.end();i++)
 	{
-		if(!i->czyZniszczony() && i->czyIstnieje() && i->sprawdzKolizje(obiekt))
+		if(!(i->czyZniszczony()) && i->czyIstnieje())
 		{
-			obsluzKolizjePocisku(&(*i));
-			obsluzKolizjeObiektu(obiekt);
+			std::pair<bool,Punkt> kolizja = i->sprawdzKolizje(obiekt);
+			if(kolizja.first)
+			{
+				obsluzKolizjePocisku(&(*i),obiekt,kolizja.second);
+				obsluzKolizjeObiektu(obiekt,&(*i),kolizja.second);
+			}
 		}
 	}
 }

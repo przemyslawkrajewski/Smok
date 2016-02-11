@@ -10,6 +10,7 @@
 
 #include "OkragKolizji.h"
 #include <vector>
+#include <utility>
 
 class PrzestrzenKolizji
 {
@@ -20,7 +21,7 @@ public:
 	std::vector<OkragKolizji>* zwrocFigury() {return &figury;}
 
 
-	bool sprawdzKolizje(PrzestrzenKolizji *przestrzen);
+	std::pair<bool,Punkt> sprawdzKolizje(PrzestrzenKolizji *przestrzen);
 
 	Punkt zwrocPozycje() {return Punkt(pozycja.x+pozycjaObiektu->x,pozycja.y+pozycjaObiektu->y);}
 	double zwrocPromien() {return promien;}

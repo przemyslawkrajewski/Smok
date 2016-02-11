@@ -28,6 +28,9 @@ protected:
 	Punkt predkosc;
 	Punkt przyspieszenie;
 
+	Obiekt *punktZaczepu;
+	bool czyZaczepiony;
+
 	bool istnieje;	//czy obiekt jeszcze istnieje czy kontener powinien go unicestwic
 	bool zniszczony;//czy pocisk/postac zostal zniszczony/zabita aby program wiedzial zeby uruchomic animacje smierci
 
@@ -37,6 +40,8 @@ protected:
 
 	PrzestrzenKolizji przestrzenKolizji;
 
+	double zycie;
+
 	static ParametryObiektow parametryObiektow;
 
 public:
@@ -45,28 +50,34 @@ public:
 	virtual ~Obiekt() {};
 
 	//Fizyczne parametry
-	Punkt zwrocPozycje() {return pozycja;}
+	Punkt zwrocPozycje();
 	Punkt zwrocPredkosc() {return predkosc;}
 	Punkt zwrocPrzyspieszenie() {return przyspieszenie;}
 	bool czyZwroconyWPrawo() {return zwroconyWPrawo;}
 	void ustawPozycje(Punkt p) {pozycja=p;}
+	Obiekt* zwrocPtr() {return this;}
+	void ustawPunktZaczepu(Obiekt *p);
+	void usunPunktZaczepu();
+	bool czyZaczepionyDoObiektu() {return czyZaczepiony;}
 
 	//Egzystencja
 	bool czyIstnieje() {return istnieje;}
 	bool czyZniszczony() {return zniszczony;}
-	void usun() {istnieje=false;}
+	void usun() {zniszcz();istnieje=false;}
 	virtual void zniszcz() {zniszczony=true;}
 
 	//Animacja
-	Punkt zwrocKlatkeAnimacji() {return klatkaAnimacji;}
+	Punkt zwrocKlatkeAnimacji() {return Punkt((int)klatkaAnimacji.x,(int)klatkaAnimacji.y);}
 	virtual void wyznaczKlatkeAnimacji() = 0;
 
 	//Kolizje
 	PrzestrzenKolizji* zwrocPrzestrzenKolizji() {return &przestrzenKolizji;}
 	void ustawPrzestrzenKolizji(std::vector<OkragKolizji> p) {przestrzenKolizji.ustawFigury(p,&pozycja);}
 	virtual void wyznaczPrzestrzenKolizji() = 0;
-	bool sprawdzKolizje(Obiekt* o) {return (przestrzenKolizji.sprawdzKolizje(o->zwrocPrzestrzenKolizji()));}
+	std::pair<bool,Punkt> sprawdzKolizje(Obiekt* o) {return (przestrzenKolizji.sprawdzKolizje(o->zwrocPrzestrzenKolizji()));}
 
+	//Mechanika gry
+	void zadajObrazenia(double obrazenia) {zycie-=obrazenia;}
 
 };
 

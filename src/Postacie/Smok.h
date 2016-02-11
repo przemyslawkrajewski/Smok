@@ -66,12 +66,12 @@ struct ParametrySmoka
 		odchylenieKataOgnia=5*3.14/180;
 		minimalnaPredkoscOgnia=25;	//srednia
 		maksymalnaPredkoscOgnia=40;  //srednia
-		odchyleniePredkosciOgnia=10; // od 0 do X  i liniowo zalezy od ilosci ognia
+		odchyleniePredkosciOgnia=20; // od 0 do X  i liniowo zalezy od ilosci ognia
 		sredniCzasTrwaniaOgnia=10;
 		odchylenieCzasuTrwaniaOgnia=5;
-		minimalnaOdleglosc=70;
+		minimalnaOdleglosc=40;
 		poprawkaOgnia.x=0;
-		poprawkaOgnia.y=-6;
+		poprawkaOgnia.y=-10;
 
 		maksymalnaPredkoscX=30;
 		predkoscZblizaniaSie=10;
@@ -117,6 +117,7 @@ private:
 
 	static ParametrySmoka parametry;
 	StanSmoka stan;
+	bool zieje;
 
 	Punkt pozycjaGlowy;
 	double obrotGlowy;

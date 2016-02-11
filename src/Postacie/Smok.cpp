@@ -19,6 +19,7 @@ Smok::Smok(): Postac()
 	pozycja.x=100;
 	pozycja.y=300;
 	zwroconyWPrawo=true;
+	zieje=false;
 
 	std::vector<OkragKolizji> f;
 	f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(0,0),10));
@@ -384,6 +385,7 @@ void Smok::wyznaczGlowe(Klawiatura* klawiatura, Myszka *myszka)
 {
 	obrotGlowy=atan2(-(myszka->zwrocY()),(myszka->zwrocX()))+3.14;
 
+	//Limity kata glowy
 	if(minKatGlowy>maksKatGlowy)
 	{
 		if(obrotGlowy<minKatGlowy && obrotGlowy>maksKatGlowy)
@@ -404,6 +406,7 @@ void Smok::wyznaczGlowe(Klawiatura* klawiatura, Myszka *myszka)
 	//Obsluga myszki
 	if(myszka->zwrocLPM())
 	{
+		zieje=true;
 		przerwaOgnia=parametry.przerwaMiedzyMiotaniem;
 		if(iloscOgnia>0) iloscOgnia-=parametry.zuzycieOgnia;
 		for(int i=0; i<iloscOgnia;i++)
@@ -417,8 +420,9 @@ void Smok::wyznaczGlowe(Klawiatura* klawiatura, Myszka *myszka)
 			double czasTrwania=parametry.sredniCzasTrwaniaOgnia+parametry.odchylenieCzasuTrwaniaOgnia*wspolczynnikSily;
 
 			Punkt p;
-			p.x=parametry.poprawkaOgnia.x+pozycja.x+pozycjaGlowy.x+(parametry.minimalnaOdleglosc)*cos(katOgnia)-predkosc.x;
-			p.y=parametry.poprawkaOgnia.y+pozycja.y-pozycjaGlowy.y+(parametry.minimalnaOdleglosc)*sin(katOgnia);
+			double rozrzut = (rand()%4000)/100;
+			p.x=parametry.poprawkaOgnia.x+pozycja.x+pozycjaGlowy.x+(parametry.minimalnaOdleglosc+rozrzut)*cos(katOgnia)-predkosc.x;
+			p.y=parametry.poprawkaOgnia.y+pozycja.y-pozycjaGlowy.y+(parametry.minimalnaOdleglosc+rozrzut)*sin(katOgnia);
 			Punkt v;
 			v.x=predkoscOgnia*cos(katOgnia)+predkosc.x;
 			v.y=predkoscOgnia*sin(katOgnia);
@@ -429,8 +433,9 @@ void Smok::wyznaczGlowe(Klawiatura* klawiatura, Myszka *myszka)
 	}
 	else
 	{
+		zieje=false;
 		if(iloscOgnia<parametry.maksymalnailoscOgnia && przerwaOgnia<=0) iloscOgnia+=parametry.regeneracjaOgnia;
-		if(przerwaOgnia>0)przerwaOgnia--;
+		if(przerwaOgnia>0) przerwaOgnia--;
 	}
 
 }
@@ -524,14 +529,15 @@ void Smok::rozpedzanieNaZiemi(double przyspieszenie)
 	{
 		predkosc.x+=przyspieszenie;
 	}
+	else if (abs(predkosc.x)>parametry.maksPredkoscChodu+parametry.przyspieszenieChodu)
+	{
+		if(predkosc.x>0) predkosc.x-=parametry.przyspieszenieChodu;
+		else predkosc.x+=parametry.przyspieszenieChodu;
+	}
 	else
 	{
-		if(abs(predkosc.x)<parametry.przyspieszenieChodu) predkosc.x=0;
-		else
-		{
-			if(predkosc.x>0) predkosc.x-=parametry.przyspieszenieChodu;
-			else predkosc.x+=parametry.przyspieszenieChodu;
-		}
+		if(przyspieszenie>0) predkosc.x=parametry.maksPredkoscChodu;
+		else predkosc.x=-parametry.maksPredkoscChodu;
 	}
 }
 
@@ -648,7 +654,7 @@ void Smok::wyznaczKlatkeAnimacji()
 	switch(stan)
 	{
 	case unosi:
-		minKatGlowy=5.3;
+		minKatGlowy=5.7;
 		maksKatGlowy=2;
 		pozycjaGlowy.x=30;
 		pozycjaGlowy.y=-80;
@@ -668,7 +674,7 @@ void Smok::wyznaczKlatkeAnimacji()
 		klatkaAnimacji.x=0;
 		break;
 	case zbliza:
-		minKatGlowy=5.3;
+		minKatGlowy=5.5;
 		maksKatGlowy=2;
 		pozycjaGlowy.x=60;
 		pozycjaGlowy.y=-67;
@@ -688,7 +694,7 @@ void Smok::wyznaczKlatkeAnimacji()
 		klatkaAnimacji.x=1;
 		break;
 	case leci:
-		minKatGlowy=4.6;
+		minKatGlowy=5.0;
 		maksKatGlowy=0.8;
 		pozycjaGlowy.x=95;
 		pozycjaGlowy.y=-30;
@@ -716,7 +722,7 @@ void Smok::wyznaczKlatkeAnimacji()
 		klatkaAnimacji.x=3;
 		break;
 	case leciTylem:
-		minKatGlowy=5.3;
+		minKatGlowy=5.7;
 		maksKatGlowy=2;
 		pozycjaGlowy.x=27;
 		pozycjaGlowy.y=-85;
@@ -738,7 +744,7 @@ void Smok::wyznaczKlatkeAnimacji()
 	case hamujeX:
 		if(abs(predkosc.x)<parametry.maksymalnaPredkoscX-5)
 		{
-			minKatGlowy=5.3;
+			minKatGlowy=5.7;
 			maksKatGlowy=2;
 			pozycjaGlowy.x=23;
 			pozycjaGlowy.y=-100;
@@ -767,7 +773,7 @@ void Smok::wyznaczKlatkeAnimacji()
 		}
 		else
 		{
-			minKatGlowy=5.3;
+			minKatGlowy=5.7;
 			maksKatGlowy=2;
 			pozycjaGlowy.x=30;
 			pozycjaGlowy.y=-80;
@@ -855,7 +861,7 @@ void Smok::wyznaczKlatkeAnimacji()
 	case spada:
 		if(predkosc.y>-8)
 		{
-			minKatGlowy=5.3;
+			minKatGlowy=5.7;
 			maksKatGlowy=2;
 			pozycjaGlowy.x=30;
 			pozycjaGlowy.y=-80;
@@ -894,7 +900,7 @@ void Smok::wyznaczKlatkeAnimacji()
 		if(abs(predkosc.x)>4)
 		{
 			minKatGlowy=5.3;
-			maksKatGlowy=0.6;
+			maksKatGlowy=0.2;
 			pozycjaGlowy.x=105;
 			pozycjaGlowy.y=-26;
 			klatkaAnimacji.x=5;
@@ -904,7 +910,7 @@ void Smok::wyznaczKlatkeAnimacji()
 		else
 		{
 			minKatGlowy=5.3;
-			maksKatGlowy=2;
+			maksKatGlowy=0.8;
 			pozycjaGlowy.x=95;
 			pozycjaGlowy.y=-40;
 			klatkaAnimacji.x=3;
@@ -913,7 +919,7 @@ void Smok::wyznaczKlatkeAnimacji()
 		break;
 	case idzie:
 		minKatGlowy=5.3;
-		maksKatGlowy=0.6;
+		maksKatGlowy=0.2;
 		pozycjaGlowy.x=105;
 		pozycjaGlowy.y=-26;
 		klatkaAnimacji.x=5;
@@ -949,5 +955,8 @@ void Smok::wyznaczKlatkeAnimacji()
 	klatkaAnimacjiGlowy.x=(-0.5+(double)(obrotGlowy+poprawka)/(6.28/16));
 	klatkaAnimacjiGlowy.x= (int)klatkaAnimacjiGlowy.x;
 	if(klatkaAnimacjiGlowy.x>15) klatkaAnimacjiGlowy.x=0;
+
+	if(zieje) klatkaAnimacjiGlowy.y=1;
+	else klatkaAnimacjiGlowy.y=0;
 	//std::cout << " X:" << predkosc.x << "   Y:" << predkosc.y << "\n";
 }

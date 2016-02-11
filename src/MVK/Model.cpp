@@ -15,8 +15,15 @@ Model::Model(): wymiaryEkranu(Punkt(640,480)),
 				fabrykaLudzi( FabrykaLudzi(&fabrykaPociskow,&strzelcy))
 {
 	smok.ustawFabrykePociskow(&fabrykaPociskow);
-	fabrykaLudzi.stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(1000,130));
-	fabrykaLudzi.stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(1200,130));
+
+	for(int i=0;i<40;i++)
+	{
+		int x = rand()%10000+1000;
+		fabrykaLudzi.stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(x,130));
+	}
+
+	//fabrykaLudzi.stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(1000,130));
+	//fabrykaLudzi.stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(1200,130));
 }
 
 void Model::wyznaczKolejnyStan()
@@ -59,11 +66,11 @@ void Model::wyznaczKolejnyStan()
 		if(i->y<90) fabrykaLudzi.stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(i->x,130));
 	}//*/
 	//Losowe tworzenie krzyzowcow
-	if(strzelcy.zwrocObiekty()->size()<100)
+	/*if(strzelcy.zwrocObiekty()->size()<100)
 	{
 		int x = rand()%10000+1000;
 		fabrykaLudzi.stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(x,130));
-	}
+	}//*/
 	obsluzKolizje();
 	//std::cout << strzelcy.zwrocObiekty()->size() << "\n";
 }
@@ -74,25 +81,36 @@ void Model::obsluzKolizje()
 	std::list<Strzelec> *listaStrzelcow = strzelcy.zwrocObiekty();
 	for(std::list<Strzelec>::iterator i=listaStrzelcow->begin();i!=listaStrzelcow->end();i++)
 	{
-		plomienie.sprawdzKolizje((Obiekt*)&(*i),zniszcz,usun);
+		plomienie.sprawdzKolizje((Obiekt*)&(*i),zniszczPocisk,zadajObrazenia);
 	}
 
 	//Smok kontra strzaly
-	strzaly.sprawdzKolizje(&smok,usun,zniszcz);
+	strzaly.sprawdzKolizje(&smok,zniszcz,nic);
 }
 
-void zniszcz(Obiekt *o)
+void zniszcz(Obiekt *o,Obiekt *o2,Punkt punktKolizji)
 {
 	o->zniszcz();
 }
+void zniszczPocisk(Obiekt *o,Obiekt *o2,Punkt punktKolizji)
+{
+	o->ustawPozycje(punktKolizji);
+	o->ustawPunktZaczepu(o2);
+	o->zniszcz();
+}
 
-void usun(Obiekt *o)
+void usun(Obiekt *o,Obiekt *o2,Punkt punktKolizji)
 {
 	o->zniszcz();
 	o->usun();
 }
 
-void nic(Obiekt *o)
+void nic(Obiekt *o,Obiekt *o2,Punkt punktKolizji)
 {
 	return;
+}
+
+void zadajObrazenia(Obiekt*o, Obiekt *o2, Punkt punktKolizji)
+{
+	o->zadajObrazenia(2);
 }

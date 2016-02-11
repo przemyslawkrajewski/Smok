@@ -30,7 +30,7 @@ public:
 	std::list< PrzestrzenKolizji > zwrocPrzestrzenKolizji();
 	std::list<Plomien> * zwrocObiekty() {return &plomienie;}
 
-	void sprawdzKolizje(Obiekt* obiekt,void (obsluzKolizjePocisku)(Obiekt*),void (obsluzKolizjeObiektu)(Obiekt*));
+	void sprawdzKolizje(Obiekt* obiekt,void (obsluzKolizjePocisku)(Obiekt*,Obiekt*,Punkt),void (obsluzKolizjeObiektu)(Obiekt*,Obiekt*,Punkt));
 
 };
 

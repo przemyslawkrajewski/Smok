@@ -11,6 +11,7 @@
 #include <iostream>
 #include "../Kontenery/Plomienie.h"
 #include "../Kontenery/Strzaly.h"
+//#include "../Kontenery/Kontener.h"
 
 
 class FabrykaPociskow

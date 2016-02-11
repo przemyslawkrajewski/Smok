@@ -25,6 +25,7 @@ public:
 
 	virtual void wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)=0;
 	virtual void wyznaczKlatkeAnimacji() = 0;
+	std::pair<Klawiatura,Myszka> wyznaczSterowanie() {};
 
 	void ustawFabrykePociskow(FabrykaPociskow *fp);
 	void ustawCel(Punkt p) {cel=p;}

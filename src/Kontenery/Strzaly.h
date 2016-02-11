@@ -29,7 +29,7 @@ public:
 	std::list< PrzestrzenKolizji > zwrocPrzestrzenKolizji();
 	std::list<Strzala>* zwrocObiekty() {return &strzaly;}
 
-	void sprawdzKolizje(Obiekt* obiekt,void (obsluzKolizjePocisku)(Obiekt*),void (obsluzKolizjeObiektu)(Obiekt*));
+	void sprawdzKolizje(Obiekt* obiekt,void (obsluzKolizjePocisku)(Obiekt*,Obiekt*,Punkt),void (obsluzKolizjeObiektu)(Obiekt*,Obiekt*,Punkt));
 };
 
 #endif /* STRZALY_H_ */

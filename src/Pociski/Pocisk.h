@@ -24,6 +24,7 @@ public:
 	virtual void wyznaczPrzestrzenKolizji() = 0;
 
 	double zwrocKatNachylenia() {return katNachylenia;}
+
 };
 
 #endif /* POCISK_H_ */

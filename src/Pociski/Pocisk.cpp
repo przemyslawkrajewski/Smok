@@ -17,4 +17,3 @@ Pocisk::~Pocisk()
 {
 	// TODO Auto-generated destructor stub
 }
-

@@ -19,6 +19,7 @@
 #include "../Kontenery/Strzaly.h"
 
 #include "../Kontenery/Strzelcy.h"
+//#include "../Kontenery/Kontener.h"
 
 #include "../Fabryki/FabrykaPociskow.h"
 #include "../Fabryki/FabrykaLudzi.h"
@@ -64,8 +65,10 @@ private:
 	FabrykaLudzi fabrykaLudzi;
 };
 
-void zniszcz(Obiekt *o);
-void usun(Obiekt *o);
-void nic(Obiekt *o);
+void zniszcz(Obiekt *o,Obiekt *o2, Punkt punktKolizji);
+void zniszczPocisk(Obiekt *o,Obiekt *o2, Punkt punktKolizji);
+void usun(Obiekt *o,Obiekt *o2, Punkt punktKolizji);
+void nic(Obiekt *o,Obiekt *o2, Punkt punktKolizji);
+void zadajObrazenia(Obiekt*o, Obiekt *o2, Punkt punktKolizji);
 
 #endif /* MODEL_H_ */

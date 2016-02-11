@@ -14,81 +14,92 @@ Strzelec::Strzelec(): Postac()
 	stan = stoi;
 	stanBiegu=0;
 	katCelowania=0;
-
-	spust=true;
-	predkoscStrzaly=18;
-	maxNaciagniecie=100;
-	celnosc=3.14/16;
-	maxCelowania=20;
 	stanNaciagania=0;
 	stanCelowania=0;
+
+	spust=true;			//kusza/luk
+	predkoscStrzaly=18;
+	maxNaciagniecie=100;//ile czas trzeba zeby naciagnac
+	celnosc=3.14/16;
+	maxCelowania=20;   //ile czasu trzeba zeby wycelowac
+	zycie=100;
 }
 
 void Strzelec::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 {
-	if (klawiatura->czyWcisnietoPrawo())
+	if(!zniszczony)
 	{
-		zwroconyWPrawo=true;
-		stan = biegnie;
-		stanBiegu += parametry.predkoscAnimacjiBiegu;
-		if(stanBiegu>parametry.iloscKlatekAnimacjiBiegu) stanBiegu=0;
-		pozycja.x+=parametry.predkoscBiegu;
-		if(!spust || stanNaciagania>0) stanNaciagania=maxNaciagniecie;
-		stanCelowania=0;
-	}
-	else if (klawiatura->czyWcisnietoLewo())
-	{
-		zwroconyWPrawo=false;
-		stan = biegnie;
-
-		stanBiegu += parametry.predkoscAnimacjiBiegu;
-		if(stanBiegu>parametry.iloscKlatekAnimacjiBiegu) stanBiegu=0;
-		pozycja.x-=parametry.predkoscBiegu;
-		if(!spust || stanNaciagania>0) stanNaciagania=maxNaciagniecie;
-		stanCelowania=0;
-	}
-	else if(myszka->zwrocLPM())
-	{
-		stanBiegu=0;
-		if(stanNaciagania<0)
+		if (klawiatura->czyWcisnietoPrawo())
 		{
-			stan = strzela;
-			katCelowania = atan2(-(myszka->zwrocY()),(myszka->zwrocX()))+3.14;
-			stanCelowania++;
+			zwroconyWPrawo=true;
+			stan = biegnie;
+			stanBiegu += parametry.predkoscAnimacjiBiegu;
+			if(stanBiegu>parametry.iloscKlatekAnimacjiBiegu) stanBiegu=0;
+			pozycja.x+=parametry.predkoscBiegu;
+			if(!spust || stanNaciagania>0) stanNaciagania=maxNaciagniecie;
+			stanCelowania=0;
+		}
+		else if (klawiatura->czyWcisnietoLewo())
+		{
+			zwroconyWPrawo=false;
+			stan = biegnie;
 
-			if(stanCelowania > maxCelowania)
+			stanBiegu += parametry.predkoscAnimacjiBiegu;
+			if(stanBiegu>parametry.iloscKlatekAnimacjiBiegu) stanBiegu=0;
+			pozycja.x-=parametry.predkoscBiegu;
+			if(!spust || stanNaciagania>0) stanNaciagania=maxNaciagniecie;
+			stanCelowania=0;
+		}
+		else if(myszka->zwrocLPM())
+		{
+			stanBiegu=0;
+			if(stanNaciagania<0)
 			{
-				double kat=-katCelowania+((double)(rand()%100)/100)*celnosc - celnosc/2;
+				stan = strzela;
+				katCelowania = atan2(-(myszka->zwrocY()),(myszka->zwrocX()))+3.14;
+				stanCelowania++;
 
-				Punkt p;
-				p.x=pozycja.x+(parametry.minimalnaOdleglosc)*cos(kat);
-				p.y=pozycja.y+(parametry.minimalnaOdleglosc)*sin(kat);
-				Punkt v;
-				v.x=predkoscStrzaly*cos(kat);
-				v.y=predkoscStrzaly*sin(kat);
-				kat = katCelowania+1.57;//+3.14+6.28
-				if(kat>6.28) kat-=6.28;
-				fabrykaPociskow->stworzPocisk(FabrykaPociskow::strzala,p,v,parametry.czasTrwaniaStrzaly,kat);
-				stanNaciagania=maxNaciagniecie;
+				if(stanCelowania > maxCelowania)
+				{
+					double kat=-katCelowania+((double)(rand()%100)/100)*celnosc - celnosc/2;
+
+					Punkt p;
+					p.x=pozycja.x+(parametry.minimalnaOdleglosc)*cos(kat);
+					p.y=pozycja.y+(parametry.minimalnaOdleglosc)*sin(kat);
+					Punkt v;
+					v.x=predkoscStrzaly*cos(kat);
+					v.y=predkoscStrzaly*sin(kat);
+					kat = katCelowania+1.57;//+3.14+6.28
+					if(kat>6.28) kat-=6.28;
+					fabrykaPociskow->stworzPocisk(FabrykaPociskow::strzala,p,v,parametry.czasTrwaniaStrzaly,kat);
+					stanNaciagania=maxNaciagniecie;
+					stanCelowania=0;
+				}
+			}
+			else
+			{
 				stanCelowania=0;
+				stan = naciaga;
+				stanNaciagania--;
 			}
 		}
 		else
 		{
+			stan = stoi;
+			stanBiegu=0;
+			if(spust) {stan = strzela;stanNaciagania--;}
+			else stanNaciagania=maxNaciagniecie;
 			stanCelowania=0;
-			stan = naciaga;
-			stanNaciagania--;
 		}
+		if(stanNaciagania<-1) stanNaciagania=-1;
+		if(zycie<=0) zniszcz();
 	}
 	else
 	{
-		stan = stoi;
-		stanBiegu=0;
-		if(spust) {stan = strzela;stanNaciagania--;}
-		else stanNaciagania=maxNaciagniecie;
-		stanCelowania=0;
+		stan = umiera;
+		std::vector<OkragKolizji> p;
+		ustawPrzestrzenKolizji(p);
 	}
-	if(stanNaciagania<-1) stanNaciagania=-1;
 }
 
 //#####################################################################################################
@@ -97,7 +108,7 @@ void Strzelec::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 
 std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 {
-	int maxOdleglosc=1600;
+	int maxOdleglosc=500;
 	int minOdleglosc=100;
 
 	Klawiatura k;
@@ -138,11 +149,13 @@ std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 //#####################################################################################################
 void Strzelec::wyznaczPrzestrzenKolizji()
 {
+	double rozmiarKlatki = 100/2;
 	std::vector<OkragKolizji> f;
 	f.clear();
-	f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(50,-30),10));
-	f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(50,-50),14));
-	f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(50,-70),10));
+	f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(50-rozmiarKlatki,-30+rozmiarKlatki),10));
+	f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(50-rozmiarKlatki,-50+rozmiarKlatki),14));
+	f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(50-rozmiarKlatki,-70+rozmiarKlatki),14));
+	f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(50-rozmiarKlatki,-88+rozmiarKlatki),14));
 	ustawPrzestrzenKolizji(f);
 }
 //#####################################################################################################
@@ -150,11 +163,17 @@ void Strzelec::wyznaczPrzestrzenKolizji()
 //#####################################################################################################
 void Strzelec::wyznaczKlatkeAnimacji()
 {
+	double kat;
 	switch(stan)
 	{
 	case naciaga:
-		klatkaAnimacji.x=0;
-		klatkaAnimacji.y=0;
+		if(klatkaAnimacji.x!=2 || klatkaAnimacji.y<4)
+		{
+			klatkaAnimacji.x=2;
+			klatkaAnimacji.y=4;
+		}
+		klatkaAnimacji.y+=0.3;
+		if(klatkaAnimacji.y>=7)klatkaAnimacji.y=4;
 		break;
 	case stoi:
 		klatkaAnimacji.x=0;
@@ -168,7 +187,7 @@ void Strzelec::wyznaczKlatkeAnimacji()
 		klatkaAnimacji.x=2;
 		klatkaAnimacji.y=0;
 
-		double kat = katCelowania-3*3.14/2;
+		kat = katCelowania-3*3.14/2;
 		if(kat<0) kat=-kat;
 		//double poprawka=0;
 		//if(zwroconyWPrawo) poprawka=6.28/16;
@@ -177,6 +196,16 @@ void Strzelec::wyznaczKlatkeAnimacji()
 		klatkaAnimacji.y= (int)klatkaAnimacji.y;
 		if(klatkaAnimacji.y>3) klatkaAnimacji.y=3;
 		if(klatkaAnimacji.y<0) klatkaAnimacji.y=0;
+		break;
+	case umiera:
+		if(klatkaAnimacji.x!=0 || klatkaAnimacji.y<1)
+		{
+			klatkaAnimacji.x=0;
+			klatkaAnimacji.y=1;
+		}
+		else
+			klatkaAnimacji.y+=0.3;
+		if (klatkaAnimacji.x!=0 || klatkaAnimacji.y>=5) usun();
 		break;
 	}
 }
