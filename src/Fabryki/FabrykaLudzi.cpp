@@ -7,10 +7,29 @@
 
 #include "FabrykaLudzi.h"
 
-FabrykaLudzi::FabrykaLudzi(FabrykaPociskow* nFabrykaPociskow,Strzelcy* nStrzelcy)
+FabrykaLudzi* FabrykaLudzi::ptr=0;
+ KontenerPostaci<Strzelec>* FabrykaLudzi::strzelcy=0;
+
+FabrykaLudzi* FabrykaLudzi::zwrocInstancje()
 {
-	fabrykaPociskow=nFabrykaPociskow;
-	strzelcy=nStrzelcy;
+
+	if(!ptr) ptr= new FabrykaLudzi();
+	return ptr;
+}
+
+FabrykaLudzi::FabrykaLudzi()
+{
+
+}
+
+FabrykaLudzi::~FabrykaLudzi()
+{
+	delete ptr;
+}
+
+void FabrykaLudzi::ustawKontenery(KontenerPostaci<Strzelec>* s)
+{
+	strzelcy=s;
 }
 
 void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja)
@@ -19,10 +38,10 @@ void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja)
 	{
 	case krzyzowiec:
 	{
+		assert("Kontener Strzelcy nie ustawiony" && strzelcy!=0);
 		Strzelec strzelec;
-		strzelec.ustawFabrykePociskow(fabrykaPociskow);
 		strzelec.ustawPozycje(nPozycja);
-		(strzelcy->dodajStrzelca(strzelec))->wyznaczPrzestrzenKolizji(); //Taki myk ze dodaje nowego strzelca i od razu wyznacza jego przestrzen kolizji
+		(strzelcy->dodaj(strzelec))->wyznaczPrzestrzenKolizji(); //Taki myk ze dodaje nowego strzelca i od razu wyznacza jego przestrzen kolizji
 		break;
 	}
 	default:

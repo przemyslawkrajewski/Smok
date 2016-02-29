@@ -8,23 +8,29 @@
 #ifndef FABRYKAPOCISKOW_H_
 #define FABRYKAPOCISKOW_H_
 
-#include <iostream>
-#include "../Kontenery/Plomienie.h"
-#include "../Kontenery/Strzaly.h"
-//#include "../Kontenery/Kontener.h"
-
+#include "../Pociski/Plomien.h"
+#include "../Pociski/Strzala.h"
+#include "../Kontenery/KontenerPociskow.h"
+#include <assert.h>
 
 class FabrykaPociskow
 {
 private:
-	Plomienie* plomienie;
-	Strzaly* strzaly;
+	static FabrykaPociskow* ptr;
+
+	static KontenerPociskow<Plomien>* plomienie;
+	static KontenerPociskow<Strzala>* strzaly;
+
+	FabrykaPociskow();
 public:
+	~FabrykaPociskow();
+
 	enum TypPocisku {plomien,belt,strzala};
 
-	FabrykaPociskow(Plomienie* nPlomienie,Strzaly *nStrzaly);
-	virtual ~FabrykaPociskow();
+	static FabrykaPociskow* zwrocInstancje();
 
+
+	void ustawKontenery(KontenerPociskow<Plomien>* p,KontenerPociskow<Strzala>* s);
 	void stworzPocisk(TypPocisku typ, Punkt nPozycja, Punkt nPredkosc, double nczasTrwania,double nKat);
 };
 

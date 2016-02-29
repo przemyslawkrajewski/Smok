@@ -428,7 +428,7 @@ void Smok::wyznaczGlowe(Klawiatura* klawiatura, Myszka *myszka)
 			v.y=predkoscOgnia*sin(katOgnia);
 			double kat = -obrotGlowy+3.14+1.57+6.28;
 			if(kat>6.28) kat-=6.28;
-			fabrykaPociskow->stworzPocisk(FabrykaPociskow::plomien,p,v,czasTrwania,kat);
+			FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::plomien,p,v,czasTrwania,kat);
 		}
 	}
 	else

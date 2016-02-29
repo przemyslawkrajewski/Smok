@@ -7,15 +7,29 @@
 
 #include "FabrykaPociskow.h"
 
-FabrykaPociskow::FabrykaPociskow(Plomienie* nPlomienie,Strzaly* nStrzaly)
+FabrykaPociskow* FabrykaPociskow::ptr=0;
+KontenerPociskow<Plomien>* FabrykaPociskow::plomienie=0;
+KontenerPociskow<Strzala>* FabrykaPociskow::strzaly=0;
+
+FabrykaPociskow* FabrykaPociskow::zwrocInstancje()
 {
-	plomienie = nPlomienie;
-	strzaly = nStrzaly;
+	if(!ptr) ptr= new FabrykaPociskow();
+	return ptr;
+}
+
+FabrykaPociskow::FabrykaPociskow()
+{
 }
 
 FabrykaPociskow::~FabrykaPociskow()
 {
+	delete ptr;
+}
 
+void FabrykaPociskow::ustawKontenery(KontenerPociskow<Plomien>* p,KontenerPociskow<Strzala>* s)
+{
+	strzaly=s;
+	plomienie=p;
 }
 
 void FabrykaPociskow::stworzPocisk(TypPocisku typ,Punkt nPozycja, Punkt nPredkosc, double nczasTrwania,double nKat)
@@ -23,13 +37,16 @@ void FabrykaPociskow::stworzPocisk(TypPocisku typ,Punkt nPozycja, Punkt nPredkos
 	switch(typ)
 	{
 	case plomien:
-		(plomienie->dodajPlomien(Plomien(nPozycja,nPredkosc,nczasTrwania,nKat)))->wyznaczPrzestrzenKolizji();
+		assert("Kontener Plomienie nie ustawiony" && plomienie!=0);
+		(plomienie->dodaj(Plomien(nPozycja,nPredkosc,nczasTrwania,nKat)))->wyznaczPrzestrzenKolizji();
 		break;
 	case strzala:
-		(strzaly->dodajStrzale(Strzala(nPozycja,nPredkosc,nczasTrwania,nKat)))->wyznaczPrzestrzenKolizji();
+		assert("Kontener Strzaly nie ustawiony" && strzaly!=0);
+		(strzaly->dodaj(Strzala(nPozycja,nPredkosc,nczasTrwania,nKat)))->wyznaczPrzestrzenKolizji();
 		break;
 	case belt:
-		strzaly->dodajStrzale(Strzala(nPozycja,nPredkosc,nczasTrwania,nKat));
+		assert("Kontener Strzaly nie ustawiony" && strzaly!=0);
+		strzaly->dodaj(Strzala(nPozycja,nPredkosc,nczasTrwania,nKat));
 		break;
 	}
 }

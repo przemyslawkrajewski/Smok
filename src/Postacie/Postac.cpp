@@ -11,8 +11,3 @@ Postac::Postac() :Obiekt()
 {
 
 }
-
-void Postac::ustawFabrykePociskow(FabrykaPociskow *fp)
-{
-	fabrykaPociskow=fp;
-}

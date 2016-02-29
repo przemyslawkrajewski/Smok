@@ -16,8 +16,6 @@
 
 class Postac : public Obiekt
 {
-protected:
-	FabrykaPociskow *fabrykaPociskow;
 
 public:
 	Postac();
@@ -25,9 +23,8 @@ public:
 
 	virtual void wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)=0;
 	virtual void wyznaczKlatkeAnimacji() = 0;
-	std::pair<Klawiatura,Myszka> wyznaczSterowanie() {};
+	virtual std::pair<Klawiatura,Myszka> wyznaczSterowanie() {};
 
-	void ustawFabrykePociskow(FabrykaPociskow *fp);
 	void ustawCel(Punkt p) {cel=p;}
 	void ustawCzyIstniejePrzeszkoda(bool poLewej, bool poPrawej) {przeszkodaPoLewej=poLewej;przeszkodaPoPrawej=poPrawej;}
 

@@ -71,7 +71,7 @@ void Strzelec::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 					v.y=predkoscStrzaly*sin(kat);
 					kat = katCelowania+1.57;//+3.14+6.28
 					if(kat>6.28) kat-=6.28;
-					fabrykaPociskow->stworzPocisk(FabrykaPociskow::strzala,p,v,parametry.czasTrwaniaStrzaly,kat);
+					FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::strzala,p,v,parametry.czasTrwaniaStrzaly,kat);
 					stanNaciagania=maxNaciagniecie;
 					stanCelowania=0;
 				}

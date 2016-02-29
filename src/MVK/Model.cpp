@@ -10,16 +10,15 @@
 ParametryObiektow Obiekt::parametryObiektow;
 ParametrySmoka Smok::parametry;
 
-Model::Model(): wymiaryEkranu(Punkt(640,480)),
-				fabrykaPociskow(FabrykaPociskow(&plomienie,&strzaly)),
-				fabrykaLudzi( FabrykaLudzi(&fabrykaPociskow,&strzelcy))
+Model::Model(): wymiaryEkranu(Punkt(640,480))
 {
-	smok.ustawFabrykePociskow(&fabrykaPociskow);
+	FabrykaPociskow::zwrocInstancje()->ustawKontenery(&plomienie,&strzaly);
+	FabrykaLudzi::zwrocInstancje()->ustawKontenery(&strzelcy);
 
 	for(int i=0;i<40;i++)
 	{
 		int x = rand()%10000+1000;
-		fabrykaLudzi.stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(x,130));
+		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(x,130));
 	}
 
 	//fabrykaLudzi.stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(1000,130));
@@ -78,14 +77,14 @@ void Model::wyznaczKolejnyStan()
 void Model::obsluzKolizje()
 {
 	//Strzelcy kontra plomienie
-	std::list<Strzelec> *listaStrzelcow = strzelcy.zwrocObiekty();
-	for(std::list<Strzelec>::iterator i=listaStrzelcow->begin();i!=listaStrzelcow->end();i++)
+	std::list<Postac*> listaStrzelcow = strzelcy.zwrocObiekty();
+	for(std::list<Postac*>::iterator i=listaStrzelcow.begin();i!=listaStrzelcow.end();i++)
 	{
-		plomienie.sprawdzKolizje((Obiekt*)&(*i),zniszczPocisk,zadajObrazenia);
+		plomienie.sprawdzKolizje((Obiekt*)(*i),zniszczPocisk,zadajObrazenia,true);
 	}
 
 	//Smok kontra strzaly
-	strzaly.sprawdzKolizje(&smok,zniszcz,nic);
+	//strzaly.sprawdzKolizje(&smok,zniszcz,nic);
 }
 
 void zniszcz(Obiekt *o,Obiekt *o2,Punkt punktKolizji)

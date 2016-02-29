@@ -22,7 +22,7 @@ struct ParametryOgnia
 	ParametryOgnia()
 	{
 		czasWygasania=20;
-		czasPalenia=50;
+		czasPalenia=500;
 		predkoscOpadania=5;
 	}
 };

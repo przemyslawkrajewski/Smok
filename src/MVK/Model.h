@@ -10,19 +10,15 @@
 
 #include "../WeWy/Klawiatura.h"
 #include "../WeWy/Myszka.h"
-#include "../Obiekty/Obiekt.h"
-#include "../Postacie/Strzelec.h"
 #include "../Postacie/Smok.h"
 #include "../Obiekty/Kamera.h"
 
-#include "../Kontenery/Plomienie.h"
-#include "../Kontenery/Strzaly.h"
-
-#include "../Kontenery/Strzelcy.h"
-//#include "../Kontenery/Kontener.h"
 
 #include "../Fabryki/FabrykaPociskow.h"
 #include "../Fabryki/FabrykaLudzi.h"
+
+#include "../Kontenery/KontenerPostaci.h"
+#include "../Kontenery/KontenerPociskow.h"
 
 class Model
 {
@@ -39,9 +35,9 @@ public:
 	//Zwracanie obiektow
 	Kamera* zwrocKamere() {return &kamera;}
 	Smok* zwrocSmoka() {return &smok;}
-	Plomienie* zwrocPlomienie() {return &plomienie;}
-	Strzaly* zwrocStrzaly() {return &strzaly;}
-	Strzelcy* zwrocStrzelcow() {return &strzelcy;}
+	KontenerPociskow<Plomien>* zwrocPlomienie() {return &plomienie;}
+	KontenerPociskow<Strzala>* zwrocStrzaly() {return &strzaly;}
+	KontenerPostaci<Strzelec>* zwrocStrzelcow() {return &strzelcy;}
 
 	//Obsluga kolizji
 	void obsluzKolizje();
@@ -53,16 +49,11 @@ private:
 
 	Kamera kamera;
 
-
-
 	Smok smok;
-	Strzelcy strzelcy;
+	KontenerPostaci<Strzelec> strzelcy;
 
-	Plomienie plomienie;
-	Strzaly strzaly;
-
-	FabrykaPociskow fabrykaPociskow;
-	FabrykaLudzi fabrykaLudzi;
+	KontenerPociskow<Plomien> plomienie;
+	KontenerPociskow<Strzala> strzaly;
 };
 
 void zniszcz(Obiekt *o,Obiekt *o2, Punkt punktKolizji);
