@@ -11,7 +11,7 @@ PrzestrzenKolizji::PrzestrzenKolizji()
 {
 	figury.clear();
 	promien=0;
-	pozycjaObiektu=Punkt();
+	pozycjaObiektu=0;
 }
 
 std::pair<bool,Punkt> PrzestrzenKolizji::sprawdzKolizje(PrzestrzenKolizji *przestrzen)

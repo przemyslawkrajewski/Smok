@@ -25,15 +25,21 @@ public:
 
 private:
 	int wczytanieObrazka(const char* nazwa, SDL_Texture ** grafika);
+
 	void wyswietlenieObrazka(SDL_Texture * grafika,int pozycjaX, int pozycjaY,int wycinekX,int wycinekY,int szerokosc,int wysokosc);
 	void wyswietlenieOkregu(int pozX,int pozY, double promien);
 	void wyswietleniePiksela(int pozX, int pozY);
+
 	void wyswietleniePierwszegoPlanu(int pozX,int pozY);
 	void wyswietlenieDrugiegoPlanu(int pozX,int pozY);
 	void wyswietlenieTla(int pozX,int pozY);
-	void wyswietlenieSmoka(int pozX, int pozY);
-	void wyswietlenieStrzelcow();
+
+	void wyswietlenieSmoka();
 	void wyswietlenieOgnia();
+	void wyswietlenieOgnia(std::list<Plomien> *p);
+
+	void wyswietlenieStrzelcow();
+
 	void wyswietlenieStrzal();
 
 	void wyswietlenieStanuOgnia();
