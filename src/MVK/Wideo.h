@@ -57,8 +57,8 @@ private:
 
 	SDL_Texture * pasekOgnia;
 
-	SDL_Texture * chodnik;
-	SDL_Texture * wykres;
+	SDL_Texture * pierwszyPlan;
+	SDL_Texture * drugiPlan;
 	SDL_Texture * tlo;
 
 };

@@ -13,6 +13,9 @@ Obiekt::Obiekt()
 	zniszczony=false;
 	punktZaczepu=0;
 	czyZaczepiony=false;
+
+	zwroconyWPrawo=true;
+	zycie=1000;
 }
 
 Punkt Obiekt::zwrocPozycje()
@@ -27,29 +30,36 @@ Punkt Obiekt::zwrocPozycje()
 		if(punktZaczepu->czyZniszczony())
 		{
 			usunPunktZaczepu();
-			return pozycja;
 		}
 		else
-			return Punkt(punktZaczepu->zwrocPozycje().x+pozycja.x,punktZaczepu->zwrocPozycje().y+pozycja.y);
+		{
+			pozycja.x=punktZaczepu->zwrocPozycje().x+pozycjaWzgledemObiektu.x;
+			pozycja.y=punktZaczepu->zwrocPozycje().y+pozycjaWzgledemObiektu.y;
+
+		}
 	}
-	else
-	{
-		return pozycja;
-	}
+
+	return pozycja;
 }
 
 void Obiekt::ustawPunktZaczepu(Obiekt *p)
 {
-	pozycja.x = pozycja.x-p->zwrocPozycje().x;
-	pozycja.y = pozycja.y-p->zwrocPozycje().y;
-	punktZaczepu=p;
-	czyZaczepiony=true;
+
+	if(!czyZaczepiony)
+	{
+		pozycjaWzgledemObiektu.x = pozycja.x-p->zwrocPozycje().x;
+		pozycjaWzgledemObiektu.y = pozycja.y-p->zwrocPozycje().y;
+		punktZaczepu=p;
+		pozycja.x=punktZaczepu->zwrocPozycje().x;
+		pozycja.y=punktZaczepu->zwrocPozycje().y;
+		czyZaczepiony=true;
+	}
 }
 
 void Obiekt::usunPunktZaczepu()
 {
-	pozycja.x = punktZaczepu->zwrocPozycje().x+pozycja.x;
-	pozycja.y = punktZaczepu->zwrocPozycje().y+pozycja.y;
+	pozycja.x = punktZaczepu->zwrocPozycje().x;
+	pozycja.y = punktZaczepu->zwrocPozycje().y;
 	punktZaczepu=0;
 	czyZaczepiony=false;
 }

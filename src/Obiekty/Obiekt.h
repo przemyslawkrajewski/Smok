@@ -9,7 +9,9 @@
 #define OBIEKT_H_
 
 #include "Punkt.h"
+#include "../Kolizje/OkragKolizji.h"
 #include "../Kolizje/PrzestrzenKolizji.h"
+
 
 struct ParametryObiektow
 {
@@ -30,6 +32,7 @@ protected:
 
 	Obiekt *punktZaczepu;
 	bool czyZaczepiony;
+	Punkt pozycjaWzgledemObiektu;
 
 	bool istnieje;	//czy obiekt jeszcze istnieje czy kontener powinien go unicestwic
 	bool zniszczony;//czy pocisk/postac zostal zniszczony/zabita aby program wiedzial zeby uruchomic animacje smierci

@@ -23,7 +23,7 @@ public:
 
 	virtual void wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)=0;
 	virtual void wyznaczKlatkeAnimacji() = 0;
-	virtual std::pair<Klawiatura,Myszka> wyznaczSterowanie() {};
+	virtual std::pair<Klawiatura,Myszka> wyznaczSterowanie() {return std::pair<Klawiatura,Myszka>(Klawiatura(),Myszka());};
 
 	void ustawCel(Punkt p) {cel=p;}
 	void ustawCzyIstniejePrzeszkoda(bool poLewej, bool poPrawej) {przeszkodaPoLewej=poLewej;przeszkodaPoPrawej=poPrawej;}

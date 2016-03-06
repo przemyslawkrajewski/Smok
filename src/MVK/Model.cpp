@@ -111,5 +111,5 @@ void nic(Obiekt *o,Obiekt *o2,Punkt punktKolizji)
 
 void zadajObrazenia(Obiekt*o, Obiekt *o2, Punkt punktKolizji)
 {
-	o->zadajObrazenia(2);
+	o->zadajObrazenia(0.2);
 }

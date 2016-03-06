@@ -32,8 +32,8 @@ void Wideo::zamkniecieOkna()
 	SDL_DestroyTexture(belt);
 
 	SDL_DestroyTexture(tlo);
-	SDL_DestroyTexture(wykres);
-	SDL_DestroyTexture(chodnik);
+	SDL_DestroyTexture(drugiPlan);
+	SDL_DestroyTexture(pierwszyPlan);
 
 	SDL_DestroyTexture(pasekOgnia);
 
@@ -85,8 +85,8 @@ int Wideo::inicjacjaOkna(int szerokoscOkna,int wysokoscOkna,int glebiaKolorowOkn
 	   wczytanieObrazka("Grafika/KrzyzowiecL.bmp",&krzyzowiecL) ||
 	   wczytanieObrazka("Grafika/plomien.bmp",&plomien) ||
 	   wczytanieObrazka("Grafika/Belt.bmp",&belt) ||
-	   wczytanieObrazka("Grafika/Chodnik1.bmp",&chodnik) ||
-	   wczytanieObrazka("Grafika/DrugiPlanTrawa.bmp",&wykres) ||
+	   wczytanieObrazka("Grafika/Chodnik1.bmp",&pierwszyPlan) ||
+	   wczytanieObrazka("Grafika/DrugiPlanTrawa.bmp",&drugiPlan) ||
 	   wczytanieObrazka("Grafika/TloChmurno.bmp",&tlo) ||
 	   wczytanieObrazka("Grafika/FireBar.bmp",&pasekOgnia))
 	{
@@ -187,14 +187,14 @@ void Wideo::wyswietleniePiksela(int pozX,int pozY)
 void Wideo::wyswietlenieChodnika(int pozX,int pozY)
 {
 	if(pozY<240) pozY=240;
-	wyswietlenieObrazka(chodnik,0,pozY+180-240,pozX%640,0,640,300);
+	wyswietlenieObrazka(pierwszyPlan,0,pozY+180-240,pozX%640,0,640,300);
 }
 
 void Wideo::wyswietlenieDrugiegoPlanu(int pozX,int pozY)
 {
 
 	if(pozY<240) pozY=240;
-	wyswietlenieObrazka(wykres,0,pozY/5+150,(pozX/15)%640,0,640,-1);
+	wyswietlenieObrazka(drugiPlan,0,pozY/5+150,(pozX/15)%640,0,640,-1);
 }
 
 void Wideo::wyswietlenieTla(int pozX,int pozY)
@@ -247,7 +247,7 @@ void Wideo::wyswietlenieSmoka(int pozX, int pozY)
 			if(!i->czyIstnieje()) continue;
 			if(i->czyZniszczony())
 			{
-				if(!i->czyZaczepionyDoObiektu())
+				if(!i->czyBylZaczepiony())
 				{
 					naZiemi.push_back(*i);
 					continue;
@@ -429,13 +429,7 @@ void Wideo::wyswietlenieStanuOgnia()
 {
 	double stanOgnia = model->zwrocSmoka()->zwrocStanOgnia();
 	int doNarysowania = stanOgnia*150;
-	/*int doNarysowaniaY = stanOgnia*20;
 
-	for(int i=0;i<doNarysowania;i++)
-		for(int j=0;j<10;j++)
-		{
-			SDL_RenderDrawPoint(render, i+40,  j+40);
-		}//*/
 	wyswietlenieObrazka(pasekOgnia,10,10,0,0,doNarysowania,25);
 }
 
@@ -450,7 +444,6 @@ void Wideo::wyswietlenieEkranu()
 
 	wyswietlenieStrzelcow();
 	wyswietlenieSmoka(-x+model->zwrocSmoka()->zwrocPozycje().x+320,+y-model->zwrocSmoka()->zwrocPozycje().y+240);
-		wyswietlenieOgnia();
 	wyswietlenieStrzal();
 	wyswietlenieStanuOgnia();
 

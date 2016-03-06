@@ -37,15 +37,15 @@ void FabrykaPociskow::stworzPocisk(TypPocisku typ,Punkt nPozycja, Punkt nPredkos
 	switch(typ)
 	{
 	case plomien:
-		assert("Kontener Plomienie nie ustawiony" && plomienie!=0);
+		assert("Kontener 'Plomienie' nie ustawiony" && plomienie!=0);
 		(plomienie->dodaj(Plomien(nPozycja,nPredkosc,nczasTrwania,nKat)))->wyznaczPrzestrzenKolizji();
 		break;
 	case strzala:
-		assert("Kontener Strzaly nie ustawiony" && strzaly!=0);
+		assert("Kontener 'Strzaly' nie ustawiony" && strzaly!=0);
 		(strzaly->dodaj(Strzala(nPozycja,nPredkosc,nczasTrwania,nKat)))->wyznaczPrzestrzenKolizji();
 		break;
 	case belt:
-		assert("Kontener Strzaly nie ustawiony" && strzaly!=0);
+		assert("Kontener 'Strzaly' nie ustawiony" && strzaly!=0);
 		strzaly->dodaj(Strzala(nPozycja,nPredkosc,nczasTrwania,nKat));
 		break;
 	}

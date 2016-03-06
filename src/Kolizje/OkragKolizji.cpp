@@ -23,11 +23,11 @@ std::pair<bool,Punkt> OkragKolizji::sprawdzKolizje(OkragKolizji *okrag)
 	Wektor wektor=zwrocPredkoscObiektu();
 	wektor.x=-wektor.x+okrag->zwrocPredkoscObiektu().x;
 	wektor.y=-wektor.y+okrag->zwrocPredkoscObiektu().y;
-			//wektor.x=-2;wektor.y=0;
+
 	Punkt srodekOkregu;
 	srodekOkregu.x=okrag->zwrocPozycje().x-zwrocPozycje().x;
 	srodekOkregu.y=okrag->zwrocPozycje().y-zwrocPozycje().y;
-			//srodekOkregu.x=5;srodekOkregu.y=-2;
+
 	double dlugoscWektora = sqrt(wektor.x*wektor.x+wektor.y*wektor.y);
 	dlugoscWektora = dlugoscWektora*dlugoscWektora;
 	double iloczynSkalarny = wektor.x*srodekOkregu.x+wektor.y*srodekOkregu.y;

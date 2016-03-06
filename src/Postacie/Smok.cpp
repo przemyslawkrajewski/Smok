@@ -648,8 +648,8 @@ void Smok::wyznaczPrzestrzenKolizji()
 //#####################################################################################################
 void Smok::wyznaczKlatkeAnimacji()
 {
-	int prawo = -1;
-	if(zwroconyWPrawo) prawo=1;
+	//int prawo = -1;
+	//if(zwroconyWPrawo) prawo=1;
 
 	switch(stan)
 	{

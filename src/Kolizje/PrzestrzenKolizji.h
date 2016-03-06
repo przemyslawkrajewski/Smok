@@ -8,9 +8,14 @@
 #ifndef PRZESTRZENKOLIZJI_H_
 #define PRZESTRZENKOLIZJI_H_
 
+
 #include "OkragKolizji.h"
 #include <vector>
 #include <utility>
+
+#include "OkragKolizji.h"
+
+
 
 class PrzestrzenKolizji
 {

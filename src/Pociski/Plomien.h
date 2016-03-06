@@ -22,7 +22,7 @@ struct ParametryOgnia
 	ParametryOgnia()
 	{
 		czasWygasania=20;
-		czasPalenia=500;
+		czasPalenia=50;
 		predkoscOpadania=5;
 	}
 };
@@ -44,12 +44,15 @@ public:
 
 	int zwrocCzasTrwania() {return czasTrwania;}
 	double zwrocKat();
+	bool czyBylZaczepiony() {return bylZaczepiony;}
 private:
 
 	static ParametryOgnia parametry;
 	StanPlomienia stan;
 
 	int czasTrwania;
+
+	double bylZaczepiony;
 };
 
 
