@@ -44,6 +44,7 @@ protected:
 	PrzestrzenKolizji przestrzenKolizji;
 
 	double zycie;
+	double obrazenia;
 
 	static ParametryObiektow parametryObiektow;
 
@@ -81,6 +82,8 @@ public:
 
 	//Mechanika gry
 	void zadajObrazenia(double obrazenia) {zycie-=obrazenia;}
+	void ustawObrazenia(double o) {obrazenia=o;}
+	double zwrocObrazenia() {return obrazenia;}
 
 };
 

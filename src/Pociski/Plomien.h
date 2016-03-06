@@ -18,12 +18,19 @@ struct ParametryOgnia
 	double czasWygasania;
 	double czasPalenia;
 	double predkoscOpadania;
+	double bazoweObrazenia;
+	double obrazeniaNaCelu;
+	double obrazeniaNaZiemi;
 
 	ParametryOgnia()
 	{
 		czasWygasania=20;
 		czasPalenia=50;
 		predkoscOpadania=5;
+
+		bazoweObrazenia=5;
+		obrazeniaNaCelu=0.2;
+		obrazeniaNaZiemi=0.05;
 	}
 };
 

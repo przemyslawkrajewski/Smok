@@ -38,7 +38,7 @@ void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja)
 	{
 	case krzyzowiec:
 	{
-		assert("Kontener Strzelcy nie ustawiony" && strzelcy!=0);
+		assert("Kontener 'Strzelcy' nie ustawiony" && strzelcy!=0);
 		Strzelec strzelec;
 		strzelec.ustawPozycje(nPozycja);
 		(strzelcy->dodaj(strzelec))->wyznaczPrzestrzenKolizji(); //Taki myk ze dodaje nowego strzelca i od razu wyznacza jego przestrzen kolizji

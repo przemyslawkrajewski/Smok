@@ -111,31 +111,33 @@ std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 	int maxOdleglosc=500;
 	int minOdleglosc=100;
 
+	Punkt pozycjaCelu = cel->zwrocPozycje();
+
 	Klawiatura k;
 	Myszka m;
-	if(cel.x>pozycja.x && zwroconyWPrawo!=true && (stanNaciagania<0 && spust))
+	if(pozycjaCelu.x>pozycja.x && zwroconyWPrawo!=true && (stanNaciagania<0 && spust))
 	{
 		k.ustawWcisnietoPrawo(true);
 	}
-	else if(cel.x<pozycja.x && zwroconyWPrawo==true && (stanNaciagania<0 && spust))
+	else if(pozycjaCelu.x<pozycja.x && zwroconyWPrawo==true && (stanNaciagania<0 && spust))
 	{
 		k.ustawWcisnietoLewo(true);
 	}
-	if(cel.x>pozycja.x+maxOdleglosc  && (stanNaciagania<0 && spust))
+	if(pozycjaCelu.x>pozycja.x+maxOdleglosc  && (stanNaciagania<0 && spust))
 	{
 		k.ustawWcisnietoPrawo(true);
 	}
-	else if(cel.x<pozycja.x-maxOdleglosc  && (stanNaciagania<0 && spust))
+	else if(pozycjaCelu.x<pozycja.x-maxOdleglosc  && (stanNaciagania<0 && spust))
 	{
 		k.ustawWcisnietoLewo(true);
 	}
-	else if(abs(cel.x-pozycja.x)<maxOdleglosc && abs(cel.x-pozycja.x)>minOdleglosc)
+	else if(abs(pozycjaCelu.x-pozycja.x)<maxOdleglosc && abs(pozycjaCelu.x-pozycja.x)>minOdleglosc)
 	{
 		m.ustawLPM(true);
 	}
 
-	m.ustawX(pozycja.x-cel.x);
-	m.ustawY(pozycja.y-cel.y);
+	m.ustawX(pozycja.x-pozycjaCelu.x);
+	m.ustawY(pozycja.y-pozycjaCelu.y);
 
 	return std::pair<Klawiatura,Myszka>(k,m);
 }

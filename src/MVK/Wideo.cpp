@@ -184,7 +184,7 @@ void Wideo::wyswietleniePiksela(int pozX,int pozY)
 }
 
 
-void Wideo::wyswietlenieChodnika(int pozX,int pozY)
+void Wideo::wyswietleniePierwszegoPlanu(int pozX,int pozY)
 {
 	if(pozY<240) pozY=240;
 	wyswietlenieObrazka(pierwszyPlan,0,pozY+180-240,pozX%640,0,640,300);
@@ -192,9 +192,8 @@ void Wideo::wyswietlenieChodnika(int pozX,int pozY)
 
 void Wideo::wyswietlenieDrugiegoPlanu(int pozX,int pozY)
 {
-
 	if(pozY<240) pozY=240;
-	wyswietlenieObrazka(drugiPlan,0,pozY/5+150,(pozX/15)%640,0,640,-1);
+	wyswietlenieObrazka(drugiPlan,0,pozY/5+150,(pozX/15)%640,0,640,300);
 }
 
 void Wideo::wyswietlenieTla(int pozX,int pozY)
@@ -440,7 +439,7 @@ void Wideo::wyswietlenieEkranu()
 	int y=model->zwrocKamere()->zwrocY();
 	wyswietlenieTla(x,y);
 	wyswietlenieDrugiegoPlanu(x,y);
-	wyswietlenieChodnika(x,y);
+	wyswietleniePierwszegoPlanu(x,y);
 
 	wyswietlenieStrzelcow();
 	wyswietlenieSmoka(-x+model->zwrocSmoka()->zwrocPozycje().x+320,+y-model->zwrocSmoka()->zwrocPozycje().y+240);

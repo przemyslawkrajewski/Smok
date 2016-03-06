@@ -25,6 +25,8 @@ Model::Model(): wymiaryEkranu(Punkt(640,480))
 	//fabrykaLudzi.stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(1200,130));
 }
 
+//####################################################KOLEJNY STAN#######################################################
+
 void Model::wyznaczKolejnyStan()
 {
 	//Liczymy wspolrzedne myszki wzgledem glowy Smoka i Wyznaczamy kolejny stan Smoka
@@ -53,26 +55,33 @@ void Model::wyznaczKolejnyStan()
 
 	//TODO: jak ze wszystkim innym tyle że bez liczenia myszki bo od niej nie zależy zachowanie
 	//Strzelcy
-	strzelcy.ustawCel(smok.zwrocPozycje());
+	strzelcy.ustawCel(&smok);
 	strzelcy.wyznaczKolejnyStan();
 	strzelcy.wyznaczKlatkeAnimacji();
 	//strzelcy.wyznaczPrzestrzenKolizji();
 
-	//Sadzenie krzyzowcow
-	/*std::list<Punkt> pozycja = plomienie.zwrocPozycje();
+	//									Sadzenie krzyzowcow
+	/*
+	std::list<Punkt> pozycja = plomienie.zwrocPozycje();
 	for(std::list<Punkt>::iterator i=pozycja.begin(); i!=pozycja.end();i++)
 	{
 		if(i->y<90) fabrykaLudzi.stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(i->x,130));
-	}//*/
-	//Losowe tworzenie krzyzowcow
-	/*if(strzelcy.zwrocObiekty()->size()<100)
+	}
+	//*/
+
+	//								Losowe tworzenie krzyzowcow
+
+	if(strzelcy.zwrocObiekty().size()<100)
 	{
 		int x = rand()%10000+1000;
-		fabrykaLudzi.stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(x,130));
-	}//*/
+		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(x,130));
+	}
+	std::cout << strzelcy.zwrocObiekty().size() << "\n";
+	//*/
 	obsluzKolizje();
-	//std::cout << strzelcy.zwrocObiekty()->size() << "\n";
 }
+
+//##########################################################KOLIZJE#########################################################
 
 void Model::obsluzKolizje()
 {
@@ -87,29 +96,32 @@ void Model::obsluzKolizje()
 	//strzaly.sprawdzKolizje(&smok,zniszcz,nic);
 }
 
-void zniszcz(Obiekt *o,Obiekt *o2,Punkt punktKolizji)
+void Model::zniszcz(Obiekt *o,Obiekt *o2,Punkt punktKolizji)
 {
 	o->zniszcz();
 }
-void zniszczPocisk(Obiekt *o,Obiekt *o2,Punkt punktKolizji)
+void Model::zniszczPocisk(Obiekt *o,Obiekt *o2,Punkt punktKolizji)
 {
-	o->ustawPozycje(punktKolizji);
-	o->ustawPunktZaczepu(o2);
+	if(!o->czyZniszczony())
+	{
+		o->ustawPozycje(punktKolizji);
+		o->ustawPunktZaczepu(o2);
+	}
 	o->zniszcz();
 }
 
-void usun(Obiekt *o,Obiekt *o2,Punkt punktKolizji)
+void Model::usun(Obiekt *o,Obiekt *o2,Punkt punktKolizji)
 {
 	o->zniszcz();
 	o->usun();
 }
 
-void nic(Obiekt *o,Obiekt *o2,Punkt punktKolizji)
+void Model::nic(Obiekt *o,Obiekt *o2,Punkt punktKolizji)
 {
 	return;
 }
 
-void zadajObrazenia(Obiekt*o, Obiekt *o2, Punkt punktKolizji)
+void Model::zadajObrazenia(Obiekt*o, Obiekt *o2, Punkt punktKolizji)
 {
-	o->zadajObrazenia(0.2);
+	o->zadajObrazenia(o2->zwrocObrazenia());
 }

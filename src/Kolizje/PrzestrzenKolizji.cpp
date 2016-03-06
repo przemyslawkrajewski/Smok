@@ -10,6 +10,8 @@
 PrzestrzenKolizji::PrzestrzenKolizji()
 {
 	figury.clear();
+	promien=0;
+	pozycjaObiektu=Punkt();
 }
 
 std::pair<bool,Punkt> PrzestrzenKolizji::sprawdzKolizje(PrzestrzenKolizji *przestrzen)

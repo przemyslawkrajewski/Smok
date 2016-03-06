@@ -78,7 +78,6 @@ void KontenerObiektow<T>::sprawdzKolizje(Obiekt* obiekt,void (obsluzKolizjePocis
 			{
 				obsluzKolizjePocisku(&(*i),obiekt,kolizja.second);
 				obsluzKolizjeObiektu(obiekt,&(*i),kolizja.second);
-				if(!i->czyZniszczony())	std::cout << "Later\n";
 			}
 		}
 	}

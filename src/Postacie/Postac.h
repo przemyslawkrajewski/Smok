@@ -25,10 +25,10 @@ public:
 	virtual void wyznaczKlatkeAnimacji() = 0;
 	virtual std::pair<Klawiatura,Myszka> wyznaczSterowanie() {return std::pair<Klawiatura,Myszka>(Klawiatura(),Myszka());};
 
-	void ustawCel(Punkt p) {cel=p;}
+	void ustawCel(Obiekt* p) {cel=p;}
 	void ustawCzyIstniejePrzeszkoda(bool poLewej, bool poPrawej) {przeszkodaPoLewej=poLewej;przeszkodaPoPrawej=poPrawej;}
 
-	Punkt cel;
+	Obiekt *cel;
 	bool przeszkodaPoLewej,przeszkodaPoPrawej;
 };
 

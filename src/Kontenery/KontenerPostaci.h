@@ -17,13 +17,13 @@ template <class T>
 class KontenerPostaci : public KontenerObiektow<T>
 {
 private:
-	Punkt cel;
+	Obiekt* cel;
 public:
 	KontenerPostaci();
 	virtual ~KontenerPostaci();
 
 	virtual void wyznaczKolejnyStan();
-	void ustawCel(Punkt c) {cel=c;}
+	void ustawCel(Obiekt *c) {cel=c;}
 
 	std::list<Postac*> zwrocObiekty();
 

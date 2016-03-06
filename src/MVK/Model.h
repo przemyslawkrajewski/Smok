@@ -41,6 +41,12 @@ public:
 
 	//Obsluga kolizji
 	void obsluzKolizje();
+	static void zniszcz(Obiekt *o,Obiekt *o2, Punkt punktKolizji);
+	static void zniszczPocisk(Obiekt *o,Obiekt *o2, Punkt punktKolizji);
+	static void usun(Obiekt *o,Obiekt *o2, Punkt punktKolizji);
+	static void nic(Obiekt *o,Obiekt *o2, Punkt punktKolizji);
+	static void zadajObrazenia(Obiekt*o, Obiekt *o2, Punkt punktKolizji);
+
 private:
 	const Punkt wymiaryEkranu;
 
@@ -55,11 +61,5 @@ private:
 	KontenerPociskow<Plomien> plomienie;
 	KontenerPociskow<Strzala> strzaly;
 };
-
-void zniszcz(Obiekt *o,Obiekt *o2, Punkt punktKolizji);
-void zniszczPocisk(Obiekt *o,Obiekt *o2, Punkt punktKolizji);
-void usun(Obiekt *o,Obiekt *o2, Punkt punktKolizji);
-void nic(Obiekt *o,Obiekt *o2, Punkt punktKolizji);
-void zadajObrazenia(Obiekt*o, Obiekt *o2, Punkt punktKolizji);
 
 #endif /* MODEL_H_ */
