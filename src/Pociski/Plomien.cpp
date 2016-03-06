@@ -38,10 +38,13 @@ Plomien::~Plomien()
 
 void Plomien::zniszcz()
 {
-	Obiekt::zniszcz();
-	predkosc.x=predkosc.y=0;
-	czasTrwania=parametry.czasPalenia;
-	stan = naCelu;
+	if(!zniszczony)
+	{
+		Obiekt::zniszcz();
+		predkosc.x=predkosc.y=0;
+		czasTrwania=parametry.czasPalenia;
+		stan = naCelu;
+	}
 }
 
 double Plomien::zwrocKat()
