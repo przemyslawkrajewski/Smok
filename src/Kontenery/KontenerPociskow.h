@@ -49,13 +49,16 @@ void KontenerPociskow<T>::wyznaczKolejnyStan()
 {
 	for(typename std::list<T>::iterator i=KontenerObiektow<T>::obiekty.begin();i!=KontenerObiektow<T>::obiekty.end();)
 	{
-		i->wyznaczKolejnyStan();
-
+		i->zwrocPozycje();
 		if(!i->czyIstnieje())
 		{
 			i=KontenerObiektow<T>::obiekty.erase(i);
+			continue;
 		}
-		else i++;
+
+		i->wyznaczKolejnyStan();
+		i++;
+
 	}
 }
 

@@ -48,10 +48,6 @@ void Model::wyznaczKolejnyStan()
 	punktMyszkiKamery.y=obiektDoSledzenia->zwrocPozycje().y-myszka.zwrocY()+wymiaryEkranu.y/2;
 	kamera.wyznaczKolejnyStan(punktMyszkiKamery.x,punktMyszkiKamery.y);
 
-	plomienie.wyznaczKolejnyStan();
-	plomienie.wyznaczKlatkeAnimacji();
-	strzaly.wyznaczKolejnyStan();
-	strzaly.wyznaczKlatkeAnimacji();
 
 	//TODO: jak ze wszystkim innym tyle że bez liczenia myszki bo od niej nie zależy zachowanie
 	//Strzelcy
@@ -59,6 +55,11 @@ void Model::wyznaczKolejnyStan()
 	strzelcy.wyznaczKolejnyStan();
 	strzelcy.wyznaczKlatkeAnimacji();
 	//strzelcy.wyznaczPrzestrzenKolizji();
+
+	plomienie.wyznaczKolejnyStan();
+	plomienie.wyznaczKlatkeAnimacji();
+	strzaly.wyznaczKolejnyStan();
+	strzaly.wyznaczKlatkeAnimacji();
 
 	//									Sadzenie krzyzowcow
 	/*
@@ -76,7 +77,7 @@ void Model::wyznaczKolejnyStan()
 		int x = rand()%10000+1000;
 		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(x,130));
 	}
-	std::cout << strzelcy.zwrocObiekty().size() << "\n";
+	//std::cout << strzelcy.zwrocObiekty().size() << "\n";
 	//*/
 	obsluzKolizje();
 }

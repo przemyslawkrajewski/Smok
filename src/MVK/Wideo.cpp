@@ -231,58 +231,28 @@ void Wideo::wyswietlenieSmoka()
 		klatkaGlowy.x=((int)-klatkaGlowy.x+24)%16;
 	}
 
+	//segregacja plomieni
 	std::list<Plomien> wPowietrzu;
 	std::list<Plomien> naZiemi;
+	std::list<Plomien> naCelu;
+
+	std::list<Plomien> *p = model->zwrocPlomienie()->zwrocObiekty();
+	for(std::list<Plomien>::iterator i=p->begin(); i!=p->end() ;i++)
 	{
-		int pozX=model->zwrocKamere()->zwrocX();
-		int pozY=model->zwrocKamere()->zwrocY();
-		int rozmiarKlatki=70;
-
-		std::list<Plomien> *p = model->zwrocPlomienie()->zwrocObiekty();
-		for(std::list<Plomien>::iterator i=p->begin(); i!=p->end() ;i++)
-		{
-			if(!i->czyIstnieje()) continue;
-			if(i->czyZniszczony())
-			{
-				if(!i->czyBylZaczepiony())
-				{
-					naZiemi.push_back(*i);
-					continue;
-				}
-			}
-			else
-			{
-				wPowietrzu.push_back(*i);
-				continue;
-			}
-			Punkt pozycja = i->zwrocPozycje();
-			Punkt klatka = i->zwrocKlatkeAnimacji();
-
-			if(model->zwrocKamere()->zwrocY()<240)
-				wyswietlenieObrazka(plomien,-pozX-rozmiarKlatki/2+pozycja.x+320,-rozmiarKlatki/2-pozycja.y+480,1+71*((int)klatka.x),1,rozmiarKlatki,rozmiarKlatki);
-			else
-				wyswietlenieObrazka(plomien,-pozX-rozmiarKlatki/2+pozycja.x+320,-rozmiarKlatki/2-pozycja.y+240+pozY,1+71*((int)klatka.x),1,rozmiarKlatki,rozmiarKlatki);
-		}
+		if(!i->czyIstnieje()) continue;
+		if(i->czyZniszczony() && !i->czyBylZaczepiony()) //Byl zaczepiony po to ze jak ogien wykonczyl rycerza to pozostaje dalej za Smokiem
+			naZiemi.push_back(*i);
+		else if(!i->czyZniszczony())
+			wPowietrzu.push_back(*i);
+		else
+			naCelu.push_back(*i);
 	}
+	wyswietlenieOgnia(&naCelu);
 
 	//											Wyswietlenie tylnej warstwy Smoka
 	if(model->zwrocKamere()->zwrocY()<240) wyswietlenieObrazka(*cialoT,-pozycjaKamery.x+pozycjaSmoka.x-rozmiarKlatki/2+320,	480-pozycjaSmoka.y-rozmiarKlatki/2,					1+klatkaCiala.x*401,1+klatkaCiala.y*401,rozmiarKlatki,rozmiarKlatki);
 									else wyswietlenieObrazka(*cialoT,  -pozycjaKamery.x+pozycjaSmoka.x-rozmiarKlatki/2+320,	240+pozycjaKamery.y-pozycjaSmoka.y-rozmiarKlatki/2,	1+klatkaCiala.x*401,1+klatkaCiala.y*401,rozmiarKlatki,rozmiarKlatki);
-	{
-		int pozX=model->zwrocKamere()->zwrocX();
-		int pozY=model->zwrocKamere()->zwrocY();
-		int rozmiarKlatki=70;
-		for(std::list<Plomien>::iterator i=wPowietrzu.begin(); i!=wPowietrzu.end() ;i++)
-		{
-			Punkt pozycja = i->zwrocPozycje();
-			Punkt klatka = i->zwrocKlatkeAnimacji();
-
-			if(model->zwrocKamere()->zwrocY()<240)
-				wyswietlenieObrazka(plomien,-pozX-rozmiarKlatki/2+pozycja.x+320,-rozmiarKlatki/2-pozycja.y+480,1+71*((int)klatka.x),1,rozmiarKlatki,rozmiarKlatki);
-			else
-				wyswietlenieObrazka(plomien,-pozX-rozmiarKlatki/2+pozycja.x+320,-rozmiarKlatki/2-pozycja.y+240+pozY,1+71*((int)klatka.x),1,rozmiarKlatki,rozmiarKlatki);
-		}
-	}
+	wyswietlenieOgnia(&wPowietrzu);
 
 	//											Wyswietlenie glowy
 	if(model->zwrocKamere()->zwrocY()<240) wyswietlenieObrazka(*glowa,-pozycjaKamery.x+pozycjaSmoka.x+pozycjaGlowy.x-rozmiarKlatkiGlowy/2+320,	480-pozycjaSmoka.y+pozycjaGlowy.y-rozmiarKlatkiGlowy/2,					klatkaGlowy.x*151+1,klatkaGlowy.y*151+1,150,150);
@@ -292,21 +262,7 @@ void Wideo::wyswietlenieSmoka()
 	if(model->zwrocKamere()->zwrocY()<240) wyswietlenieObrazka(*cialoP,-pozycjaKamery.x+pozycjaSmoka.x-rozmiarKlatki/2+320,	480-pozycjaSmoka.y-rozmiarKlatki/2,					1+klatkaCiala.x*401,1+klatkaCiala.y*401,rozmiarKlatki,rozmiarKlatki);
 									else wyswietlenieObrazka(*cialoP,  -pozycjaKamery.x+pozycjaSmoka.x-rozmiarKlatki/2+320,	240+pozycjaKamery.y-pozycjaSmoka.y-rozmiarKlatki/2,	1+klatkaCiala.x*401,1+klatkaCiala.y*401,rozmiarKlatki,rozmiarKlatki);
 
-	{
-		int pozX=model->zwrocKamere()->zwrocX();
-		int pozY=model->zwrocKamere()->zwrocY();
-		int rozmiarKlatki=70;
-		for(std::list<Plomien>::iterator i=naZiemi.begin(); i!=naZiemi.end() ;i++)
-		{
-			Punkt pozycja = i->zwrocPozycje();
-			Punkt klatka = i->zwrocKlatkeAnimacji();
-
-			if(model->zwrocKamere()->zwrocY()<240)
-				wyswietlenieObrazka(plomien,-pozX-rozmiarKlatki/2+pozycja.x+320,-rozmiarKlatki/2-pozycja.y+480,1+71*((int)klatka.x),1,rozmiarKlatki,rozmiarKlatki);
-			else
-				wyswietlenieObrazka(plomien,-pozX-rozmiarKlatki/2+pozycja.x+320,-rozmiarKlatki/2-pozycja.y+240+pozY,1+71*((int)klatka.x),1,rozmiarKlatki,rozmiarKlatki);
-		}
-	}
+	wyswietlenieOgnia(&naZiemi);
 
 	/*std::vector<OkragKolizji> okregi = *(model->zwrocSmoka()->zwrocPrzestrzenKolizji()->zwrocFigury());
 	for(std::vector<OkragKolizji>::iterator i= okregi.begin();i!=okregi.end();i++)

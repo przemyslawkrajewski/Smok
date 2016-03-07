@@ -48,15 +48,17 @@ void KontenerPostaci<T>::wyznaczKolejnyStan()
 {
 	for(typename std::list<T>::iterator i=KontenerObiektow<T>::obiekty.begin();i!=KontenerObiektow<T>::obiekty.end();)
 	{
+		i->zwrocPozycje();
+		if(!i->czyIstnieje())
+		{
+			i=KontenerObiektow<T>::obiekty.erase(i);
+			continue;
+		}
 		i->ustawCel(cel);
 		std::pair<Klawiatura,Myszka> sterowanie = i->wyznaczSterowanie();
 		i->wyznaczKolejnyStan(&sterowanie.first,&sterowanie.second);
 
-		if(!i->czyIstnieje())
-		{
-			i=KontenerObiektow<T>::obiekty.erase(i);
-		}
-		else i++;
+		i++;
 	}
 }
 
