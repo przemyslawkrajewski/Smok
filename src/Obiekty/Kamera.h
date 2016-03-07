@@ -15,7 +15,7 @@ class Kamera
 public:
 	Kamera();
 
-	void wyznaczKolejnyStan(double zadX,double zadY);
+	void wyznaczKolejnyStan(Punkt zadanyPunkt);
 
 	int zwrocX() {return pozycja.x;}
 	int zwrocY() {return pozycja.y;}

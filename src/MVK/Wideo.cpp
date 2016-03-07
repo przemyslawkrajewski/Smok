@@ -10,6 +10,30 @@
 Wideo::Wideo(Model *nModel)
 {
 	model=nModel;
+	okno=0;
+	render=0;
+	ekran=0;
+
+	tmp=0;
+	tmp2=0;
+
+	smokPP=0;
+	smokPL=0;
+	smokTP=0;
+	smokTL=0;
+	glowaSmokaP=0;
+	glowaSmokaL=0;
+	plomien=0;
+
+	krzyzowiecP=0;
+	krzyzowiecL=0;
+	belt=0;
+
+	pasekOgnia=0;
+
+	pierwszyPlan=0;
+	drugiPlan=0;
+	tlo=0;
 }
 Wideo::~Wideo()
 {
@@ -436,18 +460,6 @@ void Wideo::wyswietlenieEkranu()
 	wyswietlenieStrzal();
 	wyswietlenieStanuOgnia();
 
-	//SDL_Rect src;
-	//SDL_Rect dst;
-	//src.x=0;
-	//src.y=0;
-	//dst.h=200;
-	///dst.w=200;
-	//dst.x=100;
-	//dst.y=100;
-	//src.w=150;
-	//src.h=150;
-
-	//SDL_RenderCopy(render,tlo,&src,&dst);
 	SDL_RenderPresent(render);
 }
 

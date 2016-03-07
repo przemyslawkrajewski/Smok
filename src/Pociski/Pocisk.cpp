@@ -9,11 +9,11 @@
 
 Pocisk::Pocisk() : Obiekt()
 {
-	// TODO Auto-generated constructor stub
+	katNachylenia=0;
 
 }
 
 Pocisk::~Pocisk()
 {
-	// TODO Auto-generated destructor stub
+
 }

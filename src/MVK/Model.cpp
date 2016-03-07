@@ -46,7 +46,7 @@ void Model::wyznaczKolejnyStan()
 	if(!smok.czyZwroconyWPrawo() && punktMyszkiKamery.x>160) punktMyszkiKamery.x=160;
 	punktMyszkiKamery.x+=obiektDoSledzenia->zwrocPozycje().x+-wymiaryEkranu.x/2;
 	punktMyszkiKamery.y=obiektDoSledzenia->zwrocPozycje().y-myszka.zwrocY()+wymiaryEkranu.y/2;
-	kamera.wyznaczKolejnyStan(punktMyszkiKamery.x,punktMyszkiKamery.y);
+	kamera.wyznaczKolejnyStan(punktMyszkiKamery);
 
 
 	//TODO: jak ze wszystkim innym tyle że bez liczenia myszki bo od niej nie zależy zachowanie
