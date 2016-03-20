@@ -15,12 +15,12 @@ Model::Model(): wymiaryEkranu(Punkt(640,480))
 	FabrykaPociskow::zwrocInstancje()->ustawKontenery(&plomienie,&strzaly);
 	FabrykaLudzi::zwrocInstancje()->ustawKontenery(&strzelcy);
 
-	for(int i=0;i<40;i++)
+	for(int i=0;i<100;i++)
 	{
-		int x = rand()%10000+1000;
+		int x = rand()%100+1000;
 		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(x,130));
 	}
-
+	smok.ustawPozycje(Punkt(600,1000));
 	//fabrykaLudzi.stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(1000,130));
 	//fabrykaLudzi.stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(1200,130));
 }
@@ -94,7 +94,7 @@ void Model::obsluzKolizje()
 	}
 
 	//Smok kontra strzaly
-	//strzaly.sprawdzKolizje(&smok,zniszcz,nic);
+	strzaly.sprawdzKolizje(&smok,zniszcz,nic);
 }
 
 void Model::zniszcz(Obiekt *o,Obiekt *o2,Punkt punktKolizji)

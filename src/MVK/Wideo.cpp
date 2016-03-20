@@ -273,18 +273,25 @@ void Wideo::wyswietlenieSmoka()
 	}
 	wyswietlenieOgnia(&naCelu);
 
-	//											Wyswietlenie tylnej warstwy Smoka
-	if(model->zwrocKamere()->zwrocY()<240) wyswietlenieObrazka(*cialoT,-pozycjaKamery.x+pozycjaSmoka.x-rozmiarKlatki/2+320,	480-pozycjaSmoka.y-rozmiarKlatki/2,					1+klatkaCiala.x*401,1+klatkaCiala.y*401,rozmiarKlatki,rozmiarKlatki);
-									else wyswietlenieObrazka(*cialoT,  -pozycjaKamery.x+pozycjaSmoka.x-rozmiarKlatki/2+320,	240+pozycjaKamery.y-pozycjaSmoka.y-rozmiarKlatki/2,	1+klatkaCiala.x*401,1+klatkaCiala.y*401,rozmiarKlatki,rozmiarKlatki);
+		//											Wyswietlenie tylnej warstwy Smoka
+		if(model->zwrocKamere()->zwrocY()<240) wyswietlenieObrazka(*cialoT,-pozycjaKamery.x+pozycjaSmoka.x-rozmiarKlatki/2+320,	480-pozycjaSmoka.y-rozmiarKlatki/2,					1+klatkaCiala.x*401,1+klatkaCiala.y*401,rozmiarKlatki,rozmiarKlatki);
+										else wyswietlenieObrazka(*cialoT,  -pozycjaKamery.x+pozycjaSmoka.x-rozmiarKlatki/2+320,	240+pozycjaKamery.y-pozycjaSmoka.y-rozmiarKlatki/2,	1+klatkaCiala.x*401,1+klatkaCiala.y*401,rozmiarKlatki,rozmiarKlatki);
+
 	wyswietlenieOgnia(&wPowietrzu);
 
-	//											Wyswietlenie glowy
-	if(model->zwrocKamere()->zwrocY()<240) wyswietlenieObrazka(*glowa,-pozycjaKamery.x+pozycjaSmoka.x+pozycjaGlowy.x-rozmiarKlatkiGlowy/2+320,	480-pozycjaSmoka.y+pozycjaGlowy.y-rozmiarKlatkiGlowy/2,					klatkaGlowy.x*151+1,klatkaGlowy.y*151+1,150,150);
-									else wyswietlenieObrazka(*glowa,  -pozycjaKamery.x+pozycjaSmoka.x+pozycjaGlowy.x-rozmiarKlatkiGlowy/2+320,	240+pozycjaKamery.y-pozycjaSmoka.y+pozycjaGlowy.y-rozmiarKlatkiGlowy/2,	klatkaGlowy.x*151+1,klatkaGlowy.y*151+1,150,150);
+	if(!model->zwrocSmoka()->czyZniszczony())
+	{
+		//											Wyswietlenie glowy
+		if(model->zwrocKamere()->zwrocY()<240) wyswietlenieObrazka(*glowa,-pozycjaKamery.x+pozycjaSmoka.x+pozycjaGlowy.x-rozmiarKlatkiGlowy/2+320,	480-pozycjaSmoka.y+pozycjaGlowy.y-rozmiarKlatkiGlowy/2,					klatkaGlowy.x*151+1,klatkaGlowy.y*151+1,150,150);
+										else wyswietlenieObrazka(*glowa,  -pozycjaKamery.x+pozycjaSmoka.x+pozycjaGlowy.x-rozmiarKlatkiGlowy/2+320,	240+pozycjaKamery.y-pozycjaSmoka.y+pozycjaGlowy.y-rozmiarKlatkiGlowy/2,	klatkaGlowy.x*151+1,klatkaGlowy.y*151+1,150,150);
+	}
 
-	//											Wyswietlenie pierwszej warstwy Smoka
-	if(model->zwrocKamere()->zwrocY()<240) wyswietlenieObrazka(*cialoP,-pozycjaKamery.x+pozycjaSmoka.x-rozmiarKlatki/2+320,	480-pozycjaSmoka.y-rozmiarKlatki/2,					1+klatkaCiala.x*401,1+klatkaCiala.y*401,rozmiarKlatki,rozmiarKlatki);
-									else wyswietlenieObrazka(*cialoP,  -pozycjaKamery.x+pozycjaSmoka.x-rozmiarKlatki/2+320,	240+pozycjaKamery.y-pozycjaSmoka.y-rozmiarKlatki/2,	1+klatkaCiala.x*401,1+klatkaCiala.y*401,rozmiarKlatki,rozmiarKlatki);
+	if(!model->zwrocSmoka()->czyZniszczony())
+	{
+		//											Wyswietlenie pierwszej warstwy Smoka
+		if(model->zwrocKamere()->zwrocY()<240) wyswietlenieObrazka(*cialoP,-pozycjaKamery.x+pozycjaSmoka.x-rozmiarKlatki/2+320,	480-pozycjaSmoka.y-rozmiarKlatki/2,					1+klatkaCiala.x*401,1+klatkaCiala.y*401,rozmiarKlatki,rozmiarKlatki);
+										else wyswietlenieObrazka(*cialoP,  -pozycjaKamery.x+pozycjaSmoka.x-rozmiarKlatki/2+320,	240+pozycjaKamery.y-pozycjaSmoka.y-rozmiarKlatki/2,	1+klatkaCiala.x*401,1+klatkaCiala.y*401,rozmiarKlatki,rozmiarKlatki);
+	}
 
 	wyswietlenieOgnia(&naZiemi);
 

@@ -53,6 +53,8 @@ struct ParametrySmoka
 	double maksPredkoscChodu;
 	double silaWybicia;
 
+	double predkoscOpadania;
+
 	double vyPrzyUnoszeniu; //minimalna wartosc vy przy machnieciu skrzydlami wyznaczana eksperymentalnie
 
 	ParametrySmoka()
@@ -89,6 +91,9 @@ struct ParametrySmoka
 		hamowanieChodu=1.5;
 		maksPredkoscChodu=6;
 		silaWybicia=12;
+
+		predkoscOpadania=0.2;
+
 		vyPrzyUnoszeniu=10;
 	}
 };
@@ -96,7 +101,12 @@ struct ParametrySmoka
 class Smok: public Postac
 {
 public:
-	enum StanSmoka {stoi,idzie,unosi,wznosi,nurkuje,stabilizuje,spada,leciTylem,zbliza,leci,szybuje,szybujacWznosi,szybujacSpada,hamujeX,hamujeY};
+	enum StanSmoka {stoi,idzie,
+					unosi,leciTylem,zbliza,leci,
+					szybuje,szybujacWznosi,szybujacSpada,
+					wznosi,nurkuje,stabilizuje, //stabilizuje gdy spadajac zamienia predkoscY na predkoscX
+					spada,hamujeX,hamujeY,
+					spadaZabity,spadlZabity,opadaZabity}; //Opada gdy stoi na ziemi, a spada gdy jest w powietrzu
 
 
 private:
@@ -114,6 +124,7 @@ private:
 	//Metody do przetwarzania kolejnego stanu Smoka
 	void wyznaczLot(Klawiatura* klawiatura, Myszka *myszka);
 	void wyznaczGlowe(Klawiatura* klawiatura, Myszka *myszka);
+	void wyznaczSmierc();
 
 	static ParametrySmoka parametry;
 	StanSmoka stan;

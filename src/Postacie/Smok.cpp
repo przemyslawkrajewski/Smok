@@ -29,25 +29,41 @@ Smok::Smok(): Postac()
 void Smok::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 {
 	Punkt staraPredkosc(predkosc);
-	wyznaczLot(klawiatura,myszka);
-	wyznaczGlowe(klawiatura,myszka);
 
+	if(!zniszczony)
+	{
+		wyznaczLot(klawiatura,myszka);
+		wyznaczGlowe(klawiatura,myszka);
+	}
+	else
+	{
+		wyznaczSmierc();
+	}
+
+	//zadane Y
 	if(pozycja.y-zadaneY>70) zadaneY=pozycja.y-70;
+	//grawitacja
 	predkosc.y-=parametry.wspolczynnikGrawitacji;
+	//maksymalne predkosci
 	if(predkosc.y<-parametry.maksymalnaPredkoscY) predkosc.y=-parametry.maksymalnaPredkoscY;
 	if(predkosc.y>parametry.maksymalnaPredkoscY) predkosc.y=parametry.maksymalnaPredkoscY;
 
+	//predkosc
 	pozycja.x+=predkosc.x;
 	pozycja.y+=predkosc.y;
 
+	//jest na ziemi
 	if(pozycja.y<=parametryObiektow.poziomZiemi+parametry.wysokosc)
 	{
 		pozycja.y=parametryObiektow.poziomZiemi+parametry.wysokosc;
 		zadaneY=parametryObiektow.poziomZiemi+parametry.wysokosc;
 		predkosc.y=0;
 	}
+
+	//zadane Y ponizej ziemi
 	if(zadaneY<parametryObiektow.poziomZiemi+parametry.wysokosc) zadaneY=parametryObiektow.poziomZiemi+parametry.wysokosc;
 
+	//przyspieszenie
 	przyspieszenie.y=staraPredkosc.y-predkosc.y;
 
 
@@ -236,18 +252,19 @@ void Smok::wyznaczLot(Klawiatura *klawiatura, Myszka *myszka)
 	}
 	else if(klawiatura->czyWcisnietoDol()) //Nurkowanie, opadanie
 	{
-		if(pozycja.y==parametryObiektow.poziomZiemi+parametry.wysokosc)
+		if(pozycja.y==parametryObiektow.poziomZiemi+parametry.wysokosc) // Sobie po prostu stoi
 		{
 			hamowanieNaZiemi();
 			stan=stoi;
 		}
-		else  //spada
+		else //spada
 		{
-			if(predkosc.y>-parametry.maksymalnaPredkoscY) predkosc.y-=abs(predkosc.x)*0.10; //nurkowanie
+			if(predkosc.y>-parametry.maksymalnaPredkoscY) predkosc.y-=abs(predkosc.x)*0.15; //nurkowanie
 			predkosc.x*=0.8;
 
 			if(zadaneY>pozycja.y)zadaneY=pozycja.y-1;
-			if(abs(predkosc.x)>5) stan=nurkuje;
+
+			if(abs(predkosc.x)>10 || (stan==nurkuje && predkosc.y>-12)) stan=nurkuje;
 			else stan=spada;
 		}
 	}
@@ -439,6 +456,25 @@ void Smok::wyznaczGlowe(Klawiatura* klawiatura, Myszka *myszka)
 	}
 
 }
+
+void Smok::wyznaczSmierc()
+{
+	predkosc.y-=parametry.wspolczynnikGrawitacji;
+	predkosc.x*=0.95;
+	if(abs(predkosc.x)<1) predkosc.x=0;
+	if(pozycja.y>parametryObiektow.poziomZiemi+parametry.wysokosc)
+	{
+		if(zadaneY>pozycja.y)zadaneY=pozycja.y-1;
+		stan=spadaZabity;
+		if(predkosc.y>0) predkosc.y=-0.1;
+	}
+	else
+	{
+		if(stan==spadaZabity || stan==spadlZabity) stan=spadlZabity;
+		else stan=opadaZabity;
+	}
+}
+
 //#####################################################################################################
 //Podfunkcje Smoka Ruch
 //#####################################################################################################
@@ -561,85 +597,88 @@ void Smok::wyznaczPrzestrzenKolizji()
 
 	std::vector<OkragKolizji> f;
 	f.clear();
-	if(klatkaAnimacji.x==0)
+	if(!zniszczony)
 	{
-		f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-35*prawo,10),30));
-		f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-25*prawo,-30),25));
-	}
-	else if(klatkaAnimacji.x==1)
-	{
-		f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-30*prawo,-5),30));
-		f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-10*prawo,-40),25));
-	}
-	else if(klatkaAnimacji.x==2)
-	{
-		f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-35*prawo,-15),30));
-		f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(00*prawo,-25),25));
-	}
-	else if(klatkaAnimacji.x==3)
-	{
-		if(klatkaAnimacji.y==0)
+		if(klatkaAnimacji.x==0)
 		{
-			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-40*prawo,-05),30));
-			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(+5*prawo,+0),25));
+			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-35*prawo,10),30));
+			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-25*prawo,-30),25));
 		}
-		else if(klatkaAnimacji.y==1)
+		else if(klatkaAnimacji.x==1)
 		{
-			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-50*prawo,-15),30));
-			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-15*prawo,-30),25));
+			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-30*prawo,-5),30));
+			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-10*prawo,-40),25));
 		}
-	}
-	else if(klatkaAnimacji.x==4)
-	{
-		f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-35*prawo,10),30));
-		f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-35*prawo,-30),25));
-	}
-	else if(klatkaAnimacji.x==5)
-	{
-		f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-45*prawo,-10),30));
-		f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-8*prawo,-22),25));
-	}
-	else if(klatkaAnimacji.x==6 && klatkaAnimacji.y==1)
-	{
-		f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-35*prawo,10),30));
-		f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-35*prawo,-30),25));
-	}
-	else if(klatkaAnimacji.x==6 && klatkaAnimacji.y==0)
-	{
-		f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-10*prawo,10),30));
-		f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-00*prawo,-30),25));
-	}
-	else if(klatkaAnimacji.x==7)
-	{
-		f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-65*prawo,-20),30));
-		f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-30*prawo,05),25));
-	}
-	else if(klatkaAnimacji.x==8)
-	{
-		f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-50*prawo,20),30));
-		f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-20*prawo,-15),25));
-	}
-	else if(klatkaAnimacji.x==9)
-	{
-		f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-40*prawo,35),30));
-		f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-10*prawo,10),25));
-	}
-	else if(klatkaAnimacji.x==10)
-	{
-		f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-55*prawo,-25),30));
-		f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-30*prawo,10),25));
-	}
-	else if(klatkaAnimacji.x==11)
-	{
-		f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-30*prawo,-70),30));
-		f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-30*prawo,-25),25));
-	}
+		else if(klatkaAnimacji.x==2)
+		{
+			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-35*prawo,-15),30));
+			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(00*prawo,-25),25));
+		}
+		else if(klatkaAnimacji.x==3)
+		{
+			if(klatkaAnimacji.y==0)
+			{
+				f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-40*prawo,-05),30));
+				f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(+5*prawo,+0),25));
+			}
+			else if(klatkaAnimacji.y==1)
+			{
+				f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-50*prawo,-15),30));
+				f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-15*prawo,-30),25));
+			}
+		}
+		else if(klatkaAnimacji.x==4)
+		{
+			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-35*prawo,10),30));
+			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-35*prawo,-30),25));
+		}
+		else if(klatkaAnimacji.x==5)
+		{
+			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-45*prawo,-10),30));
+			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-8*prawo,-22),25));
+		}
+		else if(klatkaAnimacji.x==6 && klatkaAnimacji.y==1)
+		{
+			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-35*prawo,10),30));
+			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-35*prawo,-30),25));
+		}
+		else if(klatkaAnimacji.x==6 && klatkaAnimacji.y==0)
+		{
+			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-10*prawo,10),30));
+			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-00*prawo,-30),25));
+		}
+		else if(klatkaAnimacji.x==7)
+		{
+			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-65*prawo,-20),30));
+			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-30*prawo,05),25));
+		}
+		else if(klatkaAnimacji.x==8)
+		{
+			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-50*prawo,20),30));
+			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-20*prawo,-15),25));
+		}
+		else if(klatkaAnimacji.x==9)
+		{
+			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-40*prawo,35),30));
+			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-10*prawo,10),25));
+		}
+		else if(klatkaAnimacji.x==10)
+		{
+			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-55*prawo,-25),30));
+			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-30*prawo,10),25));
+		}
+		else if(klatkaAnimacji.x==11)
+		{
+			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-30*prawo,-70),30));
+			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-30*prawo,-25),25));
+		}
 
-	double poprawka=6.28/32;
-	if(prawo==-1) poprawka = -6.28/32;
+		double poprawka=6.28/32;
+		if(prawo==-1) poprawka = -6.28/32;
 
-	f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(pozycjaGlowy.x-5,-pozycjaGlowy.y-5),25));
-	f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(pozycjaGlowy.x-5+cos(obrotGlowy+poprawka)*35,-pozycjaGlowy.y-5+sin(obrotGlowy+poprawka)*35),15));
+		f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(pozycjaGlowy.x-5,-pozycjaGlowy.y-5),25));
+		f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(pozycjaGlowy.x-5+cos(obrotGlowy+poprawka)*35,-pozycjaGlowy.y-5+sin(obrotGlowy+poprawka)*35),15));
+	}
 	ustawPrzestrzenKolizji(f);
 
 }
@@ -859,7 +898,7 @@ void Smok::wyznaczKlatkeAnimacji()
 		klatkaAnimacji.x=10;
 		break;
 	case spada:
-		if(predkosc.y>-8)
+		if(predkosc.y>-8 || (klatkaAnimacji.x!=0 && klatkaAnimacji.y!=0 && klatkaAnimacji.x!=8 && klatkaAnimacji.x!=7 && klatkaAnimacji.x!=11))
 		{
 			minKatGlowy=5.7;
 			maksKatGlowy=2;
@@ -868,7 +907,7 @@ void Smok::wyznaczKlatkeAnimacji()
 			klatkaAnimacji.x=0;
 			klatkaAnimacji.y=0;
 		}
-		else if(predkosc.y>-10 || stan!=spada)
+		else if(predkosc.y>-10 && (klatkaAnimacji.x!=8 && klatkaAnimacji.x!=7 && klatkaAnimacji.x!=11))
 		{
 			minKatGlowy=5.0;
 			maksKatGlowy=0.8;
@@ -877,7 +916,7 @@ void Smok::wyznaczKlatkeAnimacji()
 			klatkaAnimacji.y=0;
 			klatkaAnimacji.x=8;
 		}
-		else if(predkosc.y>-12)
+		else if(predkosc.y>-12  || (klatkaAnimacji.x!=7 && klatkaAnimacji.x!=11))
 		{
 			minKatGlowy=3.1;
 			maksKatGlowy=6.0;
@@ -925,6 +964,42 @@ void Smok::wyznaczKlatkeAnimacji()
 		klatkaAnimacji.x=5;
 		if(zwroconyWPrawo) klatkaAnimacji.y=(((int)pozycja.x)%180)/30;
 		else klatkaAnimacji.y=5-(((int)pozycja.x)%180)/30;
+		break;
+	case spadaZabity:
+		if(predkosc.y==0) //Na wypadek
+		{
+			klatkaAnimacji.x=3;
+			klatkaAnimacji.y=5;
+			break;
+		}
+		if(predkosc.y>-6  ||  (klatkaAnimacji.y!=2 && klatkaAnimacji.y!=3 && klatkaAnimacji.y!=4))
+		{
+			klatkaAnimacji.y=2;
+			klatkaAnimacji.x=3;
+		}
+		else if(predkosc.y>-12 || abs(predkosc.y)<abs(predkosc.x)  || (klatkaAnimacji.y!=3 && klatkaAnimacji.y!=4))
+		{
+			klatkaAnimacji.y=3;
+			klatkaAnimacji.x=3;
+		}
+		else
+		{
+			klatkaAnimacji.y=4;
+			klatkaAnimacji.x=3;
+		}
+		break;
+	case spadlZabity:
+		klatkaAnimacji.x=3;
+		klatkaAnimacji.y=5;
+		break;
+	case opadaZabity:
+		if(klatkaAnimacji.x!=6 && klatkaAnimacji.y!=2)
+		{
+			klatkaAnimacji.x=6;
+			klatkaAnimacji.y=2;
+		}
+		klatkaAnimacji.y+=parametry.predkoscOpadania;
+		if(klatkaAnimacji.y>3) klatkaAnimacji.y=3;
 		break;
 	default:
 		minKatGlowy=5.3;
