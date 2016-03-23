@@ -31,7 +31,7 @@ void Strzala::zniszcz()
 {
 	Obiekt::zniszcz();
 	predkosc.x=predkosc.y=0;
-	czasTrwania=-1;
+	//czasTrwania=-1;
 }
 
 double Strzala::zwrocKat()
@@ -41,13 +41,28 @@ double Strzala::zwrocKat()
 
 void Strzala::wyznaczKolejnyStan()
 {
+	if(!(predkosc.x==0 && predkosc.y==0))
+	{
+		katNachylenia=1.57-atan2(predkosc.y,predkosc.x);
+		if(katNachylenia<0) katNachylenia+=6.28;
+	}
+
 	if(istnieje && !zniszczony)
 	{
 		pozycja.x+=predkosc.x;
 		pozycja.y+=predkosc.y;
+		predkosc.y-=parametry.wspolczynnikGrawitacji;
 	}
-	czasTrwania--;
-	if(pozycja.y<parametryObiektow.poziomZiemi) zniszcz();
+	else
+	{
+		czasTrwania--;
+	}
+	if(pozycja.y<parametryObiektow.poziomZiemi)
+	{
+		pozycja.x=((parametryObiektow.poziomZiemi-pozycja.y)/predkosc.y)*predkosc.x+pozycja.x;
+		pozycja.y=parametryObiektow.poziomZiemi;
+		zniszcz();
+	}
 	if(czasTrwania<0) usun();
 }
 

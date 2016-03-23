@@ -14,6 +14,7 @@ Kontroler::Kontroler(Wideo *nWideo, Model *nModel)
 	model=nModel;
 	zakonczenieAplikacji=false;
 
+	timer=0;
 }
 
 void Kontroler::glownaPetla()
@@ -52,6 +53,7 @@ void Kontroler::obsluzZdarzenia()
                 break;
             case SDLK_ESCAPE:
             	zakonczenieAplikacji=true;
+            	break;
             default:
             	break;
             }

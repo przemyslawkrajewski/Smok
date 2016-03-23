@@ -94,7 +94,7 @@ void Model::obsluzKolizje()
 	}
 
 	//Smok kontra strzaly
-	strzaly.sprawdzKolizje(&smok,zniszcz,nic);
+	strzaly.sprawdzKolizje(&smok,usun,zniszcz);
 }
 
 void Model::zniszcz(Obiekt *o,Obiekt *o2,Punkt punktKolizji)
