@@ -43,6 +43,8 @@ private:
 	void bieganie(Klawiatura* klawiatura, Myszka *myszka);
 	void strzelanie(Klawiatura* klawiatura, Myszka *myszka);
 
+	void wyznaczKatStrzalu(Punkt cel);
+
 public:
 	Strzelec();
 
@@ -63,8 +65,12 @@ public:
 	double maxCelowania; // czas potrzebny do wycelowania
 
 	//Parametry stanu Strzelca
-	double stanBiegu;
+	double katCelowaniaWprost;
+	double katCelowaniaZGory;
 	double katCelowania;
+	bool mozliwyStrzal;
+
+	double stanBiegu;
 	double stanNaciagania;
 	double stanCelowania;
 

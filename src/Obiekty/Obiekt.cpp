@@ -42,6 +42,13 @@ Punkt Obiekt::zwrocPozycje()
 	return pozycja;
 }
 
+Punkt Obiekt::zwrocPozycjeCelu()
+{
+	if(przestrzenKolizji.zwrocFigury()->empty()) return Punkt();
+
+	return przestrzenKolizji.zwrocFigury()->begin()->zwrocPozycje();
+}
+
 void Obiekt::ustawPunktZaczepu(Obiekt *p)
 {
 

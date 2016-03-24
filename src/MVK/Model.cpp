@@ -15,9 +15,9 @@ Model::Model(): wymiaryEkranu(Punkt(640,480))
 	FabrykaPociskow::zwrocInstancje()->ustawKontenery(&plomienie,&strzaly);
 	FabrykaLudzi::zwrocInstancje()->ustawKontenery(&strzelcy);
 
-	for(int i=0;i<100;i++)
+	for(int i=0;i<1;i++)
 	{
-		int x = rand()%100+1000;
+		int x = rand()%1+2000;
 		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(x,130));
 	}
 	smok.ustawPozycje(Punkt(600,1000));
@@ -72,7 +72,7 @@ void Model::wyznaczKolejnyStan()
 
 	//								Losowe tworzenie krzyzowcow
 
-	if(strzelcy.zwrocObiekty().size()<100)
+	/*if(strzelcy.zwrocObiekty().size()<100)
 	{
 		int x = rand()%10000+1000;
 		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(x,130));
@@ -94,7 +94,7 @@ void Model::obsluzKolizje()
 	}
 
 	//Smok kontra strzaly
-	strzaly.sprawdzKolizje(&smok,usun,zniszcz);
+	//strzaly.sprawdzKolizje(&smok,usun,zniszcz);
 }
 
 void Model::zniszcz(Obiekt *o,Obiekt *o2,Punkt punktKolizji)

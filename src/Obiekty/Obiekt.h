@@ -55,6 +55,7 @@ public:
 
 	//Fizyczne parametry
 	Punkt zwrocPozycje();
+	Punkt zwrocPozycjeCelu();
 	Punkt zwrocPredkosc() {return predkosc;}
 	Punkt zwrocPrzyspieszenie() {return przyspieszenie;}
 	bool czyZwroconyWPrawo() {return zwroconyWPrawo;}

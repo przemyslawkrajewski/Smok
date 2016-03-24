@@ -13,15 +13,18 @@ Strzelec::Strzelec(): Postac()
 	pozycja.y=parametryObiektow.poziomZiemi+50;
 	stan = stoi;
 	stanBiegu=0;
+	katCelowaniaWprost=0;
+	katCelowaniaZGory=0;
 	katCelowania=0;
 	stanNaciagania=0;
 	stanCelowania=0;
+	mozliwyStrzal=false;
 
 	spust=true;			//kusza/luk
-	predkoscStrzaly=18;
+	predkoscStrzaly=35;
 	maxNaciagniecie=100;//ile czas trzeba zeby naciagnac
-	celnosc=3.14/16;
-	maxCelowania=20;   //ile czasu trzeba zeby wycelowac
+	celnosc=0;//3.14/16;
+	maxCelowania=50;   //ile czasu trzeba zeby wycelowac
 	zycie=100;
 }
 
@@ -56,7 +59,6 @@ void Strzelec::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 			if(stanNaciagania<0)
 			{
 				stan = strzela;
-				katCelowania = atan2(-(myszka->zwrocY()),(myszka->zwrocX()))+3.14;
 				stanCelowania++;
 
 				if(stanCelowania > maxCelowania)
@@ -87,8 +89,8 @@ void Strzelec::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 		{
 			stan = stoi;
 			stanBiegu=0;
-			if(spust) {stan = strzela;stanNaciagania--;}
-			else stanNaciagania=maxNaciagniecie;
+			//if(spust) {stan = naciaga;stanNaciagania--;}
+			//else stanNaciagania=maxNaciagniecie;
 			stanCelowania=0;
 		}
 		if(stanNaciagania<-1) stanNaciagania=-1;
@@ -108,36 +110,40 @@ void Strzelec::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 
 std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 {
-	int maxOdleglosc=500;
+	int maxOdleglosc=2500;
 	int minOdleglosc=100;
 
-	Punkt pozycjaCelu = cel->zwrocPozycje();
+	Punkt pozycjaCelu = cel->zwrocPozycjeCelu();
 
 	Klawiatura k;
 	Myszka m;
-	if(pozycjaCelu.x>pozycja.x && zwroconyWPrawo!=true && (stanNaciagania<0 && spust))
-	{
-		k.ustawWcisnietoPrawo(true);
-	}
-	else if(pozycjaCelu.x<pozycja.x && zwroconyWPrawo==true && (stanNaciagania<0 && spust))
-	{
-		k.ustawWcisnietoLewo(true);
-	}
-	if(pozycjaCelu.x>pozycja.x+maxOdleglosc  && (stanNaciagania<0 && spust))
-	{
-		k.ustawWcisnietoPrawo(true);
-	}
-	else if(pozycjaCelu.x<pozycja.x-maxOdleglosc  && (stanNaciagania<0 && spust))
-	{
-		k.ustawWcisnietoLewo(true);
-	}
-	else if(abs(pozycjaCelu.x-pozycja.x)<maxOdleglosc && abs(pozycjaCelu.x-pozycja.x)>minOdleglosc)
-	{
-		m.ustawLPM(true);
-	}
 
 	m.ustawX(pozycja.x-pozycjaCelu.x);
 	m.ustawY(pozycja.y-pozycjaCelu.y);
+
+	wyznaczKatStrzalu(Punkt((m.zwrocX()),-(m.zwrocY())));
+	if((stanNaciagania>0 && spust) || (mozliwyStrzal && ((pozycjaCelu.x>pozycja.x && zwroconyWPrawo==true) || (pozycjaCelu.x<pozycja.x && zwroconyWPrawo!=true))))
+	{
+		m.ustawLPM(true);
+		if(rand()%2==1) katCelowania=katCelowaniaWprost;
+		else katCelowania=katCelowaniaZGory;
+	}
+	else if(pozycjaCelu.x>pozycja.x && zwroconyWPrawo==true)
+	{
+		k.ustawWcisnietoPrawo(true);
+	}
+	else if(pozycjaCelu.x<pozycja.x && zwroconyWPrawo!=true)
+	{
+		k.ustawWcisnietoLewo(true);
+	}
+	else if(pozycjaCelu.x>pozycja.x )
+	{
+		k.ustawWcisnietoPrawo(true);
+	}
+	else if(pozycjaCelu.x<pozycja.x)
+	{
+		k.ustawWcisnietoLewo(true);
+	}
 
 	return std::pair<Klawiatura,Myszka>(k,m);
 }
@@ -145,6 +151,70 @@ std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 //#####################################################################################################
 //Podfunkcje Ruch
 //#####################################################################################################
+
+void Strzelec::wyznaczKatStrzalu(Punkt cel)
+{
+	mozliwyStrzal=true;
+
+	//do wzoru, jak zgubisz kartke to zle
+	double A=-abs(cel.y);
+	double B=abs(cel.x);
+	double C=B*B*Strzala::parametry.wspolczynnikGrawitacji/(2*predkoscStrzaly*predkoscStrzaly);
+
+	if(B==0)
+	{
+		mozliwyStrzal=false;
+		return;
+	}
+
+	//do rownania kwadratowego
+	double a=A*A+B*B;
+	double b=B*B+2*A*C;
+	double c=C*C;
+
+	//rownanie kwadratowe
+	double delta = b*b-4*a*c;
+
+	//std::cout << "\n";
+	//std::cout  << "a:"<< a << " b:" << b << " c:" << c << "\n";
+	//std::cout  << "A:"<< A << " B:" << B << " C:" << C << "\n";
+	//std::cout  << "delta:" << delta << "\n";
+
+	if(delta<0)
+	{
+		mozliwyStrzal=false;
+		return;
+	}
+	double kat1 = -(-b -sqrt(delta))/(2*a);
+	double kat2 = -(-b +sqrt(delta))/(2*a);
+	//std::cout << "kat1:" << kat1 << " kat2:" << kat2 << "\n";
+
+	if(kat1<0)
+	{
+		mozliwyStrzal=false;
+		return ;
+	}
+	if(kat1<kat2)
+	{
+		double tmp = kat1;kat1=kat2;kat2=tmp;
+	}
+
+	if(cel.x<0)
+	{
+		katCelowaniaWprost = acos(-sqrt(kat1));
+		katCelowaniaZGory = acos(-sqrt(kat2));
+	}
+	else
+	{
+		katCelowaniaWprost = acos(sqrt(kat1));
+		katCelowaniaZGory = acos(sqrt(kat2));
+	}
+
+	katCelowaniaWprost+=3.14;
+	katCelowaniaZGory+=3.14;
+
+
+}
 
 //#####################################################################################################
 //Podfunkcje Kolizje

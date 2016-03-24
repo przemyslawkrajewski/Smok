@@ -17,7 +17,7 @@ struct ParametryStrzaly
 	double wspolczynnikGrawitacji;
 	ParametryStrzaly()
 	{
-		wspolczynnikGrawitacji=0.15;
+		wspolczynnikGrawitacji=0.40;
 	}
 };
 
@@ -34,8 +34,9 @@ public:
 
 	int zwrocCzasTrwania() {return czasTrwania;}
 	double zwrocKat();
-private:
+
 	static ParametryStrzaly parametry;
+private:
 
 	int czasTrwania;
 };
