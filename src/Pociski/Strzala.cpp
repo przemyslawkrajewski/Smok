@@ -25,6 +25,7 @@ Strzala::Strzala(Punkt nPozycja, Punkt nPredkosc, double nczasTrwania,double nKa
 	pozycja=nPozycja;
 	predkosc=nPredkosc;
 	katNachylenia = nKat;
+	obrazenia=5;
 }
 
 void Strzala::zniszcz()

@@ -85,6 +85,7 @@ public:
 	void zadajObrazenia(double obrazenia) {zycie-=obrazenia;}
 	void ustawObrazenia(double o) {obrazenia=o;}
 	double zwrocObrazenia() {return obrazenia;}
+	double zwrocZycie() {return zycie;}
 
 };
 

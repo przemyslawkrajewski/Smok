@@ -15,7 +15,7 @@ Obiekt::Obiekt()
 	czyZaczepiony=false;
 
 	zwroconyWPrawo=true;
-	zycie=1000;
+	zycie=1;
 }
 
 Punkt Obiekt::zwrocPozycje()

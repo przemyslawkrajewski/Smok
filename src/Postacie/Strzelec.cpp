@@ -23,7 +23,7 @@ Strzelec::Strzelec(): Postac()
 	spust=true;			//kusza/luk
 	predkoscStrzaly=35;
 	maxNaciagniecie=100;//ile czas trzeba zeby naciagnac
-	celnosc=0;//3.14/16;
+	celnosc=3.14/16;
 	maxCelowania=50;   //ile czasu trzeba zeby wycelowac
 	zycie=100;
 }
@@ -112,11 +112,17 @@ std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 {
 	int maxOdleglosc=2500;
 	int minOdleglosc=100;
+	int odleglosc=1500;
 
 	Punkt pozycjaCelu = cel->zwrocPozycjeCelu();
 
 	Klawiatura k;
 	Myszka m;
+
+	if(cel->czyZniszczony())
+	{
+		return std::pair<Klawiatura,Myszka>(k,m);
+	}
 
 	m.ustawX(pozycja.x-pozycjaCelu.x);
 	m.ustawY(pozycja.y-pozycjaCelu.y);
@@ -125,7 +131,7 @@ std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 	if((stanNaciagania>0 && spust) || (mozliwyStrzal && ((pozycjaCelu.x>pozycja.x && zwroconyWPrawo==true) || (pozycjaCelu.x<pozycja.x && zwroconyWPrawo!=true))))
 	{
 		m.ustawLPM(true);
-		if(rand()%2==1) katCelowania=katCelowaniaWprost;
+		if(abs(pozycja.x-pozycjaCelu.x)<odleglosc) katCelowania=katCelowaniaWprost;
 		else katCelowania=katCelowaniaZGory;
 	}
 	else if(pozycjaCelu.x>pozycja.x && zwroconyWPrawo==true)

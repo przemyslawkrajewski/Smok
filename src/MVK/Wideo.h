@@ -43,6 +43,7 @@ private:
 	void wyswietlenieStrzal();
 
 	void wyswietlenieStanuOgnia();
+	void wyswietlenieStanuZdrowia();
 
 	Model *model;
 
@@ -62,6 +63,8 @@ private:
 	SDL_Texture * belt;
 
 	SDL_Texture * pasekOgnia;
+	SDL_Texture * pasekZdrowia;
+	SDL_Texture * fiolkaHUD;
 
 	SDL_Texture * pierwszyPlan;
 	SDL_Texture * drugiPlan;

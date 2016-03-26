@@ -21,6 +21,8 @@ Smok::Smok(): Postac()
 	zwroconyWPrawo=true;
 	zieje=false;
 
+	zycie=500;
+
 	std::vector<OkragKolizji> f;
 	f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(0,0),10));
 	ustawPrzestrzenKolizji(f);
@@ -65,6 +67,12 @@ void Smok::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 
 	//przyspieszenie
 	przyspieszenie.y=staraPredkosc.y-predkosc.y;
+
+	if(zycie<=0)
+	{
+		zycie=0;
+		zniszcz();
+	}
 
 
 }
@@ -459,6 +467,8 @@ void Smok::wyznaczGlowe(Klawiatura* klawiatura, Myszka *myszka)
 
 void Smok::wyznaczSmierc()
 {
+	if(iloscOgnia>0) iloscOgnia-=0.5;
+	else iloscOgnia=0;
 	predkosc.y-=parametry.wspolczynnikGrawitacji;
 	predkosc.x*=0.95;
 	if(abs(predkosc.x)<1) predkosc.x=0;
