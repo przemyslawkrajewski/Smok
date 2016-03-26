@@ -3,9 +3,14 @@
 #include "MVK/Wideo.h"
 #include "MVK/Kontroler.h"
 #include <SDL2/SDL.h>
+
+#ifdef _WIN32
+#undef _SDL_main
+#endif
+
 SDL_Surface * ekran = NULL;
 
-int main()
+int main(int argc, char *args[])
 {
 
 	Model *model;

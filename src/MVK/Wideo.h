@@ -9,7 +9,7 @@
 #define WIDEO_H_
 
 #include <iostream>
-#include "SDL2/SDL.h"
+#include <SDL2/SDL.h>
 #include "Model.h"
 
 class Wideo
