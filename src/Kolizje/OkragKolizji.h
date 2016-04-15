@@ -12,27 +12,20 @@
 #include <math.h>
 #include <utility>
 #include "../Obiekty/Punkt.h"
+#include "FiguraKolizji.h"
 
-class OkragKolizji
+class OkragKolizji :public FiguraKolizji
 {
 public:
 	OkragKolizji(const Punkt *po, const Punkt *v,Punkt p, double r);
 
 	void ustawPozycje(Punkt p) {pozycja=p;}
-	void ustawPromien(double r) {promien=r;}
 
-	Punkt zwrocPozycje() {return Punkt(pozycja.x+pozycjaObiektu->x,pozycja.y+pozycjaObiektu->y);}
-	Punkt zwrocPozycjeWzgledemObiektu() {return Punkt(pozycja.x,pozycja.y);}
 	double zwrocPromien() {return promien;}
-	Punkt zwrocPozycjeObiektu() {return *pozycjaObiektu;}
-	Punkt zwrocPredkoscObiektu() {return * predkoscObiektu;}
 
 	std::pair<bool,Punkt> sprawdzKolizje(OkragKolizji *okrag);
 
 private:
-	const Punkt *pozycjaObiektu;
-	const Punkt *predkoscObiektu;
-	Punkt pozycja;
 	double promien;
 };
 

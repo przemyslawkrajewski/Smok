@@ -15,9 +15,9 @@ Model::Model(): wymiaryEkranu(Punkt(640,480))
 	FabrykaPociskow::zwrocInstancje()->ustawKontenery(&plomienie,&strzaly);
 	FabrykaLudzi::zwrocInstancje()->ustawKontenery(&strzelcy);
 
-	for(int i=0;i<150;i++)
+	for(int i=0;i<1;i++)
 	{
-		int x = rand()%3000+5000;
+		int x = rand()%30+5000;
 		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(x,130));
 	}
 	smok.ustawPozycje(Punkt(600,1000));
@@ -69,7 +69,7 @@ void Model::wyznaczKolejnyStan()
 		if(i->y<90) fabrykaLudzi.stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(i->x,130));
 	}
 	//*/
-
+	//std::cout << strzelcy.zwrocObiekty().size() << "\n";
 	//								Losowe tworzenie krzyzowcow
 
 	/*if(strzelcy.zwrocObiekty().size()<100)
@@ -77,7 +77,6 @@ void Model::wyznaczKolejnyStan()
 		int x = rand()%10000+1000;
 		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(x,130));
 	}
-	//std::cout << strzelcy.zwrocObiekty().size() << "\n";
 	//*/
 	obsluzKolizje();
 }
@@ -90,11 +89,11 @@ void Model::obsluzKolizje()
 	std::list<Postac*> listaStrzelcow = strzelcy.zwrocObiekty();
 	for(std::list<Postac*>::iterator i=listaStrzelcow.begin();i!=listaStrzelcow.end();i++)
 	{
-		plomienie.sprawdzKolizje((Obiekt*)(*i),zniszczPocisk,zadajObrazenia,true);
+		plomienie.sprawdzKolizje((Obiekt*)(*i),zniszczPocisk,nic,true);
 	}
 
 	//Smok kontra strzaly
-	strzaly.sprawdzKolizje(&smok,usun,zadajObrazenia);
+	strzaly.sprawdzKolizje(&smok,usun,nic);
 }
 
 void Model::zniszcz(Obiekt *o,Obiekt *o2,Punkt punktKolizji)

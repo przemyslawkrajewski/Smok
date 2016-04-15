@@ -23,9 +23,6 @@ Smok::Smok(): Postac()
 
 	zycie=500;
 
-	std::vector<OkragKolizji> f;
-	f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(0,0),10));
-	ustawPrzestrzenKolizji(f);
 }
 
 void Smok::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
@@ -605,91 +602,102 @@ void Smok::wyznaczPrzestrzenKolizji()
 	if (!zwroconyWPrawo) prawo = 1;
 	else prawo = -1;
 
-	std::vector<OkragKolizji> f;
-	f.clear();
+	std::vector<OkragKolizji> okregi;
+	okregi.clear();
+	std::vector<ProstokatKolizji> prostokaty;
+	prostokaty.clear();
+
+	double wiekszyBok=30;
+	double mniejszyBok=25;
+	double wiekszyBokGlowy=25;
+	double mniejszyBokGlowy=15;
+
+	prostokaty.push_back(ProstokatKolizji(&pozycja,&predkosc,Punkt(),200));
+	ustawPrzestrzenKolizji(prostokaty);
+
 	if(!zniszczony)
 	{
 		if(klatkaAnimacji.x==0)
 		{
-			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-35*prawo,10),30));
-			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-25*prawo,-30),25));
+			okregi.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-35*prawo,10),wiekszyBok));
+			okregi.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-25*prawo,-30),mniejszyBok));
 		}
 		else if(klatkaAnimacji.x==1)
 		{
-			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-30*prawo,-5),30));
-			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-10*prawo,-40),25));
+			okregi.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-30*prawo,-5),wiekszyBok));
+			okregi.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-10*prawo,-40),mniejszyBok));
 		}
 		else if(klatkaAnimacji.x==2)
 		{
-			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-35*prawo,-15),30));
-			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(00*prawo,-25),25));
+			okregi.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-35*prawo,-15),wiekszyBok));
+			okregi.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(00*prawo,-25),mniejszyBok));
 		}
 		else if(klatkaAnimacji.x==3)
 		{
 			if(klatkaAnimacji.y==0)
 			{
-				f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-40*prawo,-05),30));
-				f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(+5*prawo,+0),25));
+				okregi.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-40*prawo,-05),wiekszyBok));
+				okregi.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(+5*prawo,+0),mniejszyBok));
 			}
 			else if(klatkaAnimacji.y==1)
 			{
-				f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-50*prawo,-15),30));
-				f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-15*prawo,-30),25));
+				okregi.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-50*prawo,-15),wiekszyBok));
+				okregi.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-15*prawo,-30),mniejszyBok));
 			}
 		}
 		else if(klatkaAnimacji.x==4)
 		{
-			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-35*prawo,10),30));
-			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-35*prawo,-30),25));
+			okregi.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-35*prawo,10),wiekszyBok));
+			okregi.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-35*prawo,-30),mniejszyBok));
 		}
 		else if(klatkaAnimacji.x==5)
 		{
-			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-45*prawo,-10),30));
-			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-8*prawo,-22),25));
+			okregi.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-45*prawo,-10),wiekszyBok));
+			okregi.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-8*prawo,-22),mniejszyBok));
 		}
 		else if(klatkaAnimacji.x==6 && klatkaAnimacji.y==1)
 		{
-			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-35*prawo,10),30));
-			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-35*prawo,-30),25));
+			okregi.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-35*prawo,10),wiekszyBok));
+			okregi.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-35*prawo,-30),mniejszyBok));
 		}
 		else if(klatkaAnimacji.x==6 && klatkaAnimacji.y==0)
 		{
-			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-10*prawo,10),30));
-			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-00*prawo,-30),25));
+			okregi.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-10*prawo,10),wiekszyBok));
+			okregi.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-00*prawo,-30),mniejszyBok));
 		}
 		else if(klatkaAnimacji.x==7)
 		{
-			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-65*prawo,-20),30));
-			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-30*prawo,05),25));
+			okregi.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-65*prawo,-20),wiekszyBok));
+			okregi.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-30*prawo,05),mniejszyBok));
 		}
 		else if(klatkaAnimacji.x==8)
 		{
-			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-50*prawo,20),30));
-			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-20*prawo,-15),25));
+			okregi.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-50*prawo,20),wiekszyBok));
+			okregi.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-20*prawo,-15),mniejszyBok));
 		}
 		else if(klatkaAnimacji.x==9)
 		{
-			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-40*prawo,35),30));
-			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-10*prawo,10),25));
+			okregi.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-40*prawo,35),wiekszyBok));
+			okregi.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-10*prawo,10),mniejszyBok));
 		}
 		else if(klatkaAnimacji.x==10)
 		{
-			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-55*prawo,-25),30));
-			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-30*prawo,10),25));
+			okregi.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-55*prawo,-25),wiekszyBok));
+			okregi.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-30*prawo,10),mniejszyBok));
 		}
 		else if(klatkaAnimacji.x==11)
 		{
-			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-30*prawo,-70),30));
-			f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-30*prawo,-25),25));
+			okregi.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-30*prawo,-70),wiekszyBok));
+			okregi.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(-30*prawo,-25),mniejszyBok));
 		}
 
 		double poprawka=6.28/32;
 		if(prawo==-1) poprawka = -6.28/32;
 
-		f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(pozycjaGlowy.x-5,-pozycjaGlowy.y-5),25));
-		f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(pozycjaGlowy.x-5+cos(obrotGlowy+poprawka)*35,-pozycjaGlowy.y-5+sin(obrotGlowy+poprawka)*35),15));
+		okregi.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(pozycjaGlowy.x-5,-pozycjaGlowy.y-5),wiekszyBokGlowy));
+		okregi.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(pozycjaGlowy.x-5+cos(obrotGlowy+poprawka)*35,-pozycjaGlowy.y-5+sin(obrotGlowy+poprawka)*35),mniejszyBokGlowy));
 	}
-	ustawPrzestrzenKolizji(f);
+	ustawPrzestrzenKolizji(okregi);
 
 }
 //#####################################################################################################
@@ -987,7 +995,7 @@ void Smok::wyznaczKlatkeAnimacji()
 			klatkaAnimacji.y=2;
 			klatkaAnimacji.x=3;
 		}
-		else if(predkosc.y>-12 || abs(predkosc.y)<abs(predkosc.x)  || (klatkaAnimacji.y!=3 && klatkaAnimacji.y!=4))
+		else if(predkosc.y>-20 || abs(predkosc.y)<abs(predkosc.x)  || (klatkaAnimacji.y!=3 && klatkaAnimacji.y!=4))
 		{
 			klatkaAnimacji.y=3;
 			klatkaAnimacji.x=3;

@@ -7,8 +7,9 @@
 
 #include "Obiekt.h"
 
-Obiekt::Obiekt()
+Obiekt::Obiekt(): przestrzenKolizji(PrzestrzenKolizji(&pozycja,&predkosc))
 {
+	przestrzenKolizji=PrzestrzenKolizji(&pozycja,&predkosc);
 	istnieje=true;
 	zniszczony=false;
 	punktZaczepu=0;
@@ -16,6 +17,7 @@ Obiekt::Obiekt()
 
 	zwroconyWPrawo=true;
 	zycie=1;
+	obrazenia=0;
 }
 
 Punkt Obiekt::zwrocPozycje()
@@ -44,9 +46,9 @@ Punkt Obiekt::zwrocPozycje()
 
 Punkt Obiekt::zwrocPozycjeCelu()
 {
-	if(przestrzenKolizji.zwrocFigury()->empty()) return Punkt();
-
-	return przestrzenKolizji.zwrocFigury()->begin()->zwrocPozycje();
+	if(!przestrzenKolizji.zwrocProstokaty()->empty()) return przestrzenKolizji.zwrocProstokaty()->begin()->zwrocPozycje();
+	else if(!przestrzenKolizji.zwrocOkregi()->empty()) return przestrzenKolizji.zwrocOkregi()->begin()->zwrocPozycje();
+	return Punkt();
 }
 
 void Obiekt::ustawPunktZaczepu(Obiekt *p)

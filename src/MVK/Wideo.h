@@ -27,8 +27,12 @@ private:
 	int wczytanieObrazka(const char* nazwa, SDL_Texture ** grafika);
 
 	void wyswietlenieObrazka(SDL_Texture * grafika,int pozycjaX, int pozycjaY,int wycinekX,int wycinekY,int szerokosc,int wysokosc);
+	void wyswietlenieKlatki(SDL_Texture* grafika,Punkt pozycja,Punkt pozycjaKamery, Punkt klatka, double rozmiarKlatki);
+
 	void wyswietlenieOkregu(int pozX,int pozY, double promien);
+	void wyswietlenieProstokata(double x, double y, double bok1, double bok2);
 	void wyswietleniePiksela(int pozX, int pozY);
+	void wyswietleniePrzestrzeniKolizji(PrzestrzenKolizji *p, Punkt pozycjaKamery);
 
 	void wyswietleniePierwszegoPlanu(int pozX,int pozY);
 	void wyswietlenieDrugiegoPlanu(int pozX,int pozY);

@@ -77,7 +77,8 @@ public:
 
 	//Kolizje
 	PrzestrzenKolizji* zwrocPrzestrzenKolizji() {return &przestrzenKolizji;}
-	void ustawPrzestrzenKolizji(std::vector<OkragKolizji> p) {przestrzenKolizji.ustawFigury(p,&pozycja);}
+	void ustawPrzestrzenKolizji(std::vector<OkragKolizji> p) {przestrzenKolizji.ustawOkregi(p);przestrzenKolizji.ustawPozycjeObiektu(&pozycja);}
+	void ustawPrzestrzenKolizji(std::vector<ProstokatKolizji> p) {przestrzenKolizji.ustawProstokaty(p);przestrzenKolizji.ustawPozycjeObiektu(&pozycja);}
 	virtual void wyznaczPrzestrzenKolizji() = 0;
 	std::pair<bool,Punkt> sprawdzKolizje(Obiekt* o) {return (przestrzenKolizji.sprawdzKolizje(o->zwrocPrzestrzenKolizji()));}
 

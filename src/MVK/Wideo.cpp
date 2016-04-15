@@ -30,6 +30,9 @@ Wideo::Wideo(Model *nModel)
 	belt=0;
 
 	pasekOgnia=0;
+	pasekZdrowia=0;
+	fiolkaHUD=0;
+
 
 	pierwszyPlan=0;
 	drugiPlan=0;
@@ -175,6 +178,14 @@ void Wideo::wyswietlenieObrazka(SDL_Texture * grafika,int pozycjaX, int pozycjaY
 	SDL_RenderCopy(render, grafika, &src, &dst);
 }
 
+void Wideo::wyswietlenieKlatki(SDL_Texture* grafika,Punkt pozycja,Punkt pozycjaKamery, Punkt klatka, double rozmiarKlatki)
+{
+	if(model->zwrocKamere()->zwrocY()<240)
+		wyswietlenieObrazka(grafika,	-pozycjaKamery.x+pozycja.x-rozmiarKlatki/2+320,	480-pozycja.y-rozmiarKlatki/2,					1+klatka.x*(rozmiarKlatki+1),	1+klatka.y*(rozmiarKlatki+1),	rozmiarKlatki,rozmiarKlatki);
+	else
+		wyswietlenieObrazka(grafika,	-pozycjaKamery.x+pozycja.x-rozmiarKlatki/2+320,	240+pozycjaKamery.y-pozycja.y-rozmiarKlatki/2,	1+klatka.x*(rozmiarKlatki+1),	1+klatka.y*(rozmiarKlatki+1),	rozmiarKlatki,rozmiarKlatki);
+}
+
 void Wideo::wyswietlenieOkregu(int pozX,int pozY, double promien)
 {
 	//SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
@@ -206,11 +217,56 @@ void Wideo::wyswietlenieOkregu(int pozX,int pozY, double promien)
 	}
 }
 
+void Wideo::wyswietlenieProstokata(double x, double y, double bok1, double bok2)
+{
+	SDL_Rect rect;
+	rect.x=x-bok1/2;
+	rect.y=y-bok2/2;
+	rect.h=bok1;
+	rect.w=bok2;
+	SDL_RenderDrawRect(render, &rect);
+
+}
+
 void Wideo::wyswietleniePiksela(int pozX,int pozY)
 {
 	SDL_RenderDrawPoint(render,pozX,pozY);
 }
 
+void Wideo::wyswietleniePrzestrzeniKolizji(PrzestrzenKolizji *p, Punkt pozycjaKamery)
+{
+	double x=p->zwrocPozycje().x;
+	double y=p->zwrocPozycje().y;
+	/*if(model->zwrocKamere()->zwrocY()<240)
+		wyswietlenieProstokata(-pozycjaKamery.x+x+320,480-y,p->zwrocDlugoscBoku(),p->zwrocDlugoscBoku());
+	else
+		wyswietlenieProstokata(-pozycjaKamery.x+x+320,240+pozycjaKamery.y-y,p->zwrocDlugoscBoku(),p->zwrocDlugoscBoku());
+	//*/
+
+	std::vector<ProstokatKolizji> *prostokaty = p->zwrocProstokaty();
+	for(std::vector<ProstokatKolizji>::iterator i= prostokaty->begin();i!=prostokaty->end();i++)
+	{
+		double x = i->zwrocPozycje().x;
+		double y = i->zwrocPozycje().y;
+
+		if(model->zwrocKamere()->zwrocY()<240)
+			wyswietlenieProstokata(-pozycjaKamery.x+x+320,480-y,i->zwrocBok1(),i->zwrocBok2());
+		else
+			wyswietlenieProstokata(-pozycjaKamery.x+x+320,240+pozycjaKamery.y-y,i->zwrocBok1(),i->zwrocBok2());
+	}//*/
+
+	std::vector<OkragKolizji> *okregi = p->zwrocOkregi();
+	for(std::vector<OkragKolizji>::iterator i= okregi->begin();i!=okregi->end();i++)
+	{
+		double x = i->zwrocPozycje().x;
+		double y = i->zwrocPozycje().y;
+
+		if(model->zwrocKamere()->zwrocY()<240)
+			wyswietlenieOkregu(-pozycjaKamery.x+x+320,480-y,i->zwrocPromien());
+		else
+			wyswietlenieOkregu(-pozycjaKamery.x+x+320,240+pozycjaKamery.y-y,i->zwrocPromien());
+	}//*/
+}
 
 void Wideo::wyswietleniePierwszegoPlanu(int pozX,int pozY)
 {
@@ -241,6 +297,8 @@ void Wideo::wyswietlenieSmoka()
 	Punkt klatkaCiala=model->zwrocSmoka()->zwrocKlatkeAnimacji();
 	Punkt klatkaGlowy=model->zwrocSmoka()->zwrocKlatkeAnimacjiGlowy();
 	Punkt pozycjaGlowy(model->zwrocSmoka()->zwrocPozycjeGlowy());
+	pozycjaGlowy.x=pozycjaSmoka.x+pozycjaGlowy.x;
+	pozycjaGlowy.y=pozycjaSmoka.y-pozycjaGlowy.y;
 
 	SDL_Texture **cialoP;
 	SDL_Texture **cialoT;
@@ -256,7 +314,6 @@ void Wideo::wyswietlenieSmoka()
 		glowa=&glowaSmokaL;
 		cialoP=&smokPL;
 		cialoT=&smokTL;
-
 		klatkaGlowy.x=((int)-klatkaGlowy.x+24)%16;
 	}
 
@@ -276,48 +333,24 @@ void Wideo::wyswietlenieSmoka()
 		else
 			naCelu.push_back(*i);
 	}
+
 	wyswietlenieOgnia(&naCelu);
-
-		//											Wyswietlenie tylnej warstwy Smoka
-		if(model->zwrocKamere()->zwrocY()<240) wyswietlenieObrazka(*cialoT,-pozycjaKamery.x+pozycjaSmoka.x-rozmiarKlatki/2+320,	480-pozycjaSmoka.y-rozmiarKlatki/2,					1+klatkaCiala.x*401,1+klatkaCiala.y*401,rozmiarKlatki,rozmiarKlatki);
-										else wyswietlenieObrazka(*cialoT,  -pozycjaKamery.x+pozycjaSmoka.x-rozmiarKlatki/2+320,	240+pozycjaKamery.y-pozycjaSmoka.y-rozmiarKlatki/2,	1+klatkaCiala.x*401,1+klatkaCiala.y*401,rozmiarKlatki,rozmiarKlatki);
-
+	wyswietlenieKlatki(*cialoT,pozycjaSmoka,pozycjaKamery,klatkaCiala,rozmiarKlatki); //Tylna czesc ciala
 	wyswietlenieOgnia(&wPowietrzu);
-
 	if(!model->zwrocSmoka()->czyZniszczony())
 	{
-		//											Wyswietlenie glowy
-		if(model->zwrocKamere()->zwrocY()<240) wyswietlenieObrazka(*glowa,-pozycjaKamery.x+pozycjaSmoka.x+pozycjaGlowy.x-rozmiarKlatkiGlowy/2+320,	480-pozycjaSmoka.y+pozycjaGlowy.y-rozmiarKlatkiGlowy/2,					klatkaGlowy.x*151+1,klatkaGlowy.y*151+1,150,150);
-										else wyswietlenieObrazka(*glowa,  -pozycjaKamery.x+pozycjaSmoka.x+pozycjaGlowy.x-rozmiarKlatkiGlowy/2+320,	240+pozycjaKamery.y-pozycjaSmoka.y+pozycjaGlowy.y-rozmiarKlatkiGlowy/2,	klatkaGlowy.x*151+1,klatkaGlowy.y*151+1,150,150);
+		wyswietlenieKlatki(*glowa,pozycjaGlowy,pozycjaKamery,klatkaGlowy,rozmiarKlatkiGlowy);//Glowa
+		wyswietlenieKlatki(*cialoP,pozycjaSmoka,pozycjaKamery,klatkaCiala,rozmiarKlatki);//Przednia czesc ciala
 	}
-
-	if(!model->zwrocSmoka()->czyZniszczony())
-	{
-		//											Wyswietlenie pierwszej warstwy Smoka
-		if(model->zwrocKamere()->zwrocY()<240) wyswietlenieObrazka(*cialoP,-pozycjaKamery.x+pozycjaSmoka.x-rozmiarKlatki/2+320,	480-pozycjaSmoka.y-rozmiarKlatki/2,					1+klatkaCiala.x*401,1+klatkaCiala.y*401,rozmiarKlatki,rozmiarKlatki);
-										else wyswietlenieObrazka(*cialoP,  -pozycjaKamery.x+pozycjaSmoka.x-rozmiarKlatki/2+320,	240+pozycjaKamery.y-pozycjaSmoka.y-rozmiarKlatki/2,	1+klatkaCiala.x*401,1+klatkaCiala.y*401,rozmiarKlatki,rozmiarKlatki);
-	}
-
 	wyswietlenieOgnia(&naZiemi);
+	wyswietleniePrzestrzeniKolizji(model->zwrocSmoka()->zwrocPrzestrzenKolizji(),pozycjaKamery);
 
-	/*std::vector<OkragKolizji> okregi = *(model->zwrocSmoka()->zwrocPrzestrzenKolizji()->zwrocFigury());
-	for(std::vector<OkragKolizji>::iterator i= okregi.begin();i!=okregi.end();i++)
-	{
-		double x = i->zwrocPozycje().x;
-		double y = i->zwrocPozycje().y;
-
-		if(model->zwrocKamere()->zwrocY()<240)
-			wyswietlenieOkregu(-pozycjaKamery.x+x+320,480-y,i->zwrocPromien());
-		else
-			wyswietlenieOkregu(-pozycjaKamery.x+x+320,240+pozycjaKamery.y-y,i->zwrocPromien());
-	}//*/
 
 }
 
 void Wideo::wyswietlenieOgnia(std::list<Plomien> *p)
 {
-	int pozX=model->zwrocKamere()->zwrocX();
-	int pozY=model->zwrocKamere()->zwrocY();
+	Punkt pozycjaKamery=model->zwrocKamere()->zwrocPozycje();
 	int rozmiarKlatki=70;
 
 	for(std::list<Plomien>::iterator i=p->begin(); i!=p->end() ;i++)
@@ -325,31 +358,15 @@ void Wideo::wyswietlenieOgnia(std::list<Plomien> *p)
 		if(!i->czyIstnieje()) continue;
 		Punkt pozycja = i->zwrocPozycje();
 		Punkt klatka = i->zwrocKlatkeAnimacji();
-
-		if(model->zwrocKamere()->zwrocY()<240)
-			wyswietlenieObrazka(plomien,-pozX-rozmiarKlatki/2+pozycja.x+320,-rozmiarKlatki/2-pozycja.y+480,1+71*((int)klatka.x),1,rozmiarKlatki,rozmiarKlatki);
-		else
-			wyswietlenieObrazka(plomien,-pozX-rozmiarKlatki/2+pozycja.x+320,-rozmiarKlatki/2-pozycja.y+240+pozY,1+71*((int)klatka.x),1,rozmiarKlatki,rozmiarKlatki);
-
-		/*
-		std::vector<OkragKolizji> *okregi = i->zwrocPrzestrzenKolizji()->zwrocFigury();
-		for(std::vector<OkragKolizji>::iterator it= okregi->begin();it!=okregi->end();it++)
-		{
-			double x = it->zwrocPozycje().x;
-			double y = it->zwrocPozycje().y;
-			if(model->zwrocKamere()->zwrocY()<240)
-				wyswietlenieOkregu(-pozX+x+320,-y+480,it->zwrocPromien());
-			else
-				wyswietlenieOkregu(-pozX+x+320,-y+240+pozY,it->zwrocPromien());
-		}//*/
+		wyswietlenieKlatki(plomien,pozycja,pozycjaKamery,klatka,rozmiarKlatki);
+		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}
 
 }
 
 void Wideo::wyswietlenieOgnia()
 {
-	int pozX=model->zwrocKamere()->zwrocX();
-	int pozY=model->zwrocKamere()->zwrocY();
+	Punkt pozycjaKamery=model->zwrocKamere()->zwrocPozycje();
 	int rozmiarKlatki=70;
 
 	std::list<Plomien> *p = model->zwrocPlomienie()->zwrocObiekty();
@@ -359,32 +376,15 @@ void Wideo::wyswietlenieOgnia()
 		if(!i->czyIstnieje()) continue;
 		Punkt pozycja = i->zwrocPozycje();
 		Punkt klatka = i->zwrocKlatkeAnimacji();
-
-		if(model->zwrocKamere()->zwrocY()<240)
-			wyswietlenieObrazka(plomien,-pozX-rozmiarKlatki/2+pozycja.x+320,-rozmiarKlatki/2-pozycja.y+480,1+71*((int)klatka.x),1,rozmiarKlatki,rozmiarKlatki);
-		else
-			wyswietlenieObrazka(plomien,-pozX-rozmiarKlatki/2+pozycja.x+320,-rozmiarKlatki/2-pozycja.y+240+pozY,1+71*((int)klatka.x),1,rozmiarKlatki,rozmiarKlatki);
-
-		/*
-		std::vector<OkragKolizji> *okregi = i->zwrocPrzestrzenKolizji()->zwrocFigury();
-		for(std::vector<OkragKolizji>::iterator it= okregi->begin();it!=okregi->end();it++)
-		{
-			double x = it->zwrocPozycje().x;
-			double y = it->zwrocPozycje().y;
-			if(model->zwrocKamere()->zwrocY()<240)
-				wyswietlenieOkregu(-pozX+x+320,-y+480,it->zwrocPromien());
-			else
-				wyswietlenieOkregu(-pozX+x+320,-y+240+pozY,it->zwrocPromien());
-		}//*/
+		wyswietlenieKlatki(plomien,pozycja,pozycjaKamery,klatka,rozmiarKlatki);
+		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}
-
 }
 
 void Wideo::wyswietlenieStrzelcow()
 {
-	int pozX=model->zwrocKamere()->zwrocX();
-	int pozY=model->zwrocKamere()->zwrocY();
-	int rozmiarKlatki=101;
+	Punkt pozycjaKamery=model->zwrocKamere()->zwrocPozycje();
+	int rozmiarKlatki=100;
 
 	std::list<Postac*> postacie  = model->zwrocStrzelcow()->zwrocObiekty();
 
@@ -394,34 +394,17 @@ void Wideo::wyswietlenieStrzelcow()
 	{
 		if((*i)->czyZwroconyWPrawo()) animacja=&krzyzowiecP;
 		else animacja=&krzyzowiecL;
-		Punkt p = (*i)->zwrocPozycje();
-		Punkt k = (*i)->zwrocKlatkeAnimacji();
+		Punkt pozycja = (*i)->zwrocPozycje();
+		Punkt klatka = (*i)->zwrocKlatkeAnimacji();
 
-
-		if(model->zwrocKamere()->zwrocY()<240)
-			wyswietlenieObrazka(*animacja,-pozX-rozmiarKlatki/2+p.x+320,	-rozmiarKlatki/2-p.y+480,	1+k.x*rozmiarKlatki,	1+k.y*rozmiarKlatki,rozmiarKlatki,rozmiarKlatki);
-		else
-			wyswietlenieObrazka(*animacja,-pozX-rozmiarKlatki/2+p.x+320,	-rozmiarKlatki/2-p.y+240+pozY,	1+k.x*rozmiarKlatki,	1+k.y*rozmiarKlatki,rozmiarKlatki,rozmiarKlatki);
-		//*/
-
-		/*PrzestrzenKolizji* przestrzen = (*i)->zwrocPrzestrzenKolizji();
-		std::vector<OkragKolizji> *okregi = (przestrzen->zwrocFigury());
-		for(std::vector<OkragKolizji>::iterator it= okregi->begin();it!=okregi->end();it++)
-		{
-			double x = it->zwrocPozycje().x;
-			double y = it->zwrocPozycje().y;
-			if(model->zwrocKamere()->zwrocY()<240)
-				wyswietlenieOkregu(-pozX+x+320,-y+480,it->zwrocPromien());
-			else
-				wyswietlenieOkregu(-pozX+x+320,-y+240+pozY,it->zwrocPromien());
-		}//*/
+		wyswietlenieKlatki(*animacja,pozycja,pozycjaKamery,klatka,rozmiarKlatki);
+		wyswietleniePrzestrzeniKolizji((*i)->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}
 }
 
 void Wideo::wyswietlenieStrzal()
 {
-	int pozX=model->zwrocKamere()->zwrocX();
-	int pozY=model->zwrocKamere()->zwrocY();
+	Punkt pozycjaKamery=model->zwrocKamere()->zwrocPozycje();
 	int rozmiarKlatki=30;
 
 	std::list<Strzala> *s = model->zwrocStrzaly()->zwrocObiekty();
@@ -432,21 +415,8 @@ void Wideo::wyswietlenieStrzal()
 		Punkt pozycja = i->zwrocPozycje();
 		Punkt klatka = i->zwrocKlatkeAnimacji();
 
-		if(model->zwrocKamere()->zwrocY()<240)
-			wyswietlenieObrazka(belt,-pozX-rozmiarKlatki/2+pozycja.x+320,-rozmiarKlatki/2-pozycja.y+480,1+31*klatka.x,1,rozmiarKlatki,rozmiarKlatki);
-		else
-			wyswietlenieObrazka(belt,-pozX-rozmiarKlatki/2+pozycja.x+320,-rozmiarKlatki/2-pozycja.y+240+pozY,1+31*klatka.x,1,rozmiarKlatki,rozmiarKlatki);
-
-		/*std::vector<OkragKolizji> *okregi = i->zwrocPrzestrzenKolizji()->zwrocFigury();
-		for(std::vector<OkragKolizji>::iterator it= okregi->begin();it!=okregi->end();it++)
-		{
-			double x = it->zwrocPozycje().x;
-			double y = it->zwrocPozycje().y;
-			if(model->zwrocKamere()->zwrocY()<240)
-				wyswietlenieOkregu(-pozX+x+320,-y+480,it->zwrocPromien());
-			else
-				wyswietlenieOkregu(-pozX+x+320,-y+240+pozY,it->zwrocPromien());
-		}//*/
+		wyswietlenieKlatki(belt,pozycja,pozycjaKamery,klatka,rozmiarKlatki);
+		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}
 }
 

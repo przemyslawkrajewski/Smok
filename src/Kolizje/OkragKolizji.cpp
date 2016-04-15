@@ -7,11 +7,8 @@
 
 #include "OkragKolizji.h"
 
-OkragKolizji::OkragKolizji(const Punkt *po, const Punkt *v, Punkt p, double r)
+OkragKolizji::OkragKolizji(const Punkt *po, const Punkt *v, Punkt p, double r): FiguraKolizji(po,v,p)
 {
-	pozycjaObiektu = po;
-	predkoscObiektu = v;
-	pozycja = p;
 	promien = r;
 }
 
@@ -35,7 +32,6 @@ std::pair<bool,Punkt> OkragKolizji::sprawdzKolizje(OkragKolizji *okrag)
 	Wektor rzutWektora;
 	rzutWektora.x = wektor.x*iloczyn;
 	rzutWektora.y = wektor.y*iloczyn;
-	//std::cout << rzutWektora.x << "  " << rzutWektora.y << "\n";
 
 	Punkt p1;
 	Punkt p2;

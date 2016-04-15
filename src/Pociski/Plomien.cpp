@@ -114,8 +114,15 @@ void Plomien::wyznaczKlatkeAnimacji()
 void Plomien::wyznaczPrzestrzenKolizji()
 {
 	double rozmiarKlatki = 70/2;
-	std::vector<OkragKolizji> f;
-	f.clear();
-	f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(35-rozmiarKlatki,-35+rozmiarKlatki),7));
-	ustawPrzestrzenKolizji(f);
+	std::vector<OkragKolizji> okregi;
+	okregi.clear();
+	std::vector<ProstokatKolizji> prostokaty;
+	prostokaty.clear();
+
+	prostokaty.push_back(ProstokatKolizji(&pozycja,&predkosc,Punkt(35-rozmiarKlatki,-35+rozmiarKlatki),14));
+	ustawPrzestrzenKolizji(prostokaty);
+
+	okregi.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(35-rozmiarKlatki,-35+rozmiarKlatki),7));
+	ustawPrzestrzenKolizji(okregi);
+
 }

@@ -29,6 +29,14 @@ public:
 		x=p.x;
 		y=p.y;
 	}
+	Punkt operator+(Punkt p)
+	{
+		return Punkt(x+p.x,y+p.y);
+	}
+	Punkt operator-(Punkt p)
+	{
+		return Punkt(x-p.x,y-p.y);
+	}
 };
 
 typedef Punkt Wektor;

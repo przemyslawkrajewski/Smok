@@ -99,7 +99,7 @@ void Strzelec::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 	else
 	{
 		stan = umiera;
-		std::vector<OkragKolizji> p;
+		std::vector<ProstokatKolizji> p;
 		ustawPrzestrzenKolizji(p);
 	}
 }
@@ -228,13 +228,19 @@ void Strzelec::wyznaczKatStrzalu(Punkt cel)
 void Strzelec::wyznaczPrzestrzenKolizji()
 {
 	double rozmiarKlatki = 100/2;
-	std::vector<OkragKolizji> f;
-	f.clear();
-	f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(50-rozmiarKlatki,-30+rozmiarKlatki),10));
-	f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(50-rozmiarKlatki,-50+rozmiarKlatki),14));
-	f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(50-rozmiarKlatki,-70+rozmiarKlatki),14));
-	f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(50-rozmiarKlatki,-88+rozmiarKlatki),14));
-	ustawPrzestrzenKolizji(f);
+	std::vector<OkragKolizji> okregi;
+	okregi.clear();
+	std::vector<ProstokatKolizji> prostokaty;
+	prostokaty.clear();
+
+	prostokaty.push_back(ProstokatKolizji(&pozycja,&predkosc,Punkt(),100));
+	ustawPrzestrzenKolizji(prostokaty);
+
+	okregi.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(50-rozmiarKlatki,-30+rozmiarKlatki),10));
+	okregi.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(50-rozmiarKlatki,-50+rozmiarKlatki),14));
+	okregi.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(50-rozmiarKlatki,-70+rozmiarKlatki),14));
+	okregi.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(50-rozmiarKlatki,-88+rozmiarKlatki),14));
+	ustawPrzestrzenKolizji(okregi);
 }
 //#####################################################################################################
 //Podfunkcje Grafika

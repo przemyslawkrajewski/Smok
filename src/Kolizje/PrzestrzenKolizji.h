@@ -8,34 +8,30 @@
 #ifndef PRZESTRZENKOLIZJI_H_
 #define PRZESTRZENKOLIZJI_H_
 
-
+#include "ProstokatKolizji.h"
 #include "OkragKolizji.h"
 #include <vector>
 #include <utility>
 
-#include "OkragKolizji.h"
-
-
-
-class PrzestrzenKolizji
+class PrzestrzenKolizji : public FiguraKolizji
 {
 public:
-	PrzestrzenKolizji();
+	PrzestrzenKolizji(const Punkt *p, const Punkt* v);
 
-	void ustawFigury(std::vector<OkragKolizji> f,Punkt* pozycja);
-	std::vector<OkragKolizji>* zwrocFigury() {return &figury;}
-
+	void ustawOkregi(std::vector<OkragKolizji> f);
+	void ustawProstokaty(std::vector<ProstokatKolizji> f);
+	std::vector<OkragKolizji>* zwrocOkregi() {return &okregi;}
+	std::vector<ProstokatKolizji>* zwrocProstokaty() {return &prostokaty;}
+	void ustawPozycjeObiektu(const Punkt *p) {pozycjaObiektu=p;}
 
 	std::pair<bool,Punkt> sprawdzKolizje(PrzestrzenKolizji *przestrzen);
 
-	Punkt zwrocPozycje() {return Punkt(pozycja.x+pozycjaObiektu->x,pozycja.y+pozycjaObiektu->y);}
-	double zwrocPromien() {return promien;}
+	double zwrocDlugoscBoku() {return dlugoscBoku;}
 
 private:
-	std::vector<OkragKolizji> figury;
-	Punkt *pozycjaObiektu;
-	Punkt pozycja;
-	double promien;
+	std::vector<OkragKolizji> okregi;
+	std::vector<ProstokatKolizji> prostokaty;
+	double dlugoscBoku;
 };
 
 #endif /* PRZESTRZENKOLIZJI_H_ */

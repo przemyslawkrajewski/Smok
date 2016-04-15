@@ -78,8 +78,14 @@ void Strzala::wyznaczKlatkeAnimacji()
 void Strzala::wyznaczPrzestrzenKolizji()
 {
 	double rozmiarKlatki = 30/2;
-	std::vector<OkragKolizji> f;
-	f.clear();
-	f.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(15-rozmiarKlatki,-15+rozmiarKlatki),7));
-	ustawPrzestrzenKolizji(f);
+	std::vector<OkragKolizji> okregi;
+	okregi.clear();
+	std::vector<ProstokatKolizji> prostokaty;
+	prostokaty.clear();
+
+	prostokaty.push_back(ProstokatKolizji(&pozycja,&predkosc,Punkt(15-rozmiarKlatki,-15+rozmiarKlatki),8));
+	ustawPrzestrzenKolizji(prostokaty);
+
+	okregi.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(15-rozmiarKlatki,-15+rozmiarKlatki),4));
+	ustawPrzestrzenKolizji(okregi);
 }
