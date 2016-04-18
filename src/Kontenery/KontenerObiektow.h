@@ -26,7 +26,7 @@ public:
 
 	std::list<T> * zwrocObiekty() {return &obiekty;}
 
-	void sprawdzKolizje(Obiekt* obiekt,void (obsluzKolizjePocisku)(Obiekt*,Obiekt*,Punkt),void (obsluzKolizjeObiektu)(Obiekt*,Obiekt*,Punkt),bool czyTezZniszczone=false);
+	void sprawdzKolizje(Obiekt* obiekt,void (obsluzKolizjePocisku)(Obiekt*,Obiekt*,Punkt),void (obsluzKolizjeObiektu)(Obiekt*,Obiekt*,Punkt),PrzestrzenKolizji::TypFigury typ,bool czyTezZniszczone=false);
 
 private:
 };
@@ -67,13 +67,13 @@ T* KontenerObiektow<T>::dodaj(T t)
 }
 
 template <class T>
-void KontenerObiektow<T>::sprawdzKolizje(Obiekt* obiekt,void (obsluzKolizjePocisku)(Obiekt*,Obiekt*,Punkt),void (obsluzKolizjeObiektu)(Obiekt*,Obiekt*,Punkt),bool czyTezZniszczone)
+void KontenerObiektow<T>::sprawdzKolizje(Obiekt* obiekt,void (obsluzKolizjePocisku)(Obiekt*,Obiekt*,Punkt),void (obsluzKolizjeObiektu)(Obiekt*,Obiekt*,Punkt),PrzestrzenKolizji::TypFigury typ,bool czyTezZniszczone)
 {
 	for(typename std::list<T>::iterator i=obiekty.begin();i!=obiekty.end();i++)
 	{
 		if((!i->czyZniszczony() || czyTezZniszczone)  && i->czyIstnieje())
 		{
-			std::pair<bool,Punkt> kolizja = i->sprawdzKolizje(obiekt);
+			std::pair<bool,Punkt> kolizja = i->sprawdzKolizje(obiekt,typ);
 			if(kolizja.first)
 			{
 				obsluzKolizjePocisku(&(*i),obiekt,kolizja.second);

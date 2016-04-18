@@ -89,11 +89,11 @@ void Model::obsluzKolizje()
 	std::list<Postac*> listaStrzelcow = strzelcy.zwrocObiekty();
 	for(std::list<Postac*>::iterator i=listaStrzelcow.begin();i!=listaStrzelcow.end();i++)
 	{
-		plomienie.sprawdzKolizje((Obiekt*)(*i),zniszczPocisk,nic,true);
+		plomienie.sprawdzKolizje((Obiekt*)(*i),zniszczPocisk,zadajObrazenia,PrzestrzenKolizji::okrag,true);
 	}
 
 	//Smok kontra strzaly
-	strzaly.sprawdzKolizje(&smok,usun,nic);
+	strzaly.sprawdzKolizje(&smok,usun,zadajObrazenia,PrzestrzenKolizji::okrag);
 }
 
 void Model::zniszcz(Obiekt *o,Obiekt *o2,Punkt punktKolizji)

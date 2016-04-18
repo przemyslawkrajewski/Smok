@@ -16,6 +16,8 @@
 class PrzestrzenKolizji : public FiguraKolizji
 {
 public:
+	enum TypFigury {okrag,prostokat};
+
 	PrzestrzenKolizji(const Punkt *p, const Punkt* v);
 
 	void ustawOkregi(std::vector<OkragKolizji> f);
@@ -24,7 +26,7 @@ public:
 	std::vector<ProstokatKolizji>* zwrocProstokaty() {return &prostokaty;}
 	void ustawPozycjeObiektu(const Punkt *p) {pozycjaObiektu=p;}
 
-	std::pair<bool,Punkt> sprawdzKolizje(PrzestrzenKolizji *przestrzen);
+	std::pair<bool,Punkt> sprawdzKolizje(PrzestrzenKolizji *przestrzen, TypFigury typ);
 
 	double zwrocDlugoscBoku() {return dlugoscBoku;}
 

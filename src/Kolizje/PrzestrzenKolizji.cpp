@@ -13,7 +13,7 @@ PrzestrzenKolizji::PrzestrzenKolizji(const Punkt* p, const Punkt* v): FiguraKoli
 	dlugoscBoku=0;
 }
 
-std::pair<bool,Punkt> PrzestrzenKolizji::sprawdzKolizje(PrzestrzenKolizji *przestrzen)
+std::pair<bool,Punkt> PrzestrzenKolizji::sprawdzKolizje(PrzestrzenKolizji *przestrzen, TypFigury typ)
 {
 	int sumaPromieni = dlugoscBoku+przestrzen->zwrocDlugoscBoku();
 	int roznicaX = zwrocPozycje().x-przestrzen->zwrocPozycje().x;
@@ -22,7 +22,7 @@ std::pair<bool,Punkt> PrzestrzenKolizji::sprawdzKolizje(PrzestrzenKolizji *przes
 	if(roznicaY<0) roznicaY=-roznicaY;
 	if(roznicaY>sumaPromieni || roznicaX>sumaPromieni) return std::pair<bool,Punkt>(false,Punkt());
 
-	if(false)
+	if(typ==prostokat)
 	{
 		std::vector<ProstokatKolizji> *prostokaty2=przestrzen->zwrocProstokaty();
 		for(std::vector<ProstokatKolizji>::iterator i = prostokaty.begin(); i!=prostokaty.end(); i++)
@@ -34,7 +34,7 @@ std::pair<bool,Punkt> PrzestrzenKolizji::sprawdzKolizje(PrzestrzenKolizji *przes
 			}
 		}
 	}
-	else
+	else if(typ==okrag)
 	{
 		std::vector<OkragKolizji> *okregi2=przestrzen->zwrocOkregi();
 		for(std::vector<OkragKolizji>::iterator i = okregi.begin(); i!=okregi.end(); i++)

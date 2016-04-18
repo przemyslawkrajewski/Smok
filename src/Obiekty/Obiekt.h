@@ -80,7 +80,7 @@ public:
 	void ustawPrzestrzenKolizji(std::vector<OkragKolizji> p) {przestrzenKolizji.ustawOkregi(p);przestrzenKolizji.ustawPozycjeObiektu(&pozycja);}
 	void ustawPrzestrzenKolizji(std::vector<ProstokatKolizji> p) {przestrzenKolizji.ustawProstokaty(p);przestrzenKolizji.ustawPozycjeObiektu(&pozycja);}
 	virtual void wyznaczPrzestrzenKolizji() = 0;
-	std::pair<bool,Punkt> sprawdzKolizje(Obiekt* o) {return (przestrzenKolizji.sprawdzKolizje(o->zwrocPrzestrzenKolizji()));}
+	std::pair<bool,Punkt> sprawdzKolizje(Obiekt* o,PrzestrzenKolizji::TypFigury typ) {return (przestrzenKolizji.sprawdzKolizje(o->zwrocPrzestrzenKolizji(),typ));}
 
 	//Mechanika gry
 	void zadajObrazenia(double obrazenia) {zycie-=obrazenia;}
