@@ -146,6 +146,7 @@ public:
 
 	Smok();
 
+	virtual void reset();
 	virtual void wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka);
 	virtual void wyznaczKlatkeAnimacji();
 	virtual void wyznaczPrzestrzenKolizji();

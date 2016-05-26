@@ -48,6 +48,8 @@ private:
 
 	void wyswietlenieMuru();
 
+	void wyswietlenieKomunikatow();
+
 	void wyswietlenieStanuOgnia();
 	void wyswietlenieStanuZdrowia();
 
@@ -71,6 +73,9 @@ private:
 	SDL_Texture * pasekOgnia;
 	SDL_Texture * pasekZdrowia;
 	SDL_Texture * fiolkaHUD;
+
+	SDL_Texture * instrukcja;
+	SDL_Texture * odNowa;
 
 	SDL_Texture * pierwszyPlan;
 	SDL_Texture * drugiPlan;

@@ -53,6 +53,7 @@ public:
 	Obiekt();
 	virtual ~Obiekt() {};
 
+	//virtual void reset() =0; Todo: trzeba to zrobić
 	//Fizyczne parametry
 	Punkt zwrocPozycje();
 	Punkt zwrocPozycjeCelu();

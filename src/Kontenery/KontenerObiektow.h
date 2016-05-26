@@ -22,6 +22,9 @@ public:
 	virtual void wyznaczKlatkeAnimacji();
 	virtual void wyznaczPrzestrzenKolizji();
 
+	bool czyPusty() {return obiekty.size()==0;}
+	void wyczysc() {obiekty.clear();}
+
 	T* dodaj(T t);
 
 	std::list<T> * zwrocObiekty() {return &obiekty;}

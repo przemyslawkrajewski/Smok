@@ -17,6 +17,8 @@ public:
 
 	void wyznaczKolejnyStan(Punkt zadanyPunkt);
 
+	void ustawPozycje(Punkt p) {pozycja=p;}
+
 	int zwrocX() {return pozycja.x;}
 	int zwrocY() {return pozycja.y;}
 	Punkt zwrocPozycje() {return pozycja;}

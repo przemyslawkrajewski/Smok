@@ -51,6 +51,9 @@ void Kontroler::obsluzZdarzenia()
             case SDLK_DOWN:
             	model->zwrocKlawiature()->ustawWcisnietoDol(true);
                 break;
+            case SDLK_SPACE:
+            	model->zwrocKlawiature()->ustawWcisnietoSpacje(true);
+            	break;
             case SDLK_ESCAPE:
             	zakonczenieAplikacji=true;
             	break;
@@ -74,6 +77,9 @@ void Kontroler::obsluzZdarzenia()
             case SDLK_DOWN:
             	model->zwrocKlawiature()->ustawWcisnietoDol(false);
                 break;
+            case SDLK_SPACE:
+            	model->zwrocKlawiature()->ustawWcisnietoSpacje(false);
+            	break;
             default:
             	break;
             }

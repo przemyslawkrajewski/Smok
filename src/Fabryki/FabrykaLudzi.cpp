@@ -42,6 +42,7 @@ void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja)
 		Strzelec strzelec;
 		strzelec.ustawPozycje(nPozycja);
 		(strzelcy->dodaj(strzelec))->wyznaczPrzestrzenKolizji(); //Taki myk ze dodaje nowego strzelca i od razu wyznacza jego przestrzen kolizji
+																//Nie mozna zrobic przez konstruktor bo wskaznik pokazuje na argument funkcji a nie obiekt w liscie
 		break;
 	}
 	default:

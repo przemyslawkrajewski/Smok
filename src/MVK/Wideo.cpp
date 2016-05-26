@@ -66,6 +66,9 @@ void Wideo::zamkniecieOkna()
 	SDL_DestroyTexture(pasekZdrowia);
 	SDL_DestroyTexture(fiolkaHUD);
 
+	SDL_DestroyTexture(instrukcja);
+	SDL_DestroyTexture(odNowa);
+
 	SDL_DestroyTexture(tmp);
 	SDL_DestroyTexture(tmp2);
 	SDL_Quit();
@@ -119,7 +122,9 @@ int Wideo::inicjacjaOkna(int szerokoscOkna,int wysokoscOkna,int glebiaKolorowOkn
 	   wczytanieObrazka("Grafika/TloChmurno.bmp",&tlo) ||
 	   wczytanieObrazka("Grafika/FireBar.bmp",&pasekOgnia) ||
 	   wczytanieObrazka("Grafika/LifeBar.bmp",&pasekZdrowia) ||
-	   wczytanieObrazka("Grafika/Vial.bmp",&fiolkaHUD)
+	   wczytanieObrazka("Grafika/Vial.bmp",&fiolkaHUD) ||
+	   wczytanieObrazka("Grafika/Instrukcja.bmp",&instrukcja) ||
+	   wczytanieObrazka("Grafika/OdNowa.bmp",&odNowa)
 	   )
 	{
 		std::cout << "Brak plikow z grafika\n";
@@ -432,6 +437,12 @@ void Wideo::wyswietlenieMuru()
 	}
 }
 
+void Wideo::wyswietlenieKomunikatow()
+{
+	if(model->czyWyswietlacInstrukcje()) wyswietlenieObrazka(instrukcja,0,0,0,0,640,480);
+	else if(model->czyWyswietlacOdNowa()) wyswietlenieObrazka(odNowa,136,400,0,0,367,28);
+}
+
 void Wideo::wyswietlenieStanuOgnia()
 {
 	double stanOgnia = model->zwrocSmoka()->zwrocStanOgnia();
@@ -465,10 +476,12 @@ void Wideo::wyswietlenieEkranu()
 	wyswietlenieSmoka();
 	wyswietlenieStrzal();
 
+	wyswietlenieMuru();
+
 	wyswietlenieStanuOgnia();
 	wyswietlenieStanuZdrowia();
 
-	wyswietlenieMuru();
+	wyswietlenieKomunikatow();
 
 	SDL_RenderPresent(render);
 }

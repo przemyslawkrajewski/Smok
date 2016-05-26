@@ -12,9 +12,25 @@ ParametrySmoka Smok::parametry;
 
 Model::Model(): wymiaryEkranu(Punkt(640,480))
 {
+	wyswietlenieInstrukcji=true;
+
 	FabrykaPrzedmiotow::zwrocInstancje()->ustawKontenery(&mury);
 	FabrykaPociskow::zwrocInstancje()->ustawKontenery(&plomienie,&strzaly);
 	FabrykaLudzi::zwrocInstancje()->ustawKontenery(&strzelcy);
+
+	reset();
+}
+
+void Model::reset()
+{
+	wyswietlenieOdNowa=false;
+
+	strzelcy.wyczysc();
+	plomienie.wyczysc();
+	strzaly.wyczysc();
+	mury.wyczysc();
+
+	smok.reset();
 
 	for(int i=0;i<100;i++)
 	{
@@ -22,12 +38,26 @@ Model::Model(): wymiaryEkranu(Punkt(640,480))
 		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(x,130));
 	}
 	smok.ustawPozycje(Punkt(1000,1000));
-	FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniMur,Punkt(1000,1000));
+	kamera.ustawPozycje(smok.zwrocPozycje());
+	wyznaczKolejnyStanObiektow();
 }
 
 //####################################################KOLEJNY STAN#######################################################
 
 void Model::wyznaczKolejnyStan()
+{
+	if(wyswietlenieInstrukcji)
+	{
+		if(klawiatura.czyWcisnietoSpacje()) wyswietlenieInstrukcji=false;
+	}
+	else
+	{
+		if(wyswietlenieOdNowa && klawiatura.czyWcisnietoSpacje()) reset();
+		wyznaczKolejnyStanObiektow();
+	}
+}
+
+void Model::wyznaczKolejnyStanObiektow()
 {
 	//Liczymy wspolrzedne myszki wzgledem glowy Smoka i Wyznaczamy kolejny stan Smoka
 	Punkt punktMyszkiSmoka;
@@ -59,6 +89,8 @@ void Model::wyznaczKolejnyStan()
 	plomienie.wyznaczKlatkeAnimacji();
 	strzaly.wyznaczKolejnyStan();
 	strzaly.wyznaczKlatkeAnimacji();
+
+	if(strzelcy.czyPusty() || smok.czyZniszczony()) wyswietlenieOdNowa=true;
 
 	//									Sadzenie krzyzowcow
 	/*

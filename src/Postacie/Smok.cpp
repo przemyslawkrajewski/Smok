@@ -9,6 +9,16 @@
 
 Smok::Smok(): Postac()
 {
+	reset();
+}
+
+void Smok::reset()
+{
+	istnieje=true;
+	zniszczony=false;
+	punktZaczepu=0;
+	czyZaczepiony=false;
+
 	stan=unosi;
 	minKatGlowy=0;
 	maksKatGlowy=0;
@@ -22,7 +32,6 @@ Smok::Smok(): Postac()
 	zieje=false;
 
 	zycie=500;
-
 }
 
 void Smok::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)

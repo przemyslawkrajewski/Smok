@@ -27,7 +27,12 @@ class Model
 public:
 	Model();
 
+	//Mechanika gry
 	void wyznaczKolejnyStan();
+	void wyznaczKolejnyStanObiektow();
+	void reset();
+	bool czyWyswietlacInstrukcje() {return wyswietlenieInstrukcji;}
+	bool czyWyswietlacOdNowa() {return wyswietlenieOdNowa;} //Todo: tymczasowe
 
 	//Zwracanie inputu
 	Myszka* zwrocMyszke() {return &myszka;}
@@ -52,6 +57,8 @@ public:
 
 private:
 	const Punkt wymiaryEkranu;
+	bool wyswietlenieInstrukcji;
+	bool wyswietlenieOdNowa;
 
 	Klawiatura klawiatura;
 	Myszka myszka;
