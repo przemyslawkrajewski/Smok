@@ -78,35 +78,35 @@ int Wideo::inicjacjaOkna(int szerokoscOkna,int wysokoscOkna,int glebiaKolorowOkn
 {
 	//int mode=SDL_HWSURFACE | SDL_DOUBLEBUF;
 	//if(fullscreen) mode=mode| SDL_FULLSCREEN;
-	std::cout << "Inicjacja SDL\n";
+	//std::cout << "Inicjacja SDL\n";
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
 	{
-		std::cout << "SDL_Init Error: " << SDL_GetError() << std::endl;
+		//std::cout << "SDL_Init Error: " << SDL_GetError() << std::endl;
 		return 1;
 	}
 
-	std::cout << "Tworzenie okna\n";
+	//std::cout << "Tworzenie okna\n";
 	//ekran = SDL_SetVideoMode( szerokoscOkna, wysokoscOkna, glebiaKolorowOkna, mode);
 	okno = SDL_CreateWindow("Smoku!", 100, 100, szerokoscOkna, wysokoscOkna, SDL_WINDOW_SHOWN);
 	if (!okno)
 	{
-		std::cout << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
+		//std::cout << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
 		SDL_Quit();
 		return 1;
 	}
 
-	std::cout << "Tworzenie renderu\n";
+	//std::cout << "Tworzenie renderu\n";
 	render = SDL_CreateRenderer(okno, -1, SDL_RENDERER_ACCELERATED);
 	if (!render)
 	{
 		SDL_DestroyWindow(okno);
-		std::cout << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
+		//std::cout << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
 		SDL_Quit();
 		return 1;
 	}
 	//SDL_SetRenderDrawBlendMode(render,SDL_BLENDMODE_BLEND);
 
-    std::cout << "Wczytywanie obrazkow\n";
+    //std::cout << "Wczytywanie obrazkow\n";
 	if(wczytanieObrazka("Grafika/SmokPP.bmp",&smokPP) ||
 	   wczytanieObrazka("Grafika/SmokTP.bmp",&smokTP) ||
 	   wczytanieObrazka("Grafika/SmokPL.bmp",&smokPL) ||
@@ -157,13 +157,13 @@ int Wideo::wczytanieObrazka(const char* nazwa, SDL_Texture ** grafika)
 	SDL_Surface *bmp= SDL_LoadBMP( nazwa );
 	if(bmp)
 	{
-		std::cout << "[  OK  ] ";
+		//std::cout << "[  OK  ] ";
 		SDL_SetColorKey( bmp, SDL_TRUE, SDL_MapRGB( bmp->format, 255, 0, 128 ) );
 		*grafika = SDL_CreateTextureFromSurface(render, bmp);
 		 //SDL_SetTextureBlendMode(*grafika,SDL_BLENDMODE_BLEND);
 	}
-	else 		std::cout << "[NOT OK] ";
-	std::cout << "wczytywanie obrazka " << nazwa << "\n";
+	//else 		std::cout << "[NOT OK] ";
+	//std::cout << "wczytywanie obrazka " << nazwa << "\n";
 	SDL_FreeSurface(bmp);
 	return (*grafika==NULL)?1:0;
 }
@@ -359,7 +359,7 @@ void Wideo::wyswietlenieOgnia(std::list<Plomien> *p)
 		Punkt pozycja = i->zwrocPozycje();
 		Punkt klatka = i->zwrocKlatkeAnimacji();
 		wyswietlenieKlatki(plomien,pozycja,pozycjaKamery,klatka,rozmiarKlatki);
-		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
+		//wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}
 
 }
@@ -377,7 +377,7 @@ void Wideo::wyswietlenieOgnia()
 		Punkt pozycja = i->zwrocPozycje();
 		Punkt klatka = i->zwrocKlatkeAnimacji();
 		wyswietlenieKlatki(plomien,pozycja,pozycjaKamery,klatka,rozmiarKlatki);
-		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
+		//wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}
 }
 
@@ -398,7 +398,7 @@ void Wideo::wyswietlenieStrzelcow()
 		Punkt klatka = (*i)->zwrocKlatkeAnimacji();
 
 		wyswietlenieKlatki(*animacja,pozycja,pozycjaKamery,klatka,rozmiarKlatki);
-		wyswietleniePrzestrzeniKolizji((*i)->zwrocPrzestrzenKolizji(),pozycjaKamery);
+		//wyswietleniePrzestrzeniKolizji((*i)->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}
 }
 
@@ -416,7 +416,7 @@ void Wideo::wyswietlenieStrzal()
 		Punkt klatka = i->zwrocKlatkeAnimacji();
 
 		wyswietlenieKlatki(belt,pozycja,pozycjaKamery,klatka,rozmiarKlatki);
-		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
+		//wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}
 }
 
@@ -432,8 +432,8 @@ void Wideo::wyswietlenieMuru()
 		Punkt pozycja = i->zwrocPozycje();
 		Punkt klatka = i->zwrocKlatkeAnimacji();
 
-		wyswietlenieKlatki(belt,pozycja,pozycjaKamery,klatka,rozmiarKlatki);
-		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
+		//wyswietlenieKlatki(belt,pozycja,pozycjaKamery,klatka,rozmiarKlatki);
+		//wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}
 }
 
