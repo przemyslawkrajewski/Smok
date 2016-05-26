@@ -29,6 +29,9 @@ Wideo::Wideo(Model *nModel)
 	krzyzowiecL=0;
 	belt=0;
 
+	odNowa=0;
+	instrukcja=0;
+
 	pasekOgnia=0;
 	pasekZdrowia=0;
 	fiolkaHUD=0;
