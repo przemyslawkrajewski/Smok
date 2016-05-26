@@ -32,13 +32,18 @@ void Model::reset()
 
 	smok.reset();
 
+	FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(1300,130));
+
 	for(int i=0;i<100;i++)
 	{
 		int x = rand()%3000+5000;
 		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(x,130));
 	}
-	smok.ustawPozycje(Punkt(1000,1000));
+	smok.ustawPozycje(Punkt(1000,100));
 	kamera.ustawPozycje(smok.zwrocPozycje());
+	myszka.ustawX(500);
+	myszka.ustawY(240);
+	wyznaczKolejnyStanObiektow();
 	wyznaczKolejnyStanObiektow();
 }
 

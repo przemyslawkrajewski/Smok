@@ -112,8 +112,8 @@ void Kontroler::obsluzZegar()
 	{
 		//std::cout << SDL_GetTicks()-timer << "\n";
 		timer = SDL_GetTicks();
-		wideo->wyswietlenieEkranu();
 		model->wyznaczKolejnyStan();
+		wideo->wyswietlenieEkranu();
 
 	}
 }

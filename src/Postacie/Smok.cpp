@@ -19,7 +19,7 @@ void Smok::reset()
 	punktZaczepu=0;
 	czyZaczepiony=false;
 
-	stan=unosi;
+	stan=stoi;
 	minKatGlowy=0;
 	maksKatGlowy=0;
 	obrotGlowy=0;

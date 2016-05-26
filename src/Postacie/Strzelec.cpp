@@ -16,7 +16,7 @@ Strzelec::Strzelec(): Postac()
 	katCelowaniaWprost=0;
 	katCelowaniaZGory=0;
 	katCelowania=0;
-	stanNaciagania=0;
+	stanNaciagania=-1;
 	stanCelowania=0;
 	mozliwyStrzal=false;
 
