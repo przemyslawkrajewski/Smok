@@ -222,8 +222,8 @@ void Wideo::wyswietlenieProstokata(double x, double y, double bok1, double bok2)
 	SDL_Rect rect;
 	rect.x=x-bok1/2;
 	rect.y=y-bok2/2;
-	rect.h=bok1;
-	rect.w=bok2;
+	rect.h=bok2;
+	rect.w=bok1;
 	SDL_RenderDrawRect(render, &rect);
 
 }
@@ -237,11 +237,6 @@ void Wideo::wyswietleniePrzestrzeniKolizji(PrzestrzenKolizji *p, Punkt pozycjaKa
 {
 	double x=p->zwrocPozycje().x;
 	double y=p->zwrocPozycje().y;
-	/*if(model->zwrocKamere()->zwrocY()<240)
-		wyswietlenieProstokata(-pozycjaKamery.x+x+320,480-y,p->zwrocDlugoscBoku(),p->zwrocDlugoscBoku());
-	else
-		wyswietlenieProstokata(-pozycjaKamery.x+x+320,240+pozycjaKamery.y-y,p->zwrocDlugoscBoku(),p->zwrocDlugoscBoku());
-	//*/
 
 	std::vector<ProstokatKolizji> *prostokaty = p->zwrocProstokaty();
 	for(std::vector<ProstokatKolizji>::iterator i= prostokaty->begin();i!=prostokaty->end();i++)
@@ -343,7 +338,7 @@ void Wideo::wyswietlenieSmoka()
 		wyswietlenieKlatki(*cialoP,pozycjaSmoka,pozycjaKamery,klatkaCiala,rozmiarKlatki);//Przednia czesc ciala
 	}
 	wyswietlenieOgnia(&naZiemi);
-	wyswietleniePrzestrzeniKolizji(model->zwrocSmoka()->zwrocPrzestrzenKolizji(),pozycjaKamery);
+	//wyswietleniePrzestrzeniKolizji(model->zwrocSmoka()->zwrocPrzestrzenKolizji(),pozycjaKamery);
 
 
 }
@@ -420,6 +415,23 @@ void Wideo::wyswietlenieStrzal()
 	}
 }
 
+void Wideo::wyswietlenieMuru()
+{
+	Punkt pozycjaKamery=model->zwrocKamere()->zwrocPozycje();
+	int rozmiarKlatki=30;
+
+	std::list<Mur> *s = model->zwrocMury()->zwrocObiekty();
+	for(std::list<Mur>::iterator i=s->begin(); i!=s->end() ;i++)
+	{
+		if(!i->czyIstnieje()) continue;
+		Punkt pozycja = i->zwrocPozycje();
+		Punkt klatka = i->zwrocKlatkeAnimacji();
+
+		wyswietlenieKlatki(belt,pozycja,pozycjaKamery,klatka,rozmiarKlatki);
+		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
+	}
+}
+
 void Wideo::wyswietlenieStanuOgnia()
 {
 	double stanOgnia = model->zwrocSmoka()->zwrocStanOgnia();
@@ -455,6 +467,8 @@ void Wideo::wyswietlenieEkranu()
 
 	wyswietlenieStanuOgnia();
 	wyswietlenieStanuZdrowia();
+
+	wyswietlenieMuru();
 
 	SDL_RenderPresent(render);
 }

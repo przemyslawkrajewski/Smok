@@ -12,17 +12,17 @@ ParametrySmoka Smok::parametry;
 
 Model::Model(): wymiaryEkranu(Punkt(640,480))
 {
+	FabrykaPrzedmiotow::zwrocInstancje()->ustawKontenery(&mury);
 	FabrykaPociskow::zwrocInstancje()->ustawKontenery(&plomienie,&strzaly);
 	FabrykaLudzi::zwrocInstancje()->ustawKontenery(&strzelcy);
 
-	for(int i=0;i<1;i++)
+	for(int i=0;i<100;i++)
 	{
-		int x = rand()%30+5000;
+		int x = rand()%3000+5000;
 		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(x,130));
 	}
-	smok.ustawPozycje(Punkt(600,1000));
-	//fabrykaLudzi.stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(1000,130));
-	//fabrykaLudzi.stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(1200,130));
+	smok.ustawPozycje(Punkt(1000,1000));
+	FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniMur,Punkt(1000,1000));
 }
 
 //####################################################KOLEJNY STAN#######################################################
@@ -54,7 +54,6 @@ void Model::wyznaczKolejnyStan()
 	strzelcy.ustawCel(&smok);
 	strzelcy.wyznaczKolejnyStan();
 	strzelcy.wyznaczKlatkeAnimacji();
-	//strzelcy.wyznaczPrzestrzenKolizji();
 
 	plomienie.wyznaczKolejnyStan();
 	plomienie.wyznaczKlatkeAnimacji();
@@ -94,6 +93,13 @@ void Model::obsluzKolizje()
 
 	//Smok kontra strzaly
 	strzaly.sprawdzKolizje(&smok,usun,zadajObrazenia,PrzestrzenKolizji::okrag);
+
+	//Mury
+	std::list<Mur> *listaMurow = mury.zwrocObiekty();
+	for(std::list<Mur>::iterator i=listaMurow->begin();i!=listaMurow->end();i++)
+	{
+		plomienie.sprawdzKolizje((Obiekt*)&(*i),zniszczPocisk,nic,PrzestrzenKolizji::prostokat,true);
+	}
 }
 
 void Model::zniszcz(Obiekt *o,Obiekt *o2,Punkt punktKolizji)

@@ -46,6 +46,8 @@ private:
 
 	void wyswietlenieStrzal();
 
+	void wyswietlenieMuru();
+
 	void wyswietlenieStanuOgnia();
 	void wyswietlenieStanuZdrowia();
 

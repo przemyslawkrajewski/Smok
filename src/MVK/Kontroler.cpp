@@ -104,7 +104,7 @@ void Kontroler::obsluzZegar()
 {
 	if(SDL_GetTicks()-timer>30)
 	{
-		std::cout << SDL_GetTicks()-timer << "\n";
+		//std::cout << SDL_GetTicks()-timer << "\n";
 		timer = SDL_GetTicks();
 		wideo->wyswietlenieEkranu();
 		model->wyznaczKolejnyStan();

@@ -16,9 +16,11 @@
 
 #include "../Fabryki/FabrykaPociskow.h"
 #include "../Fabryki/FabrykaLudzi.h"
+#include "../Fabryki/FabrykaPrzedmiotow.h"
 
 #include "../Kontenery/KontenerPostaci.h"
 #include "../Kontenery/KontenerPociskow.h"
+#include "../Kontenery/KontenerPrzedmiotow.h"
 
 class Model
 {
@@ -38,6 +40,7 @@ public:
 	KontenerPociskow<Plomien>* zwrocPlomienie() {return &plomienie;}	//Todo: ma zwrocic kontener klasy bazowej
 	KontenerPociskow<Strzala>* zwrocStrzaly() {return &strzaly;}		//Todo: ale bedzie trzeba przepisywac a to dlugo trwa
 	KontenerPostaci<Strzelec>* zwrocStrzelcow() {return &strzelcy;}
+	KontenerPrzedmiotow<Mur>* zwrocMury() {return &mury;}
 
 	//Obsluga kolizji
 	void obsluzKolizje();
@@ -60,6 +63,8 @@ private:
 
 	KontenerPociskow<Plomien> plomienie;
 	KontenerPociskow<Strzala> strzaly;
+
+	KontenerPrzedmiotow<Mur> mury;
 };
 
 #endif /* MODEL_H_ */
