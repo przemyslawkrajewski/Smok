@@ -16,16 +16,17 @@ czy dowódców. Gra działa z wykorzystaniem biblioteki graficznej SDL.
 Animacja była tworzona ręcznie z wykorzystaniem grafiki rastrowej.
 
 Jeśli zajmujesz grafiką komputerową i chcesz wpłynąć na animację
-gry albo po prostu chciałbyś mieć wkład w niniejszą grę, pisz na:
-artaris.studio@gmail.com
+gry, chciałbyś mieć wkład w niniejszą grę albo po prostu masz jakieś uwagi,
+pisz na:
+	artaris.studio@gmail.com
 
 --------------------------------------------------------------------------
 Wymagania
 --------------------------------------------------------------------------
 
 Program był testowany na systemach operacyjnych: Windows XP, Windows 7,
-Windows 10, Debian, Ubuntu. Gra zajmuje 350MB pamięci RAM. W przypadku
-kompilacji z źródeł aplikacja wymaga biblioteki SDL oraz programu cmake.
+Windows 10, Debian, Ubuntu. Gra wymaga 350MB pamięci RAM. W przypadku
+kompilacji z źródeł potrzebna jest biblioteka SDL oraz program cmake.
 
 --------------------------------------------------------------------------
 Sposób uruchamiania
