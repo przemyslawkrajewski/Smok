@@ -38,16 +38,6 @@ void Smok::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 {
 	Punkt staraPredkosc(predkosc);
 
-	if(!zniszczony)
-	{
-		wyznaczLot(klawiatura,myszka);
-		wyznaczGlowe(klawiatura,myszka);
-	}
-	else
-	{
-		wyznaczSmierc();
-	}
-
 	//zadane Y
 	if(pozycja.y-zadaneY>70) zadaneY=pozycja.y-70;
 	//grawitacja
@@ -70,6 +60,16 @@ void Smok::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 
 	//zadane Y ponizej ziemi
 	if(zadaneY<parametryObiektow.poziomZiemi+parametry.wysokosc) zadaneY=parametryObiektow.poziomZiemi+parametry.wysokosc;
+
+	if(!zniszczony)
+	{
+		wyznaczLot(klawiatura,myszka);
+		wyznaczGlowe(klawiatura,myszka);
+	}
+	else
+	{
+		wyznaczSmierc();
+	}
 
 	//przyspieszenie
 	przyspieszenie.y=staraPredkosc.y-predkosc.y;
