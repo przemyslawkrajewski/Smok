@@ -246,6 +246,8 @@ void Wideo::wyswietleniePrzestrzeniKolizji(PrzestrzenKolizji *p, Punkt pozycjaKa
 	double x=p->zwrocPozycje().x;
 	double y=p->zwrocPozycje().y;
 
+	#ifdef DRAW_CHECKBOX
+
 	std::vector<ProstokatKolizji> *prostokaty = p->zwrocProstokaty();
 	for(std::vector<ProstokatKolizji>::iterator i= prostokaty->begin();i!=prostokaty->end();i++)
 	{
@@ -258,6 +260,10 @@ void Wideo::wyswietleniePrzestrzeniKolizji(PrzestrzenKolizji *p, Punkt pozycjaKa
 			wyswietlenieProstokata(-pozycjaKamery.x+x+320,240+pozycjaKamery.y-y,i->zwrocBok1(),i->zwrocBok2());
 	}//*/
 
+	#endif
+
+	#ifdef DRAW_CHECKSPHERE
+
 	std::vector<OkragKolizji> *okregi = p->zwrocOkregi();
 	for(std::vector<OkragKolizji>::iterator i= okregi->begin();i!=okregi->end();i++)
 	{
@@ -269,6 +275,8 @@ void Wideo::wyswietleniePrzestrzeniKolizji(PrzestrzenKolizji *p, Punkt pozycjaKa
 		else
 			wyswietlenieOkregu(-pozycjaKamery.x+x+320,240+pozycjaKamery.y-y,i->zwrocPromien());
 	}//*/
+
+	#endif
 }
 
 void Wideo::wyswietleniePierwszegoPlanu(int pozX,int pozY)
@@ -346,7 +354,7 @@ void Wideo::wyswietlenieSmoka()
 		wyswietlenieKlatki(*cialoP,pozycjaSmoka,pozycjaKamery,klatkaCiala,rozmiarKlatki);//Przednia czesc ciala
 	}
 	wyswietlenieOgnia(&naZiemi);
-	//wyswietleniePrzestrzeniKolizji(model->zwrocSmoka()->zwrocPrzestrzenKolizji(),pozycjaKamery);
+	wyswietleniePrzestrzeniKolizji(model->zwrocSmoka()->zwrocPrzestrzenKolizji(),pozycjaKamery);
 
 
 }
@@ -362,7 +370,7 @@ void Wideo::wyswietlenieOgnia(std::list<Plomien> *p)
 		Punkt pozycja = i->zwrocPozycje();
 		Punkt klatka = i->zwrocKlatkeAnimacji();
 		wyswietlenieKlatki(plomien,pozycja,pozycjaKamery,klatka,rozmiarKlatki);
-		//wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
+		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}
 
 }
@@ -380,7 +388,7 @@ void Wideo::wyswietlenieOgnia()
 		Punkt pozycja = i->zwrocPozycje();
 		Punkt klatka = i->zwrocKlatkeAnimacji();
 		wyswietlenieKlatki(plomien,pozycja,pozycjaKamery,klatka,rozmiarKlatki);
-		//wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
+		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}
 }
 
@@ -401,7 +409,7 @@ void Wideo::wyswietlenieStrzelcow()
 		Punkt klatka = (*i)->zwrocKlatkeAnimacji();
 
 		wyswietlenieKlatki(*animacja,pozycja,pozycjaKamery,klatka,rozmiarKlatki);
-		//wyswietleniePrzestrzeniKolizji((*i)->zwrocPrzestrzenKolizji(),pozycjaKamery);
+		wyswietleniePrzestrzeniKolizji((*i)->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}
 }
 
@@ -419,7 +427,7 @@ void Wideo::wyswietlenieStrzal()
 		Punkt klatka = i->zwrocKlatkeAnimacji();
 
 		wyswietlenieKlatki(belt,pozycja,pozycjaKamery,klatka,rozmiarKlatki);
-		//wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
+		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}
 }
 
@@ -436,7 +444,7 @@ void Wideo::wyswietlenieMuru()
 		Punkt klatka = i->zwrocKlatkeAnimacji();
 
 		//wyswietlenieKlatki(belt,pozycja,pozycjaKamery,klatka,rozmiarKlatki);
-		//wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
+		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}
 }
 
