@@ -416,6 +416,24 @@ void Smok::wyznaczGlowe(Klawiatura* klawiatura, Myszka *myszka)
 {
 	obrotGlowy=atan2(-(myszka->zwrocY()),(myszka->zwrocX()))+3.14;
 
+	//Limity kata glowy
+	if(minKatGlowy>maksKatGlowy)
+	{
+		if(obrotGlowy<minKatGlowy && obrotGlowy>maksKatGlowy)
+		{
+			if(abs(obrotGlowy-minKatGlowy)<abs(obrotGlowy-maksKatGlowy)) obrotGlowy=minKatGlowy;
+			else obrotGlowy=maksKatGlowy;
+		}
+	}
+	else
+	{
+		if(obrotGlowy<minKatGlowy || obrotGlowy>maksKatGlowy)
+		{
+			if(abs(obrotGlowy-minKatGlowy)<abs(obrotGlowy-maksKatGlowy)) obrotGlowy=minKatGlowy;
+			else obrotGlowy=maksKatGlowy;
+		}
+	}
+
 	//Obsluga myszki
 	if(myszka->zwrocLPM())
 	{
