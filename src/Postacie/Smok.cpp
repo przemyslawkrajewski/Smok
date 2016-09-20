@@ -53,9 +53,7 @@ void Smok::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 	//jest na ziemi
 	if(pozycja.y<=parametryObiektow.poziomZiemi+parametry.wysokosc)
 	{
-		pozycja.y=parametryObiektow.poziomZiemi+parametry.wysokosc;
-		zadaneY=parametryObiektow.poziomZiemi+parametry.wysokosc;
-		predkosc.y=0;
+		postawNaZiemi(parametryObiektow.poziomZiemi+parametry.wysokosc);
 	}
 
 	//zadane Y ponizej ziemi
@@ -73,6 +71,7 @@ void Smok::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 
 	//przyspieszenie
 	przyspieszenie.y=staraPredkosc.y-predkosc.y;
+	naZiemi=false;
 
 	if(zycie<=0)
 	{
@@ -91,12 +90,12 @@ void Smok::wyznaczLot(Klawiatura *klawiatura, Myszka *myszka)
 	if(klawiatura->czyWcisnietoPrawo() && klawiatura->czyWcisnietoGora())
 	{
 		if(predkosc.x>0 && myszka->zwrocX()<0) zwroconyWPrawo=true;
-		if(pozycja.y==parametryObiektow.poziomZiemi+parametry.wysokosc) //Jesli jestem na ziemi
+		if(naZiemi) //Jesli jestem na ziemi
 		{
 			predkosc.y=parametry.silaWybicia;	//wybijamy sie
 			predkosc.x=parametry.silaWybicia/2;
-			pozycja.y=parametryObiektow.poziomZiemi+5+parametry.wysokosc;
-			zadaneY=parametryObiektow.poziomZiemi+5+parametry.wysokosc;
+			pozycja.y+=5;
+			zadaneY+=5;
 			stan=leci;
 		}
 		else
@@ -143,7 +142,7 @@ void Smok::wyznaczLot(Klawiatura *klawiatura, Myszka *myszka)
 	else if(klawiatura->czyWcisnietoPrawo() && klawiatura->czyWcisnietoDol())
 	{
 		if(predkosc.x>0 && myszka->zwrocX()<0) zwroconyWPrawo=true;
-		if(pozycja.y==parametryObiektow.poziomZiemi+parametry.wysokosc)
+		if(naZiemi)
 		{
 			hamowanieNaZiemi();
 			stan=stoi;
@@ -168,7 +167,7 @@ void Smok::wyznaczLot(Klawiatura *klawiatura, Myszka *myszka)
 	else if(klawiatura->czyWcisnietoLewo() && klawiatura->czyWcisnietoDol() && pozycja.x>500)
 	{
 		if(predkosc.x<0 && myszka->zwrocX()>0) zwroconyWPrawo=false;
-		if(pozycja.y==parametryObiektow.poziomZiemi+parametry.wysokosc)
+		if(naZiemi)
 		{
 			hamowanieNaZiemi();
 			stan=stoi;
@@ -193,12 +192,12 @@ void Smok::wyznaczLot(Klawiatura *klawiatura, Myszka *myszka)
 	else if(klawiatura->czyWcisnietoLewo() && klawiatura->czyWcisnietoGora() && pozycja.x>500)
 	{
 		if(predkosc.x<0 && myszka->zwrocX()>0) zwroconyWPrawo=false;
-		if(pozycja.y==parametryObiektow.poziomZiemi+parametry.wysokosc)
+		if(naZiemi)
 		{
 			predkosc.y=parametry.silaWybicia;
 			predkosc.x=-parametry.silaWybicia/2;
-			pozycja.y=parametryObiektow.poziomZiemi+5+parametry.wysokosc;
-			zadaneY=parametryObiektow.poziomZiemi+5+parametry.wysokosc;
+			pozycja.y+=5;
+			zadaneY+=5;
 			stan=leci;
 		}
 		else
@@ -244,11 +243,11 @@ void Smok::wyznaczLot(Klawiatura *klawiatura, Myszka *myszka)
 	}
 	else if(klawiatura->czyWcisnietoGora()) //Wznoszenie się, lot w górę
 	{
-		if(pozycja.y==parametryObiektow.poziomZiemi+parametry.wysokosc)
+		if(naZiemi)
 		{
 			predkosc.y=parametry.silaWybicia;
-			pozycja.y=parametryObiektow.poziomZiemi+5+parametry.wysokosc;
-			zadaneY=parametryObiektow.poziomZiemi+5+parametry.wysokosc;
+			pozycja.y+=5;
+			zadaneY+=5;
 			stan=unosi;
 		}
 		else //wznoszenie
@@ -266,7 +265,7 @@ void Smok::wyznaczLot(Klawiatura *klawiatura, Myszka *myszka)
 	}
 	else if(klawiatura->czyWcisnietoDol()) //Nurkowanie, opadanie
 	{
-		if(pozycja.y==parametryObiektow.poziomZiemi+parametry.wysokosc) // Sobie po prostu stoi
+		if(naZiemi) // Sobie po prostu stoi
 		{
 			hamowanieNaZiemi();
 			stan=stoi;
@@ -285,7 +284,7 @@ void Smok::wyznaczLot(Klawiatura *klawiatura, Myszka *myszka)
 	else if(klawiatura->czyWcisnietoPrawo()) //Lot,szybowanie, HamowanieX
 	{
 		if(predkosc.x>0 && myszka->zwrocX()<0) zwroconyWPrawo=true;
-		if(pozycja.y==parametryObiektow.poziomZiemi+parametry.wysokosc)
+		if(naZiemi)
 		{
 			rozpedzanieNaZiemi(parametry.przyspieszenieChodu);
 			stan=idzie;
@@ -339,7 +338,7 @@ void Smok::wyznaczLot(Klawiatura *klawiatura, Myszka *myszka)
 	else if(klawiatura->czyWcisnietoLewo()  && pozycja.x>500)
 	{
 		if(predkosc.x<0 && myszka->zwrocX()>0) zwroconyWPrawo=false;
-		if(pozycja.y==parametryObiektow.poziomZiemi+parametry.wysokosc)
+		if(naZiemi)
 		{
 			rozpedzanieNaZiemi(-parametry.przyspieszenieChodu);
 			stan=idzie;
@@ -389,7 +388,7 @@ void Smok::wyznaczLot(Klawiatura *klawiatura, Myszka *myszka)
 	}
 	else //if(klawiatura.Nic nie wcisnieto)
 	{
-		if(pozycja.y==parametryObiektow.poziomZiemi+parametry.wysokosc)
+		if(naZiemi)
 		{
 			hamowanieNaZiemi();
 			stan=stoi;
@@ -602,6 +601,30 @@ void Smok::hamowanieNaZiemi()
 		else predkosc.x+=parametry.hamowanieChodu;
 	}
 }
+
+void Smok::postawNaZiemi(double wysokosc)
+{
+	naZiemi=true;
+	pozycja.y=wysokosc;
+	zadaneY=wysokosc;
+	predkosc.y=0;
+}
+
+void Smok::zatrzymajNaScianie()
+{
+	predkosc.x=-0.4*predkosc.x;
+	if(abs(predkosc.x)<4) predkosc.x=0;
+	if(naZiemi)
+		stan=stoi;
+	else
+		stan=unosi;
+}
+
+void Smok::zatrzymajNaSuficie()
+{
+	predkosc.y=-2-0.4*predkosc.y;
+	zadaneY-=70;	//TODO: Sztywna stala
+}
 //#####################################################################################################
 //Podfunkcje Smoka Kolizje
 //#####################################################################################################
@@ -621,7 +644,7 @@ void Smok::wyznaczPrzestrzenKolizji()
 	double wiekszyBokGlowy=25;
 	double mniejszyBokGlowy=15;
 
-	prostokaty.push_back(ProstokatKolizji(&pozycja,&predkosc,Punkt(),200));
+	prostokaty.push_back(ProstokatKolizji(&pozycja,&predkosc,Punkt(-25*prawo,0),150,170));
 	ustawPrzestrzenKolizji(prostokaty);
 
 	if(!zniszczony)

@@ -39,6 +39,10 @@ void FabrykaPrzedmiotow::stworzPrzedmiot(TypPrzedmiotu typ, Punkt pozycja)
 		assert("Kontener 'Mury' nie ustawiony" && mury!=0);
 		(mury->dodaj(Mur(Mur::sredni,pozycja)))->wyznaczPrzestrzenKolizji();
 		break;
+	case duzyMur:
+		assert("Kontener 'Mury' nie ustawiony" && mury!=0);
+		(mury->dodaj(Mur(Mur::duzy,pozycja)))->wyznaczPrzestrzenKolizji();
+		break;
 	}
 }
 

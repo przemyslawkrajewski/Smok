@@ -32,7 +32,7 @@ void Model::reset()
 
 	smok.reset();
 
-	FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniMur,Punkt(1200,300));
+	FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::duzyMur,Punkt(1200,600));
 
 	/*FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(1300,130));
 
@@ -138,7 +138,15 @@ void Model::obsluzKolizje()
 	for(std::list<Mur>::iterator i=listaMurow->begin();i!=listaMurow->end();i++)
 	{
 		plomienie.sprawdzKolizje((Obiekt*)&(*i),zniszczPocisk,nic,PrzestrzenKolizji::prostokat,true);
+
+		std::pair<bool,Punkt> kolizja = smok.sprawdzKolizje((Obiekt*)&(*i),PrzestrzenKolizji::prostokat);
+		if(kolizja.first)
+		{
+			kolizjaSmokaZMurem(&smok,&(*i),kolizja.second);
+		}
 	}
+
+	//mury.sprawdzKolizje(&smok,nic,kolizjaSmokaZMurem,PrzestrzenKolizji::prostokat,false);
 }
 
 void Model::zniszcz(Obiekt *o,Obiekt *o2,Punkt punktKolizji)
@@ -169,4 +177,50 @@ void Model::nic(Obiekt *o,Obiekt *o2,Punkt punktKolizji)
 void Model::zadajObrazenia(Obiekt*o, Obiekt *o2, Punkt punktKolizji)
 {
 	o->zadajObrazenia(o2->zwrocObrazenia());
+}
+
+void Model::kolizjaSmokaZMurem(Obiekt*o, Obiekt *o2, Punkt punktKolizji)
+{
+	assert("Smok nie ma ustalonego prostokata kolizji" && !o->zwrocPrzestrzenKolizji()->zwrocProstokaty()->empty());
+	ProstokatKolizji prostokat1 = (*(o->zwrocPrzestrzenKolizji()->zwrocProstokaty()))[0];
+	ProstokatKolizji prostokat2 = (*(o2->zwrocPrzestrzenKolizji()->zwrocProstokaty()))[0];
+	double minY = o2->zwrocPozycje().y+prostokat1.zwrocBok2()/2+prostokat2.zwrocBok2()/2;
+	double maxY = o2->zwrocPozycje().y-prostokat1.zwrocBok2()/2-prostokat2.zwrocBok2()/2;
+	double minX = o2->zwrocPozycje().x-prostokat1.zwrocBok1()/2-prostokat2.zwrocBok1()/2;
+	double maxX = o2->zwrocPozycje().x+prostokat1.zwrocBok1()/2+prostokat2.zwrocBok1()/2;
+
+
+	if(o->zwrocPozycje().y+prostokat1.zwrocBok2()/2>minY || o->zwrocPredkosc().y<-prostokat1.zwrocBok2()/2)
+	{
+		if(prostokat1.zwrocPozycje().x-6*prostokat1.zwrocBok1()/8<minX)
+			o->ustawPozycje(Punkt(o->zwrocPozycje().x+(minX-prostokat1.zwrocPozycje().x)-2,o->zwrocPozycje().y+(minX-prostokat1.zwrocPozycje().x)));
+		else if(prostokat1.zwrocPozycje().x+6*prostokat1.zwrocBok1()/8>maxX)
+			o->ustawPozycje(Punkt(o->zwrocPozycje().x+(maxX-prostokat1.zwrocPozycje().x)+2,o->zwrocPozycje().y-(maxX-prostokat1.zwrocPozycje().x)));
+		else
+			o->postawNaZiemi(minY);
+	}
+	else if(o->zwrocPozycje().x-prostokat1.zwrocBok1()/2<minX || o->zwrocPredkosc().x>prostokat1.zwrocBok1()/2)
+	{
+		o->zatrzymajNaScianie();
+		if(o->zwrocPozycje().y-prostokat1.zwrocBok2()/32>=maxY)
+			o->ustawPozycje(Punkt(o->zwrocPozycje().x+(minX-prostokat1.zwrocPozycje().x)-2,o->zwrocPozycje().y));
+	}
+	else if(o->zwrocPozycje().x+prostokat1.zwrocBok1()/2>maxX || o->zwrocPredkosc().x<-prostokat1.zwrocBok1()/2)
+	{
+		o->zatrzymajNaScianie();
+		if(o->zwrocPozycje().y-prostokat1.zwrocBok2()/32>=maxY)
+			o->ustawPozycje(Punkt(o->zwrocPozycje().x+(maxX-prostokat1.zwrocPozycje().x)+2,o->zwrocPozycje().y));
+	}
+
+	else if(o->zwrocPozycje().y-prostokat1.zwrocBok2()/2<maxY || o->zwrocPredkosc().y>prostokat1.zwrocBok2()/2)
+	{
+		o->zatrzymajNaSuficie();
+	}
+
+	if(o->zwrocPozycje().y-prostokat1.zwrocBok2()/32<maxY)
+	{
+		o->zatrzymajNaSuficie();
+	}
+
+
 }

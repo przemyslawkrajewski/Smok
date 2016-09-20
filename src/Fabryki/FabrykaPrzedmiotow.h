@@ -23,7 +23,7 @@ private:
 public:
 	~FabrykaPrzedmiotow();
 
-	enum TypPrzedmiotu {sredniMur,oslona,tarcza};
+	enum TypPrzedmiotu {sredniMur,duzyMur,oslona,tarcza};
 
 	static FabrykaPrzedmiotow* zwrocInstancje();
 

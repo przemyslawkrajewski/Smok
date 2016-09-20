@@ -121,6 +121,10 @@ private:
 	void rozpedzanieNaZiemi(double przyspieszenie);
 	void hamowanieNaZiemi();
 
+	virtual void postawNaZiemi(double wysokosc);
+	virtual void zatrzymajNaScianie();
+	virtual void zatrzymajNaSuficie();
+
 	//Metody do przetwarzania kolejnego stanu Smoka
 	void wyznaczLot(Klawiatura* klawiatura, Myszka *myszka);
 	void wyznaczGlowe(Klawiatura* klawiatura, Myszka *myszka);

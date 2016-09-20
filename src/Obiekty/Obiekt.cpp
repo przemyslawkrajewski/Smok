@@ -73,3 +73,20 @@ void Obiekt::usunPunktZaczepu()
 	punktZaczepu=0;
 	czyZaczepiony=false;
 }
+
+void Obiekt::postawNaZiemi(double wysokosc)
+{
+	naZiemi=true;
+	pozycja.y=wysokosc;
+	predkosc.y=0;
+}
+
+void Obiekt::zatrzymajNaScianie()
+{
+	predkosc.x=0;
+}
+
+void Obiekt::zatrzymajNaSuficie()
+{
+	predkosc.y=0;
+}

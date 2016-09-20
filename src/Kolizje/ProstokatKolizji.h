@@ -31,7 +31,8 @@ private:
 	std::pair<bool,Punkt> punktPrzecieciaOdcinkaZProstaPozioma(Punkt p1, Punkt p2, double Y);
 
 private:
-	double bok1,bok2;
+	double bok1;	//Szerokosc
+	double bok2;	//Wysokosc
 };
 
 #endif /* PROSTOKATKOLIZJI_H_ */

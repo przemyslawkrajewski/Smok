@@ -45,8 +45,8 @@ void Mur::wyznaczPrzestrzenKolizji()
 		b=150;
 		break;
 	case duzy:
-		a=500;
-		b=300;
+		a=1500;
+		b=1300;
 		break;
 
 	}

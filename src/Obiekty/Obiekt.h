@@ -38,6 +38,7 @@ protected:
 	bool zniszczony;//czy pocisk/postac zostal zniszczony/zabita aby program wiedzial zeby uruchomic animacje smierci
 
 	bool zwroconyWPrawo;
+	bool naZiemi;
 
 	Punkt klatkaAnimacji;		//nr klatki animacji jakiegos ruchu
 
@@ -60,11 +61,17 @@ public:
 	Punkt zwrocPredkosc() {return predkosc;}
 	Punkt zwrocPrzyspieszenie() {return przyspieszenie;}
 	bool czyZwroconyWPrawo() {return zwroconyWPrawo;}
+	bool czyNaZiemi() {return naZiemi;}
 	void ustawPozycje(Punkt p) {pozycja=p;}
 	Obiekt* zwrocPtr() {return this;}
 	void ustawPunktZaczepu(Obiekt *p);
 	void usunPunktZaczepu();
 	bool czyZaczepionyDoObiektu() {return czyZaczepiony;}
+
+	void ustawNaZiemi(bool nz) {naZiemi=nz;}
+	virtual void postawNaZiemi(double wysokosc);
+	virtual void zatrzymajNaScianie();
+	virtual void zatrzymajNaSuficie();
 
 	//Egzystencja
 	bool czyIstnieje() {return istnieje;}

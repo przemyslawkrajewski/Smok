@@ -54,6 +54,7 @@ public:
 	static void usun(Obiekt *o,Obiekt *o2, Punkt punktKolizji);
 	static void nic(Obiekt *o,Obiekt *o2, Punkt punktKolizji);
 	static void zadajObrazenia(Obiekt*o, Obiekt *o2, Punkt punktKolizji);
+	static void kolizjaSmokaZMurem(Obiekt*o, Obiekt *o2, Punkt punktKolizji);
 
 private:
 	const Punkt wymiaryEkranu;
