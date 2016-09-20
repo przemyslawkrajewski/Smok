@@ -51,6 +51,18 @@ void Kontroler::obsluzZdarzenia()
             case SDLK_DOWN:
             	model->zwrocKlawiature()->ustawWcisnietoDol(true);
                 break;
+            case SDLK_d:
+            	model->zwrocKlawiature()->ustawWcisnietoPrawo(true);
+                break;
+            case SDLK_w:
+            	model->zwrocKlawiature()->ustawWcisnietoGora(true);
+                break;
+            case SDLK_a:
+            	model->zwrocKlawiature()->ustawWcisnietoLewo(true);
+                break;
+            case SDLK_s:
+            	model->zwrocKlawiature()->ustawWcisnietoDol(true);
+                break;
             case SDLK_SPACE:
             	model->zwrocKlawiature()->ustawWcisnietoSpacje(true);
             	break;
@@ -75,6 +87,18 @@ void Kontroler::obsluzZdarzenia()
             	model->zwrocKlawiature()->ustawWcisnietoLewo(false);
                 break;
             case SDLK_DOWN:
+            	model->zwrocKlawiature()->ustawWcisnietoDol(false);
+                break;
+            case SDLK_d:
+            	model->zwrocKlawiature()->ustawWcisnietoPrawo(false);
+                break;
+            case SDLK_w:
+            	model->zwrocKlawiature()->ustawWcisnietoGora(false);
+                break;
+            case SDLK_a:
+            	model->zwrocKlawiature()->ustawWcisnietoLewo(false);
+                break;
+            case SDLK_s:
             	model->zwrocKlawiature()->ustawWcisnietoDol(false);
                 break;
             case SDLK_SPACE:
