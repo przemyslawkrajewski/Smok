@@ -32,29 +32,25 @@ Mur::~Mur()
 
 void Mur::wyznaczPrzestrzenKolizji()
 {
-	double a; //Szerohosc
-	double b; //Wysokosc
-	switch(rozmiar)
-	{
-	case maly:
-		a=100;
-		b=50;
-		break;
-	case sredni:
-		a=400;
-		b=150;
-		break;
-	case duzy:
-		a=1500;
-		b=1300;
-		break;
-
-	}
+	Wymiary wymiary = zwrocWymiary();
 	std::vector<ProstokatKolizji> prostokaty;
 	prostokaty.clear();
 
-	prostokaty.push_back(ProstokatKolizji(&pozycja,&predkosc,Punkt(0,0),a,b));
+	prostokaty.push_back(ProstokatKolizji(&pozycja,&predkosc,Punkt(0,0),wymiary));
 	ustawPrzestrzenKolizji(prostokaty);
+}
+
+Wymiary Mur::zwrocWymiary()
+{
+	switch(rozmiar)
+	{
+	case maly:
+		return Wymiary(180,60);
+	case sredni:
+		return Wymiary(600,180);
+	case duzy:
+		return Wymiary(1500,900);
+	}
 }
 
 void Mur::wyznaczKlatkeAnimacji()

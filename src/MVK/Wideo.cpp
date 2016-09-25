@@ -61,6 +61,8 @@ void Wideo::zamkniecieOkna()
 	SDL_DestroyTexture(plomien);
 	SDL_DestroyTexture(belt);
 
+	SDL_DestroyTexture(mur);
+
 	SDL_DestroyTexture(tlo);
 	SDL_DestroyTexture(drugiPlan);
 	SDL_DestroyTexture(pierwszyPlan);
@@ -120,6 +122,7 @@ int Wideo::inicjacjaOkna(int szerokoscOkna,int wysokoscOkna,int glebiaKolorowOkn
 	   wczytanieObrazka("Grafika/KrzyzowiecL.bmp",&krzyzowiecL) ||
 	   wczytanieObrazka("Grafika/plomien.bmp",&plomien) ||
 	   wczytanieObrazka("Grafika/Belt.bmp",&belt) ||
+	   wczytanieObrazka("Grafika/Mur.bmp",&mur) ||
 	   wczytanieObrazka("Grafika/Chodnik1.bmp",&pierwszyPlan) ||
 	   wczytanieObrazka("Grafika/DrugiPlanTrawa.bmp",&drugiPlan) ||
 	   wczytanieObrazka("Grafika/TloChmurno.bmp",&tlo) ||
@@ -194,6 +197,14 @@ void Wideo::wyswietlenieKlatki(SDL_Texture* grafika,Punkt pozycja,Punkt pozycjaK
 		wyswietlenieObrazka(grafika,	-pozycjaKamery.x+pozycja.x-rozmiarKlatki/2+320,	240+pozycjaKamery.y-pozycja.y-rozmiarKlatki/2,	1+klatka.x*(rozmiarKlatki+1),	1+klatka.y*(rozmiarKlatki+1),	rozmiarKlatki,rozmiarKlatki);
 }
 
+void Wideo::wyswietlenieWycinka(SDL_Texture* grafika,Punkt pozycja,Punkt pozycjaKamery, Punkt pozycjaWycinka, Wymiary rozmiarWycinka)
+{
+	if(model->zwrocKamere()->zwrocY()<240)
+		wyswietlenieObrazka(grafika,	-pozycjaKamery.x+pozycja.x-rozmiarWycinka.x+320,	480-pozycja.y-rozmiarWycinka.y,					pozycjaWycinka.x,	pozycjaWycinka.y,	rozmiarWycinka.x,rozmiarWycinka.y);
+	else
+		wyswietlenieObrazka(grafika,	-pozycjaKamery.x+pozycja.x-rozmiarWycinka.x+320,	240+pozycjaKamery.y-pozycja.y-rozmiarWycinka.y,	pozycjaWycinka.x,	pozycjaWycinka.y,	rozmiarWycinka.x,rozmiarWycinka.y);
+}
+
 void Wideo::wyswietlenieOkregu(int pozX,int pozY, double promien)
 {
 	//SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
@@ -243,9 +254,6 @@ void Wideo::wyswietleniePiksela(int pozX,int pozY)
 
 void Wideo::wyswietleniePrzestrzeniKolizji(PrzestrzenKolizji *p, Punkt pozycjaKamery)
 {
-	double x=p->zwrocPozycje().x;
-	double y=p->zwrocPozycje().y;
-
 	#ifdef DRAW_CHECKBOX
 
 	std::vector<ProstokatKolizji> *prostokaty = p->zwrocProstokaty();
@@ -434,17 +442,45 @@ void Wideo::wyswietlenieStrzal()
 void Wideo::wyswietlenieMuru()
 {
 	Punkt pozycjaKamery=model->zwrocKamere()->zwrocPozycje();
-	int rozmiarKlatki=30;
+	int rozmiarKlatki=60;
 
 	std::list<Mur> *s = model->zwrocMury()->zwrocObiekty();
 	for(std::list<Mur>::iterator i=s->begin(); i!=s->end() ;i++)
 	{
 		if(!i->czyIstnieje()) continue;
-		Punkt pozycja = i->zwrocPozycje();
-		Punkt klatka = i->zwrocKlatkeAnimacji();
+		Wymiary wymiary = i->zwrocWymiary();
+		int wysokosc = wymiary.y;
+		int szerokosc = wymiary.x;
+		Punkt pozycjaPoczatkowa = i->zwrocPozycje() - wymiary/2;
 
-		//wyswietlenieKlatki(belt,pozycja,pozycjaKamery,klatka,rozmiarKlatki);
-		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
+		//Srodek
+		for(int s=rozmiarKlatki;s<=szerokosc;s+=rozmiarKlatki)
+		{
+			for(int w=0;w<wysokosc;w+=rozmiarKlatki)
+			{
+				wyswietlenieWycinka(mur,pozycjaPoczatkowa+Punkt(s,w),pozycjaKamery,Punkt(5,5),Punkt(60,60));
+			}
+		}
+
+		//Krawedzie
+		for(int s=rozmiarKlatki;s<=szerokosc;s+=rozmiarKlatki)
+		{
+			wyswietlenieWycinka(mur,pozycjaPoczatkowa+Punkt(s,-5),pozycjaKamery,Punkt(5,65),Punkt(60,5));
+			wyswietlenieWycinka(mur,pozycjaPoczatkowa+Punkt(s,wysokosc),pozycjaKamery,Punkt(5,0),Punkt(60,5));
+		}
+		for(int w=0;w<wysokosc;w+=rozmiarKlatki)
+		{
+			wyswietlenieWycinka(mur,pozycjaPoczatkowa+Punkt(0,w),pozycjaKamery,Punkt(0,5),Punkt(5,60));
+			wyswietlenieWycinka(mur,pozycjaPoczatkowa+Punkt(szerokosc+5,w),pozycjaKamery,Punkt(65,5),Punkt(5,60));
+		}
+
+		//Narozniki
+		wyswietlenieWycinka(mur,pozycjaPoczatkowa+Punkt(0,wysokosc),pozycjaKamery,Punkt(0,0),Punkt(5,5));
+		wyswietlenieWycinka(mur,pozycjaPoczatkowa+Punkt(0,-5),pozycjaKamery,Punkt(0,65),Punkt(5,5));
+		wyswietlenieWycinka(mur,pozycjaPoczatkowa+Punkt(szerokosc+5,wysokosc),pozycjaKamery,Punkt(65,0),Punkt(5,5));
+		wyswietlenieWycinka(mur,pozycjaPoczatkowa+Punkt(szerokosc+5,-5),pozycjaKamery,Punkt(65,65),Punkt(5,5));
+
+		//wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}
 }
 
@@ -483,11 +519,12 @@ void Wideo::wyswietlenieEkranu()
 	wyswietlenieDrugiegoPlanu(x,y);
 	wyswietleniePierwszegoPlanu(x,y);
 
+	wyswietlenieMuru();
+
 	wyswietlenieStrzelcow();
 	wyswietlenieSmoka();
 	wyswietlenieStrzal();
 
-	wyswietlenieMuru();
 
 	wyswietlenieStanuOgnia();
 	wyswietlenieStanuZdrowia();

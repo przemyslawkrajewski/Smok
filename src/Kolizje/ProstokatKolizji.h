@@ -17,12 +17,12 @@
 class ProstokatKolizji: public FiguraKolizji
 {
 public:
-	ProstokatKolizji(const Punkt *po, const Punkt *v,Punkt p, double b1, double b2);
+	ProstokatKolizji(const Punkt *po, const Punkt *v,Punkt p, Wymiary w);
 	ProstokatKolizji(const Punkt *po, const Punkt *v,Punkt p, double b);
 
-	double zwrocBok1() {return bok1;}
-	double zwrocBok2() {return bok2;}
-	double zwrocDluzszyBok() {return bok1>bok2?bok1:bok2;}
+	double zwrocBok1() {return wymiary.x;}
+	double zwrocBok2() {return wymiary.y;}
+	double zwrocDluzszyBok() {return wymiary.x>wymiary.y?wymiary.x:wymiary.y;}
 
 	std::pair<bool,Punkt> sprawdzKolizje(ProstokatKolizji *prostokat);
 
@@ -31,8 +31,7 @@ private:
 	std::pair<bool,Punkt> punktPrzecieciaOdcinkaZProstaPozioma(Punkt p1, Punkt p2, double Y);
 
 private:
-	double bok1;	//Szerokosc
-	double bok2;	//Wysokosc
+	Wymiary wymiary;
 };
 
 #endif /* PROSTOKATKOLIZJI_H_ */

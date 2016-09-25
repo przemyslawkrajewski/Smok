@@ -21,6 +21,8 @@ public:
 
 	virtual void wyznaczKlatkeAnimacji();
 	virtual void wyznaczPrzestrzenKolizji();
+
+	Wymiary zwrocWymiary();
 private:
 	RozmiarMuru rozmiar;
 };

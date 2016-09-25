@@ -37,8 +37,17 @@ public:
 	{
 		return Punkt(x-p.x,y-p.y);
 	}
+	Punkt operator/(double d)
+	{
+		return Punkt(x/d,y/d);
+	}
+	Punkt operator*(double d)
+	{
+		return Punkt(x*d,y*d);
+	}
 };
 
 typedef Punkt Wektor;
+typedef Punkt Wymiary;
 
 #endif /* PUNKT_H_ */

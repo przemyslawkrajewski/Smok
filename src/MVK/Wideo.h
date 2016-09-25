@@ -31,6 +31,7 @@ private:
 
 	void wyswietlenieObrazka(SDL_Texture * grafika,int pozycjaX, int pozycjaY,int wycinekX,int wycinekY,int szerokosc,int wysokosc);
 	void wyswietlenieKlatki(SDL_Texture* grafika,Punkt pozycja,Punkt pozycjaKamery, Punkt klatka, double rozmiarKlatki);
+	void wyswietlenieWycinka(SDL_Texture* grafika,Punkt pozycja,Punkt pozycjaKamery, Punkt pozycjaWycinka, Wymiary rozmiarWycinka);
 
 	void wyswietlenieOkregu(int pozX,int pozY, double promien);
 	void wyswietlenieProstokata(double x, double y, double bok1, double bok2);
@@ -72,6 +73,8 @@ private:
 
 	SDL_Texture * krzyzowiecP,* krzyzowiecL;
 	SDL_Texture * belt;
+
+	SDL_Texture * mur;
 
 	SDL_Texture * pasekOgnia;
 	SDL_Texture * pasekZdrowia;

@@ -644,7 +644,9 @@ void Smok::wyznaczPrzestrzenKolizji()
 	double wiekszyBokGlowy=25;
 	double mniejszyBokGlowy=15;
 
-	prostokaty.push_back(ProstokatKolizji(&pozycja,&predkosc,Punkt(-25*prawo,0),150,170));
+	Wymiary wymiarySmoka = Wymiary(150,170);
+
+	prostokaty.push_back(ProstokatKolizji(&pozycja,&predkosc,Punkt(-25*prawo,0),wymiarySmoka));
 	ustawPrzestrzenKolizji(prostokaty);
 
 	if(!zniszczony)

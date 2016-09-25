@@ -7,16 +7,14 @@
 
 #include "ProstokatKolizji.h"
 
-ProstokatKolizji::ProstokatKolizji(const Punkt *po, const Punkt *v,Punkt p, double b1, double b2): FiguraKolizji(po,v,p)
+ProstokatKolizji::ProstokatKolizji(const Punkt *po, const Punkt *v,Punkt p, Wymiary w): FiguraKolizji(po,v,p)
 {
-	bok1=b1;
-	bok2=b2;
+	wymiary=w;
 }
 
 ProstokatKolizji::ProstokatKolizji(const Punkt *po, const Punkt *v,Punkt p, double b): FiguraKolizji(po,v,p)
 {
-	bok1=b;
-	bok2=b;
+	wymiary = Punkt(b,b);
 }
 
 std::pair<bool,Punkt> ProstokatKolizji::punktPrzecieciaOdcinkaZProstaPionowa(Punkt p1, Punkt p2, double X)
