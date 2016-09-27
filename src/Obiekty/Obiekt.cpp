@@ -16,6 +16,7 @@ Obiekt::Obiekt(): przestrzenKolizji(PrzestrzenKolizji(&pozycja,&predkosc))
 	czyZaczepiony=false;
 
 	zwroconyWPrawo=true;
+	naZiemi=false;
 	zycie=1;
 	obrazenia=0;
 }

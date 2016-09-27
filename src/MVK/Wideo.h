@@ -51,6 +51,7 @@ private:
 	void wyswietlenieStrzal();
 
 	void wyswietlenieMuru();
+	void wyswietlenieZaslon();
 
 	void wyswietlenieKomunikatow();
 
@@ -75,6 +76,7 @@ private:
 	SDL_Texture * belt;
 
 	SDL_Texture * mur;
+	SDL_Texture * zaslona;
 
 	SDL_Texture * pasekOgnia;
 	SDL_Texture * pasekZdrowia;

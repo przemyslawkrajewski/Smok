@@ -46,6 +46,7 @@ public:
 	KontenerPociskow<Strzala>* zwrocStrzaly() {return &strzaly;}		//Todo: ale bedzie trzeba przepisywac a to dlugo trwa
 	KontenerPostaci<Strzelec>* zwrocStrzelcow() {return &strzelcy;}
 	KontenerPrzedmiotow<Mur>* zwrocMury() {return &mury;}
+	KontenerPrzedmiotow<Zaslona>* zwrocZaslony() {return &zaslony;}
 
 	//Obsluga kolizji
 	void obsluzKolizje();
@@ -55,6 +56,7 @@ public:
 	static void nic(Obiekt *o,Obiekt *o2, Punkt punktKolizji);
 	static void zadajObrazenia(Obiekt*o, Obiekt *o2, Punkt punktKolizji);
 	static void kolizjaSmokaZMurem(Obiekt*o, Obiekt *o2, Punkt punktKolizji);
+	static void kolizjaSmokaZPlatforma(Obiekt*o, Obiekt *o2, Punkt punktKolizji);
 
 private:
 	const Punkt wymiaryEkranu;
@@ -73,6 +75,7 @@ private:
 	KontenerPociskow<Strzala> strzaly;
 
 	KontenerPrzedmiotow<Mur> mury;
+	KontenerPrzedmiotow<Zaslona> zaslony;
 };
 
 #endif /* MODEL_H_ */

@@ -14,7 +14,7 @@ Model::Model(): wymiaryEkranu(Punkt(640,480))
 {
 	wyswietlenieInstrukcji=true;
 
-	FabrykaPrzedmiotow::zwrocInstancje()->ustawKontenery(&mury);
+	FabrykaPrzedmiotow::zwrocInstancje()->ustawKontenery(&mury,&zaslony);
 	FabrykaPociskow::zwrocInstancje()->ustawKontenery(&plomienie,&strzaly);
 	FabrykaLudzi::zwrocInstancje()->ustawKontenery(&strzelcy);
 
@@ -32,8 +32,10 @@ void Model::reset()
 
 	smok.reset();
 
-	FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniMur,Punkt(1200,600));
-	//FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniMur,Punkt(1400,500));
+	FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::zaslona,Punkt(1200,600));
+	FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::zaslona,Punkt(1350,600));
+
+	FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniMur,Punkt(1400,300));
 
 	/*FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(1300,130));
 
@@ -139,15 +141,10 @@ void Model::obsluzKolizje()
 	for(std::list<Mur>::iterator i=listaMurow->begin();i!=listaMurow->end();i++)
 	{
 		plomienie.sprawdzKolizje((Obiekt*)&(*i),zniszczPocisk,nic,PrzestrzenKolizji::prostokat,true);
-
-		std::pair<bool,Punkt> kolizja = smok.sprawdzKolizje((Obiekt*)&(*i),PrzestrzenKolizji::prostokat);
-		if(kolizja.first)
-		{
-			kolizjaSmokaZMurem(&smok,&(*i),kolizja.second);
-		}
 	}
 
-	//mury.sprawdzKolizje(&smok,nic,kolizjaSmokaZMurem,PrzestrzenKolizji::prostokat,false);
+	mury.sprawdzKolizje(&smok,nic,kolizjaSmokaZMurem,PrzestrzenKolizji::prostokat,false);
+	zaslony.sprawdzKolizje(&smok,nic,kolizjaSmokaZPlatforma,PrzestrzenKolizji::prostokat,false);
 }
 
 void Model::zniszcz(Obiekt *o,Obiekt *o2,Punkt punktKolizji)
@@ -221,6 +218,25 @@ void Model::kolizjaSmokaZMurem(Obiekt*o, Obiekt *o2, Punkt punktKolizji)
 	if(o->zwrocPozycje().y-prostokat1.zwrocBok2()/32<maxY)
 	{
 		o->zatrzymajNaSuficie();
+	}
+
+
+}
+
+void Model::kolizjaSmokaZPlatforma(Obiekt*o, Obiekt *o2, Punkt punktKolizji)
+{
+	assert("Smok nie ma ustalonego prostokata kolizji" && !o->zwrocPrzestrzenKolizji()->zwrocProstokaty()->empty());
+	ProstokatKolizji prostokat1 = (*(o->zwrocPrzestrzenKolizji()->zwrocProstokaty()))[0];
+	ProstokatKolizji prostokat2 = (*(o2->zwrocPrzestrzenKolizji()->zwrocProstokaty()))[0];
+	double minY = o2->zwrocPozycje().y+prostokat1.zwrocBok2()/2+prostokat2.zwrocBok2()/2;
+	double maxY = o2->zwrocPozycje().y-prostokat1.zwrocBok2()/2-prostokat2.zwrocBok2()/2;
+	double minX = o2->zwrocPozycje().x-prostokat1.zwrocBok1()/2-prostokat2.zwrocBok1()/2;
+	double maxX = o2->zwrocPozycje().x+prostokat1.zwrocBok1()/2+prostokat2.zwrocBok1()/2;
+
+
+	if((o->zwrocPozycje().y+prostokat1.zwrocBok2()/8>minY || o->zwrocPredkosc().y<-prostokat1.zwrocBok2()/8) && prostokat1.zwrocPozycje().x-6*prostokat1.zwrocBok1()/8>minX && prostokat1.zwrocPozycje().x+6*prostokat1.zwrocBok1()/8<maxX )
+	{
+			o->postawNaZiemi(minY);
 	}
 
 

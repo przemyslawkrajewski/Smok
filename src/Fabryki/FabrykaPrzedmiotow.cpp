@@ -9,6 +9,7 @@
 
 FabrykaPrzedmiotow* FabrykaPrzedmiotow::ptr=0;
 KontenerPrzedmiotow<Mur>* FabrykaPrzedmiotow::mury=0;
+KontenerPrzedmiotow<Zaslona>* FabrykaPrzedmiotow::zaslony=0;
 
 
 FabrykaPrzedmiotow* FabrykaPrzedmiotow::zwrocInstancje()
@@ -26,8 +27,9 @@ FabrykaPrzedmiotow::~FabrykaPrzedmiotow()
 	delete ptr;
 }
 
-void FabrykaPrzedmiotow::ustawKontenery(KontenerPrzedmiotow<Mur>* m)
+void FabrykaPrzedmiotow::ustawKontenery(KontenerPrzedmiotow<Mur>* m, KontenerPrzedmiotow<Zaslona>* z)
 {
+	zaslony=z;
 	mury=m;
 }
 
@@ -43,6 +45,9 @@ void FabrykaPrzedmiotow::stworzPrzedmiot(TypPrzedmiotu typ, Punkt pozycja)
 		assert("Kontener 'Mury' nie ustawiony" && mury!=0);
 		(mury->dodaj(Mur(Mur::duzy,pozycja)))->wyznaczPrzestrzenKolizji();
 		break;
+	case zaslona:
+		assert("Kontener 'Mury' nie ustawiony" && zaslony!=0);
+		(zaslony->dodaj(Zaslona(pozycja)))->wyznaczPrzestrzenKolizji();
 	}
 }
 

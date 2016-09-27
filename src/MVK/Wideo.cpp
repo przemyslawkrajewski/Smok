@@ -29,6 +29,9 @@ Wideo::Wideo(Model *nModel)
 	krzyzowiecL=0;
 	belt=0;
 
+	mur=0;
+	zaslona=0;
+
 	odNowa=0;
 	instrukcja=0;
 
@@ -62,6 +65,7 @@ void Wideo::zamkniecieOkna()
 	SDL_DestroyTexture(belt);
 
 	SDL_DestroyTexture(mur);
+	SDL_DestroyTexture(zaslona);
 
 	SDL_DestroyTexture(tlo);
 	SDL_DestroyTexture(drugiPlan);
@@ -123,6 +127,7 @@ int Wideo::inicjacjaOkna(int szerokoscOkna,int wysokoscOkna,int glebiaKolorowOkn
 	   wczytanieObrazka("Grafika/plomien.bmp",&plomien) ||
 	   wczytanieObrazka("Grafika/Belt.bmp",&belt) ||
 	   wczytanieObrazka("Grafika/Mur.bmp",&mur) ||
+	   wczytanieObrazka("Grafika/Zaslona.bmp",&zaslona) ||
 	   wczytanieObrazka("Grafika/Chodnik1.bmp",&pierwszyPlan) ||
 	   wczytanieObrazka("Grafika/DrugiPlanTrawa.bmp",&drugiPlan) ||
 	   wczytanieObrazka("Grafika/TloChmurno.bmp",&tlo) ||
@@ -484,6 +489,24 @@ void Wideo::wyswietlenieMuru()
 	}
 }
 
+void Wideo::wyswietlenieZaslon()
+{
+	Punkt pozycjaKamery=model->zwrocKamere()->zwrocPozycje();
+	int rozmiarKlatki=30;
+
+	std::list<Zaslona> *s = model->zwrocZaslony()->zwrocObiekty();
+
+	for(std::list<Zaslona>::iterator i=s->begin(); i!=s->end() ;i++)
+	{
+		if(!i->czyIstnieje()) continue;
+		Punkt pozycja = i->zwrocPozycje();
+		Punkt klatka = i->zwrocKlatkeAnimacji();
+
+		wyswietlenieWycinka(zaslona,pozycja+Punkt(130,-45),pozycjaKamery,Punkt(),Wymiary(260,90));
+		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
+	}
+}
+
 void Wideo::wyswietlenieKomunikatow()
 {
 	if(model->czyWyswietlacInstrukcje()) wyswietlenieObrazka(instrukcja,0,0,0,0,640,480);
@@ -520,6 +543,7 @@ void Wideo::wyswietlenieEkranu()
 	wyswietleniePierwszegoPlanu(x,y);
 
 	wyswietlenieMuru();
+	wyswietlenieZaslon();
 
 	wyswietlenieStrzelcow();
 	wyswietlenieSmoka();
