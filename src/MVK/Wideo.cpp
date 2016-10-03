@@ -492,7 +492,7 @@ void Wideo::wyswietlenieMuru()
 void Wideo::wyswietlenieZaslon()
 {
 	Punkt pozycjaKamery=model->zwrocKamere()->zwrocPozycje();
-	int rozmiarKlatki=30;
+	int rozmiarKlatki=260;
 
 	std::list<Zaslona> *s = model->zwrocZaslony()->zwrocObiekty();
 
@@ -502,7 +502,10 @@ void Wideo::wyswietlenieZaslon()
 		Punkt pozycja = i->zwrocPozycje();
 		Punkt klatka = i->zwrocKlatkeAnimacji();
 
-		wyswietlenieWycinka(zaslona,pozycja+Punkt(130,-45),pozycjaKamery,Punkt(),Wymiary(260,90));
+		wyswietlenieKlatki(zaslona,pozycja,pozycjaKamery,Punkt(0,0),rozmiarKlatki);
+		if(!(i->czyZniszczony()))
+			wyswietlenieKlatki(zaslona,pozycja,pozycjaKamery,klatka,rozmiarKlatki);
+
 		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}
 }

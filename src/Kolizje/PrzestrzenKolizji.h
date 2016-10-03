@@ -20,6 +20,7 @@ public:
 
 	PrzestrzenKolizji(const Punkt *p, const Punkt* v);
 
+	void wyczyscFigury();
 	void ustawOkregi(std::vector<OkragKolizji> f);
 	void ustawProstokaty(std::vector<ProstokatKolizji> f);
 	std::vector<OkragKolizji>* zwrocOkregi() {return &okregi;}

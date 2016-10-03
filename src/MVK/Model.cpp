@@ -29,6 +29,7 @@ void Model::reset()
 	plomienie.wyczysc();
 	strzaly.wyczysc();
 	mury.wyczysc();
+	zaslony.wyczysc();
 
 	smok.reset();
 
@@ -100,6 +101,9 @@ void Model::wyznaczKolejnyStanObiektow()
 	strzaly.wyznaczKolejnyStan();
 	strzaly.wyznaczKlatkeAnimacji();
 
+	zaslony.wyznaczKolejnyStan();
+	zaslony.wyznaczKlatkeAnimacji();
+
 	if(strzelcy.czyPusty() || smok.czyZniszczony()) wyswietlenieOdNowa=true;
 
 	//									Sadzenie krzyzowcow
@@ -141,6 +145,12 @@ void Model::obsluzKolizje()
 	for(std::list<Mur>::iterator i=listaMurow->begin();i!=listaMurow->end();i++)
 	{
 		plomienie.sprawdzKolizje((Obiekt*)&(*i),zniszczPocisk,nic,PrzestrzenKolizji::prostokat,true);
+	}
+	//Plomienie Zaslony
+	std::list<Zaslona> *listaZaslon = zaslony.zwrocObiekty();
+	for(std::list<Zaslona>::iterator i=listaZaslon->begin();i!=listaZaslon->end();i++)
+	{
+		plomienie.sprawdzKolizje((Obiekt*)&(*i),zniszczPocisk,zadajObrazenia,PrzestrzenKolizji::prostokat,true);
 	}
 
 	mury.sprawdzKolizje(&smok,nic,kolizjaSmokaZMurem,PrzestrzenKolizji::prostokat,false);
@@ -236,7 +246,7 @@ void Model::kolizjaSmokaZPlatforma(Obiekt*o, Obiekt *o2, Punkt punktKolizji)
 
 	if((o->zwrocPozycje().y+prostokat1.zwrocBok2()/8>minY || o->zwrocPredkosc().y<-prostokat1.zwrocBok2()/8) && prostokat1.zwrocPozycje().x-6*prostokat1.zwrocBok1()/8>minX && prostokat1.zwrocPozycje().x+6*prostokat1.zwrocBok1()/8<maxX )
 	{
-			o->postawNaZiemi(minY);
+			o->postawNaZiemi(minY+prostokat2.zwrocPozycjeWzgledemObiektu().y);
 	}
 
 

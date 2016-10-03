@@ -15,6 +15,8 @@ class Przedmiot : public Obiekt
 public:
 	Przedmiot();
 
+	virtual void wyznaczKolejnyStan() {}
+
 };
 
 #endif /* SRC_PRZEDMIOT_H_ */

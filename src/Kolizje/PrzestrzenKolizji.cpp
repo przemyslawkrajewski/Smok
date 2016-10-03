@@ -49,6 +49,12 @@ std::pair<bool,Punkt> PrzestrzenKolizji::sprawdzKolizje(PrzestrzenKolizji *przes
 	return std::pair<bool,Punkt>(false,Punkt());
 }
 
+void PrzestrzenKolizji::wyczyscFigury()
+{
+	okregi.clear();
+	prostokaty.clear();
+}
+
 void PrzestrzenKolizji::ustawOkregi(std::vector<OkragKolizji> f)
 {
 	okregi.clear();

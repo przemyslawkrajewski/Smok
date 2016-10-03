@@ -10,7 +10,7 @@
 Zaslona::Zaslona(Punkt p)
 {
 	pozycja=p;
-	zycie=1;
+	zycie=500;
 	wyznaczPrzestrzenKolizji();
 	wyznaczKlatkeAnimacji();
 }
@@ -22,17 +22,31 @@ Zaslona::~Zaslona()
 
 void Zaslona::wyznaczPrzestrzenKolizji()
 {
-	Wymiary wymiary = Wymiary(230,70);
+	Wymiary wymiary = Wymiary(230,30);
 	std::vector<ProstokatKolizji> prostokaty;
 	prostokaty.clear();
 
-	prostokaty.push_back(ProstokatKolizji(&pozycja,&predkosc,Punkt(0,0),wymiary));
+	prostokaty.push_back(ProstokatKolizji(&pozycja,&predkosc,Punkt(0,20),wymiary));
 	ustawPrzestrzenKolizji(prostokaty);
 }
 
+void Zaslona::wyznaczKolejnyStan()
+{
+	std::cout << zycie << "\n";
+	if(zycie<0)
+	{
+		zycie=0;
+		przestrzenKolizji.wyczyscFigury();
+		zniszcz();
+	}
+}
 
 void Zaslona::wyznaczKlatkeAnimacji()
 {
-	klatkaAnimacji.x=0;
+	if(zycie>375) klatkaAnimacji.x=1;
+	else if (zycie>250) klatkaAnimacji.x=2;
+	else if (zycie>125) klatkaAnimacji.x=3;
+	else klatkaAnimacji.x=4;
+
 	klatkaAnimacji.y=0;
 }

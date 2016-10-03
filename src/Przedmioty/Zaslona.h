@@ -17,6 +17,7 @@ public:
 	Zaslona(Punkt pozycja);
 	~Zaslona();
 
+	virtual void wyznaczKolejnyStan();
 	virtual void wyznaczKlatkeAnimacji();
 	virtual void wyznaczPrzestrzenKolizji();
 
