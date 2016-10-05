@@ -69,8 +69,8 @@ void Obiekt::ustawPunktZaczepu(Obiekt *p)
 
 void Obiekt::usunPunktZaczepu()
 {
-	pozycja.x = punktZaczepu->zwrocPozycje().x;
-	pozycja.y = punktZaczepu->zwrocPozycje().y;
+	pozycja.x = punktZaczepu->zwrocPozycje().x+pozycjaWzgledemObiektu.x;
+	pozycja.y = punktZaczepu->zwrocPozycje().y+pozycjaWzgledemObiektu.y;
 	punktZaczepu=0;
 	czyZaczepiony=false;
 }
