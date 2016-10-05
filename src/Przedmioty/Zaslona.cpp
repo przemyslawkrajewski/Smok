@@ -32,7 +32,6 @@ void Zaslona::wyznaczPrzestrzenKolizji()
 
 void Zaslona::wyznaczKolejnyStan()
 {
-	std::cout << zycie << "\n";
 	if(zycie<0)
 	{
 		zycie=0;
