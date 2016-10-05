@@ -169,6 +169,7 @@ int Wideo::wczytanieObrazka(const char* nazwa, SDL_Texture ** grafika)
 	if(bmp)
 	{
 		//std::cout << "[  OK  ] ";
+		odszyfrowanieObrazka(bmp);
 		SDL_SetColorKey( bmp, SDL_TRUE, SDL_MapRGB( bmp->format, 255, 0, 128 ) );
 		*grafika = SDL_CreateTextureFromSurface(render, bmp);
 		 //SDL_SetTextureBlendMode(*grafika,SDL_BLENDMODE_BLEND);
@@ -177,6 +178,97 @@ int Wideo::wczytanieObrazka(const char* nazwa, SDL_Texture ** grafika)
 	//std::cout << "wczytywanie obrazka " << nazwa << "\n";
 	SDL_FreeSurface(bmp);
 	return (*grafika==NULL)?1:0;
+}
+
+void Wideo::szyfrowanieObrazka(SDL_Surface* grafika)
+{
+	unsigned long long klucz=0x3739AA;
+	int p1=0,p2=0,p3=0;
+	for(int y=0;y<grafika->h;y+=1)
+	{
+		for(int x=0;x<grafika->w;x+=1)
+		{
+			Uint8 * piksele = (Uint8*)grafika->pixels;	//Tablica
+
+			Uint8 wartosc1 = piksele[ ( y * grafika->pitch ) + x*3   ]; //Pobieranie
+			Uint8 wartosc2 = piksele[ ( y * grafika->pitch ) + x*3 +1]; //Pobieranie
+			Uint8 wartosc3 = piksele[ ( y * grafika->pitch ) + x*3 +2]; //Pobieranie
+
+			unsigned long long wartosc=wartosc1 +(wartosc2<<8)+(wartosc3<<16);
+
+			for(int i=0;i<7;i++)
+			{
+				wartosc=(wartosc>>1)+((wartosc & 1)<<23);
+				wartosc=(wartosc>>1)+((wartosc & 1)<<23);
+				wartosc=wartosc xor klucz;
+			}
+
+			wartosc1=wartosc;
+			wartosc2=(wartosc)>>8;
+			wartosc3=(wartosc)>>16;
+
+			wartosc1=wartosc1 xor p1;
+			wartosc2=wartosc2 xor p2;
+			wartosc3=wartosc3 xor p3;
+
+			p1=wartosc1;
+			p2=wartosc2;
+			p3=wartosc3;
+
+
+			piksele += (y * grafika->pitch) + (x * 3);
+			*((Uint8*)piksele) = wartosc1;
+			piksele ++;
+			*((Uint8*)piksele) = wartosc2;
+			piksele ++;
+			*((Uint8*)piksele) = wartosc3;
+		}
+	}
+}
+
+void Wideo::odszyfrowanieObrazka(SDL_Surface* grafika)
+{
+	unsigned long long klucz=0x3739AA;
+	for(int y=grafika->h-1;y>-1;y-=1)
+	{
+		for(int x=grafika->w-1;x>-1;x-=1)
+		{
+			if(x==0 && y==0) break;
+			Uint8 * piksele = (Uint8*)grafika->pixels;	//Tablica
+
+			Uint8 wartosc1 = piksele[ ( y * grafika->pitch ) + x*3   ]; //Pobieranie
+			Uint8 wartosc2 = piksele[ ( y * grafika->pitch ) + x*3 +1]; //Pobieranie
+			Uint8 wartosc3 = piksele[ ( y * grafika->pitch ) + x*3 +2]; //Pobieranie
+
+			Uint8 p1 = piksele[ ( y * grafika->pitch ) + (x-1)*3  ]; //Pobieranie
+			Uint8 p2 = piksele[ ( y * grafika->pitch ) + (x-1)*3 +1]; //Pobieranie
+			Uint8 p3 = piksele[ ( y * grafika->pitch ) + (x-1)*3 +2]; //Pobieranie
+
+			wartosc1=wartosc1 xor p1;
+			wartosc2=wartosc2 xor p2;
+			wartosc3=wartosc3 xor p3;
+
+			unsigned long long wartosc=wartosc1 +(wartosc2<<8)+(wartosc3<<16);
+
+			for(int i=0;i<7;i++)
+			{
+				wartosc=wartosc xor klucz;
+				wartosc=((wartosc<<1) +(wartosc>>23)) & 0xFFFFFF;
+				wartosc=((wartosc<<1) +(wartosc>>23)) & 0xFFFFFF;
+			}
+
+			wartosc1=wartosc;
+			wartosc2=(wartosc)>>8;
+			wartosc3=(wartosc)>>16;
+
+			piksele += (y * grafika->pitch) + (x * 3);
+			*((Uint8*)piksele) = wartosc1;
+			piksele ++;
+			*((Uint8*)piksele) = wartosc2;
+			piksele ++;
+			*((Uint8*)piksele) = wartosc3;
+		}
+	}
 }
 
 void Wideo::wyswietlenieObrazka(SDL_Texture * grafika,int pozycjaX, int pozycjaY,int wycinekX,int wycinekY,int szerokosc,int wysokosc)

@@ -12,6 +12,7 @@
 //#define DRAW_CHECKSPHERE
 
 #include <iostream>
+#include <fstream>
 #include <SDL2/SDL.h>
 #include "Model.h"
 
@@ -28,6 +29,8 @@ public:
 
 private:
 	int wczytanieObrazka(const char* nazwa, SDL_Texture ** grafika);
+	void szyfrowanieObrazka(SDL_Surface* grafika);
+	void odszyfrowanieObrazka(SDL_Surface* grafika);
 
 	void wyswietlenieObrazka(SDL_Texture * grafika,int pozycjaX, int pozycjaY,int wycinekX,int wycinekY,int szerokosc,int wysokosc);
 	void wyswietlenieKlatki(SDL_Texture* grafika,Punkt pozycja,Punkt pozycjaKamery, Punkt klatka, double rozmiarKlatki);
