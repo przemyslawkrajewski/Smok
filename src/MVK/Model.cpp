@@ -34,7 +34,7 @@ void Model::reset()
 	smok.reset();
 
 	FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::zaslona,Punkt(1200,600));
-	FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::zaslona,Punkt(1350,600));
+	FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::zaslona,Punkt(1500,600));
 
 	FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniMur,Punkt(1400,300));
 
@@ -44,7 +44,7 @@ void Model::reset()
 	{
 		int x = rand()%3000+5000;
 		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(x,130));
-	}*/
+	}//*/
 	smok.ustawPozycje(Punkt(1000,100));
 	kamera.ustawPozycje(smok.zwrocPozycje());
 	myszka.ustawX(500);
@@ -144,7 +144,7 @@ void Model::obsluzKolizje()
 	std::list<Mur> *listaMurow = mury.zwrocObiekty();
 	for(std::list<Mur>::iterator i=listaMurow->begin();i!=listaMurow->end();i++)
 	{
-		plomienie.sprawdzKolizje((Obiekt*)&(*i),zniszczPocisk,nic,PrzestrzenKolizji::prostokat,true);
+		plomienie.sprawdzKolizje((Obiekt*)&(*i),kolizjaPlomieniazMurem,nic,PrzestrzenKolizji::prostokat,true);
 	}
 	//Plomienie Zaslony
 	std::list<Zaslona> *listaZaslon = zaslony.zwrocObiekty();
@@ -165,6 +165,11 @@ void Model::zniszczPocisk(Obiekt *o,Obiekt *o2,Punkt punktKolizji)
 {
 	if(!o->czyZniszczony())
 	{
+		if(punktKolizji.x>o2->zwrocPozycje().x) punktKolizji.x--;
+		else punktKolizji.x++;
+		if(punktKolizji.y>o2->zwrocPozycje().y) punktKolizji.y--;
+		else punktKolizji.y++;
+
 		o->ustawPozycje(punktKolizji);
 		o->ustawPunktZaczepu(o2);
 	}
@@ -250,4 +255,27 @@ void Model::kolizjaSmokaZPlatforma(Obiekt*o, Obiekt *o2, Punkt punktKolizji)
 	}
 
 
+}
+
+void Model::kolizjaPlomieniazMurem(Obiekt *o,Obiekt *o2,Punkt punktKolizji)
+{
+	ProstokatKolizji prostokat=(*(o2->zwrocPrzestrzenKolizji()->zwrocProstokaty()))[0];
+	Punkt pozycja1=o->zwrocPozycje();
+	Punkt pozycja2=(o->zwrocPozycje())-(o->zwrocPredkosc());
+	if(pozycja1.x>prostokat.zwrocPozycje().x-prostokat.zwrocBok1()/2 && pozycja1.x<prostokat.zwrocPozycje().x+prostokat.zwrocBok1()/2 &&
+	   pozycja1.y>prostokat.zwrocPozycje().y-prostokat.zwrocBok2()/2 && pozycja1.y<prostokat.zwrocPozycje().y+prostokat.zwrocBok2()/2 &&
+	   (
+	     (pozycja2.x>prostokat.zwrocPozycje().x-prostokat.zwrocBok1()/2 && pozycja2.x<prostokat.zwrocPozycje().x+prostokat.zwrocBok1()/2) &&
+	     (pozycja2.y>prostokat.zwrocPozycje().y-prostokat.zwrocBok2()/2 && pozycja2.y<prostokat.zwrocPozycje().y+prostokat.zwrocBok2()/2)
+	   )
+	  )
+	{
+		o->usun();
+	}
+	else if(!o->czyZniszczony())
+	{
+		o->ustawPozycje(punktKolizji);
+		o->ustawPunktZaczepu(o2);
+	}
+	o->zniszcz();
 }

@@ -450,9 +450,8 @@ void Smok::wyznaczGlowe(Klawiatura* klawiatura, Myszka *myszka)
 			double czasTrwania=parametry.sredniCzasTrwaniaOgnia+parametry.odchylenieCzasuTrwaniaOgnia*wspolczynnikSily;
 
 			Punkt p;
-			double rozrzut = (rand()%4000)/100;
-			p.x=parametry.poprawkaOgnia.x+pozycja.x+pozycjaGlowy.x+(parametry.minimalnaOdleglosc+rozrzut)*cos(katOgnia)-predkosc.x;
-			p.y=parametry.poprawkaOgnia.y+pozycja.y-pozycjaGlowy.y+(parametry.minimalnaOdleglosc+rozrzut)*sin(katOgnia);
+			p.x=parametry.poprawkaOgnia.x+pozycja.x+pozycjaGlowy.x+(parametry.minimalnaOdleglosc)*cos(katOgnia)-predkosc.x;
+			p.y=parametry.poprawkaOgnia.y+pozycja.y-pozycjaGlowy.y+(parametry.minimalnaOdleglosc)*sin(katOgnia);
 			Punkt v;
 			v.x=predkoscOgnia*cos(katOgnia)+predkosc.x;
 			v.y=predkoscOgnia*sin(katOgnia);

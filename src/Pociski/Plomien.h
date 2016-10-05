@@ -29,8 +29,8 @@ struct ParametryOgnia
 		predkoscOpadania=5;
 
 		bazoweObrazenia=5;
-		obrazeniaNaCelu=0.2;
-		obrazeniaNaZiemi=0.05;
+		obrazeniaNaCelu=0.005;
+		obrazeniaNaZiemi=0.002;
 	}
 };
 

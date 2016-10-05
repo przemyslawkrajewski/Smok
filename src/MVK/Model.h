@@ -55,6 +55,7 @@ public:
 	static void usun(Obiekt *o,Obiekt *o2, Punkt punktKolizji);
 	static void nic(Obiekt *o,Obiekt *o2, Punkt punktKolizji);
 	static void zadajObrazenia(Obiekt*o, Obiekt *o2, Punkt punktKolizji);
+	static void kolizjaPlomieniazMurem(Obiekt *o,Obiekt *o2,Punkt punktKolizji);
 	static void kolizjaSmokaZMurem(Obiekt*o, Obiekt *o2, Punkt punktKolizji);
 	static void kolizjaSmokaZPlatforma(Obiekt*o, Obiekt *o2, Punkt punktKolizji);
 

@@ -66,9 +66,9 @@ struct ParametrySmoka
 		zuzycieOgnia=0.05;
 		przerwaMiedzyMiotaniem=20;
 		odchylenieKataOgnia=5*3.14/180;
-		minimalnaPredkoscOgnia=25;	//srednia
-		maksymalnaPredkoscOgnia=40;  //srednia
-		odchyleniePredkosciOgnia=20; // od 0 do X  i liniowo zalezy od ilosci ognia
+		minimalnaPredkoscOgnia=20;	//srednia
+		maksymalnaPredkoscOgnia=35;  //srednia
+		odchyleniePredkosciOgnia=40; // od 0 do X  i liniowo zalezy od ilosci ognia
 		sredniCzasTrwaniaOgnia=10;
 		odchylenieCzasuTrwaniaOgnia=5;
 		minimalnaOdleglosc=40;
