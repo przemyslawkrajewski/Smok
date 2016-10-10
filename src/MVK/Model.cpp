@@ -10,7 +10,7 @@
 ParametryObiektow Obiekt::parametryObiektow;
 ParametrySmoka Smok::parametry;
 
-Model::Model(): wymiaryEkranu(Punkt(640,480))
+Model::Model(int szerOkna,int wysOkna, bool ekran): wymiaryEkranu(Punkt(szerOkna,wysOkna)),pelnyEkran(ekran)
 {
 	wyswietlenieInstrukcji=true;
 
@@ -47,8 +47,8 @@ void Model::reset()
 	}//*/
 	smok.ustawPozycje(Punkt(1000,100));
 	kamera.ustawPozycje(smok.zwrocPozycje());
-	myszka.ustawX(500);
-	myszka.ustawY(240);
+	myszka.ustawX(wymiaryEkranu.x/2);
+	myszka.ustawY(wymiaryEkranu.y/2);
 	wyznaczKolejnyStanObiektow();
 	wyznaczKolejnyStanObiektow();
 }
@@ -72,9 +72,9 @@ void Model::wyznaczKolejnyStanObiektow()
 {
 	//Liczymy wspolrzedne myszki wzgledem glowy Smoka i Wyznaczamy kolejny stan Smoka
 	Punkt punktMyszkiSmoka;
-	if(kamera.zwrocY()<240) {punktMyszkiSmoka.y=wymiaryEkranu.y-smok.zwrocPozycje().y+smok.zwrocPozycjeGlowy().y-myszka.zwrocY();}
+	if(kamera.zwrocY()<wymiaryEkranu.y/2) {punktMyszkiSmoka.y=wymiaryEkranu.y-smok.zwrocPozycje().y+smok.zwrocPozycjeGlowy().y-myszka.zwrocY();}
 						else {punktMyszkiSmoka.y=wymiaryEkranu.y/2-smok.zwrocPozycje().y+kamera.zwrocY()+smok.zwrocPozycjeGlowy().y-myszka.zwrocY();}
-	punktMyszkiSmoka.x=320+smok.zwrocPozycje().x-kamera.zwrocX()+smok.zwrocPozycjeGlowy().x-myszka.zwrocX();
+	punktMyszkiSmoka.x=wymiaryEkranu.x/2+smok.zwrocPozycje().x-kamera.zwrocX()+smok.zwrocPozycjeGlowy().x-myszka.zwrocX();
 	Myszka myszkaSmoka(punktMyszkiSmoka,myszka.zwrocLPM(),myszka.zwrocPPM());
 	smok.wyznaczKolejnyStan(&klawiatura,&myszkaSmoka);
 	smok.wyznaczKlatkeAnimacji();
@@ -83,8 +83,8 @@ void Model::wyznaczKolejnyStanObiektow()
 	//To samo z kamera
 	Punkt punktMyszkiKamery(myszka.zwrocX(),myszka.zwrocY());
 	Obiekt* obiektDoSledzenia = (&smok);
-	if(smok.czyZwroconyWPrawo() && punktMyszkiKamery.x<480) punktMyszkiKamery.x=480;
-	if(!smok.czyZwroconyWPrawo() && punktMyszkiKamery.x>160) punktMyszkiKamery.x=160;
+	if(smok.czyZwroconyWPrawo() && punktMyszkiKamery.x<3*wymiaryEkranu.x/4) punktMyszkiKamery.x=3*wymiaryEkranu.x/4;
+	if(!smok.czyZwroconyWPrawo() && punktMyszkiKamery.x>wymiaryEkranu.x/4) punktMyszkiKamery.x=wymiaryEkranu.x/4;
 	punktMyszkiKamery.x+=obiektDoSledzenia->zwrocPozycje().x+-wymiaryEkranu.x/2;
 	punktMyszkiKamery.y=obiektDoSledzenia->zwrocPozycje().y-myszka.zwrocY()+wymiaryEkranu.y/2;
 	kamera.wyznaczKolejnyStan(punktMyszkiKamery);

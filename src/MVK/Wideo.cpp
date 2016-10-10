@@ -80,11 +80,16 @@ void Wideo::zamkniecieOkna()
 
 	SDL_DestroyTexture(tmp);
 	SDL_DestroyTexture(tmp2);
+
+	SDL_DestroyWindow(okno);
 	SDL_Quit();
 }
 
-int Wideo::inicjacjaOkna(int szerokoscOkna,int wysokoscOkna,int glebiaKolorowOkna, bool fullscreen)
+int Wideo::inicjacjaOkna(int szerOkna,int wysOkna,int glebiaKolorowOkna, bool fullscreen)
 {
+	szerokoscOkna=szerOkna;
+	wysokoscOkna=wysOkna;
+
 	//int mode=SDL_HWSURFACE | SDL_DOUBLEBUF;
 	//if(fullscreen) mode=mode| SDL_FULLSCREEN;
 	//std::cout << "Inicjacja SDL\n";
@@ -104,6 +109,8 @@ int Wideo::inicjacjaOkna(int szerokoscOkna,int wysokoscOkna,int glebiaKolorowOkn
 		return 1;
 	}
 
+	pelnyEkran(fullscreen);
+
 	//std::cout << "Tworzenie renderu\n";
 	render = SDL_CreateRenderer(okno, -1, SDL_RENDERER_ACCELERATED);
 	if (!render)
@@ -115,6 +122,26 @@ int Wideo::inicjacjaOkna(int szerokoscOkna,int wysokoscOkna,int glebiaKolorowOkn
 	}
 	//SDL_SetRenderDrawBlendMode(render,SDL_BLENDMODE_BLEND);
 
+	return 0;
+}
+
+void Wideo::pelnyEkran(bool p)
+{
+	Uint32 flags;
+	if(p)
+		flags = (SDL_GetWindowFlags(okno) | SDL_WINDOW_FULLSCREEN_DESKTOP);
+	else
+		flags = (SDL_GetWindowFlags(okno) & !SDL_WINDOW_FULLSCREEN_DESKTOP);
+
+	if (SDL_SetWindowFullscreen(okno, flags) < 0) return;
+
+	if ((flags & SDL_WINDOW_FULLSCREEN_DESKTOP) != 0)
+		SDL_RenderSetLogicalSize(render, szerokoscOkna, wysokoscOkna);
+	SDL_SetWindowSize(okno, szerokoscOkna, wysokoscOkna);//*/
+}
+
+void Wideo::wczytanieObrazkow()
+{
     //std::cout << "Wczytywanie obrazkow\n";
 	if(wczytanieObrazka("Grafika/SmokPP.bmp",&smokPP) ||
 	   wczytanieObrazka("Grafika/SmokTP.bmp",&smokTP) ||
@@ -139,28 +166,7 @@ int Wideo::inicjacjaOkna(int szerokoscOkna,int wysokoscOkna,int glebiaKolorowOkn
 	   )
 	{
 		std::cout << "Brak plikow z grafika\n";
-		return 1;
 	}
-	
-	if(fullscreen)
-	{
-		std::cout << "Fullscreen\n";
-		Uint32 flags = (SDL_GetWindowFlags(okno) | SDL_WINDOW_FULLSCREEN_DESKTOP);
-		if (SDL_SetWindowFullscreen(okno, flags) < 0) // NOTE: this takes FLAGS as the second param, NOT true/false!
-		{
-			std::cout << "Toggling fullscreen mode failed: " << SDL_GetError() << std::endl;
-			return 1;
-		}
-
-		if ((flags & SDL_WINDOW_FULLSCREEN_DESKTOP) != 0)
-		{
-			//SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
-			SDL_RenderSetLogicalSize(render, szerokoscOkna, wysokoscOkna);
-		}
-		SDL_SetWindowSize(okno, szerokoscOkna, wysokoscOkna);//*/
-	}
-
-	return 0;
 }
 
 int Wideo::wczytanieObrazka(const char* nazwa, SDL_Texture ** grafika)
@@ -172,7 +178,7 @@ int Wideo::wczytanieObrazka(const char* nazwa, SDL_Texture ** grafika)
 		odszyfrowanieObrazka(bmp);
 		SDL_SetColorKey( bmp, SDL_TRUE, SDL_MapRGB( bmp->format, 255, 0, 128 ) );
 		*grafika = SDL_CreateTextureFromSurface(render, bmp);
-		 //SDL_SetTextureBlendMode(*grafika,SDL_BLENDMODE_BLEND);
+		 SDL_SetTextureBlendMode(*grafika,SDL_BLENDMODE_BLEND);
 	}
 	//else 		std::cout << "[NOT OK] ";
 	//std::cout << "wczytywanie obrazka " << nazwa << "\n";
@@ -288,18 +294,18 @@ void Wideo::wyswietlenieObrazka(SDL_Texture * grafika,int pozycjaX, int pozycjaY
 
 void Wideo::wyswietlenieKlatki(SDL_Texture* grafika,Punkt pozycja,Punkt pozycjaKamery, Punkt klatka, double rozmiarKlatki)
 {
-	if(model->zwrocKamere()->zwrocY()<240)
-		wyswietlenieObrazka(grafika,	-pozycjaKamery.x+pozycja.x-rozmiarKlatki/2+320,	480-pozycja.y-rozmiarKlatki/2,					1+klatka.x*(rozmiarKlatki+1),	1+klatka.y*(rozmiarKlatki+1),	rozmiarKlatki,rozmiarKlatki);
+	if(model->zwrocKamere()->zwrocY()<wysokoscOkna/2)
+		wyswietlenieObrazka(grafika,	-pozycjaKamery.x+pozycja.x-rozmiarKlatki/2+szerokoscOkna/2,	wysokoscOkna-pozycja.y-rozmiarKlatki/2,					1+klatka.x*(rozmiarKlatki+1),	1+klatka.y*(rozmiarKlatki+1),	rozmiarKlatki,rozmiarKlatki);
 	else
-		wyswietlenieObrazka(grafika,	-pozycjaKamery.x+pozycja.x-rozmiarKlatki/2+320,	240+pozycjaKamery.y-pozycja.y-rozmiarKlatki/2,	1+klatka.x*(rozmiarKlatki+1),	1+klatka.y*(rozmiarKlatki+1),	rozmiarKlatki,rozmiarKlatki);
+		wyswietlenieObrazka(grafika,	-pozycjaKamery.x+pozycja.x-rozmiarKlatki/2+szerokoscOkna/2,	wysokoscOkna/2+pozycjaKamery.y-pozycja.y-rozmiarKlatki/2,	1+klatka.x*(rozmiarKlatki+1),	1+klatka.y*(rozmiarKlatki+1),	rozmiarKlatki,rozmiarKlatki);
 }
 
 void Wideo::wyswietlenieWycinka(SDL_Texture* grafika,Punkt pozycja,Punkt pozycjaKamery, Punkt pozycjaWycinka, Wymiary rozmiarWycinka)
 {
-	if(model->zwrocKamere()->zwrocY()<240)
-		wyswietlenieObrazka(grafika,	-pozycjaKamery.x+pozycja.x-rozmiarWycinka.x+320,	480-pozycja.y-rozmiarWycinka.y,					pozycjaWycinka.x,	pozycjaWycinka.y,	rozmiarWycinka.x,rozmiarWycinka.y);
+	if(model->zwrocKamere()->zwrocY()<wysokoscOkna/2)
+		wyswietlenieObrazka(grafika,	-pozycjaKamery.x+pozycja.x-rozmiarWycinka.x+szerokoscOkna/2,	wysokoscOkna-pozycja.y-rozmiarWycinka.y,					pozycjaWycinka.x,	pozycjaWycinka.y,	rozmiarWycinka.x,rozmiarWycinka.y);
 	else
-		wyswietlenieObrazka(grafika,	-pozycjaKamery.x+pozycja.x-rozmiarWycinka.x+320,	240+pozycjaKamery.y-pozycja.y-rozmiarWycinka.y,	pozycjaWycinka.x,	pozycjaWycinka.y,	rozmiarWycinka.x,rozmiarWycinka.y);
+		wyswietlenieObrazka(grafika,	-pozycjaKamery.x+pozycja.x-rozmiarWycinka.x+szerokoscOkna/2,	wysokoscOkna/2+pozycjaKamery.y-pozycja.y-rozmiarWycinka.y,	pozycjaWycinka.x,	pozycjaWycinka.y,	rozmiarWycinka.x,rozmiarWycinka.y);
 }
 
 void Wideo::wyswietlenieOkregu(int pozX,int pozY, double promien)
@@ -359,10 +365,10 @@ void Wideo::wyswietleniePrzestrzeniKolizji(PrzestrzenKolizji *p, Punkt pozycjaKa
 		double x = i->zwrocPozycje().x;
 		double y = i->zwrocPozycje().y;
 
-		if(model->zwrocKamere()->zwrocY()<240)
-			wyswietlenieProstokata(-pozycjaKamery.x+x+320,480-y,i->zwrocBok1(),i->zwrocBok2());
+		if(model->zwrocKamere()->zwrocY()<wysokoscOkna/2)
+			wyswietlenieProstokata(-pozycjaKamery.x+x+szerokoscOkna/2,wysokoscOkna-y,i->zwrocBok1(),i->zwrocBok2());
 		else
-			wyswietlenieProstokata(-pozycjaKamery.x+x+320,240+pozycjaKamery.y-y,i->zwrocBok1(),i->zwrocBok2());
+			wyswietlenieProstokata(-pozycjaKamery.x+x+szerokoscOkna/2,wysokoscOkna/2+pozycjaKamery.y-y,i->zwrocBok1(),i->zwrocBok2());
 	}//*/
 
 	#endif
@@ -375,10 +381,10 @@ void Wideo::wyswietleniePrzestrzeniKolizji(PrzestrzenKolizji *p, Punkt pozycjaKa
 		double x = i->zwrocPozycje().x;
 		double y = i->zwrocPozycje().y;
 
-		if(model->zwrocKamere()->zwrocY()<240)
-			wyswietlenieOkregu(-pozycjaKamery.x+x+320,480-y,i->zwrocPromien());
+		if(model->zwrocKamere()->zwrocY()<wysokoscOkna/2)
+			wyswietlenieOkregu(-pozycjaKamery.x+x+szerokoscOkna/2,wysokoscOkna-y,i->zwrocPromien());
 		else
-			wyswietlenieOkregu(-pozycjaKamery.x+x+320,240+pozycjaKamery.y-y,i->zwrocPromien());
+			wyswietlenieOkregu(-pozycjaKamery.x+x+szerokoscOkna/2,wysokoscOkna/2+pozycjaKamery.y-y,i->zwrocPromien());
 	}//*/
 
 	#endif
@@ -386,21 +392,21 @@ void Wideo::wyswietleniePrzestrzeniKolizji(PrzestrzenKolizji *p, Punkt pozycjaKa
 
 void Wideo::wyswietleniePierwszegoPlanu(int pozX,int pozY)
 {
-	if(pozY<240) pozY=240;
-	wyswietlenieObrazka(pierwszyPlan,0,pozY+180-240,pozX%640,0,640,300);
+	if(pozY<wysokoscOkna/2) pozY=wysokoscOkna/2;
+	wyswietlenieObrazka(pierwszyPlan,0,pozY+180-wysokoscOkna/2,pozX%szerokoscOkna,0,szerokoscOkna,300);
 }
 
 void Wideo::wyswietlenieDrugiegoPlanu(int pozX,int pozY)
 {
-	if(pozY<240) pozY=240;
-	wyswietlenieObrazka(drugiPlan,0,pozY/5+150,(pozX/15)%640,0,640,300);
+	if(pozY<wysokoscOkna/2) pozY=wysokoscOkna/2;
+	wyswietlenieObrazka(drugiPlan,0,pozY/5+150,(pozX/15)%szerokoscOkna,0,szerokoscOkna,300);
 }
 
 void Wideo::wyswietlenieTla(int pozX,int pozY)
 {
 
-	if(pozY<240) pozY=240;
-	wyswietlenieObrazka(tlo,0,0,pozX/30,480-pozY/30,640,480);
+	if(pozY<wysokoscOkna/2) pozY=wysokoscOkna/2;
+	wyswietlenieObrazka(tlo,0,0,pozX/30,wysokoscOkna-pozY/30,szerokoscOkna,wysokoscOkna);
 }
 
 void Wideo::wyswietlenieSmoka()
@@ -604,7 +610,7 @@ void Wideo::wyswietlenieZaslon()
 
 void Wideo::wyswietlenieKomunikatow()
 {
-	if(model->czyWyswietlacInstrukcje()) wyswietlenieObrazka(instrukcja,0,0,0,0,640,480);
+	if(model->czyWyswietlacInstrukcje()) wyswietlenieObrazka(instrukcja,0,0,0,0,szerokoscOkna,wysokoscOkna);
 	else if(model->czyWyswietlacOdNowa()) wyswietlenieObrazka(odNowa,136,400,0,0,367,28);
 }
 
@@ -652,4 +658,3 @@ void Wideo::wyswietlenieEkranu()
 
 	SDL_RenderPresent(render);
 }
-

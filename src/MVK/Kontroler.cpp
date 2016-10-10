@@ -19,11 +19,18 @@ Kontroler::Kontroler(Wideo *nWideo, Model *nModel)
 
 void Kontroler::glownaPetla()
 {
-	while(!zakonczenieAplikacji)
+
+	if(!wideo->inicjacjaOkna(model->zwrocWymiaryEkranu().x,model->zwrocWymiaryEkranu().y,24,false))
 	{
-		obsluzZegar();
-		obsluzZdarzenia();
+		wideo->wczytanieObrazkow();
+		while(!zakonczenieAplikacji)
+		{
+			obsluzZegar();
+			obsluzZdarzenia();
+		}
 	}
+	else
+		std::cout << "Inicjacja nie powiodla sie!\n";
 }
 
 void Kontroler::obsluzZdarzenia()
@@ -65,6 +72,12 @@ void Kontroler::obsluzZdarzenia()
                 break;
             case SDLK_SPACE:
             	model->zwrocKlawiature()->ustawWcisnietoSpacje(true);
+            	break;
+            case SDLK_r:
+            	zmienStosunek();
+            	break;
+            case SDLK_f:
+            	zmienTrybEkranu();
             	break;
             case SDLK_ESCAPE:
             	zakonczenieAplikacji=true;
@@ -140,4 +153,21 @@ void Kontroler::obsluzZegar()
 		wideo->wyswietlenieEkranu();
 
 	}
+}
+
+void Kontroler::zmienStosunek()
+{
+	if(model->zwrocWymiaryEkranu().y==600)
+		model->ustawWymiaryEkranu(Wymiary(1024,768));
+	else
+		model->ustawWymiaryEkranu(Wymiary(1024,600));
+	wideo->zamkniecieOkna();
+	wideo->inicjacjaOkna(model->zwrocWymiaryEkranu().x,model->zwrocWymiaryEkranu().y,24,model->zwrocPelnyEkran());
+	wideo->wczytanieObrazkow();
+}
+
+void Kontroler::zmienTrybEkranu()
+{
+	model->ustawPelnyEkran(!(model->zwrocPelnyEkran()));
+	wideo->pelnyEkran(model->zwrocPelnyEkran());
 }

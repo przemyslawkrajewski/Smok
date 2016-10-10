@@ -20,6 +20,9 @@ public:
 	void obsluzZdarzenia();
 	void obsluzZegar();
 
+	void zmienStosunek();
+	void zmienTrybEkranu();
+
 
 private:
 	Wideo *wideo;

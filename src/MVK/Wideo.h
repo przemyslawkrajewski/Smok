@@ -22,8 +22,11 @@ public:
 	Wideo(Model *nModel);
 	~Wideo();
 
-	int inicjacjaOkna(int szerokoscOkna,int wysokoscOkna,int glebiaKolorowOkna, bool fullscreen);
+	int inicjacjaOkna(int szerOkna,int wysOkna,int glebiaKolorowOkna, bool fullscreen);
+	void wczytanieObrazkow();
 	void zamkniecieOkna();
+
+	void pelnyEkran(bool p);
 
 	void wyswietlenieEkranu();
 
@@ -62,6 +65,9 @@ private:
 	void wyswietlenieStanuZdrowia();
 
 	Model *model;
+
+	int szerokoscOkna;
+	int wysokoscOkna;
 
 	SDL_Window *okno;
 	SDL_Renderer *render;

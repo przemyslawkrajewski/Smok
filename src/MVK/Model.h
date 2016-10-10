@@ -25,12 +25,16 @@
 class Model
 {
 public:
-	Model();
+	Model(int szerOkna, int wysOkna, bool ekran);
 
 	//Mechanika gry
 	void wyznaczKolejnyStan();
 	void wyznaczKolejnyStanObiektow();
 	void reset();
+	void ustawWymiaryEkranu(Wymiary w) {wymiaryEkranu=w;}
+	Wymiary zwrocWymiaryEkranu() { return wymiaryEkranu;}
+	void ustawPelnyEkran(bool p) {pelnyEkran=p;}
+	bool zwrocPelnyEkran() {return pelnyEkran;}
 	bool czyWyswietlacInstrukcje() {return wyswietlenieInstrukcji;}
 	bool czyWyswietlacOdNowa() {return wyswietlenieOdNowa;} //Todo: tymczasowe
 
@@ -60,7 +64,8 @@ public:
 	static void kolizjaSmokaZPlatforma(Obiekt*o, Obiekt *o2, Punkt punktKolizji);
 
 private:
-	const Punkt wymiaryEkranu;
+	Punkt wymiaryEkranu;
+	bool pelnyEkran;
 	bool wyswietlenieInstrukcji;
 	bool wyswietlenieOdNowa;
 

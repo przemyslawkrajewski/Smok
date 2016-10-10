@@ -16,12 +16,11 @@ int main(int argc, char *args[])
 	Model *model;
 	Wideo *wideo;
 	Kontroler *kontroler;
-	model = new Model();
+	model = new Model(1024,600,false);
 	wideo=new Wideo(model);
 	kontroler=new Kontroler(wideo,model);
 
-	if(!wideo->inicjacjaOkna(640,480,24,false))	kontroler->glownaPetla();
-	else std::cout << "Inicjacja nie powiodla sie!\n";
+	kontroler->glownaPetla();
 
 	free(wideo);
 	free(kontroler);
