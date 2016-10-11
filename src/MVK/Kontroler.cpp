@@ -164,6 +164,7 @@ void Kontroler::zmienStosunek()
 	wideo->zamkniecieOkna();
 	wideo->inicjacjaOkna(model->zwrocWymiaryEkranu().x,model->zwrocWymiaryEkranu().y,24,model->zwrocPelnyEkran());
 	wideo->wczytanieObrazkow();
+	wideo->pelnyEkran(model->zwrocPelnyEkran());
 }
 
 void Kontroler::zmienTrybEkranu()
