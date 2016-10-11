@@ -176,6 +176,7 @@ int Wideo::wczytanieObrazka(const char* nazwa, SDL_Texture ** grafika)
 	{
 		//std::cout << "[  OK  ] ";
 		odszyfrowanieObrazka(bmp);
+		//SDL_SaveBMP(bmp, nazwa);
 		SDL_SetColorKey( bmp, SDL_TRUE, SDL_MapRGB( bmp->format, 255, 0, 128 ) );
 		*grafika = SDL_CreateTextureFromSurface(render, bmp);
 		 SDL_SetTextureBlendMode(*grafika,SDL_BLENDMODE_BLEND);
@@ -392,21 +393,25 @@ void Wideo::wyswietleniePrzestrzeniKolizji(PrzestrzenKolizji *p, Punkt pozycjaKa
 
 void Wideo::wyswietleniePierwszegoPlanu(int pozX,int pozY)
 {
+	int wysokoscObrazka = 768;
 	if(pozY<wysokoscOkna/2) pozY=wysokoscOkna/2;
-	wyswietlenieObrazka(pierwszyPlan,0,pozY+180-wysokoscOkna/2,pozX%szerokoscOkna,0,szerokoscOkna,300);
+	wyswietlenieObrazka(pierwszyPlan,-pozX%szerokoscOkna,pozY-wysokoscObrazka+384-(wysokoscObrazka-wysokoscOkna)/2,0,0,szerokoscOkna,wysokoscObrazka);
+	wyswietlenieObrazka(pierwszyPlan,-pozX%szerokoscOkna+szerokoscOkna,pozY-wysokoscObrazka+384-(wysokoscObrazka-wysokoscOkna)/2,0,0,szerokoscOkna,wysokoscObrazka);
 }
 
 void Wideo::wyswietlenieDrugiegoPlanu(int pozX,int pozY)
 {
+	int wysokoscObrazka = 768;
 	if(pozY<wysokoscOkna/2) pozY=wysokoscOkna/2;
-	wyswietlenieObrazka(drugiPlan,0,pozY/5+150,(pozX/15)%szerokoscOkna,0,szerokoscOkna,300);
+	wyswietlenieObrazka(drugiPlan,-pozX%szerokoscOkna,pozY/5-(wysokoscObrazka-wysokoscOkna),0,0,szerokoscOkna,wysokoscObrazka);
+	wyswietlenieObrazka(drugiPlan,-pozX%szerokoscOkna+szerokoscOkna,pozY/5-(wysokoscObrazka-wysokoscOkna),0,0,szerokoscOkna,wysokoscObrazka);
 }
 
 void Wideo::wyswietlenieTla(int pozX,int pozY)
 {
-
+	int wysokoscObrazka = 960;
 	if(pozY<wysokoscOkna/2) pozY=wysokoscOkna/2;
-	wyswietlenieObrazka(tlo,0,0,pozX/30,wysokoscOkna-pozY/30,szerokoscOkna,wysokoscOkna);
+	wyswietlenieObrazka(tlo,0,0,pozX/30,wysokoscObrazka-wysokoscOkna-pozY/30,szerokoscOkna,wysokoscOkna);
 }
 
 void Wideo::wyswietlenieSmoka()
