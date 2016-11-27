@@ -60,6 +60,8 @@ void Wideo::zamkniecieOkna()
 
 	SDL_DestroyTexture(krzyzowiecP);
 	SDL_DestroyTexture(krzyzowiecL);
+	SDL_DestroyTexture(lucznikP);
+	SDL_DestroyTexture(lucznikL);
 
 	SDL_DestroyTexture(plomien);
 	SDL_DestroyTexture(belt);
@@ -151,6 +153,8 @@ void Wideo::wczytanieObrazkow()
 	   wczytanieObrazka("Grafika/SmokGlowaL.bmp",&glowaSmokaL) ||
 	   wczytanieObrazka("Grafika/KrzyzowiecP.bmp",&krzyzowiecP) ||
 	   wczytanieObrazka("Grafika/KrzyzowiecL.bmp",&krzyzowiecL) ||
+	   wczytanieObrazka("Grafika/LucznikP.bmp",&lucznikP) ||
+	   wczytanieObrazka("Grafika/LucznikL.bmp",&lucznikL) ||
 	   wczytanieObrazka("Grafika/plomien.bmp",&plomien) ||
 	   wczytanieObrazka("Grafika/Belt.bmp",&belt) ||
 	   wczytanieObrazka("Grafika/Mur.bmp",&mur) ||

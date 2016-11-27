@@ -82,6 +82,7 @@ private:
 	SDL_Texture * plomien;
 
 	SDL_Texture * krzyzowiecP,* krzyzowiecL;
+	SDL_Texture * lucznikP,* lucznikL;
 	SDL_Texture * belt;
 
 	SDL_Texture * mur;
