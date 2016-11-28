@@ -28,6 +28,7 @@ void Model::reset()
 	strzelcy.wyczysc();
 	plomienie.wyczysc();
 	strzaly.wyczysc();
+	belty.wyczysc();
 	mury.wyczysc();
 	zaslony.wyczysc();
 
@@ -101,6 +102,8 @@ void Model::wyznaczKolejnyStanObiektow()
 	plomienie.wyznaczKlatkeAnimacji();
 	strzaly.wyznaczKolejnyStan();
 	strzaly.wyznaczKlatkeAnimacji();
+	belty.wyznaczKolejnyStan();
+	belty.wyznaczKlatkeAnimacji();
 
 	zaslony.wyznaczKolejnyStan();
 	zaslony.wyznaczKlatkeAnimacji();
@@ -140,6 +143,7 @@ void Model::obsluzKolizje()
 
 	//Smok kontra strzaly
 	strzaly.sprawdzKolizje(&smok,usun,zadajObrazenia,PrzestrzenKolizji::okrag);
+	belty.sprawdzKolizje(&smok,usun,zadajObrazenia,PrzestrzenKolizji::okrag);
 
 	//Mury
 	std::list<Mur> *listaMurow = mury.zwrocObiekty();

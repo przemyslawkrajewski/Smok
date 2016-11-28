@@ -14,10 +14,16 @@
 
 struct ParametryBeltu
 {
+	int czasTrwaniaPoZniszczeniu;
+	double predkoscObracania;
 	double wspolczynnikGrawitacji;
+	double wspolczynnikZwalniania;
 	ParametryBeltu()
 	{
-		wspolczynnikGrawitacji=0.40;
+		czasTrwaniaPoZniszczeniu=50;
+		predkoscObracania=0.8;
+		wspolczynnikGrawitacji=1.00;
+		wspolczynnikZwalniania=0.99;
 	}
 };
 

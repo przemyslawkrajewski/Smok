@@ -37,11 +37,11 @@ FabrykaLudzi::FabrykaLudzi()
 	parametryKrzyzowca.predkoscAnimacjiBiegu2=0.2;
 	parametryKrzyzowca.iloscKlatekAnimacjiBiegu = 8;
 	parametryKrzyzowca.predkoscBiegu=3;
-	parametryKrzyzowca.czasTrwaniaStrzaly=200;
+	parametryKrzyzowca.czasTrwaniaStrzaly=100;
 	parametryKrzyzowca.minimalnaOdleglosc=10;
 	parametryKrzyzowca.spust=true;
 	parametryKrzyzowca.predkoscStrzaly=35;
-	parametryKrzyzowca.celnosc=3.14/16;
+	parametryKrzyzowca.celnosc=0;
 	parametryKrzyzowca.maxNaciagniecie=60;
 	parametryKrzyzowca.maxCelowania=20;
 	parametryKrzyzowca.maxZycia=200;

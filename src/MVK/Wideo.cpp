@@ -562,6 +562,18 @@ void Wideo::wyswietlenieStrzal()
 		wyswietlenieKlatki(belt,pozycja,pozycjaKamery,klatka,rozmiarKlatki);
 		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}
+
+	std::list<Belt> *b = model->zwrocBelty()->zwrocObiekty();
+
+	for(std::list<Belt>::iterator i=b->begin(); i!=b->end() ;i++)
+	{
+		if(!i->czyIstnieje()) continue;
+		Punkt pozycja = i->zwrocPozycje();
+		Punkt klatka = i->zwrocKlatkeAnimacji();
+
+		wyswietlenieKlatki(belt,pozycja,pozycjaKamery,klatka,rozmiarKlatki);
+		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
+	}
 }
 
 void Wideo::wyswietlenieMuru()

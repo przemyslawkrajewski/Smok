@@ -48,6 +48,7 @@ public:
 	Smok* zwrocSmoka() {return &smok;}
 	KontenerPociskow<Plomien>* zwrocPlomienie() {return &plomienie;}	//Todo: ma zwrocic kontener klasy bazowej
 	KontenerPociskow<Strzala>* zwrocStrzaly() {return &strzaly;}		//Todo: ale bedzie trzeba przepisywac a to dlugo trwa
+	KontenerPociskow<Belt>* zwrocBelty() {return &belty;}
 	KontenerPostaci<Strzelec>* zwrocStrzelcow() {return &strzelcy;}
 	KontenerPrzedmiotow<Mur>* zwrocMury() {return &mury;}
 	KontenerPrzedmiotow<Zaslona>* zwrocZaslony() {return &zaslony;}

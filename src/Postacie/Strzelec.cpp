@@ -73,7 +73,8 @@ void Strzelec::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 					v.y=parametry.predkoscStrzaly*sin(kat);
 					kat = katCelowania+1.57;//+3.14+6.28
 					if(kat>6.28) kat-=6.28;
-					FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::strzala,p,v,parametry.czasTrwaniaStrzaly,kat);
+					if(parametry.spust) FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::belt,p,v,parametry.czasTrwaniaStrzaly,kat);
+					else FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::strzala,p,v,parametry.czasTrwaniaStrzaly,kat);
 					stanNaciagania=parametry.maxNaciagniecie;
 					stanCelowania=0;
 				}
@@ -108,9 +109,9 @@ void Strzelec::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 
 std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 {
-	int maxOdleglosc=1000;
+	int maxOdleglosc=4000;
 	int minOdleglosc=100;
-	int odleglosc=800;
+	int odleglosc=4000;
 
 	Punkt pozycjaCelu = cel->zwrocPozycjeCelu();
 
@@ -160,6 +161,13 @@ std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 void Strzelec::wyznaczKatStrzalu(Punkt cel)
 {
 	mozliwyStrzal=true;
+
+	if(parametry.spust)
+	{
+		katCelowaniaWprost = atan2((-cel.x),(cel.y))-1.57;
+		katCelowaniaZGory = katCelowaniaWprost;
+		return;
+	}
 
 	//do wzoru, jak zgubisz kartke to zle
 	double A=-abs(cel.y);
@@ -268,7 +276,6 @@ void Strzelec::wyznaczKlatkeAnimacji()
 			{
 				klatkaAnimacji.y=0;
 			}
-			std::cout << klatkaAnimacji.x << "  " << klatkaAnimacji.y << "\n";
 		}
 		break;
 	case stoi:

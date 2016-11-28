@@ -31,8 +31,7 @@ Belt::Belt(Punkt nPozycja, Punkt nPredkosc, double nczasTrwania,double nKat): Po
 void Belt::zniszcz()
 {
 	Obiekt::zniszcz();
-	predkosc.x=predkosc.y=0;
-	//czasTrwania=-1;
+	czasTrwania=parametry.czasTrwaniaPoZniszczeniu;
 }
 
 double Belt::zwrocKat()
@@ -48,31 +47,37 @@ void Belt::wyznaczKolejnyStan()
 		if(katNachylenia<0) katNachylenia+=6.28;
 	}
 
+	pozycja.x+=predkosc.x;
+	pozycja.y+=predkosc.y;
+	czasTrwania--;
+
 	if(istnieje && !zniszczony)
 	{
-		pozycja.x+=predkosc.x;
-		pozycja.y+=predkosc.y;
-		predkosc.y-=parametry.wspolczynnikGrawitacji;
+		if(czasTrwania<0) zniszcz();
 	}
 	else
 	{
-		czasTrwania--;
+		predkosc.y-=parametry.wspolczynnikGrawitacji;
+		predkosc.x=(double)predkosc.x*parametry.wspolczynnikZwalniania;
+		if(czasTrwania<0) usun();
 	}
-	if(pozycja.y<parametryObiektow.poziomZiemi)
-	{
-		pozycja.x=((parametryObiektow.poziomZiemi-pozycja.y)/predkosc.y)*predkosc.x+pozycja.x;
-		pozycja.y=parametryObiektow.poziomZiemi;
-		zniszcz();
-	}
-	if(czasTrwania<0) usun();
+	if(pozycja.y<parametryObiektow.poziomZiemi) usun();
 }
 
 void Belt::wyznaczKlatkeAnimacji()
 {
-	klatkaAnimacji.x=1;
-	klatkaAnimacji.x=(0.5+(double)(katNachylenia)/(6.28/32));
-	klatkaAnimacji.x=(int)klatkaAnimacji.x;
-	if(klatkaAnimacji.x>31) klatkaAnimacji.x=0;
+	if(!zniszczony)
+	{
+		klatkaAnimacji.x=1;
+		klatkaAnimacji.x=(0.5+(double)(katNachylenia)/(6.28/32));
+		klatkaAnimacji.x=(int)klatkaAnimacji.x;
+		if(klatkaAnimacji.x>31) klatkaAnimacji.x=0;
+	}
+	else
+	{
+		klatkaAnimacji.x+=parametry.predkoscObracania;
+		if(klatkaAnimacji.x>31) klatkaAnimacji.x=0;
+	}
 }
 
 void Belt::wyznaczPrzestrzenKolizji()
