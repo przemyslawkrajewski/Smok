@@ -57,8 +57,6 @@ private:
 	static ParametryOgnia parametry;
 	StanPlomienia stan;
 
-	int czasTrwania;
-
 	double bylZaczepiony;
 };
 

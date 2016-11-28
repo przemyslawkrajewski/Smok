@@ -9,5 +9,9 @@
 
 Postac::Postac() :Obiekt()
 {
+	cel=0;
+	typPostaci=lucznik;
 
+	przeszkodaPoLewej=false;
+	przeszkodaPoPrawej=false;
 }

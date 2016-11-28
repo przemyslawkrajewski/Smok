@@ -21,13 +21,20 @@ public:
 	Postac();
 	virtual ~Postac() {}
 
+
+	enum TypPostaci {smok,lucznik,rycerz,snajper,krzyzowiec};
+
 	virtual void wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)=0;
 	virtual void wyznaczKlatkeAnimacji() = 0;
 	virtual std::pair<Klawiatura,Myszka> wyznaczSterowanie() {return std::pair<Klawiatura,Myszka>(Klawiatura(),Myszka());};
 
+	void ustawTypPostaci(TypPostaci typ) {typPostaci=typ;}
+	TypPostaci zwrocTypPostaci() {return typPostaci;}
+
 	void ustawCel(Obiekt* p) {cel=p;}
 	void ustawCzyIstniejePrzeszkoda(bool poLewej, bool poPrawej) {przeszkodaPoLewej=poLewej;przeszkodaPoPrawej=poPrawej;}
 
+	TypPostaci typPostaci;
 	Obiekt *cel;
 	bool przeszkodaPoLewej,przeszkodaPoPrawej;
 };

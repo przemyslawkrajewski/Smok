@@ -21,6 +21,9 @@ private:
 
 	static KontenerPostaci<Strzelec>* strzelcy;
 
+	ParametryStrzelca parametryLucznika;
+	ParametryStrzelca parametryKrzyzowca;
+
 	FabrykaLudzi();
 public:
 	~FabrykaLudzi();

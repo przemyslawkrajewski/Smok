@@ -1,31 +1,30 @@
 /*
- * Strzala.h
+ * Belt.h
  *
- *  Created on: 11-07-2015
+ *  Created on: 28-11-2016
  *      Author: przemo
  */
 
-#ifndef STRZALA_H_
-#define STRZALA_H_
+#ifndef SRC_POCISKI_BELT_H_
+#define SRC_POCISKI_BELT_H_
 
 #include <iostream>
 #include <math.h>
 #include "Pocisk.h"
 
-struct ParametryStrzaly
+struct ParametryBeltu
 {
 	double wspolczynnikGrawitacji;
-	ParametryStrzaly()
+	ParametryBeltu()
 	{
 		wspolczynnikGrawitacji=0.40;
 	}
 };
 
-class Strzala: public Pocisk
-{
+class Belt: public Pocisk {
 public:
-	Strzala(double nx, double ny, double nvx, double nvy, double nCzasTrwania, double nKat);
-	Strzala(Punkt nPozycja, Punkt nPredkosc, double nczasTrwania,double nKat);
+	Belt(double nx, double ny, double nvx, double nvy, double nCzasTrwania, double nKat);
+	Belt(Punkt nPozycja, Punkt nPredkosc, double nczasTrwania,double nKat);
 
 	virtual void wyznaczKolejnyStan();
 	virtual void wyznaczKlatkeAnimacji();
@@ -35,7 +34,7 @@ public:
 	int zwrocCzasTrwania() {return czasTrwania;}
 	double zwrocKat();
 
-	static ParametryStrzaly parametry;
+	static ParametryBeltu parametry;
 };
 
-#endif /* STRZALA_H_ */
+#endif /* SRC_POCISKI_BELT_H_ */

@@ -18,19 +18,35 @@
 
 struct ParametryStrzelca
 {
-	double predkoscAnimacjiBiegu;
+	double predkoscAnimacjiBiegu1;
+	double predkoscAnimacjiBiegu2;
 	double iloscKlatekAnimacjiBiegu;
 	double predkoscBiegu;
 	double czasTrwaniaStrzaly;
 	double minimalnaOdleglosc;
 
+	bool spust;// true - kusza, false - luk
+	double predkoscStrzaly;
+	double celnosc;
+	double maxNaciagniecie;	// czas potrzebny do naciagniecia kuszy
+	double maxCelowania; // czas potrzebny do wycelowania
+
+	double maxZycia;
+
 	ParametryStrzelca()
 	{
-		predkoscAnimacjiBiegu=0.2;
+		predkoscAnimacjiBiegu1=0.4;
+		predkoscAnimacjiBiegu2=0.2;
 		iloscKlatekAnimacjiBiegu = 8;
-		predkoscBiegu=3;
+		predkoscBiegu=5;
 		czasTrwaniaStrzaly=200;
 		minimalnaOdleglosc=10;
+		spust=true;
+		predkoscStrzaly=20;
+		celnosc=0;
+		maxNaciagniecie=100;
+		maxCelowania=50;
+		maxZycia=10;
 	}
 };
 
@@ -54,15 +70,10 @@ public:
 
 	std::pair<Klawiatura,Myszka> wyznaczSterowanie();
 
+	void ustawParametry(ParametryStrzelca p) {parametry=p;}
+
 	ParametryStrzelca parametry;
 	StanStrzelca stan;
-
-	//Parametry charakteryzujace kazdego strzelca
-	double predkoscStrzaly;
-	double celnosc;
-	bool spust; // true jesli jest to kusza; false luk
-	double maxNaciagniecie;	// czas potrzebny do naciagniecia kuszy
-	double maxCelowania; // czas potrzebny do wycelowania
 
 	//Parametry stanu Strzelca
 	double katCelowaniaWprost;

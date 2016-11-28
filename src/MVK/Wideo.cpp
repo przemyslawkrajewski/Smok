@@ -9,6 +9,9 @@
 
 Wideo::Wideo(Model *nModel)
 {
+	szerokoscOkna=0;
+	wysokoscOkna=0;
+
 	model=nModel;
 	okno=0;
 	render=0;
@@ -27,6 +30,8 @@ Wideo::Wideo(Model *nModel)
 
 	krzyzowiecP=0;
 	krzyzowiecL=0;
+	lucznikP=0;
+	lucznikL=0;
 	belt=0;
 
 	mur=0;
@@ -523,8 +528,16 @@ void Wideo::wyswietlenieStrzelcow()
 
 	for(std::list<Postac*>::iterator i=postacie.begin(); i!=postacie.end() ;i++)
 	{
-		if((*i)->czyZwroconyWPrawo()) animacja=&krzyzowiecP;
-		else animacja=&krzyzowiecL;
+		if((*i)->zwrocTypPostaci()==Postac::krzyzowiec)
+		{
+			if((*i)->czyZwroconyWPrawo()) animacja=&krzyzowiecP;
+			else animacja=&krzyzowiecL;
+		}
+		else if((*i)->zwrocTypPostaci()==Postac::lucznik)
+		{
+			if((*i)->czyZwroconyWPrawo()) animacja=&lucznikP;
+			else animacja=&lucznikL;
+		}
 		Punkt pozycja = (*i)->zwrocPozycje();
 		Punkt klatka = (*i)->zwrocKlatkeAnimacji();
 

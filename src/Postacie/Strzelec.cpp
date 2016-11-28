@@ -20,11 +20,6 @@ Strzelec::Strzelec(): Postac()
 	stanCelowania=0;
 	mozliwyStrzal=false;
 
-	spust=true;			//kusza/luk
-	predkoscStrzaly=35;
-	maxNaciagniecie=100;//ile czas trzeba zeby naciagnac
-	celnosc=3.14/16;
-	maxCelowania=50;   //ile czasu trzeba zeby wycelowac
 	zycie=100;
 }
 
@@ -36,10 +31,13 @@ void Strzelec::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 		{
 			zwroconyWPrawo=true;
 			stan = biegnie;
-			stanBiegu += parametry.predkoscAnimacjiBiegu;
+
+			if((stanBiegu>2 && stanBiegu<3) || (stanBiegu>6 && stanBiegu<7)) stanBiegu += parametry.predkoscAnimacjiBiegu2;
+			else stanBiegu += parametry.predkoscAnimacjiBiegu1;
+
 			if(stanBiegu>parametry.iloscKlatekAnimacjiBiegu) stanBiegu=0;
 			pozycja.x+=parametry.predkoscBiegu;
-			if(!spust || stanNaciagania>0) stanNaciagania=maxNaciagniecie;
+			if(!parametry.spust || stanNaciagania>0) stanNaciagania=parametry.maxNaciagniecie;
 			stanCelowania=0;
 		}
 		else if (klawiatura->czyWcisnietoLewo())
@@ -47,10 +45,12 @@ void Strzelec::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 			zwroconyWPrawo=false;
 			stan = biegnie;
 
-			stanBiegu += parametry.predkoscAnimacjiBiegu;
+			if((stanBiegu>2 && stanBiegu<3) || (stanBiegu>6 && stanBiegu<7)) stanBiegu += parametry.predkoscAnimacjiBiegu2;
+			else stanBiegu += parametry.predkoscAnimacjiBiegu1;
+
 			if(stanBiegu>parametry.iloscKlatekAnimacjiBiegu) stanBiegu=0;
 			pozycja.x-=parametry.predkoscBiegu;
-			if(!spust || stanNaciagania>0) stanNaciagania=maxNaciagniecie;
+			if(!parametry.spust || stanNaciagania>0) stanNaciagania=parametry.maxNaciagniecie;
 			stanCelowania=0;
 		}
 		else if(myszka->zwrocLPM())
@@ -61,20 +61,20 @@ void Strzelec::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 				stan = strzela;
 				stanCelowania++;
 
-				if(stanCelowania > maxCelowania)
+				if(stanCelowania > parametry.maxCelowania)
 				{
-					double kat=-katCelowania+((double)(rand()%100)/100)*celnosc - celnosc/2;
+					double kat=-katCelowania+((double)(rand()%100)/100)*parametry.celnosc - parametry.celnosc/2;
 
 					Punkt p;
 					p.x=pozycja.x+(parametry.minimalnaOdleglosc)*cos(kat);
 					p.y=pozycja.y+(parametry.minimalnaOdleglosc)*sin(kat);
 					Punkt v;
-					v.x=predkoscStrzaly*cos(kat);
-					v.y=predkoscStrzaly*sin(kat);
+					v.x=parametry.predkoscStrzaly*cos(kat);
+					v.y=parametry.predkoscStrzaly*sin(kat);
 					kat = katCelowania+1.57;//+3.14+6.28
 					if(kat>6.28) kat-=6.28;
 					FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::strzala,p,v,parametry.czasTrwaniaStrzaly,kat);
-					stanNaciagania=maxNaciagniecie;
+					stanNaciagania=parametry.maxNaciagniecie;
 					stanCelowania=0;
 				}
 			}
@@ -89,8 +89,6 @@ void Strzelec::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 		{
 			stan = stoi;
 			stanBiegu=0;
-			//if(spust) {stan = naciaga;stanNaciagania--;}
-			//else stanNaciagania=maxNaciagniecie;
 			stanCelowania=0;
 		}
 		if(stanNaciagania<-1) stanNaciagania=-1;
@@ -110,9 +108,9 @@ void Strzelec::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 
 std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 {
-	int maxOdleglosc=2500;
+	int maxOdleglosc=1000;
 	int minOdleglosc=100;
-	int odleglosc=1500;
+	int odleglosc=800;
 
 	Punkt pozycjaCelu = cel->zwrocPozycjeCelu();
 
@@ -128,7 +126,8 @@ std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 	m.ustawY(pozycja.y-pozycjaCelu.y);
 
 	wyznaczKatStrzalu(Punkt((m.zwrocX()),-(m.zwrocY())));
-	if((stanNaciagania>0 && spust) || (mozliwyStrzal && ((pozycjaCelu.x>pozycja.x && zwroconyWPrawo==true) || (pozycjaCelu.x<pozycja.x && zwroconyWPrawo!=true))))
+	if(abs(pozycjaCelu.x-pozycja.x)>maxOdleglosc) mozliwyStrzal=false;
+	if((stanNaciagania>0 && parametry.spust) || (mozliwyStrzal && ((pozycjaCelu.x>pozycja.x && zwroconyWPrawo==true) || (pozycjaCelu.x<pozycja.x && zwroconyWPrawo!=true))))
 	{
 		m.ustawLPM(true);
 		if(abs(pozycja.x-pozycjaCelu.x)<odleglosc) katCelowania=katCelowaniaWprost;
@@ -165,7 +164,7 @@ void Strzelec::wyznaczKatStrzalu(Punkt cel)
 	//do wzoru, jak zgubisz kartke to zle
 	double A=-abs(cel.y);
 	double B=abs(cel.x);
-	double C=B*B*Strzala::parametry.wspolczynnikGrawitacji/(2*predkoscStrzaly*predkoscStrzaly);
+	double C=B*B*Strzala::parametry.wspolczynnikGrawitacji/(2*parametry.predkoscStrzaly*parametry.predkoscStrzaly);
 
 	if(B==0)
 	{
@@ -251,13 +250,26 @@ void Strzelec::wyznaczKlatkeAnimacji()
 	switch(stan)
 	{
 	case naciaga:
-		if(klatkaAnimacji.x!=2 || klatkaAnimacji.y<4)
+		if(parametry.spust)
+		{
+			if(klatkaAnimacji.x!=2 || klatkaAnimacji.y<4)
+			{
+				klatkaAnimacji.x=2;
+				klatkaAnimacji.y=4;
+			}
+			klatkaAnimacji.y+=0.3;
+			if(klatkaAnimacji.y>=7)klatkaAnimacji.y=4;
+		}
+		else
 		{
 			klatkaAnimacji.x=2;
-			klatkaAnimacji.y=4;
+			klatkaAnimacji.y=9-4*(stanNaciagania/parametry.maxNaciagniecie);
+			if(klatkaAnimacji.y>=8)
+			{
+				klatkaAnimacji.y=0;
+			}
+			std::cout << klatkaAnimacji.x << "  " << klatkaAnimacji.y << "\n";
 		}
-		klatkaAnimacji.y+=0.3;
-		if(klatkaAnimacji.y>=7)klatkaAnimacji.y=4;
 		break;
 	case stoi:
 		klatkaAnimacji.x=0;

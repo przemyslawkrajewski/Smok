@@ -79,6 +79,7 @@ private:
 
 	KontenerPociskow<Plomien> plomienie;
 	KontenerPociskow<Strzala> strzaly;
+	KontenerPociskow<Belt> belty;
 
 	KontenerPrzedmiotow<Mur> mury;
 	KontenerPrzedmiotow<Zaslona> zaslony;

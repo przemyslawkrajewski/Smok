@@ -14,6 +14,7 @@ class Pocisk : public Obiekt
 {
 protected:
 	double katNachylenia;
+	int czasTrwania;
 
 public:
 	Pocisk();
@@ -24,6 +25,7 @@ public:
 	virtual void wyznaczPrzestrzenKolizji() = 0;
 
 	double zwrocKatNachylenia() {return katNachylenia;}
+
 };
 
 #endif /* POCISK_H_ */
