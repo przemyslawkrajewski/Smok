@@ -400,6 +400,18 @@ void Wideo::wyswietleniePrzestrzeniKolizji(PrzestrzenKolizji *p, Punkt pozycjaKa
 	#endif
 }
 
+Punkt Wideo::czyWychodziZaEkran(Punkt pozycjaKamery, Punkt p, Wektor v)
+{
+	if(p.x-pozycjaKamery.x<-szerokoscOkna/2 && v.x>0){
+		p.x=pozycjaKamery.x-szerokoscOkna/2;
+	}
+	if(p.x-pozycjaKamery.x>szerokoscOkna/2 && v.x<0) p.x=szerokoscOkna/2+pozycjaKamery.x;
+	if(p.y-pozycjaKamery.y<-wysokoscOkna/2 && v.y>0) p.y=pozycjaKamery.y-wysokoscOkna/2;
+	if(p.y-pozycjaKamery.y>wysokoscOkna/2 && v.y<0) p.y=wysokoscOkna/2+pozycjaKamery.y;
+
+	return p;
+}
+
 void Wideo::wyswietleniePierwszegoPlanu(int pozX,int pozY)
 {
 	int wysokoscObrazka = 768;
@@ -559,7 +571,9 @@ void Wideo::wyswietlenieStrzal()
 		Punkt pozycja = i->zwrocPozycje();
 		Punkt klatka = i->zwrocKlatkeAnimacji();
 
-		wyswietlenieKlatki(belt,pozycja,pozycjaKamery,klatka,rozmiarKlatki);
+		Punkt p = czyWychodziZaEkran(pozycjaKamery,pozycja,i->zwrocPredkosc());
+
+		wyswietlenieKlatki(belt,p,pozycjaKamery,klatka,rozmiarKlatki);
 		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}
 

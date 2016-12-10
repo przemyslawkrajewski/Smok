@@ -21,7 +21,7 @@ struct ParametryBeltu
 	ParametryBeltu()
 	{
 		czasTrwaniaPoZniszczeniu=50;
-		predkoscObracania=0.8;
+		predkoscObracania=1.8;
 		wspolczynnikGrawitacji=1.00;
 		wspolczynnikZwalniania=0.99;
 	}

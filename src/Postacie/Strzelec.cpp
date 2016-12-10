@@ -91,6 +91,7 @@ void Strzelec::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 			stan = stoi;
 			stanBiegu=0;
 			stanCelowania=0;
+			if(!parametry.spust || stanNaciagania>0) stanNaciagania=parametry.maxNaciagniecie;
 		}
 		if(stanNaciagania<-1) stanNaciagania=-1;
 		if(zycie<=0) zniszcz();
@@ -128,7 +129,7 @@ std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 
 	wyznaczKatStrzalu(Punkt((m.zwrocX()),-(m.zwrocY())));
 	if(abs(pozycjaCelu.x-pozycja.x)>maxOdleglosc) mozliwyStrzal=false;
-	if((stanNaciagania>0 && parametry.spust) || (mozliwyStrzal && ((pozycjaCelu.x>pozycja.x && zwroconyWPrawo==true) || (pozycjaCelu.x<pozycja.x && zwroconyWPrawo!=true))))
+	if((stanNaciagania>0 && parametry.spust) || (mozliwyStrzal && ((pozycjaCelu.x>=pozycja.x && zwroconyWPrawo==true) || (pozycjaCelu.x<=pozycja.x && zwroconyWPrawo!=true))))
 	{
 		m.ustawLPM(true);
 		if(abs(pozycja.x-pozycjaCelu.x)<odleglosc) katCelowania=katCelowaniaWprost;

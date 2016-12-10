@@ -150,6 +150,8 @@ void Model::obsluzKolizje()
 	for(std::list<Mur>::iterator i=listaMurow->begin();i!=listaMurow->end();i++)
 	{
 		plomienie.sprawdzKolizje((Obiekt*)&(*i),kolizjaPlomieniazMurem,nic,PrzestrzenKolizji::prostokat,true);
+		belty.sprawdzKolizje((Obiekt*)&(*i),kolizjaPlomieniazMurem,nic,PrzestrzenKolizji::prostokat,true);
+		strzaly.sprawdzKolizje((Obiekt*)&(*i),kolizjaPlomieniazMurem,nic,PrzestrzenKolizji::prostokat,true);
 	}
 	//Plomienie Zaslony
 	std::list<Zaslona> *listaZaslon = zaslony.zwrocObiekty();
@@ -273,7 +275,7 @@ void Model::kolizjaPlomieniazMurem(Obiekt *o,Obiekt *o2,Punkt punktKolizji)
 	     (pozycja2.x>prostokat.zwrocPozycje().x-prostokat.zwrocBok1()/2 && pozycja2.x<prostokat.zwrocPozycje().x+prostokat.zwrocBok1()/2) &&
 	     (pozycja2.y>prostokat.zwrocPozycje().y-prostokat.zwrocBok2()/2 && pozycja2.y<prostokat.zwrocPozycje().y+prostokat.zwrocBok2()/2)
 	   )
-	  )
+	  ) //Jeśli plomien pojawil sie wewnatrz muru to ma byc zniszczony natychmiastowo
 	{
 		o->usun();
 	}
