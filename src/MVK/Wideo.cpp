@@ -11,6 +11,8 @@ Wideo::Wideo(Model *nModel)
 {
 	szerokoscOkna=0;
 	wysokoscOkna=0;
+	odlegloscOstrzezenia=20;
+	zasiegOstrzezenia=1500;
 
 	model=nModel;
 	okno=0;
@@ -33,6 +35,7 @@ Wideo::Wideo(Model *nModel)
 	lucznikP=0;
 	lucznikL=0;
 	belt=0;
+	strzala=0;
 
 	mur=0;
 	zaslona=0;
@@ -42,6 +45,7 @@ Wideo::Wideo(Model *nModel)
 
 	pasekOgnia=0;
 	pasekZdrowia=0;
+	ostrzezenie=0;
 	fiolkaHUD=0;
 
 
@@ -70,6 +74,7 @@ void Wideo::zamkniecieOkna()
 
 	SDL_DestroyTexture(plomien);
 	SDL_DestroyTexture(belt);
+	SDL_DestroyTexture(strzala);
 
 	SDL_DestroyTexture(mur);
 	SDL_DestroyTexture(zaslona);
@@ -80,6 +85,7 @@ void Wideo::zamkniecieOkna()
 
 	SDL_DestroyTexture(pasekOgnia);
 	SDL_DestroyTexture(pasekZdrowia);
+	SDL_DestroyTexture(ostrzezenie);
 	SDL_DestroyTexture(fiolkaHUD);
 
 	SDL_DestroyTexture(instrukcja);
@@ -162,6 +168,7 @@ void Wideo::wczytanieObrazkow()
 	   wczytanieObrazka("Grafika/LucznikL.bmp",&lucznikL) ||
 	   wczytanieObrazka("Grafika/plomien.bmp",&plomien) ||
 	   wczytanieObrazka("Grafika/Belt.bmp",&belt) ||
+	   wczytanieObrazka("Grafika/Strzala.bmp",&strzala) ||
 	   wczytanieObrazka("Grafika/Mur.bmp",&mur) ||
 	   wczytanieObrazka("Grafika/Zaslona.bmp",&zaslona) ||
 	   wczytanieObrazka("Grafika/Chodnik1.bmp",&pierwszyPlan) ||
@@ -169,6 +176,7 @@ void Wideo::wczytanieObrazkow()
 	   wczytanieObrazka("Grafika/TloChmurno.bmp",&tlo) ||
 	   wczytanieObrazka("Grafika/FireBar.bmp",&pasekOgnia) ||
 	   wczytanieObrazka("Grafika/LifeBar.bmp",&pasekZdrowia) ||
+	   wczytanieObrazka("Grafika/Ostrzezenie.bmp",&ostrzezenie) ||
 	   wczytanieObrazka("Grafika/Vial.bmp",&fiolkaHUD) ||
 	   wczytanieObrazka("Grafika/Instrukcja.bmp",&instrukcja) ||
 	   wczytanieObrazka("Grafika/OdNowa.bmp",&odNowa)
@@ -402,12 +410,23 @@ void Wideo::wyswietleniePrzestrzeniKolizji(PrzestrzenKolizji *p, Punkt pozycjaKa
 
 Punkt Wideo::czyWychodziZaEkran(Punkt pozycjaKamery, Punkt p, Wektor v)
 {
-	if(p.x-pozycjaKamery.x<-szerokoscOkna/2 && v.x>0){
-		p.x=pozycjaKamery.x-szerokoscOkna/2;
-	}
-	if(p.x-pozycjaKamery.x>szerokoscOkna/2 && v.x<0) p.x=szerokoscOkna/2+pozycjaKamery.x;
-	if(p.y-pozycjaKamery.y<-wysokoscOkna/2 && v.y>0) p.y=pozycjaKamery.y-wysokoscOkna/2;
-	if(p.y-pozycjaKamery.y>wysokoscOkna/2 && v.y<0) p.y=wysokoscOkna/2+pozycjaKamery.y;
+	Punkt punkt;
+	double a = atan2(v.y,v.x);
+	v.y=zasiegOstrzezenia*sin(a);
+	v.x=zasiegOstrzezenia*cos(a);
+
+	Punkt wymiary= Punkt(szerokoscOkna-odlegloscOstrzezenia*2,wysokoscOkna-odlegloscOstrzezenia*2);
+	if(pozycjaKamery.y<wysokoscOkna/2) pozycjaKamery.y=wysokoscOkna/2;
+
+	ProstokatKolizji pocisk = ProstokatKolizji(&p,&v,Punkt(0,0), Wymiary(10,10));
+	ProstokatKolizji ekran = ProstokatKolizji(&pozycjaKamery,&punkt,Punkt(0,0), wymiary);
+
+	if(!pocisk.sprawdzKolizje(&ekran).first) return p;
+
+	if(p.x-pozycjaKamery.x<-wymiary.x/2 && v.x>0) p.x=pozycjaKamery.x-wymiary.x/2;
+	if(p.x-pozycjaKamery.x>wymiary.x/2 && v.x<0) p.x=wymiary.x/2+pozycjaKamery.x;
+	if(p.y-pozycjaKamery.y<-wymiary.y/2 && v.y>0) p.y=pozycjaKamery.y-wymiary.y/2;
+	if(p.y-pozycjaKamery.y>wymiary.y/2 && v.y<0) p.y=wymiary.y/2+pozycjaKamery.y;
 
 	return p;
 }
@@ -571,9 +590,14 @@ void Wideo::wyswietlenieStrzal()
 		Punkt pozycja = i->zwrocPozycje();
 		Punkt klatka = i->zwrocKlatkeAnimacji();
 
-		Punkt p = czyWychodziZaEkran(pozycjaKamery,pozycja,i->zwrocPredkosc());
+		Punkt p = pozycja;
+		if(!i->czyZniszczony())
+			p=czyWychodziZaEkran(pozycjaKamery,pozycja,i->zwrocPredkosc());
 
-		wyswietlenieKlatki(belt,p,pozycjaKamery,klatka,rozmiarKlatki);
+		if(p==pozycja)
+			wyswietlenieKlatki(strzala,p,pozycjaKamery,klatka,rozmiarKlatki);
+		else
+			wyswietlenieKlatki(ostrzezenie,p,pozycjaKamery,Punkt(0,0),17);
 		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}
 
@@ -585,7 +609,15 @@ void Wideo::wyswietlenieStrzal()
 		Punkt pozycja = i->zwrocPozycje();
 		Punkt klatka = i->zwrocKlatkeAnimacji();
 
-		wyswietlenieKlatki(belt,pozycja,pozycjaKamery,klatka,rozmiarKlatki);
+		Punkt p = pozycja;
+		if(!i->czyZniszczony())
+			p=czyWychodziZaEkran(pozycjaKamery,pozycja,i->zwrocPredkosc());
+
+		if(p==pozycja)
+			wyswietlenieKlatki(belt,p,pozycjaKamery,klatka,rozmiarKlatki);
+		else
+			wyswietlenieKlatki(ostrzezenie,p,pozycjaKamery,Punkt(0,0),17);
+
 		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}
 }
@@ -680,6 +712,12 @@ void Wideo::wyswietlenieStanuZdrowia()
 	wyswietlenieObrazka(pasekZdrowia,2,10,0,0,doNarysowania,25);
 	wyswietlenieObrazka(fiolkaHUD,0,0,0,0,170,50);
 
+}
+
+void Wideo::wyswietlenieOstrzezenia(Punkt pozycja, Punkt pozycjaKamery,int kolor)
+{
+	int rozmiarKlatki = 17;
+	wyswietlenieKlatki(ostrzezenie,pozycja,pozycjaKamery,Punkt(kolor,0),rozmiarKlatki);
 }
 
 void Wideo::wyswietlenieEkranu()

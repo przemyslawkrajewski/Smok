@@ -112,7 +112,7 @@ std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 {
 	int maxOdleglosc=4000;
 	int minOdleglosc=100;
-	int odleglosc=4000;
+	int odleglosc=400;
 
 	Punkt pozycjaCelu = cel->zwrocPozycjeCelu();
 

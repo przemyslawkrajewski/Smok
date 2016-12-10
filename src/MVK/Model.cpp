@@ -42,10 +42,10 @@ void Model::reset()
 	FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::lucznik,Punkt(1300,130));
 	FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(1400,130));
 
-	/*for(int i=0;i<100;i++)
+	for(int i=0;i<100;i++)
 	{
 		int x = rand()%3000+5000;
-		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(x,130));
+		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::lucznik,Punkt(x,130));
 	}//*/
 	smok.ustawPozycje(Punkt(1000,100));
 	kamera.ustawPozycje(smok.zwrocPozycje());
@@ -91,8 +91,6 @@ void Model::wyznaczKolejnyStanObiektow()
 	punktMyszkiKamery.y=obiektDoSledzenia->zwrocPozycje().y-myszka.zwrocY()+wymiaryEkranu.y/2;
 	kamera.wyznaczKolejnyStan(punktMyszkiKamery);
 
-
-	//TODO: jak ze wszystkim innym tyle że bez liczenia myszki bo od niej nie zależy zachowanie
 	//Strzelcy
 	strzelcy.ustawCel(&smok);
 	strzelcy.wyznaczKolejnyStan();

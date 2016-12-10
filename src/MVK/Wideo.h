@@ -13,6 +13,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <math.h>
 #include <SDL2/SDL.h>
 #include "Model.h"
 
@@ -64,11 +65,14 @@ private:
 
 	void wyswietlenieStanuOgnia();
 	void wyswietlenieStanuZdrowia();
+	void wyswietlenieOstrzezenia(Punkt pozycja,Punkt pozycjaKamery,int kolor);
 
 	Model *model;
 
 	int szerokoscOkna;
 	int wysokoscOkna;
+	int odlegloscOstrzezenia;
+	int zasiegOstrzezenia;
 
 	SDL_Window *okno;
 	SDL_Renderer *render;
@@ -85,12 +89,14 @@ private:
 	SDL_Texture * krzyzowiecP,* krzyzowiecL;
 	SDL_Texture * lucznikP,* lucznikL;
 	SDL_Texture * belt;
+	SDL_Texture * strzala;
 
 	SDL_Texture * mur;
 	SDL_Texture * zaslona;
 
 	SDL_Texture * pasekOgnia;
 	SDL_Texture * pasekZdrowia;
+	SDL_Texture * ostrzezenie;
 	SDL_Texture * fiolkaHUD;
 
 	SDL_Texture * instrukcja;
