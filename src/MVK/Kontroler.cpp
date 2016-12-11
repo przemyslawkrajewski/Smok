@@ -73,6 +73,9 @@ void Kontroler::obsluzZdarzenia()
             case SDLK_SPACE:
             	model->zwrocKlawiature()->ustawWcisnietoSpacje(true);
             	break;
+            case SDLK_x:
+            	model->zwrocKlawiature()->ustawWcisnietoKlawiszFunkcyjny(true,0);
+            	break;
             case SDLK_r:
             	zmienStosunek();
             	break;
@@ -116,6 +119,9 @@ void Kontroler::obsluzZdarzenia()
                 break;
             case SDLK_SPACE:
             	model->zwrocKlawiature()->ustawWcisnietoSpacje(false);
+            	break;
+            case SDLK_x:
+            	model->zwrocKlawiature()->ustawWcisnietoKlawiszFunkcyjny(false,0);
             	break;
             default:
             	break;

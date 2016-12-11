@@ -8,6 +8,8 @@
 #ifndef KLAWIATURA_H_
 #define KLAWIATURA_H_
 
+#define ILOSC_KLAWISZY_FUNKCYJNYCH 5
+
 class Klawiatura
 {
 public:
@@ -16,6 +18,7 @@ public:
 	{
 		wcisnietoDol=wcisnietoGora=wcisnietoLewo=wcisnietoPrawo=false;
 		wcisnietoSpacje=false;
+		for(int i=0;i<ILOSC_KLAWISZY_FUNKCYJNYCH;i++) wcisnietoKlawiszFunkcyjny[i]=false;
 	}
 
 	void ustawWcisnietoDol(bool wcisnietoDol) {this->wcisnietoDol = wcisnietoDol;}
@@ -23,16 +26,19 @@ public:
 	void ustawWcisnietoLewo(bool wcisnietoLewo) {this->wcisnietoLewo = wcisnietoLewo;}
 	void ustawWcisnietoPrawo(bool wcisnietoPrawo) {this->wcisnietoPrawo = wcisnietoPrawo;}
 	void ustawWcisnietoSpacje(bool wcisnietoSpacje) {this->wcisnietoSpacje = wcisnietoSpacje;}
+	void ustawWcisnietoKlawiszFunkcyjny(bool wcisnietoKF,int ktory) {wcisnietoKlawiszFunkcyjny[ktory]=wcisnietoKF;}
 
 	bool czyWcisnietoDol()  {return wcisnietoDol;}
 	bool czyWcisnietoGora() {return wcisnietoGora;}
 	bool czyWcisnietoLewo() {return wcisnietoLewo;}
 	bool czyWcisnietoPrawo(){return wcisnietoPrawo;}
 	bool czyWcisnietoSpacje(){return wcisnietoSpacje;}
+	bool czyWcisnietoKlawiszFunkcyjny(int ktory){return wcisnietoKlawiszFunkcyjny[ktory];}
 
 private:
 	bool wcisnietoGora,wcisnietoDol,wcisnietoLewo,wcisnietoPrawo;
 	bool wcisnietoSpacje;
+	bool wcisnietoKlawiszFunkcyjny[ILOSC_KLAWISZY_FUNKCYJNYCH];
 	
 	
 };

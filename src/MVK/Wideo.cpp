@@ -12,7 +12,7 @@ Wideo::Wideo(Model *nModel)
 	szerokoscOkna=0;
 	wysokoscOkna=0;
 	odlegloscOstrzezenia=20;
-	zasiegOstrzezenia=1500;
+	zasiegOstrzezenia=150000;
 
 	model=nModel;
 	okno=0;
@@ -408,25 +408,28 @@ void Wideo::wyswietleniePrzestrzeniKolizji(PrzestrzenKolizji *p, Punkt pozycjaKa
 	#endif
 }
 
-Punkt Wideo::czyWychodziZaEkran(Punkt pozycjaKamery, Punkt p, Wektor v)
+Punkt Wideo::czyWychodziZaEkran(Punkt pozycjaKamery, Punkt p, Wektor v, int iloscObiektow)
 {
-	Punkt punkt;
-	double a = atan2(v.y,v.x);
-	v.y=zasiegOstrzezenia*sin(a);
-	v.x=zasiegOstrzezenia*cos(a);
-
 	Punkt wymiary= Punkt(szerokoscOkna-odlegloscOstrzezenia*2,wysokoscOkna-odlegloscOstrzezenia*2);
 	if(pozycjaKamery.y<wysokoscOkna/2) pozycjaKamery.y=wysokoscOkna/2;
 
-	ProstokatKolizji pocisk = ProstokatKolizji(&p,&v,Punkt(0,0), Wymiary(10,10));
-	ProstokatKolizji ekran = ProstokatKolizji(&pozycjaKamery,&punkt,Punkt(0,0), wymiary);
 
-	if(!pocisk.sprawdzKolizje(&ekran).first) return p;
+	if(iloscObiektow==1)
+	{
+		Punkt punkt;
+		v.y*=zasiegOstrzezenia;
+		v.x*=zasiegOstrzezenia;
 
-	if(p.x-pozycjaKamery.x<-wymiary.x/2 && v.x>0) p.x=pozycjaKamery.x-wymiary.x/2;
-	if(p.x-pozycjaKamery.x>wymiary.x/2 && v.x<0) p.x=wymiary.x/2+pozycjaKamery.x;
-	if(p.y-pozycjaKamery.y<-wymiary.y/2 && v.y>0) p.y=pozycjaKamery.y-wymiary.y/2;
-	if(p.y-pozycjaKamery.y>wymiary.y/2 && v.y<0) p.y=wymiary.y/2+pozycjaKamery.y;
+		ProstokatKolizji pocisk = ProstokatKolizji(&p,&v,Punkt(0,0), Wymiary(10,10));
+		ProstokatKolizji ekran = ProstokatKolizji(&pozycjaKamery,&punkt,Punkt(0,0), wymiary);
+
+		if(!pocisk.sprawdzKolizje(&ekran).first) return p;
+	}
+
+	if(p.x-pozycjaKamery.x<-wymiary.x/2 && (iloscObiektow>=3 || v.x>0 && iloscObiektow>=1)) p.x=pozycjaKamery.x-wymiary.x/2;
+	if(p.x-pozycjaKamery.x>wymiary.x/2  && (iloscObiektow>=3 || v.x<0 && iloscObiektow>=1)) p.x=wymiary.x/2+pozycjaKamery.x;
+	if(p.y-pozycjaKamery.y<-wymiary.y/2 && (iloscObiektow>=3 || v.y>0 && iloscObiektow>=1)) p.y=pozycjaKamery.y-wymiary.y/2;
+	if(p.y-pozycjaKamery.y>wymiary.y/2  && (iloscObiektow>=3 || v.y<0 && iloscObiektow>=1)) p.y=wymiary.y/2+pozycjaKamery.y;
 
 	return p;
 }
@@ -572,7 +575,14 @@ void Wideo::wyswietlenieStrzelcow()
 		Punkt pozycja = (*i)->zwrocPozycje();
 		Punkt klatka = (*i)->zwrocKlatkeAnimacji();
 
+		Punkt p = pozycja;
+		if(!(*i)->czyZniszczony() && model->czyWyswietlacPrzeciwnikow())
+			p=czyWychodziZaEkran(pozycjaKamery,pozycja,(*i)->zwrocPredkosc(),3);
+
+		if(p==pozycja)
 		wyswietlenieKlatki(*animacja,pozycja,pozycjaKamery,klatka,rozmiarKlatki);
+		else
+			wyswietlenieKlatki(ostrzezenie,p,pozycjaKamery,Punkt(1,0),17);
 		wyswietleniePrzestrzeniKolizji((*i)->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}
 }
@@ -591,8 +601,8 @@ void Wideo::wyswietlenieStrzal()
 		Punkt klatka = i->zwrocKlatkeAnimacji();
 
 		Punkt p = pozycja;
-		if(!i->czyZniszczony())
-			p=czyWychodziZaEkran(pozycjaKamery,pozycja,i->zwrocPredkosc());
+		if(!i->czyZniszczony() && !model->czyWyswietlacPrzeciwnikow())
+			p=czyWychodziZaEkran(pozycjaKamery,pozycja,i->zwrocPredkosc(),1);
 
 		if(p==pozycja)
 			wyswietlenieKlatki(strzala,p,pozycjaKamery,klatka,rozmiarKlatki);
@@ -610,8 +620,8 @@ void Wideo::wyswietlenieStrzal()
 		Punkt klatka = i->zwrocKlatkeAnimacji();
 
 		Punkt p = pozycja;
-		if(!i->czyZniszczony())
-			p=czyWychodziZaEkran(pozycjaKamery,pozycja,i->zwrocPredkosc());
+		if(!i->czyZniszczony() && !model->czyWyswietlacPrzeciwnikow())
+			p=czyWychodziZaEkran(pozycjaKamery,pozycja,i->zwrocPredkosc(),1);
 
 		if(p==pozycja)
 			wyswietlenieKlatki(belt,p,pozycjaKamery,klatka,rozmiarKlatki);

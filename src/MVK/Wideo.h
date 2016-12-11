@@ -44,7 +44,7 @@ private:
 	void wyswietlenieProstokata(double x, double y, double bok1, double bok2);
 	void wyswietleniePiksela(int pozX, int pozY);
 	void wyswietleniePrzestrzeniKolizji(PrzestrzenKolizji *p, Punkt pozycjaKamery);
-	Punkt czyWychodziZaEkran(Punkt pozycjaKamery, Punkt p, Wektor v = Wektor());
+	Punkt czyWychodziZaEkran(Punkt pozycjaKamery, Punkt p, Wektor v, int iloscObiektow);
 
 	void wyswietleniePierwszegoPlanu(int pozX,int pozY);
 	void wyswietlenieDrugiegoPlanu(int pozX,int pozY);

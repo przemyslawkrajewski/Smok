@@ -37,6 +37,7 @@ public:
 	bool zwrocPelnyEkran() {return pelnyEkran;}
 	bool czyWyswietlacInstrukcje() {return wyswietlenieInstrukcji;}
 	bool czyWyswietlacOdNowa() {return wyswietlenieOdNowa;} //Todo: tymczasowe
+	bool czyWyswietlacPrzeciwnikow() {return klawiatura.czyWcisnietoKlawiszFunkcyjny(0);}
 
 	//Zwracanie inputu
 	Myszka* zwrocMyszke() {return &myszka;}
