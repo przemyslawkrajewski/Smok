@@ -82,6 +82,9 @@ void Kontroler::obsluzZdarzenia()
             case SDLK_f:
             	zmienTrybEkranu();
             	break;
+            case SDLK_c:
+            	model->ustawCzyWyswietlacCelownik(!model->czyWyswietlacCelownik());
+            	break;
             case SDLK_ESCAPE:
             	zakonczenieAplikacji=true;
             	break;

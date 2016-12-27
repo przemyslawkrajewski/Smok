@@ -38,6 +38,8 @@ public:
 	bool czyWyswietlacInstrukcje() {return wyswietlenieInstrukcji;}
 	bool czyWyswietlacOdNowa() {return wyswietlenieOdNowa;} //Todo: tymczasowe
 	bool czyWyswietlacPrzeciwnikow() {return klawiatura.czyWcisnietoKlawiszFunkcyjny(0);}
+	bool czyWyswietlacCelownik() {return wyswietlenieCelownika;}
+	void ustawCzyWyswietlacCelownik(bool b) {wyswietlenieCelownika=b;}
 
 	//Zwracanie inputu
 	Myszka* zwrocMyszke() {return &myszka;}
@@ -70,6 +72,7 @@ private:
 	bool pelnyEkran;
 	bool wyswietlenieInstrukcji;
 	bool wyswietlenieOdNowa;
+	bool wyswietlenieCelownika;
 
 	Klawiatura klawiatura;
 	Myszka myszka;

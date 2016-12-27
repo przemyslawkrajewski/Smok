@@ -28,7 +28,7 @@ struct ParametryOgnia
 		czasPalenia=50;
 		predkoscOpadania=5;
 
-		bazoweObrazenia=5;
+		bazoweObrazenia=25;
 		obrazeniaNaCelu=0.005;
 		obrazeniaNaZiemi=0.002;
 	}

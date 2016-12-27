@@ -108,6 +108,7 @@ public:
 					spada,hamujeX,hamujeY,
 					spadaZabity,spadlZabity,opadaZabity}; //Opada gdy stoi na ziemi, a spada gdy jest w powietrzu
 
+	static ParametrySmoka parametry;
 
 private:
 
@@ -130,7 +131,6 @@ private:
 	void wyznaczGlowe(Klawiatura* klawiatura, Myszka *myszka);
 	void wyznaczSmierc();
 
-	static ParametrySmoka parametry;
 	StanSmoka stan;
 	bool zieje;
 
@@ -157,6 +157,7 @@ public:
 
 	//Gety glowy
 	Punkt zwrocPozycjeGlowy() {return pozycjaGlowy;}
+	double zwrocKatObrotuGlowy() {return obrotGlowy;}
 	Punkt zwrocKlatkeAnimacjiGlowy() {return klatkaAnimacjiGlowy;}
 
 	//Gety stan Smoka

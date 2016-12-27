@@ -373,10 +373,61 @@ void Wideo::wyswietleniePiksela(int pozX,int pozY)
 	SDL_RenderDrawPoint(render,pozX,pozY);
 }
 
+void Wideo::wyswietleniePolProstej(Punkt p1,Punkt p2)
+{
+	SDL_SetRenderDrawColor(render,180,0,0,255);
+	double x=p1.x,y=p1.y;
+	double dx=abs(p2.x-p1.x);
+	double dy=abs(p2.y-p1.y);
+	double ddx=p2.x-p1.x>0? 1:-1;
+	double ddy=p2.y-p1.y>0?-1: 1;
+	bool r = dx<=dy;
+	double e=dx/2;
+
+	double p=(rand()%10000)/10000;
+
+	while(x<szerokoscOkna && x>0 && y>0 && y<wysokoscOkna)
+	{
+
+		for(int i=0;i<3;i++)
+		{
+			for(int j=0;j<3;j++)
+			{
+				p=(double)(rand()%10000)/10000;
+				if(p<0.1)
+				{
+					wyswietleniePiksela(x+j-2,y+i-2);
+				}
+			}
+		}
+
+		if(!r)
+		{
+			x+=ddx;
+			e=e-dy;
+			if(e<0)
+			{
+				y+=ddy;
+				e=e+dx;
+			}
+		}
+		else
+		{
+			y+=ddy;
+			e=e-dx;
+			if(e<0)
+			{
+				x+=ddx;
+				e=e+dy;
+			}
+		}
+	}
+}
+
 void Wideo::wyswietleniePrzestrzeniKolizji(PrzestrzenKolizji *p, Punkt pozycjaKamery)
 {
 	#ifdef DRAW_CHECKBOX
-
+	SDL_SetRenderDrawColor(render,0,0,0,255);
 	std::vector<ProstokatKolizji> *prostokaty = p->zwrocProstokaty();
 	for(std::vector<ProstokatKolizji>::iterator i= prostokaty->begin();i!=prostokaty->end();i++)
 	{
@@ -392,7 +443,7 @@ void Wideo::wyswietleniePrzestrzeniKolizji(PrzestrzenKolizji *p, Punkt pozycjaKa
 	#endif
 
 	#ifdef DRAW_CHECKSPHERE
-
+	SDL_SetRenderDrawColor(render,0,0,0,255);
 	std::vector<OkragKolizji> *okregi = p->zwrocOkregi();
 	for(std::vector<OkragKolizji>::iterator i= okregi->begin();i!=okregi->end();i++)
 	{
@@ -704,6 +755,25 @@ void Wideo::wyswietlenieKomunikatow()
 	else if(model->czyWyswietlacOdNowa()) wyswietlenieObrazka(odNowa,136,400,0,0,367,28);
 }
 
+void Wideo::wyswietlenieCelownika()
+{
+	if(model->czyWyswietlacCelownik())
+	{
+		Punkt pozycja = Punkt(model->zwrocSmoka()->zwrocPozycje().x+model->zwrocSmoka()->zwrocPozycjeGlowy().x,model->zwrocSmoka()->zwrocPozycje().y-model->zwrocSmoka()->zwrocPozycjeGlowy().y);
+
+		Punkt p1;
+		if(model->zwrocKamere()->zwrocY()<wysokoscOkna/2)
+			p1=Punkt(-model->zwrocKamere()->zwrocPozycje().x+pozycja.x+szerokoscOkna/2,wysokoscOkna-pozycja.y);
+		else
+			p1=Punkt(-model->zwrocKamere()->zwrocPozycje().x+pozycja.x+szerokoscOkna/2,wysokoscOkna/2-pozycja.y+model->zwrocKamere()->zwrocPozycje().y);
+		double a = model->zwrocSmoka()->zwrocKatObrotuGlowy();
+		p1=p1+Punkt(cos(a),-sin(a))*40;
+		p1=p1-Smok::parametry.poprawkaOgnia;
+		Punkt p2 = p1+Punkt(cos(a),sin(a))*40;
+		wyswietleniePolProstej(p1,p2);
+	}
+}
+
 void Wideo::wyswietlenieStanuOgnia()
 {
 	double stanOgnia = model->zwrocSmoka()->zwrocStanOgnia();
@@ -746,6 +816,7 @@ void Wideo::wyswietlenieEkranu()
 	wyswietlenieSmoka();
 	wyswietlenieStrzal();
 
+	wyswietlenieCelownika();
 
 	wyswietlenieStanuOgnia();
 	wyswietlenieStanuZdrowia();
