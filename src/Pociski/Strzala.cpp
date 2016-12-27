@@ -17,6 +17,7 @@ Strzala::Strzala(double nx,double ny, double nvx, double nvy, double nczasTrwani
 	predkosc.x=nvx;
 	predkosc.y=nvy;
 	katNachylenia = nKat;
+	cicha=false;
 }
 
 Strzala::Strzala(Punkt nPozycja, Punkt nPredkosc, double nczasTrwania,double nKat): Pocisk()
@@ -26,6 +27,7 @@ Strzala::Strzala(Punkt nPozycja, Punkt nPredkosc, double nczasTrwania,double nKa
 	predkosc=nPredkosc;
 	katNachylenia = nKat;
 	obrazenia=5;
+	cicha=false;
 }
 
 void Strzala::zniszcz()

@@ -34,8 +34,12 @@ public:
 
 	int zwrocCzasTrwania() {return czasTrwania;}
 	double zwrocKat();
+	void ustawCzyCicha(bool b) {cicha=b;}
+	bool czyCicha() {return cicha;}
 
 	static ParametryStrzaly parametry;
+private:
+	bool cicha;
 };
 
 #endif /* STRZALA_H_ */

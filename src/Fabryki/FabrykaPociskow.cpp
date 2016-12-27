@@ -46,6 +46,13 @@ void FabrykaPociskow::stworzPocisk(TypPocisku typ,Punkt nPozycja, Punkt nPredkos
 		assert("Kontener 'Strzaly' nie ustawiony" && strzaly!=0);
 		(strzaly->dodaj(Strzala(nPozycja,nPredkosc,nczasTrwania,nKat)))->wyznaczPrzestrzenKolizji();
 		break;
+	case cichaStrzala:
+		assert("Kontener 'Belty' nie ustawiony" && belty!=0);
+		Strzala *s;
+		s=(strzaly->dodaj(Strzala(nPozycja,nPredkosc,nczasTrwania,nKat)));
+		s->wyznaczPrzestrzenKolizji();
+		s->ustawCzyCicha(true);
+		break;
 	case belt:
 		assert("Kontener 'Belty' nie ustawiony" && belty!=0);
 		(belty->dodaj(Belt(nPozycja,nPredkosc,nczasTrwania,nKat)))->wyznaczPrzestrzenKolizji();

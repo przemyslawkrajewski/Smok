@@ -13,6 +13,7 @@ ParametrySmoka Smok::parametry;
 Model::Model(int szerOkna,int wysOkna, bool ekran): wymiaryEkranu(Punkt(szerOkna,wysOkna)),pelnyEkran(ekran)
 {
 	wyswietlenieInstrukcji=true;
+	wyswietlenieCelownika=false;
 
 	FabrykaPrzedmiotow::zwrocInstancje()->ustawKontenery(&mury,&zaslony);
 	FabrykaPociskow::zwrocInstancje()->ustawKontenery(&plomienie,&strzaly, &belty);
@@ -39,7 +40,7 @@ void Model::reset()
 
 	//FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniMur,Punkt(1400,300));
 
-	/*FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::lucznik,Punkt(1300,130));
+	FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::lucznik,Punkt(1300,130));
 	FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(1400,130));
 
 	for(int i=0;i<10;i++)

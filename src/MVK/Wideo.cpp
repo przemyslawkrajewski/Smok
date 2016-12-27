@@ -657,7 +657,7 @@ void Wideo::wyswietlenieStrzal()
 
 		if(p==pozycja)
 			wyswietlenieKlatki(strzala,p,pozycjaKamery,klatka,rozmiarKlatki);
-		else
+		else if(!i->czyCicha())
 			wyswietlenieKlatki(ostrzezenie,p,pozycjaKamery,Punkt(0,0),17);
 		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}
