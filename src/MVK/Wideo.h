@@ -43,7 +43,7 @@ private:
 	void wyswietlenieOkregu(int pozX,int pozY, double promien);
 	void wyswietlenieProstokata(double x, double y, double bok1, double bok2);
 	void wyswietleniePiksela(int pozX, int pozY);
-	void wyswietleniePolProstej(Punkt p1,Punkt p2);
+	void wyswietleniePolProstej(Punkt p1,Punkt p2, double wypelnienie);
 	void wyswietleniePrzestrzeniKolizji(PrzestrzenKolizji *p, Punkt pozycjaKamery);
 	Punkt czyWychodziZaEkran(Punkt pozycjaKamery, Punkt p, Wektor v, int iloscObiektow);
 

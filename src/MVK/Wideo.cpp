@@ -373,7 +373,7 @@ void Wideo::wyswietleniePiksela(int pozX,int pozY)
 	SDL_RenderDrawPoint(render,pozX,pozY);
 }
 
-void Wideo::wyswietleniePolProstej(Punkt p1,Punkt p2)
+void Wideo::wyswietleniePolProstej(Punkt p1,Punkt p2,double wypelnienie)
 {
 	SDL_SetRenderDrawColor(render,180,0,0,255);
 	double x=p1.x,y=p1.y;
@@ -389,12 +389,12 @@ void Wideo::wyswietleniePolProstej(Punkt p1,Punkt p2)
 	while(x<szerokoscOkna && x>0 && y>0 && y<wysokoscOkna)
 	{
 
-		for(int i=0;i<3;i++)
+		for(int i=0;i<2;i++)
 		{
-			for(int j=0;j<3;j++)
+			for(int j=0;j<2;j++)
 			{
 				p=(double)(rand()%10000)/10000;
-				if(p<0.1)
+				if(p<wypelnienie)
 				{
 					wyswietleniePiksela(x+j-2,y+i-2);
 				}
@@ -757,7 +757,7 @@ void Wideo::wyswietlenieKomunikatow()
 
 void Wideo::wyswietlenieCelownika()
 {
-	if(model->czyWyswietlacCelownik())
+	if(model->zwrocWypelnienieCelownika()!=0)
 	{
 		Punkt pozycja = Punkt(model->zwrocSmoka()->zwrocPozycje().x+model->zwrocSmoka()->zwrocPozycjeGlowy().x,model->zwrocSmoka()->zwrocPozycje().y-model->zwrocSmoka()->zwrocPozycjeGlowy().y);
 
@@ -770,7 +770,7 @@ void Wideo::wyswietlenieCelownika()
 		p1=p1+Punkt(cos(a),-sin(a))*40;
 		p1=p1-Smok::parametry.poprawkaOgnia;
 		Punkt p2 = p1+Punkt(cos(a),sin(a))*40;
-		wyswietleniePolProstej(p1,p2);
+		wyswietleniePolProstej(p1,p2,model->zwrocWypelnienieCelownika());
 	}
 }
 

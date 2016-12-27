@@ -13,7 +13,7 @@ ParametrySmoka Smok::parametry;
 Model::Model(int szerOkna,int wysOkna, bool ekran): wymiaryEkranu(Punkt(szerOkna,wysOkna)),pelnyEkran(ekran)
 {
 	wyswietlenieInstrukcji=true;
-	wyswietlenieCelownika=false;
+	wypelnienieCelownika=false;
 
 	FabrykaPrzedmiotow::zwrocInstancje()->ustawKontenery(&mury,&zaslony);
 	FabrykaPociskow::zwrocInstancje()->ustawKontenery(&plomienie,&strzaly, &belty);
