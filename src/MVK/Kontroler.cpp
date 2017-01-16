@@ -44,6 +44,7 @@ void Kontroler::obsluzZdarzenia()
         }
         else if( zdarzenie.type == SDL_KEYDOWN )
         {
+        	double w ;
             switch( zdarzenie.key.keysym.sym )
             {
             case SDLK_RIGHT:
@@ -86,11 +87,12 @@ void Kontroler::obsluzZdarzenia()
             	if(model->zwrocWypelnienieCelownika()>=1)
             		model->ustawWypelnienieCelownika(0);
             	else if(model->zwrocWypelnienieCelownika()==0)
-            		model->ustawWypelnienieCelownika(0.2);
+            		model->ustawWypelnienieCelownika(0.1);
             	else if(model->zwrocWypelnienieCelownika()==0.1)
             		model->ustawWypelnienieCelownika(0.5);
             	else if(model->zwrocWypelnienieCelownika()==0.5)
             		model->ustawWypelnienieCelownika(1);
+            	w = (model->zwrocWypelnienieCelownika());
             	break;
             case SDLK_ESCAPE:
             	zakonczenieAplikacji=true;

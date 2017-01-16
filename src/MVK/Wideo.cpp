@@ -633,7 +633,7 @@ void Wideo::wyswietlenieStrzelcow()
 		if(p==pozycja)
 		wyswietlenieKlatki(*animacja,pozycja,pozycjaKamery,klatka,rozmiarKlatki);
 		else
-			wyswietlenieKlatki(ostrzezenie,p,pozycjaKamery,Punkt(1,0),17);
+			wyswietlenieOstrzezenia(p, pozycjaKamery,1);
 		wyswietleniePrzestrzeniKolizji((*i)->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}
 }
@@ -658,7 +658,7 @@ void Wideo::wyswietlenieStrzal()
 		if(p==pozycja)
 			wyswietlenieKlatki(strzala,p,pozycjaKamery,klatka,rozmiarKlatki);
 		else if(!i->czyCicha())
-			wyswietlenieKlatki(ostrzezenie,p,pozycjaKamery,Punkt(0,0),17);
+			wyswietlenieOstrzezenia(p, pozycjaKamery,2);
 		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}
 
@@ -677,7 +677,7 @@ void Wideo::wyswietlenieStrzal()
 		if(p==pozycja)
 			wyswietlenieKlatki(belt,p,pozycjaKamery,klatka,rozmiarKlatki);
 		else
-			wyswietlenieKlatki(ostrzezenie,p,pozycjaKamery,Punkt(0,0),17);
+			wyswietlenieOstrzezenia(p, pozycjaKamery,2);
 
 		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}
@@ -774,6 +774,12 @@ void Wideo::wyswietlenieCelownika()
 	}
 }
 
+void Wideo::wyswietlenieWysokosciomierza()
+{
+	int h = model->zwrocSmoka()->zwrocPozycje().y/30;
+	wyswietlenieObrazka(ostrzezenie,0,wysokoscOkna-h-50,55,1,16,16);
+}
+
 void Wideo::wyswietlenieStanuOgnia()
 {
 	double stanOgnia = model->zwrocSmoka()->zwrocStanOgnia();
@@ -820,6 +826,7 @@ void Wideo::wyswietlenieEkranu()
 
 	wyswietlenieStanuOgnia();
 	wyswietlenieStanuZdrowia();
+	wyswietlenieWysokosciomierza();
 
 	wyswietlenieKomunikatow();
 

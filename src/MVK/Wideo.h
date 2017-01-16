@@ -64,6 +64,7 @@ private:
 
 	void wyswietlenieKomunikatow();
 	void wyswietlenieCelownika();
+	void wyswietlenieWysokosciomierza();
 
 	void wyswietlenieStanuOgnia();
 	void wyswietlenieStanuZdrowia();
