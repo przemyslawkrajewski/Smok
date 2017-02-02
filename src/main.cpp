@@ -7,7 +7,7 @@
 #ifdef _WIN32
 #undef _SDL_main
 #endif
-
+#undef _SDL_main
 SDL_Surface * ekran = NULL;
 
 int main(int argc, char *args[])

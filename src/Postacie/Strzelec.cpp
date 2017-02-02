@@ -132,7 +132,7 @@ std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 	if((stanNaciagania>0 && parametry.spust) || (mozliwyStrzal && ((pozycjaCelu.x>=pozycja.x && zwroconyWPrawo==true) || (pozycjaCelu.x<=pozycja.x && zwroconyWPrawo!=true))))
 	{
 		m.ustawLPM(true);
-		if(abs(pozycja.x-pozycjaCelu.x)<odleglosc) katCelowania=katCelowaniaWprost;
+		if(abs(pozycja.x-pozycjaCelu.x)<odleglosc) katCelowania=katCelowaniaWprost; //TODO: komunikacja tylko przez myszke i klawiature
 		else katCelowania=katCelowaniaZGory;
 	}
 	else if(pozycjaCelu.x>pozycja.x && zwroconyWPrawo==true)

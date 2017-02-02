@@ -17,7 +17,7 @@ Model::Model(int szerOkna,int wysOkna, bool ekran): wymiaryEkranu(Punkt(szerOkna
 
 	FabrykaPrzedmiotow::zwrocInstancje()->ustawKontenery(&mury,&zaslony);
 	FabrykaPociskow::zwrocInstancje()->ustawKontenery(&plomienie,&strzaly, &belty);
-	FabrykaLudzi::zwrocInstancje()->ustawKontenery(&strzelcy);
+	FabrykaLudzi::zwrocInstancje()->ustawKontenery(&strzelcy,&balisty);
 
 	reset();
 }
@@ -40,10 +40,11 @@ void Model::reset()
 
 	//FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniMur,Punkt(1400,300));
 
-	FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::lucznik,Punkt(1300,130));
-	FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(1400,130));
+	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::lucznik,Punkt(1300,130));
+	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(1400,130));
+	FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::balista,Punkt(1400,200));
 
-	for(int i=0;i<10;i++)
+	/*for(int i=0;i<10;i++)
 	{
 		int x = rand()%3000+5000;
 		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::lucznik,Punkt(x,130));
@@ -83,7 +84,7 @@ void Model::wyznaczKolejnyStanObiektow()
 	smok.wyznaczKlatkeAnimacji();
 	smok.wyznaczPrzestrzenKolizji();
 
-	//To samo z kamera
+	//Wyznaczamy kolejny stan kamery
 	Punkt punktMyszkiKamery(myszka.zwrocX(),myszka.zwrocY());
 	Obiekt* obiektDoSledzenia = (&smok);
 	if(smok.czyZwroconyWPrawo() && punktMyszkiKamery.x<3*wymiaryEkranu.x/4) punktMyszkiKamery.x=3*wymiaryEkranu.x/4;
@@ -97,6 +98,12 @@ void Model::wyznaczKolejnyStanObiektow()
 	strzelcy.wyznaczKolejnyStan();
 	strzelcy.wyznaczKlatkeAnimacji();
 
+	//Balisty
+	balisty.ustawCel(&smok);
+	balisty.wyznaczKolejnyStan();
+	balisty.wyznaczKlatkeAnimacji();
+
+	//Pociski
 	plomienie.wyznaczKolejnyStan();
 	plomienie.wyznaczKlatkeAnimacji();
 	strzaly.wyznaczKolejnyStan();
@@ -107,7 +114,7 @@ void Model::wyznaczKolejnyStanObiektow()
 	zaslony.wyznaczKolejnyStan();
 	zaslony.wyznaczKlatkeAnimacji();
 
-	if(strzelcy.czyPusty() || smok.czyZniszczony()) wyswietlenieOdNowa=true;
+	if((balisty.czyPusty() && strzelcy.czyPusty()) || smok.czyZniszczony()) wyswietlenieOdNowa=true;
 
 	//									Sadzenie krzyzowcow
 	/*

@@ -56,6 +56,7 @@ private:
 	void wyswietlenieOgnia(std::list<Plomien> *p);
 
 	void wyswietlenieStrzelcow();
+	void wyswietlenieBalist();
 
 	void wyswietlenieStrzal();
 
@@ -91,6 +92,9 @@ private:
 
 	SDL_Texture * krzyzowiecP,* krzyzowiecL;
 	SDL_Texture * lucznikP,* lucznikL;
+	SDL_Texture * balistaP,* balistaL;
+	SDL_Texture * inzynierP,*inzynierL;
+	SDL_Texture * zebatka;
 	SDL_Texture * belt;
 	SDL_Texture * strzala;
 

@@ -8,7 +8,8 @@
 #include "FabrykaLudzi.h"
 
 FabrykaLudzi* FabrykaLudzi::ptr=0;
- KontenerPostaci<Strzelec>* FabrykaLudzi::strzelcy=0;
+KontenerPostaci<Strzelec>* FabrykaLudzi::strzelcy=0;
+KontenerPostaci<Balista>* FabrykaLudzi::balisty=0;
 
 FabrykaLudzi* FabrykaLudzi::zwrocInstancje()
 {
@@ -53,9 +54,10 @@ FabrykaLudzi::~FabrykaLudzi()
 	delete ptr;
 }
 
-void FabrykaLudzi::ustawKontenery(KontenerPostaci<Strzelec>* s)
+void FabrykaLudzi::ustawKontenery(KontenerPostaci<Strzelec>* s, KontenerPostaci<Balista>* b)
 {
 	strzelcy=s;
+	balisty=b;
 }
 
 void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja)
@@ -81,6 +83,16 @@ void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja)
 		strzelec.ustawPozycje(nPozycja);
 		strzelec.ustawParametry(parametryLucznika);
 		(strzelcy->dodaj(strzelec))->wyznaczPrzestrzenKolizji(); //Taki myk ze dodaje nowego strzelca i od razu wyznacza jego przestrzen kolizji
+																//Nie mozna zrobic przez konstruktor bo wskaznik pokazuje na argument funkcji a nie obiekt w liscie
+		break;
+	}
+	case balista:
+	{
+		assert("Kontener 'Strzelcy' nie ustawiony" && strzelcy!=0);
+		Balista balista;
+		balista.ustawPozycje(nPozycja);
+		//Balista.ustawParametry(parametryBalisty);
+		(balisty->dodaj(balista))->wyznaczPrzestrzenKolizji(); //Taki myk ze dodaje nowego strzelca i od razu wyznacza jego przestrzen kolizji
 																//Nie mozna zrobic przez konstruktor bo wskaznik pokazuje na argument funkcji a nie obiekt w liscie
 		break;
 	}

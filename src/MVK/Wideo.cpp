@@ -72,6 +72,12 @@ void Wideo::zamkniecieOkna()
 	SDL_DestroyTexture(lucznikP);
 	SDL_DestroyTexture(lucznikL);
 
+	SDL_DestroyTexture(balistaP);
+	SDL_DestroyTexture(balistaL);
+	SDL_DestroyTexture(inzynierP);
+	SDL_DestroyTexture(inzynierL);
+	SDL_DestroyTexture(zebatka);
+
 	SDL_DestroyTexture(plomien);
 	SDL_DestroyTexture(belt);
 	SDL_DestroyTexture(strzala);
@@ -164,6 +170,11 @@ void Wideo::wczytanieObrazkow()
 	   wczytanieObrazka("Grafika/SmokGlowaL.bmp",&glowaSmokaL) ||
 	   wczytanieObrazka("Grafika/KrzyzowiecP.bmp",&krzyzowiecP) ||
 	   wczytanieObrazka("Grafika/KrzyzowiecL.bmp",&krzyzowiecL) ||
+	   wczytanieObrazka("Grafika/BalistaP.bmp",&balistaP) ||
+	   wczytanieObrazka("Grafika/BalistaL.bmp",&balistaL) ||
+	   wczytanieObrazka("Grafika/InzynierP.bmp",&inzynierP) ||
+	   wczytanieObrazka("Grafika/InzynierL.bmp",&inzynierL) ||
+	   wczytanieObrazka("Grafika/Zebatka.bmp",&zebatka) ||
 	   wczytanieObrazka("Grafika/LucznikP.bmp",&lucznikP) ||
 	   wczytanieObrazka("Grafika/LucznikL.bmp",&lucznikL) ||
 	   wczytanieObrazka("Grafika/plomien.bmp",&plomien) ||
@@ -638,6 +649,35 @@ void Wideo::wyswietlenieStrzelcow()
 	}
 }
 
+void Wideo::wyswietlenieBalist()
+{
+	Punkt pozycjaKamery=model->zwrocKamere()->zwrocPozycje();
+	int rozmiarKlatki=250;
+
+	std::list<Postac*> postacie  = model->zwrocBalisty()->zwrocObiekty();
+
+	SDL_Texture **animacja;
+
+	for(std::list<Postac*>::iterator i=postacie.begin(); i!=postacie.end() ;i++)
+	{
+		if((*i)->czyZwroconyWPrawo()) animacja=&balistaP;
+		else animacja=&balistaL;
+
+		Punkt pozycja = (*i)->zwrocPozycje();
+		Punkt klatka = (*i)->zwrocKlatkeAnimacji();
+
+		Punkt p = pozycja;
+		if(!(*i)->czyZniszczony() && model->czyWyswietlacPrzeciwnikow())
+			p=czyWychodziZaEkran(pozycjaKamery,pozycja,(*i)->zwrocPredkosc(),3);
+
+		if(p==pozycja)
+		wyswietlenieKlatki(*animacja,pozycja,pozycjaKamery,Punkt(((int)klatka.x)%4,((int)(klatka.x/4))),rozmiarKlatki);
+		else
+			wyswietlenieOstrzezenia(p, pozycjaKamery,1);
+		wyswietleniePrzestrzeniKolizji((*i)->zwrocPrzestrzenKolizji(),pozycjaKamery);
+	}
+}
+
 void Wideo::wyswietlenieStrzal()
 {
 	Punkt pozycjaKamery=model->zwrocKamere()->zwrocPozycje();
@@ -818,6 +858,7 @@ void Wideo::wyswietlenieEkranu()
 	wyswietlenieMuru();
 	wyswietlenieZaslon();
 
+	wyswietlenieBalist();
 	wyswietlenieStrzelcow();
 	wyswietlenieSmoka();
 	wyswietlenieStrzal();

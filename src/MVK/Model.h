@@ -53,6 +53,7 @@ public:
 	KontenerPociskow<Strzala>* zwrocStrzaly() {return &strzaly;}		//Todo: ale bedzie trzeba przepisywac a to dlugo trwa
 	KontenerPociskow<Belt>* zwrocBelty() {return &belty;}
 	KontenerPostaci<Strzelec>* zwrocStrzelcow() {return &strzelcy;}
+	KontenerPostaci<Balista>* zwrocBalisty() {return &balisty;}
 	KontenerPrzedmiotow<Mur>* zwrocMury() {return &mury;}
 	KontenerPrzedmiotow<Zaslona>* zwrocZaslony() {return &zaslony;}
 
@@ -81,6 +82,7 @@ private:
 
 	Smok smok;
 	KontenerPostaci<Strzelec> strzelcy;
+	KontenerPostaci<Balista> balisty;
 
 	KontenerPociskow<Plomien> plomienie;
 	KontenerPociskow<Strzala> strzaly;
