@@ -63,6 +63,7 @@ public:
 	bool czyZwroconyWPrawo() {return zwroconyWPrawo;}
 	bool czyNaZiemi() {return naZiemi;}
 	void ustawPozycje(Punkt p) {pozycja=p;}
+	void ustawCzyZwroconyWPrawo(bool zwrocony) {zwroconyWPrawo=zwrocony;}
 	Obiekt* zwrocPtr() {return this;}
 	void ustawPunktZaczepu(Obiekt *p);
 	void usunPunktZaczepu();

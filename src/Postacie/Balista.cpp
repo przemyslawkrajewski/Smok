@@ -9,7 +9,15 @@
 
 Balista::Balista() {
 	stan=rozladowany;
+	stanCelowania=0;
 
+	mozliwyStrzal=false;
+	katCelowaniaZGory=0;
+	katCelowaniaWprost=0;
+	katCelowania=0;
+
+	stanNaciagania=0;
+	zwroconyWPrawo=true;
 }
 
 //#####################################################################################################
@@ -17,28 +25,42 @@ Balista::Balista() {
 //#####################################################################################################
 void Balista::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 {
+	//Strzal
 	if(myszka->zwrocLPM() && stanNaciagania==0)
 	{
 		//Fabryka->stworz pocisk
+		Punkt p;
+		p.x=pozycja.x+(100)*cos(katCelowania);
+		p.y=pozycja.y+(100)*sin(katCelowania);
+		Punkt v;
+		v.x=parametry.predkoscStrzaly*cos(katCelowania);
+		v.y=parametry.predkoscStrzaly*sin(katCelowania);
+		double katStrzaly = katCelowania+1.57;//+3.14+6.28
+		if(katStrzaly>6.28) katStrzaly-=6.28;
+		FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::belt,p,v,100,katStrzaly);
+
 		stanNaciagania=parametry.maxNaciagania;
 	}
 	else
 	{
+		//Naciaganie
 		if(stanNaciagania>0)
 		{
-			if(katCelowania==0) stanNaciagania--;
-			else katCelowania-=parametry.predkoscCelowania;
+			if(czyPrzekroczonoMaksKatCelowania())
+			{
+				stanNaciagania--;
+			}
+			else podniesCelownik();
 		}
+		//Celowanie
 		else
 		{
-			double kat = atan2(myszka->zwrocY(),myszka->zwrocX());
-			kat=-kat;
+			double katMyszki = atan2(myszka->zwrocY(),myszka->zwrocX());
 
-			std::cout << katCelowania << "  " << kat<< "\n";
-			if(abs(katCelowania-kat)>parametry.predkoscCelowania)
+			if(fabs(katCelowania-katMyszki)>parametry.predkoscCelowania && (zwroconyWPrawo == (pozycja.x<cel->zwrocPozycje().x))  )
 			{
-				if(katCelowania > kat) katCelowania-=parametry.predkoscCelowania;
-				else if(katCelowania < kat) katCelowania+=parametry.predkoscCelowania;
+				if(zwroconyWPrawo==(katCelowania > katMyszki) && !czyPrzekroczonoMinKatCelowania()) opuscCelownik();
+				else if(zwroconyWPrawo==(katCelowania < katMyszki) && !czyPrzekroczonoMaksKatCelowania()) podniesCelownik();
 			}
 		}
 	}
@@ -56,14 +78,16 @@ std::pair<Klawiatura,Myszka> Balista::wyznaczSterowanie()
 		return std::pair<Klawiatura,Myszka>(k,m);
 	}
 
+
 	wyznaczKatStrzalu(Punkt((pozycja.x-pozycjaCelu.x),-(pozycja.y-pozycjaCelu.y)));
 
-	m.ustawX(-cos(katCelowaniaWprost)*1000);
-	m.ustawY(sin(katCelowaniaWprost)*1000);
+	m.ustawX(cos(katCelowaniaWprost)*1000);
+	m.ustawY(-sin(katCelowaniaWprost)*1000);
 
-	//std::cout << m.zwrocX() << "  " << m.zwrocY() << "\n";
-
-	if(abs(katCelowania-katCelowaniaWprost)<parametry.predkoscCelowania) m.ustawLPM(true);
+	if(fabs((double)katCelowaniaWprost+katCelowania-M_PI*2)<parametry.predkoscCelowania)
+	{
+		m.ustawLPM(true);
+	}
 
 	return std::pair<Klawiatura,Myszka>(k,m);
 }
@@ -79,7 +103,7 @@ void Balista::wyznaczKatStrzalu(Punkt cel)
 	//do wzoru, jak zgubisz kartke to zle
 	double A=-abs(cel.y);
 	double B=abs(cel.x);
-	double C=B*B*Strzala::parametry.wspolczynnikGrawitacji/(2*parametry.predkoscStrzaly*parametry.predkoscStrzaly);
+	double C=B*B*Strzala::parametry.wspolczynnikGrawitacji/(2*10000);
 
 	if(B==0)
 	{
@@ -95,11 +119,6 @@ void Balista::wyznaczKatStrzalu(Punkt cel)
 	//rownanie kwadratowe
 	double delta = b*b-4*a*c;
 
-	//std::cout << "\n";
-	//std::cout  << "a:"<< a << " b:" << b << " c:" << c << "\n";
-	//std::cout  << "A:"<< A << " B:" << B << " C:" << C << "\n";
-	//std::cout  << "delta:" << delta << "\n";
-
 	if(delta<0)
 	{
 		mozliwyStrzal=false;
@@ -107,7 +126,6 @@ void Balista::wyznaczKatStrzalu(Punkt cel)
 	}
 	double kat1 = -(-b -sqrt(delta))/(2*a);
 	double kat2 = -(-b +sqrt(delta))/(2*a);
-	//std::cout << "kat1:" << kat1 << " kat2:" << kat2 << "\n";
 
 	if(kat1<0)
 	{
@@ -136,6 +154,40 @@ void Balista::wyznaczKatStrzalu(Punkt cel)
 
 }
 
+bool Balista::czyPrzekroczonoMaksKatCelowania()
+{
+	if(zwroconyWPrawo)
+		return katCelowania>parametry.maxKatCelowania;
+	else
+		return katCelowania<M_PI-parametry.maxKatCelowania;
+}
+bool Balista::czyPrzekroczonoMinKatCelowania()
+{
+	if(zwroconyWPrawo)
+		return katCelowania<parametry.minKatCelowania;
+	else
+		return katCelowania>M_PI-parametry.minKatCelowania;
+}
+
+
+void Balista::opuscCelownik()
+{
+	if(zwroconyWPrawo)
+		katCelowania-=parametry.predkoscCelowania;
+	else
+		katCelowania+=parametry.predkoscCelowania;
+	stanCelowania--;
+	if(stanCelowania<=0) stanCelowania=parametry.predkoscAnimacjiCelowania*4-1;
+}
+void Balista::podniesCelownik()
+{
+	if(zwroconyWPrawo)
+		katCelowania+=parametry.predkoscCelowania;
+	else
+		katCelowania-=parametry.predkoscCelowania;
+	stanCelowania++;
+	if(stanCelowania>=parametry.predkoscAnimacjiCelowania*4) stanCelowania=0;
+}
 
 //#####################################################################################################
 //Podfunkcje Kolizje
@@ -153,13 +205,24 @@ void Balista::wyznaczKlatkeAnimacji()
 	//x/4- naladowany/rozladowany
 	//x%4 -kat celowania
 	double kat=katCelowania;
-	klatkaAnimacji.x=4-((double)(kat)/(6.28/16));
+	if(zwroconyWPrawo)
+		klatkaAnimacji.x=((double)(kat-M_PI/32)/(M_PI/16));
+	else
+		klatkaAnimacji.x=((double)(M_PI-kat+M_PI/32)/(6.28/16));
+
 	if(klatkaAnimacji.x>3) klatkaAnimacji.x=3;
 	if(klatkaAnimacji.x<0) klatkaAnimacji.x=0;
-	if(stanNaciagania<=0) klatkaAnimacji.x+=4;
+	if(stanNaciagania>0) klatkaAnimacji.x+=5;
 
+	if(stanNaciagania!=0 && stanNaciagania!=parametry.maxNaciagania)
+		klatkaAnimacji.x=9;
 	//y/4 stan celowania
 	//y%4 stan naciagania
-	klatkaAnimacji.y=stanNaciagania%parametry.predkoscAnimacjiNaciagania;
-	klatkaAnimacji.y=(stanCelowania%parametry.predkoscAnimacjiCelowania)*4;
+	if(stanNaciagania==0 || stanNaciagania==parametry.maxNaciagania)
+		klatkaAnimacji.y=0;
+	else
+		klatkaAnimacji.y=(stanNaciagania/parametry.predkoscAnimacjiNaciagania)%4+1;
+
+	if(stanNaciagania==0 || stanNaciagania==parametry.maxNaciagania)
+		klatkaAnimacji.y+=((int)stanCelowania/parametry.predkoscAnimacjiCelowania)* 5+5;
 }

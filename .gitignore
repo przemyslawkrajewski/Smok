@@ -34,3 +34,6 @@ build
 
 .settings
 /Debug/
+.idea/
+
+Smok.iml

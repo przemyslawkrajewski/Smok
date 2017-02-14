@@ -36,7 +36,7 @@ public:
 	static FabrykaLudzi* zwrocInstancje();
 
 	void ustawKontenery(KontenerPostaci<Strzelec>* s, KontenerPostaci<Balista>* b);
-	void stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja);
+	void stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja, bool zwroconyWPrawo = true);
 };
 
 #endif /* FABRYKALUDZI_H_ */

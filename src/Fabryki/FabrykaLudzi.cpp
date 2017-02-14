@@ -60,7 +60,7 @@ void FabrykaLudzi::ustawKontenery(KontenerPostaci<Strzelec>* s, KontenerPostaci<
 	balisty=b;
 }
 
-void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja)
+void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja, bool zwroconyWPrawo)
 {
 	switch(typ)
 	{
@@ -70,6 +70,7 @@ void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja)
 		Strzelec strzelec;
 		strzelec.ustawTypPostaci(Postac::krzyzowiec);
 		strzelec.ustawPozycje(nPozycja);
+		strzelec.ustawCzyZwroconyWPrawo(zwroconyWPrawo);
 		strzelec.ustawParametry(parametryKrzyzowca);
 		(strzelcy->dodaj(strzelec))->wyznaczPrzestrzenKolizji(); //Taki myk ze dodaje nowego strzelca i od razu wyznacza jego przestrzen kolizji
 																//Nie mozna zrobic przez konstruktor bo wskaznik pokazuje na argument funkcji a nie obiekt w liscie
@@ -81,6 +82,7 @@ void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja)
 		Strzelec strzelec;
 		strzelec.ustawTypPostaci(Postac::lucznik);
 		strzelec.ustawPozycje(nPozycja);
+		strzelec.ustawCzyZwroconyWPrawo(zwroconyWPrawo);
 		strzelec.ustawParametry(parametryLucznika);
 		(strzelcy->dodaj(strzelec))->wyznaczPrzestrzenKolizji(); //Taki myk ze dodaje nowego strzelca i od razu wyznacza jego przestrzen kolizji
 																//Nie mozna zrobic przez konstruktor bo wskaznik pokazuje na argument funkcji a nie obiekt w liscie
@@ -91,6 +93,9 @@ void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja)
 		assert("Kontener 'Strzelcy' nie ustawiony" && strzelcy!=0);
 		Balista balista;
 		balista.ustawPozycje(nPozycja);
+		balista.ustawCzyZwroconyWPrawo(zwroconyWPrawo);
+		if(zwroconyWPrawo) balista.ustawKatCelowania(0.2);
+		else balista.ustawKatCelowania(2.9);
 		//Balista.ustawParametry(parametryBalisty);
 		(balisty->dodaj(balista))->wyznaczPrzestrzenKolizji(); //Taki myk ze dodaje nowego strzelca i od razu wyznacza jego przestrzen kolizji
 																//Nie mozna zrobic przez konstruktor bo wskaznik pokazuje na argument funkcji a nie obiekt w liscie
@@ -98,5 +103,5 @@ void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja)
 	}
 	default:
 		break;
-	}
 }
+	}

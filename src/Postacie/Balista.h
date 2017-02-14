@@ -32,13 +32,13 @@ struct ParametryBalisty
 	ParametryBalisty()
 	{
 		predkoscAnimacjiNaciagania=20;
-		predkoscAnimacjiCelowania=20;
-		predkoscCelowania=0.04;
+		predkoscAnimacjiCelowania=5;
+		predkoscCelowania=0.004;
 
 		predkoscStrzaly=40;
 
-		maxKatCelowania=3.14;
-		minKatCelowania=0;
+		maxKatCelowania=1.29;
+		minKatCelowania=0.15;
 		maxNaciagania=200;
 		maxZycia=10;
 	}
@@ -57,6 +57,8 @@ public:
 
 	std::pair<Klawiatura,Myszka> wyznaczSterowanie();
 
+	void ustawKatCelowania(double kat) {katCelowania=kat;}
+
 	void ustawParametry(ParametryBalisty p) {parametry=p;}
 
 	ParametryBalisty parametry;
@@ -65,6 +67,10 @@ public:
 private:
 
 	void wyznaczKatStrzalu(Punkt cel);
+	bool czyPrzekroczonoMaksKatCelowania();
+	bool czyPrzekroczonoMinKatCelowania();
+	void opuscCelownik();
+	void podniesCelownik();
 
 	double katCelowaniaWprost;
 	double katCelowaniaZGory;

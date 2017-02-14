@@ -653,16 +653,31 @@ void Wideo::wyswietlenieBalist()
 {
 	Punkt pozycjaKamery=model->zwrocKamere()->zwrocPozycje();
 	int rozmiarKlatki=250;
+	int rozmiarKlatkiInzyniera=75;
+	int rozmiarKlatkiZebatki=36;
 
 	std::list<Postac*> postacie  = model->zwrocBalisty()->zwrocObiekty();
 
 	SDL_Texture **animacja;
+	SDL_Texture **animacjaInzyniera1;
+	SDL_Texture **animacjaInzyniera2;
 
 	for(std::list<Postac*>::iterator i=postacie.begin(); i!=postacie.end() ;i++)
 	{
-		if((*i)->czyZwroconyWPrawo()) animacja=&balistaP;
-		else animacja=&balistaL;
+		if((*i)->czyZwroconyWPrawo())
+		{
+			animacja=&balistaP;
+			animacjaInzyniera1=&inzynierL;
+			animacjaInzyniera2=&inzynierP;
+		}
+		else
+		{
+			animacja=&balistaL;
+			animacjaInzyniera1=&inzynierP;
+			animacjaInzyniera2=&inzynierL;
+		}
 
+		double wPrawo = (*i)->czyZwroconyWPrawo()?-1:1;
 		Punkt pozycja = (*i)->zwrocPozycje();
 		Punkt klatka = (*i)->zwrocKlatkeAnimacji();
 
@@ -671,7 +686,14 @@ void Wideo::wyswietlenieBalist()
 			p=czyWychodziZaEkran(pozycjaKamery,pozycja,(*i)->zwrocPredkosc(),3);
 
 		if(p==pozycja)
-		wyswietlenieKlatki(*animacja,pozycja,pozycjaKamery,Punkt(((int)klatka.x)%4,((int)(klatka.x/4))),rozmiarKlatki);
+		{
+			wyswietlenieKlatki(*animacjaInzyniera2,pozycja+Punkt(60*wPrawo,-88),pozycjaKamery,Punkt(((int)klatka.y)%5,0)					 ,rozmiarKlatkiInzyniera);
+            wyswietlenieKlatki( zebatka			  ,pozycja+Punkt(34*wPrawo,-85),pozycjaKamery,Punkt((((int)klatka.y)%5)-1  ,0)				 ,rozmiarKlatkiZebatki);
+			wyswietlenieKlatki(*animacja		  ,pozycja					   ,pozycjaKamery,Punkt(((int)klatka.x)%5,((int)(klatka.x/5)))	 ,rozmiarKlatki);
+			wyswietlenieKlatki(*animacja		  ,pozycja					   ,pozycjaKamery,Punkt(4,0)									 ,rozmiarKlatki);
+            wyswietlenieKlatki( zebatka			  ,pozycja+Punkt(31*wPrawo,-85),pozycjaKamery,Punkt( klatka.y/5<=1?0:(((int)klatka.y)/5)-1,0),rozmiarKlatkiZebatki);
+			wyswietlenieKlatki(*animacjaInzyniera1,pozycja+Punkt(12*wPrawo,-88),pozycjaKamery,Punkt(((int)klatka.y)/5,0)					 ,rozmiarKlatkiInzyniera);
+		}
 		else
 			wyswietlenieOstrzezenia(p, pozycjaKamery,1);
 		wyswietleniePrzestrzeniKolizji((*i)->zwrocPrzestrzenKolizji(),pozycjaKamery);
