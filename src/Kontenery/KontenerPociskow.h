@@ -22,13 +22,14 @@ public:
 	virtual ~KontenerPociskow();
 
 	virtual void wyznaczKolejnyStan();
+	virtual void wyznaczPrzestrzenKolizji();
 
 	std::list<T> * zwrocObiekty() {return &(KontenerObiektow<T>::obiekty);}
 
 
 
 private:
-	void testujDziedziczenie() {T t = T(0,0,0,0,0,0);Pocisk *p = &t;}
+	void testujDziedziczenie() {T t = T(Punkt(),Punkt(),0,0);Pocisk *p = &t;}
 };
 //##################################################################################################################################
 template <class T>
@@ -57,6 +58,24 @@ void KontenerPociskow<T>::wyznaczKolejnyStan()
 		}
 
 		i->wyznaczKolejnyStan();
+		i++;
+
+	}
+}
+
+template <class T>
+void KontenerPociskow<T>::wyznaczPrzestrzenKolizji()
+{
+	for(typename std::list<T>::iterator i=KontenerObiektow<T>::obiekty.begin();i!=KontenerObiektow<T>::obiekty.end();)
+	{
+		i->zwrocPozycje();
+		if(!i->czyIstnieje())
+		{
+			i=KontenerObiektow<T>::obiekty.erase(i);
+			continue;
+		}
+
+		i->wyznaczPrzestrzenKolizji();
 		i++;
 
 	}

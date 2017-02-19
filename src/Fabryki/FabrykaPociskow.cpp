@@ -11,6 +11,7 @@ FabrykaPociskow* FabrykaPociskow::ptr=0;
 KontenerPociskow<Plomien>* FabrykaPociskow::plomienie=0;
 KontenerPociskow<Strzala>* FabrykaPociskow::strzaly=0;
 KontenerPociskow<Belt>* FabrykaPociskow::belty=0;
+KontenerPociskow<PociskBalistyczny>* FabrykaPociskow::pociskiBalistyczne=0;
 
 FabrykaPociskow* FabrykaPociskow::zwrocInstancje()
 {
@@ -27,11 +28,12 @@ FabrykaPociskow::~FabrykaPociskow()
 	delete ptr;
 }
 
-void FabrykaPociskow::ustawKontenery(KontenerPociskow<Plomien>* p,KontenerPociskow<Strzala>* s, KontenerPociskow<Belt>* b)
+void FabrykaPociskow::ustawKontenery(KontenerPociskow<Plomien>* p,KontenerPociskow<Strzala>* s, KontenerPociskow<Belt>* b, KontenerPociskow<PociskBalistyczny> *pb)
 {
 	strzaly=s;
 	plomienie=p;
 	belty=b;
+	pociskiBalistyczne=pb;
 }
 
 void FabrykaPociskow::stworzPocisk(TypPocisku typ,Punkt nPozycja, Punkt nPredkosc, double nczasTrwania,double nKat)
@@ -47,7 +49,7 @@ void FabrykaPociskow::stworzPocisk(TypPocisku typ,Punkt nPozycja, Punkt nPredkos
 		(strzaly->dodaj(Strzala(nPozycja,nPredkosc,nczasTrwania,nKat)))->wyznaczPrzestrzenKolizji();
 		break;
 	case cichaStrzala:
-		assert("Kontener 'Belty' nie ustawiony" && belty!=0);
+		assert("Kontener 'Strzaly' nie ustawiony" && belty!=0);
 		Strzala *s;
 		s=(strzaly->dodaj(Strzala(nPozycja,nPredkosc,nczasTrwania,nKat)));
 		s->wyznaczPrzestrzenKolizji();
@@ -57,5 +59,9 @@ void FabrykaPociskow::stworzPocisk(TypPocisku typ,Punkt nPozycja, Punkt nPredkos
 		assert("Kontener 'Belty' nie ustawiony" && belty!=0);
 		(belty->dodaj(Belt(nPozycja,nPredkosc,nczasTrwania,nKat)))->wyznaczPrzestrzenKolizji();
 		break;
+	case pociskBalistyczny:
+    	assert("Kontener 'PociskiBalistyczne' nie ustawiony" && belty!=0);
+    	(pociskiBalistyczne->dodaj(PociskBalistyczny(nPozycja,nPredkosc,nczasTrwania,nKat)))->wyznaczPrzestrzenKolizji();
+    	break;
 	}
 }

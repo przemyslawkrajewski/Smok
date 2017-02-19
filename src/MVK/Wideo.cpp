@@ -747,6 +747,32 @@ void Wideo::wyswietlenieStrzal()
 	}
 }
 
+void Wideo::wyswietleniePociskowBalistycznych()
+{
+	Punkt pozycjaKamery=model->zwrocKamere()->zwrocPozycje();
+	int rozmiarKlatki=190;
+
+	std::list<PociskBalistyczny> *b = model->zwrocPociskiBalistyczne()->zwrocObiekty();
+
+	for(std::list<PociskBalistyczny>::iterator i=b->begin(); i!=b->end() ;i++)
+	{
+		if(!i->czyIstnieje()) continue;
+		Punkt pozycja = i->zwrocPozycje();
+		Punkt klatka = i->zwrocKlatkeAnimacji();
+
+		Punkt p = pozycja;
+		if(!i->czyZniszczony() && !model->czyWyswietlacPrzeciwnikow())
+			p=czyWychodziZaEkran(pozycjaKamery,pozycja,i->zwrocPredkosc(),1);
+
+		if(p==pozycja)
+			wyswietlenieKlatki(pociskBalistyczny,p,pozycjaKamery,klatka,rozmiarKlatki);
+		else
+			wyswietlenieOstrzezenia(p, pozycjaKamery,0);
+
+		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
+	}
+}
+
 void Wideo::wyswietlenieMuru()
 {
 	Punkt pozycjaKamery=model->zwrocKamere()->zwrocPozycje();
@@ -886,6 +912,7 @@ void Wideo::wyswietlenieEkranu()
 	wyswietlenieStrzelcow();
 	wyswietlenieSmoka();
 	wyswietlenieStrzal();
+	wyswietleniePociskowBalistycznych();
 
 	wyswietlenieCelownika();
 

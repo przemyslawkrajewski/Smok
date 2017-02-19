@@ -52,6 +52,7 @@ public:
 	KontenerPociskow<Plomien>* zwrocPlomienie() {return &plomienie;}	//Todo: ma zwrocic kontener klasy bazowej
 	KontenerPociskow<Strzala>* zwrocStrzaly() {return &strzaly;}		//Todo: ale bedzie trzeba przepisywac a to dlugo trwa
 	KontenerPociskow<Belt>* zwrocBelty() {return &belty;}
+	KontenerPociskow<PociskBalistyczny>* zwrocPociskiBalistyczne() {return &pociskiBalistyczne;}
 	KontenerPostaci<Strzelec>* zwrocStrzelcow() {return &strzelcy;}
 	KontenerPostaci<Balista>* zwrocBalisty() {return &balisty;}
 	KontenerPrzedmiotow<Mur>* zwrocMury() {return &mury;}
@@ -87,6 +88,7 @@ private:
 	KontenerPociskow<Plomien> plomienie;
 	KontenerPociskow<Strzala> strzaly;
 	KontenerPociskow<Belt> belty;
+	KontenerPociskow<PociskBalistyczny> pociskiBalistyczne;
 
 	KontenerPrzedmiotow<Mur> mury;
 	KontenerPrzedmiotow<Zaslona> zaslony;

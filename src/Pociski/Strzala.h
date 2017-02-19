@@ -24,7 +24,6 @@ struct ParametryStrzaly
 class Strzala: public Pocisk
 {
 public:
-	Strzala(double nx, double ny, double nvx, double nvy, double nCzasTrwania, double nKat);
 	Strzala(Punkt nPozycja, Punkt nPredkosc, double nczasTrwania,double nKat);
 
 	virtual void wyznaczKolejnyStan();

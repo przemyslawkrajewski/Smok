@@ -18,6 +18,7 @@ Balista::Balista() {
 
 	stanNaciagania=0;
 	zwroconyWPrawo=true;
+	zycie=300;
 }
 
 //#####################################################################################################
@@ -25,19 +26,33 @@ Balista::Balista() {
 //#####################################################################################################
 void Balista::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 {
-	//Strzal
-	if(myszka->zwrocLPM() && stanNaciagania==0)
+	std::cout << zycie << "\n";
+	if(zycie<0)
 	{
+		//Na razie po prostu znika
+		usun();
+	}
+	//Strzal
+	if(myszka->zwrocLPM() && stanNaciagania==0 )
+	{
+		double katMyszki = atan2(myszka->zwrocY(),myszka->zwrocX());
+		if(czyKatPrzekraczaMaks(-katMyszki) || czyKatPrzekraczaMin(-katMyszki)) return;
+		double kat;
+		kat=katCelowania;
+		if(fabs((double)katCelowaniaWprost-katCelowania)<parametry.predkoscCelowania)
+		{
+			kat=-katMyszki;
+		}
 		//Fabryka->stworz pocisk
 		Punkt p;
-		p.x=pozycja.x+(100)*cos(katCelowania);
-		p.y=pozycja.y+(100)*sin(katCelowania);
+		p.x=pozycja.x;//+(parametry.predkoscStrzaly)*cos(katCelowania);
+		p.y=pozycja.y;//+(parametry.predkoscStrzaly)*sin(katCelowania);
 		Punkt v;
-		v.x=parametry.predkoscStrzaly*cos(katCelowania);
-		v.y=parametry.predkoscStrzaly*sin(katCelowania);
-		double katStrzaly = katCelowania+1.57;//+3.14+6.28
+		v.x=parametry.predkoscStrzaly*cos(kat);
+		v.y=parametry.predkoscStrzaly*sin(kat);
+		double katStrzaly = kat+M_PI/2;//+3.14+6.28
 		if(katStrzaly>6.28) katStrzaly-=6.28;
-		FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::belt,p,v,100,katStrzaly);
+		FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::pociskBalistyczny,p,v,parametry.predkoscStrzaly,katStrzaly);
 
 		stanNaciagania=parametry.maxNaciagania;
 	}
@@ -59,8 +74,8 @@ void Balista::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 
 			if(fabs(katCelowania-katMyszki)>parametry.predkoscCelowania && (zwroconyWPrawo == (pozycja.x<cel->zwrocPozycje().x))  )
 			{
-				if(zwroconyWPrawo==(katCelowania > katMyszki) && !czyPrzekroczonoMinKatCelowania()) opuscCelownik();
-				else if(zwroconyWPrawo==(katCelowania < katMyszki) && !czyPrzekroczonoMaksKatCelowania()) podniesCelownik();
+				if(zwroconyWPrawo==(katCelowania > -katMyszki) && !czyPrzekroczonoMinKatCelowania()) opuscCelownik();
+				else if(zwroconyWPrawo==(katCelowania < -katMyszki) && !czyPrzekroczonoMaksKatCelowania()) podniesCelownik();
 			}
 		}
 	}
@@ -81,10 +96,20 @@ std::pair<Klawiatura,Myszka> Balista::wyznaczSterowanie()
 
 	wyznaczKatStrzalu(Punkt((pozycja.x-pozycjaCelu.x),-(pozycja.y-pozycjaCelu.y)));
 
-	m.ustawX(cos(katCelowaniaWprost)*1000);
-	m.ustawY(-sin(katCelowaniaWprost)*1000);
+	if(!czyKatPrzekraczaMaks(katCelowaniaWprost) && !czyKatPrzekraczaMin(katCelowaniaWprost))
+	{
+		m.ustawX(cos(katCelowaniaWprost)*10000);
+		m.ustawY(-sin(katCelowaniaWprost)*10000);
 
-	if(fabs((double)katCelowaniaWprost+katCelowania-M_PI*2)<parametry.predkoscCelowania)
+	}
+	else if(!czyKatPrzekraczaMaks(katCelowaniaZGory) && !czyKatPrzekraczaMin(katCelowaniaZGory))
+	{
+		m.ustawX(cos(katCelowaniaZGory)*10000);
+		m.ustawY(-sin(katCelowaniaZGory)*10000);
+
+	}
+
+	if(fabs((double)katCelowaniaWprost-katCelowania)<parametry.predkoscCelowania)
 	{
 		m.ustawLPM(true);
 	}
@@ -98,12 +123,14 @@ std::pair<Klawiatura,Myszka> Balista::wyznaczSterowanie()
 
 void Balista::wyznaczKatStrzalu(Punkt cel)
 {
+	katCelowaniaWprost = 0;
+    katCelowaniaZGory = 0;
 	mozliwyStrzal=true;
 
 	//do wzoru, jak zgubisz kartke to zle
-	double A=-abs(cel.y);
-	double B=abs(cel.x);
-	double C=B*B*Strzala::parametry.wspolczynnikGrawitacji/(2*10000);
+	double A=-cel.y;
+	double B=cel.x;
+	double C=B*B*(Strzala::parametry.wspolczynnikGrawitacji)/(2*parametry.predkoscStrzaly*parametry.predkoscStrzaly);
 
 	if(B==0)
 	{
@@ -151,7 +178,8 @@ void Balista::wyznaczKatStrzalu(Punkt cel)
 	katCelowaniaWprost+=3.14;
 	katCelowaniaZGory+=3.14;
 
-
+	katCelowaniaWprost=M_PI*2-katCelowaniaWprost;
+	katCelowaniaZGory=M_PI*2-katCelowaniaZGory;
 }
 
 bool Balista::czyPrzekroczonoMaksKatCelowania()
@@ -169,6 +197,21 @@ bool Balista::czyPrzekroczonoMinKatCelowania()
 		return katCelowania>M_PI-parametry.minKatCelowania;
 }
 
+bool Balista::czyKatPrzekraczaMaks(double kat)
+{
+	if(zwroconyWPrawo)
+		return kat>parametry.maxKatCelowania;
+	else
+		return kat<M_PI-parametry.maxKatCelowania;
+}
+
+bool Balista::czyKatPrzekraczaMin(double kat)
+{
+	if(zwroconyWPrawo)
+		return kat<parametry.minKatCelowania;
+	else
+		return kat>M_PI-parametry.minKatCelowania;
+}
 
 void Balista::opuscCelownik()
 {
@@ -194,7 +237,18 @@ void Balista::podniesCelownik()
 //#####################################################################################################
 void Balista::wyznaczPrzestrzenKolizji()
 {
+	double rozmiarKlatki = 100/2;
+	std::vector<OkragKolizji> okregi;
+	okregi.clear();
+	std::vector<ProstokatKolizji> prostokaty;
+	prostokaty.clear();
 
+	prostokaty.push_back(ProstokatKolizji(&pozycja,&predkosc,Punkt(25,-120),Punkt(140,5)));
+	prostokaty.push_back(ProstokatKolizji(&pozycja,&predkosc,Punkt(-30,-100),Punkt(30,40)));
+	prostokaty.push_back(ProstokatKolizji(&pozycja,&predkosc,Punkt(27,-60),Punkt(15,130)));
+	ustawPrzestrzenKolizji(prostokaty);
+
+	//ustawPrzestrzenKolizji(okregi);
 }
 
 //#####################################################################################################

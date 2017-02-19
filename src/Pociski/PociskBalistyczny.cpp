@@ -5,38 +5,38 @@
  *      Author: przemo
  */
 
-#include "Strzala.h"
+#include "PociskBalistyczny.h"
 
-ParametryStrzaly Strzala::parametry;
+ParametryPociskuBalistycznego PociskBalistyczny::parametry;
 
-Strzala::Strzala(Punkt nPozycja, Punkt nPredkosc, double nczasTrwania,double nKat): Pocisk()
+PociskBalistyczny::PociskBalistyczny(Punkt nPozycja, Punkt nPredkosc, double nczasTrwania,double nKat): Pocisk()
 {
 	czasTrwania=nczasTrwania;
 	pozycja=nPozycja;
 	predkosc=nPredkosc;
 	katNachylenia = nKat;
-	obrazenia=5;
-	cicha=false;
+	obrazenia=500;
+	wyznaczKolejnyStan();
+	wyznaczKlatkeAnimacji();
 }
 
-void Strzala::zniszcz()
+void PociskBalistyczny::zniszcz()
 {
 	Obiekt::zniszcz();
 	predkosc.x=predkosc.y=0;
-	//czasTrwania=-1;
 }
 
-double Strzala::zwrocKat()
+double PociskBalistyczny::zwrocKat()
 {
 	return katNachylenia;
 }
 
-void Strzala::wyznaczKolejnyStan()
+void PociskBalistyczny::wyznaczKolejnyStan()
 {
 	if(!(predkosc.x==0 && predkosc.y==0))
 	{
 		katNachylenia=1.57-atan2(predkosc.y,predkosc.x);
-		if(katNachylenia<0) katNachylenia+=6.28;
+		if(katNachylenia<0) katNachylenia+=M_PI*2;
 	}
 
 	if(istnieje && !zniszczony)
@@ -58,25 +58,30 @@ void Strzala::wyznaczKolejnyStan()
 	if(czasTrwania<0) usun();
 }
 
-void Strzala::wyznaczKlatkeAnimacji()
+void PociskBalistyczny::wyznaczKlatkeAnimacji()
 {
-	klatkaAnimacji.x=1;
-	klatkaAnimacji.x=(0.5+(double)(katNachylenia)/(6.28/32));
+	klatkaAnimacji.y=0;
+	double kat = katNachylenia;
+	if(kat<0) kat+=M_PI*2;
+	klatkaAnimacji.x=0.5+((double)(kat)/((M_PI*2)/32));
 	klatkaAnimacji.x=(int)klatkaAnimacji.x;
-	if(klatkaAnimacji.x>31) klatkaAnimacji.x=0;
+	//if(klatkaAnimacji.x>31) klatkaAnimacji.x=0;
 }
 
-void Strzala::wyznaczPrzestrzenKolizji()
+void PociskBalistyczny::wyznaczPrzestrzenKolizji()
 {
-	double rozmiarKlatki = 30/2;
 	std::vector<OkragKolizji> okregi;
 	okregi.clear();
 	std::vector<ProstokatKolizji> prostokaty;
 	prostokaty.clear();
 
-	prostokaty.push_back(ProstokatKolizji(&pozycja,&predkosc,Punkt(15-rozmiarKlatki,-15+rozmiarKlatki),8));
+	Punkt korekta;
+	korekta.x = 60*cos(katNachylenia-M_PI/2);
+	korekta.y = -60*sin(katNachylenia-M_PI/2);
+
+	prostokaty.push_back(ProstokatKolizji(&pozycja,&predkosc,korekta,30));
 	ustawPrzestrzenKolizji(prostokaty);
 
-	okregi.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(15-rozmiarKlatki,-15+rozmiarKlatki),4));
+	okregi.push_back(OkragKolizji(&pozycja,&predkosc,korekta,20));
 	ustawPrzestrzenKolizji(okregi);
 }

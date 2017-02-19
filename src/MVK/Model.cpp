@@ -16,7 +16,7 @@ Model::Model(int szerOkna,int wysOkna, bool ekran): wymiaryEkranu(Punkt(szerOkna
 	wypelnienieCelownika=false;
 
 	FabrykaPrzedmiotow::zwrocInstancje()->ustawKontenery(&mury,&zaslony);
-	FabrykaPociskow::zwrocInstancje()->ustawKontenery(&plomienie,&strzaly, &belty);
+	FabrykaPociskow::zwrocInstancje()->ustawKontenery(&plomienie,&strzaly, &belty, &pociskiBalistyczne);
 	FabrykaLudzi::zwrocInstancje()->ustawKontenery(&strzelcy,&balisty);
 
 	reset();
@@ -27,9 +27,12 @@ void Model::reset()
 	wyswietlenieOdNowa=false;
 
 	strzelcy.wyczysc();
+	balisty.wyczysc();
+
 	plomienie.wyczysc();
 	strzaly.wyczysc();
 	belty.wyczysc();
+	pociskiBalistyczne.wyczysc();
 	mury.wyczysc();
 	zaslony.wyczysc();
 
@@ -42,7 +45,7 @@ void Model::reset()
 
 	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::lucznik,Punkt(1300,130));
 	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(1400,130));
-	FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::balista,Punkt(1400,200),false);
+	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::balista,Punkt(1400,200),false);
 	FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::balista,Punkt(1000,200),true);
 
 	/*for(int i=0;i<10;i++)
@@ -111,6 +114,9 @@ void Model::wyznaczKolejnyStanObiektow()
 	strzaly.wyznaczKlatkeAnimacji();
 	belty.wyznaczKolejnyStan();
 	belty.wyznaczKlatkeAnimacji();
+	pociskiBalistyczne.wyznaczKolejnyStan();
+    pociskiBalistyczne.wyznaczKlatkeAnimacji();
+    pociskiBalistyczne.wyznaczPrzestrzenKolizji();
 
 	zaslony.wyznaczKolejnyStan();
 	zaslony.wyznaczKlatkeAnimacji();
@@ -147,10 +153,17 @@ void Model::obsluzKolizje()
 	{
 		plomienie.sprawdzKolizje((Obiekt*)(*i),zniszczPocisk,zadajObrazenia,PrzestrzenKolizji::okrag,true);
 	}
+	//Balisty kontra plomienie
+	std::list<Postac*> listaBalist = balisty.zwrocObiekty();
+	for(std::list<Postac*>::iterator i=listaBalist.begin();i!=listaBalist.end();i++)
+	{
+		plomienie.sprawdzKolizje((Obiekt*)(*i),zniszczPocisk,zadajObrazenia,PrzestrzenKolizji::prostokat,true);
+	}
 
 	//Smok kontra strzaly
 	strzaly.sprawdzKolizje(&smok,usun,zadajObrazenia,PrzestrzenKolizji::okrag);
 	belty.sprawdzKolizje(&smok,usun,zadajObrazenia,PrzestrzenKolizji::okrag);
+	pociskiBalistyczne.sprawdzKolizje(&smok,nic,zadajObrazenia,PrzestrzenKolizji::okrag);
 
 	//Mury
 	std::list<Mur> *listaMurow = mury.zwrocObiekty();
@@ -159,6 +172,7 @@ void Model::obsluzKolizje()
 		plomienie.sprawdzKolizje((Obiekt*)&(*i),kolizjaPlomieniazMurem,nic,PrzestrzenKolizji::prostokat,true);
 		belty.sprawdzKolizje((Obiekt*)&(*i),kolizjaPlomieniazMurem,nic,PrzestrzenKolizji::prostokat,true);
 		strzaly.sprawdzKolizje((Obiekt*)&(*i),kolizjaPlomieniazMurem,nic,PrzestrzenKolizji::prostokat,true);
+		pociskiBalistyczne.sprawdzKolizje((Obiekt*)&(*i),kolizjaPlomieniazMurem,nic,PrzestrzenKolizji::prostokat,true);
 	}
 	//Plomienie Zaslony
 	std::list<Zaslona> *listaZaslon = zaslony.zwrocObiekty();
@@ -179,10 +193,10 @@ void Model::zniszczPocisk(Obiekt *o,Obiekt *o2,Punkt punktKolizji)
 {
 	if(!o->czyZniszczony())
 	{
-		if(punktKolizji.x>o2->zwrocPozycje().x) punktKolizji.x--;
-		else punktKolizji.x++;
-		if(punktKolizji.y>o2->zwrocPozycje().y) punktKolizji.y--;
-		else punktKolizji.y++;
+		if(punktKolizji.x>o2->zwrocPozycje().x) punktKolizji.x+=2;
+		else punktKolizji.x-=2;
+		if(punktKolizji.y>o2->zwrocPozycje().y) punktKolizji.y+=2;
+		else punktKolizji.y-=2;
 
 		o->ustawPozycje(punktKolizji);
 		o->ustawPunktZaczepu(o2);

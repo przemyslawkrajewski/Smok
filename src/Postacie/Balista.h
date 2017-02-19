@@ -35,7 +35,7 @@ struct ParametryBalisty
 		predkoscAnimacjiCelowania=5;
 		predkoscCelowania=0.004;
 
-		predkoscStrzaly=40;
+		predkoscStrzaly=100;
 
 		maxKatCelowania=1.29;
 		minKatCelowania=0.15;
@@ -69,6 +69,8 @@ private:
 	void wyznaczKatStrzalu(Punkt cel);
 	bool czyPrzekroczonoMaksKatCelowania();
 	bool czyPrzekroczonoMinKatCelowania();
+	bool czyKatPrzekraczaMaks(double kat);
+    bool czyKatPrzekraczaMin(double kat);
 	void opuscCelownik();
 	void podniesCelownik();
 
