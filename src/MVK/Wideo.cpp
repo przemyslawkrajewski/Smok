@@ -81,6 +81,7 @@ void Wideo::zamkniecieOkna()
 	SDL_DestroyTexture(plomien);
 	SDL_DestroyTexture(belt);
 	SDL_DestroyTexture(strzala);
+	SDL_DestroyTexture(pociskBalistyczny);
 
 	SDL_DestroyTexture(mur);
 	SDL_DestroyTexture(zaslona);
@@ -180,6 +181,7 @@ void Wideo::wczytanieObrazkow()
 	   wczytanieObrazka("Grafika/plomien.bmp",&plomien) ||
 	   wczytanieObrazka("Grafika/Belt.bmp",&belt) ||
 	   wczytanieObrazka("Grafika/Strzala.bmp",&strzala) ||
+	   wczytanieObrazka("Grafika/PociskBalistyczny.bmp",&pociskBalistyczny) ||
 	   wczytanieObrazka("Grafika/Mur.bmp",&mur) ||
 	   wczytanieObrazka("Grafika/Zaslona.bmp",&zaslona) ||
 	   wczytanieObrazka("Grafika/Chodnik1.bmp",&pierwszyPlan) ||
