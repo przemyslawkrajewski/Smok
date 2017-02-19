@@ -21,6 +21,7 @@ Strzelec::Strzelec(): Postac()
 	mozliwyStrzal=false;
 
 	zycie=100;
+	obrazenia=5;
 }
 
 void Strzelec::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
@@ -73,8 +74,8 @@ void Strzelec::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 					v.y=parametry.predkoscStrzaly*sin(kat);
 					kat = katCelowania+1.57;//+3.14+6.28
 					if(kat>6.28) kat-=6.28;
-					if(parametry.spust) FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::belt,p,v,parametry.czasTrwaniaStrzaly,kat);
-					else FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::strzala,p,v,parametry.czasTrwaniaStrzaly,kat);
+					if(parametry.spust) FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::belt,p,v,parametry.czasTrwaniaStrzaly,kat,parametry.obrazenia);
+					else FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::strzala,p,v,parametry.czasTrwaniaStrzaly,kat,parametry.obrazenia);
 					stanNaciagania=parametry.maxNaciagniecie;
 					stanCelowania=0;
 				}

@@ -19,6 +19,7 @@ Balista::Balista() {
 	stanNaciagania=0;
 	zwroconyWPrawo=true;
 	zycie=300;
+	obrazenia=500;
 }
 
 //#####################################################################################################
@@ -26,7 +27,6 @@ Balista::Balista() {
 //#####################################################################################################
 void Balista::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 {
-	std::cout << zycie << "\n";
 	if(zycie<0)
 	{
 		//Na razie po prostu znika
@@ -52,7 +52,7 @@ void Balista::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 		v.y=parametry.predkoscStrzaly*sin(kat);
 		double katStrzaly = kat+M_PI/2;//+3.14+6.28
 		if(katStrzaly>6.28) katStrzaly-=6.28;
-		FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::pociskBalistyczny,p,v,parametry.predkoscStrzaly,katStrzaly);
+		FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::pociskBalistyczny,p,v,parametry.predkoscStrzaly,katStrzaly,parametry.obrazenia);
 
 		stanNaciagania=parametry.maxNaciagania;
 	}

@@ -35,7 +35,7 @@ public:
 
 
 	void ustawKontenery(KontenerPociskow<Plomien>* p,KontenerPociskow<Strzala>* s, KontenerPociskow<Belt>* b, KontenerPociskow<PociskBalistyczny> *pb);
-	void stworzPocisk(TypPocisku typ, Punkt nPozycja, Punkt nPredkosc, double nczasTrwania,double nKat);
+	void stworzPocisk(TypPocisku typ, Punkt nPozycja, Punkt nPredkosc, double nczasTrwania,double nKat,double obrazenia);
 };
 
 #endif /* FABRYKAPOCISKOW_H_ */

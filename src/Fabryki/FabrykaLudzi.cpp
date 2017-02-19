@@ -33,6 +33,7 @@ FabrykaLudzi::FabrykaLudzi()
 	parametryLucznika.maxNaciagniecie=30;
 	parametryLucznika.maxCelowania=30;
 	parametryLucznika.maxZycia=200;
+	parametryLucznika.obrazenia=5;
 
 	parametryKrzyzowca.predkoscAnimacjiBiegu1=0.4;
 	parametryKrzyzowca.predkoscAnimacjiBiegu2=0.2;
@@ -45,8 +46,17 @@ FabrykaLudzi::FabrykaLudzi()
 	parametryKrzyzowca.celnosc=0;
 	parametryKrzyzowca.maxNaciagniecie=60;
 	parametryKrzyzowca.maxCelowania=20;
-	parametryKrzyzowca.maxZycia=200;
+	parametryKrzyzowca.obrazenia=10;
 
+	parametryBalisty.predkoscAnimacjiNaciagania=20;
+	parametryBalisty.predkoscAnimacjiCelowania=5;
+	parametryBalisty.predkoscCelowania=0.004;
+	parametryBalisty.predkoscStrzaly=100;
+	parametryBalisty.maxKatCelowania=1.29;
+	parametryBalisty.minKatCelowania=0.15;
+	parametryBalisty.maxNaciagania=300;
+	parametryBalisty.maxZycia=10;
+	parametryBalisty.obrazenia=500;
 }
 
 FabrykaLudzi::~FabrykaLudzi()
@@ -96,7 +106,7 @@ void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja, bool zwroco
 		balista.ustawCzyZwroconyWPrawo(zwroconyWPrawo);
 		if(zwroconyWPrawo) balista.ustawKatCelowania(0.2);
 		else balista.ustawKatCelowania(2.9);
-		//Balista.ustawParametry(parametryBalisty);
+		balista.ustawParametry(parametryBalisty);
 		(balisty->dodaj(balista))->wyznaczPrzestrzenKolizji(); //Taki myk ze dodaje nowego strzelca i od razu wyznacza jego przestrzen kolizji
 																//Nie mozna zrobic przez konstruktor bo wskaznik pokazuje na argument funkcji a nie obiekt w liscie
 		break;

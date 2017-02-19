@@ -26,6 +26,7 @@ struct ParametryBalisty
 	double minKatCelowania;
 	int maxNaciagania;
 	double maxZycia;
+	double obrazenia;
 
 	double predkoscStrzaly;
 
@@ -41,6 +42,7 @@ struct ParametryBalisty
 		minKatCelowania=0.15;
 		maxNaciagania=200;
 		maxZycia=10;
+		obrazenia=0;
 	}
 };
 

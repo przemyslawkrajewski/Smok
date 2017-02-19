@@ -79,8 +79,9 @@ void KontenerObiektow<T>::sprawdzKolizje(Obiekt* obiekt,void (obsluzKolizjePocis
 			std::pair<bool,Punkt> kolizja = i->sprawdzKolizje(obiekt,typ);
 			if(kolizja.first)
 			{
-				obsluzKolizjePocisku(&(*i),obiekt,kolizja.second);
+
 				obsluzKolizjeObiektu(obiekt,&(*i),kolizja.second);
+				obsluzKolizjePocisku(&(*i),obiekt,kolizja.second);
 			}
 		}
 	}

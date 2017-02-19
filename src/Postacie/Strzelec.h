@@ -32,6 +32,7 @@ struct ParametryStrzelca
 	double maxCelowania; // czas potrzebny do wycelowania
 
 	double maxZycia;
+	double obrazenia;
 
 	ParametryStrzelca()
 	{
@@ -47,6 +48,7 @@ struct ParametryStrzelca
 		maxNaciagniecie=100;
 		maxCelowania=50;
 		maxZycia=10;
+		obrazenia=0;
 	}
 };
 

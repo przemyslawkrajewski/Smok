@@ -18,7 +18,6 @@ struct ParametryOgnia
 	double czasWygasania;
 	double czasPalenia;
 	double predkoscOpadania;
-	double bazoweObrazenia;
 	double obrazeniaNaCelu;
 	double obrazeniaNaZiemi;
 
@@ -28,9 +27,8 @@ struct ParametryOgnia
 		czasPalenia=50;
 		predkoscOpadania=5;
 
-		bazoweObrazenia=25;
-		obrazeniaNaCelu=0.005;
-		obrazeniaNaZiemi=0.002;
+		obrazeniaNaCelu=0.025;
+		obrazeniaNaZiemi=0.01;
 	}
 };
 

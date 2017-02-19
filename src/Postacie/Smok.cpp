@@ -32,6 +32,7 @@ void Smok::reset()
 	zieje=false;
 
 	zycie=500;
+	obrazenia=0.1;
 }
 
 void Smok::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
@@ -457,7 +458,7 @@ void Smok::wyznaczGlowe(Klawiatura* klawiatura, Myszka *myszka)
 			v.y=predkoscOgnia*sin(katOgnia);
 			double kat = -obrotGlowy+3.14+1.57+6.28;
 			if(kat>6.28) kat-=6.28;
-			FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::plomien,p,v,czasTrwania,kat);
+			FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::plomien,p,v,czasTrwania,kat,obrazenia);
 		}
 	}
 	else
