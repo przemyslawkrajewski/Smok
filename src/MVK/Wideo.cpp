@@ -178,10 +178,14 @@ void Wideo::wczytanieObrazkow()
 	   wczytanieObrazka("Grafika/Zebatka.bmp",&zebatka) ||
 	   wczytanieObrazka("Grafika/LucznikP.bmp",&lucznikP) ||
 	   wczytanieObrazka("Grafika/LucznikL.bmp",&lucznikL) ||
+	   wczytanieObrazka("Grafika/KaplanP.bmp",&kaplanP) ||
+	   wczytanieObrazka("Grafika/KaplanL.bmp",&kaplanL) ||
 	   wczytanieObrazka("Grafika/plomien.bmp",&plomien) ||
 	   wczytanieObrazka("Grafika/Belt.bmp",&belt) ||
 	   wczytanieObrazka("Grafika/Strzala.bmp",&strzala) ||
 	   wczytanieObrazka("Grafika/PociskBalistyczny.bmp",&pociskBalistyczny) ||
+	   wczytanieObrazka("Grafika/PociskKierowany.bmp",&pociskKierowany) ||
+	   wczytanieObrazka("Grafika/PociskKasetowy.bmp",&pociskKasetowy) ||
 	   wczytanieObrazka("Grafika/Mur.bmp",&mur) ||
 	   wczytanieObrazka("Grafika/Zaslona.bmp",&zaslona) ||
 	   wczytanieObrazka("Grafika/Chodnik1.bmp",&pierwszyPlan) ||
@@ -204,15 +208,15 @@ int Wideo::wczytanieObrazka(const char* nazwa, SDL_Texture ** grafika)
 	SDL_Surface *bmp= SDL_LoadBMP( nazwa );
 	if(bmp)
 	{
-		//std::cout << "[  OK  ] ";
+		std::cout << "[  OK  ] ";
 		odszyfrowanieObrazka(bmp);
 		//SDL_SaveBMP(bmp, nazwa);
 		SDL_SetColorKey( bmp, SDL_TRUE, SDL_MapRGB( bmp->format, 255, 0, 128 ) );
 		*grafika = SDL_CreateTextureFromSurface(render, bmp);
 		 SDL_SetTextureBlendMode(*grafika,SDL_BLENDMODE_BLEND);
 	}
-	//else 		std::cout << "[NOT OK] ";
-	//std::cout << "wczytywanie obrazka " << nazwa << "\n";
+	else 		std::cout << "[NOT OK] ";
+	std::cout << "wczytywanie obrazka " << nazwa << "\n";
 	SDL_FreeSurface(bmp);
 	return (*grafika==NULL)?1:0;
 }

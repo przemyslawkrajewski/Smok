@@ -96,9 +96,13 @@ private:
 	SDL_Texture * balistaP,* balistaL;
 	SDL_Texture * inzynierP,*inzynierL;
 	SDL_Texture * zebatka;
+	SDL_Texture * kaplanP, *kaplanL;
+
 	SDL_Texture * belt;
 	SDL_Texture * strzala;
 	SDL_Texture * pociskBalistyczny;
+	SDL_Texture * pociskKierowany;
+	SDL_Texture * pociskKasetowy;
 
 	SDL_Texture * mur;
 	SDL_Texture * zaslona;
