@@ -31,11 +31,9 @@ public:
 	void ustawTypPostaci(TypPostaci typ) {typPostaci=typ;}
 	TypPostaci zwrocTypPostaci() {return typPostaci;}
 
-	void ustawCel(Obiekt* p) {cel=p;}
 	void ustawCzyIstniejePrzeszkoda(bool poLewej, bool poPrawej) {przeszkodaPoLewej=poLewej;przeszkodaPoPrawej=poPrawej;}
 
 	TypPostaci typPostaci;
-	Obiekt *cel;
 	bool przeszkodaPoLewej,przeszkodaPoPrawej;
 };
 

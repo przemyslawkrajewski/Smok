@@ -706,6 +706,35 @@ void Wideo::wyswietlenieBalist()
 	}
 }
 
+void Wideo::wyswietlenieKaplanow()
+{
+	Punkt pozycjaKamery=model->zwrocKamere()->zwrocPozycje();
+	int rozmiarKlatki=80;
+
+	std::list<Postac*> postacie  = model->zwrocKaplanow()->zwrocObiekty();
+
+	SDL_Texture **animacja;
+
+	for(std::list<Postac*>::iterator i=postacie.begin(); i!=postacie.end() ;i++)
+	{
+		if((*i)->czyZwroconyWPrawo()) animacja=&kaplanP;
+		else animacja=&kaplanL;
+
+		Punkt pozycja = (*i)->zwrocPozycje();
+		Punkt klatka = (*i)->zwrocKlatkeAnimacji();
+
+		Punkt p = pozycja;
+		if(!(*i)->czyZniszczony() && model->czyWyswietlacPrzeciwnikow())
+			p=czyWychodziZaEkran(pozycjaKamery,pozycja,(*i)->zwrocPredkosc(),3);
+
+		if(p==pozycja)
+		wyswietlenieKlatki(*animacja,pozycja,pozycjaKamery,klatka,rozmiarKlatki);
+		else
+			wyswietlenieOstrzezenia(p, pozycjaKamery,1);
+		wyswietleniePrzestrzeniKolizji((*i)->zwrocPrzestrzenKolizji(),pozycjaKamery);
+	}
+}
+
 void Wideo::wyswietlenieStrzal()
 {
 	Punkt pozycjaKamery=model->zwrocKamere()->zwrocPozycje();
@@ -772,6 +801,31 @@ void Wideo::wyswietleniePociskowBalistycznych()
 			wyswietlenieKlatki(pociskBalistyczny,p,pozycjaKamery,klatka,rozmiarKlatki);
 		else
 			wyswietlenieOstrzezenia(p, pozycjaKamery,0);
+
+		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
+	}
+}
+void Wideo::wyswietleniePociskowKierowanych()
+{
+	Punkt pozycjaKamery=model->zwrocKamere()->zwrocPozycje();
+	int rozmiarKlatki=50;
+
+	std::list<PociskKierowany> *pk = model->zwrocPociskiKierowane()->zwrocObiekty();
+
+	for(std::list<PociskKierowany>::iterator i=pk->begin(); i!=pk->end() ;i++)
+	{
+		if(!i->czyIstnieje()) continue;
+		Punkt pozycja = i->zwrocPozycje();
+		Punkt klatka = i->zwrocKlatkeAnimacji();
+
+		Punkt p = pozycja;
+		if(!i->czyZniszczony() && !model->czyWyswietlacPrzeciwnikow())
+			p=czyWychodziZaEkran(pozycjaKamery,pozycja,i->zwrocPredkosc(),1);
+
+		if(p==pozycja)
+			wyswietlenieKlatki(pociskKierowany,p,pozycjaKamery,klatka,rozmiarKlatki);
+		else
+			wyswietlenieOstrzezenia(p, pozycjaKamery,1);
 
 		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}
@@ -913,10 +967,12 @@ void Wideo::wyswietlenieEkranu()
 	wyswietlenieZaslon();
 
 	wyswietlenieBalist();
+	wyswietlenieKaplanow();
 	wyswietlenieStrzelcow();
 	wyswietlenieSmoka();
 	wyswietlenieStrzal();
 	wyswietleniePociskowBalistycznych();
+	wyswietleniePociskowKierowanych();
 
 	wyswietlenieCelownika();
 

@@ -53,8 +53,10 @@ public:
 	KontenerPociskow<Strzala>* zwrocStrzaly() {return &strzaly;}		//Todo: ale bedzie trzeba przepisywac a to dlugo trwa
 	KontenerPociskow<Belt>* zwrocBelty() {return &belty;}
 	KontenerPociskow<PociskBalistyczny>* zwrocPociskiBalistyczne() {return &pociskiBalistyczne;}
+	KontenerPociskow<PociskKierowany>* zwrocPociskiKierowane() {return &pociskiKierowane;}
 	KontenerPostaci<Strzelec>* zwrocStrzelcow() {return &strzelcy;}
 	KontenerPostaci<Balista>* zwrocBalisty() {return &balisty;}
+	KontenerPostaci<Kaplan>* zwrocKaplanow() {return &kaplani;}
 	KontenerPrzedmiotow<Mur>* zwrocMury() {return &mury;}
 	KontenerPrzedmiotow<Zaslona>* zwrocZaslony() {return &zaslony;}
 
@@ -84,11 +86,13 @@ private:
 	Smok smok;
 	KontenerPostaci<Strzelec> strzelcy;
 	KontenerPostaci<Balista> balisty;
+	KontenerPostaci<Kaplan> kaplani;
 
 	KontenerPociskow<Plomien> plomienie;
 	KontenerPociskow<Strzala> strzaly;
 	KontenerPociskow<Belt> belty;
 	KontenerPociskow<PociskBalistyczny> pociskiBalistyczne;
+	KontenerPociskow<PociskKierowany> pociskiKierowane;
 
 	KontenerPrzedmiotow<Mur> mury;
 	KontenerPrzedmiotow<Zaslona> zaslony;

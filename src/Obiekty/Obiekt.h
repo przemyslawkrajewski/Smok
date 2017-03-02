@@ -46,6 +46,7 @@ protected:
 
 	double zycie;
 	double obrazenia;
+	Obiekt *cel;
 
 	static ParametryObiektow parametryObiektow;
 
@@ -64,6 +65,7 @@ public:
 	bool czyNaZiemi() {return naZiemi;}
 	void ustawPozycje(Punkt p) {pozycja=p;}
 	void ustawCzyZwroconyWPrawo(bool zwrocony) {zwroconyWPrawo=zwrocony;}
+
 	Obiekt* zwrocPtr() {return this;}
 	void ustawPunktZaczepu(Obiekt *p);
 	void usunPunktZaczepu();
@@ -92,6 +94,7 @@ public:
 	std::pair<bool,Punkt> sprawdzKolizje(Obiekt* o,PrzestrzenKolizji::TypFigury typ) {return (przestrzenKolizji.sprawdzKolizje(o->zwrocPrzestrzenKolizji(),typ));}
 
 	//Mechanika gry
+	void ustawCel(Obiekt* p) {cel=p;}
 	void zadajObrazenia(double obrazenia) {zycie-=obrazenia;}
 	void ustawObrazenia(double o) {obrazenia=o;}
 	double zwrocObrazenia() {return obrazenia;}

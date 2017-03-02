@@ -12,6 +12,7 @@ KontenerPociskow<Plomien>* FabrykaPociskow::plomienie=0;
 KontenerPociskow<Strzala>* FabrykaPociskow::strzaly=0;
 KontenerPociskow<Belt>* FabrykaPociskow::belty=0;
 KontenerPociskow<PociskBalistyczny>* FabrykaPociskow::pociskiBalistyczne=0;
+KontenerPociskow<PociskKierowany>* FabrykaPociskow::pociskiKierowane=0;
 
 FabrykaPociskow* FabrykaPociskow::zwrocInstancje()
 {
@@ -28,20 +29,22 @@ FabrykaPociskow::~FabrykaPociskow()
 	delete ptr;
 }
 
-void FabrykaPociskow::ustawKontenery(KontenerPociskow<Plomien>* p,KontenerPociskow<Strzala>* s, KontenerPociskow<Belt>* b, KontenerPociskow<PociskBalistyczny> *pb)
+void FabrykaPociskow::ustawKontenery(KontenerPociskow<Plomien>* p,KontenerPociskow<Strzala>* s, KontenerPociskow<Belt>* b,KontenerPociskow<PociskBalistyczny> *pb, KontenerPociskow<PociskKierowany> *pk)
 {
 	strzaly=s;
 	plomienie=p;
 	belty=b;
 	pociskiBalistyczne=pb;
+	pociskiKierowane=pk;
 }
 
-void FabrykaPociskow::stworzPocisk(TypPocisku typ,Punkt nPozycja, Punkt nPredkosc, double nczasTrwania,double nKat, double obrazenia)
+void FabrykaPociskow::stworzPocisk(TypPocisku typ,Punkt nPozycja, Punkt nPredkosc, double nczasTrwania,double nKat, double obrazenia, Obiekt* cel)
 {
 	Plomien *p;
 	Strzala *s;
 	Belt *b;
 	PociskBalistyczny *pb;
+	PociskKierowany *pk;
 	switch(typ)
 	{
 	case plomien:
@@ -74,5 +77,12 @@ void FabrykaPociskow::stworzPocisk(TypPocisku typ,Punkt nPozycja, Punkt nPredkos
     	pb->wyznaczPrzestrzenKolizji();
     	pb->ustawObrazenia(obrazenia);
     	break;
+	case pociskKierowany:
+		assert("Kontener 'PociskKierowany' nie ustawiony" && strzaly!=0);
+		pk = pociskiKierowane->dodaj(PociskKierowany(nPozycja,nPredkosc,nczasTrwania,nKat));
+		pk->ustawCel(cel);
+		pk->wyznaczPrzestrzenKolizji();
+		pk->ustawObrazenia(obrazenia);
+		break;
 	}
 }

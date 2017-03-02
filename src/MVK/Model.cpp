@@ -16,8 +16,8 @@ Model::Model(int szerOkna,int wysOkna, bool ekran): wymiaryEkranu(Punkt(szerOkna
 	wypelnienieCelownika=false;
 
 	FabrykaPrzedmiotow::zwrocInstancje()->ustawKontenery(&mury,&zaslony);
-	FabrykaPociskow::zwrocInstancje()->ustawKontenery(&plomienie,&strzaly, &belty, &pociskiBalistyczne);
-	FabrykaLudzi::zwrocInstancje()->ustawKontenery(&strzelcy,&balisty);
+	FabrykaPociskow::zwrocInstancje()->ustawKontenery(&plomienie,&strzaly, &belty, &pociskiBalistyczne, &pociskiKierowane);
+	FabrykaLudzi::zwrocInstancje()->ustawKontenery(&strzelcy,&balisty,&kaplani);
 
 	reset();
 }
@@ -28,11 +28,13 @@ void Model::reset()
 
 	strzelcy.wyczysc();
 	balisty.wyczysc();
+	kaplani.wyczysc();
 
 	plomienie.wyczysc();
 	strzaly.wyczysc();
 	belty.wyczysc();
 	pociskiBalistyczne.wyczysc();
+	pociskiKierowane.wyczysc();
 	mury.wyczysc();
 	zaslony.wyczysc();
 
@@ -43,10 +45,11 @@ void Model::reset()
 
 	//FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniMur,Punkt(1400,300));
 
-	FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::lucznik,Punkt(1300,130));
+	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::lucznik,Punkt(1300,130));
 	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(1400,130));
 	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::balista,Punkt(1400,200),false);
-	FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::balista,Punkt(1000,200),true);
+	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::balista,Punkt(1000,200),true);
+	FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::kaplan,Punkt(1000,120),true);
 
 	/*for(int i=0;i<10;i++)
 	{
@@ -107,6 +110,11 @@ void Model::wyznaczKolejnyStanObiektow()
 	balisty.wyznaczKolejnyStan();
 	balisty.wyznaczKlatkeAnimacji();
 
+	//Kaplani
+	kaplani.ustawCel(&smok);
+	kaplani.wyznaczKolejnyStan();
+	kaplani.wyznaczKlatkeAnimacji();
+
 	//Pociski
 	plomienie.wyznaczKolejnyStan();
 	plomienie.wyznaczKlatkeAnimacji();
@@ -117,11 +125,13 @@ void Model::wyznaczKolejnyStanObiektow()
 	pociskiBalistyczne.wyznaczKolejnyStan();
     pociskiBalistyczne.wyznaczKlatkeAnimacji();
     pociskiBalistyczne.wyznaczPrzestrzenKolizji();
+	pociskiKierowane.wyznaczKolejnyStan();
+    pociskiKierowane.wyznaczKlatkeAnimacji();
 
 	zaslony.wyznaczKolejnyStan();
 	zaslony.wyznaczKlatkeAnimacji();
 
-	if((balisty.czyPusty() && strzelcy.czyPusty()) || smok.czyZniszczony()) wyswietlenieOdNowa=true;
+	if((balisty.czyPusty() && strzelcy.czyPusty() && kaplani.czyPusty()) || smok.czyZniszczony()) wyswietlenieOdNowa=true;
 
 	//									Sadzenie krzyzowcow
 	/*
@@ -159,11 +169,18 @@ void Model::obsluzKolizje()
 	{
 		plomienie.sprawdzKolizje((Obiekt*)(*i),zniszczPocisk,zadajObrazenia,PrzestrzenKolizji::prostokat,true);
 	}
+	//Kaplani kontra plomienie
+	std::list<Postac*> listaKaplanow = kaplani.zwrocObiekty();
+	for(std::list<Postac*>::iterator i=listaKaplanow.begin();i!=listaKaplanow.end();i++)
+	{
+		plomienie.sprawdzKolizje((Obiekt*)(*i),zniszczPocisk,zadajObrazenia,PrzestrzenKolizji::okrag,true);
+	}
 
 	//Smok kontra strzaly
 	strzaly.sprawdzKolizje(&smok,usun,zadajObrazenia,PrzestrzenKolizji::okrag);
 	belty.sprawdzKolizje(&smok,usun,zadajObrazenia,PrzestrzenKolizji::okrag);
 	pociskiBalistyczne.sprawdzKolizje(&smok,nic,zadajObrazenia,PrzestrzenKolizji::okrag);
+	pociskiKierowane.sprawdzKolizje(&smok,usun,zadajObrazenia,PrzestrzenKolizji::okrag);
 
 	//Mury
 	std::list<Mur> *listaMurow = mury.zwrocObiekty();

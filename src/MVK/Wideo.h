@@ -57,9 +57,11 @@ private:
 
 	void wyswietlenieStrzelcow();
 	void wyswietlenieBalist();
+	void wyswietlenieKaplanow();
 
 	void wyswietlenieStrzal();
 	void wyswietleniePociskowBalistycznych();
+	void wyswietleniePociskowKierowanych();
 
 	void wyswietlenieMuru();
 	void wyswietlenieZaslon();
