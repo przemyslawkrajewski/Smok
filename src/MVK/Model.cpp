@@ -16,7 +16,7 @@ Model::Model(int szerOkna,int wysOkna, bool ekran): wymiaryEkranu(Punkt(szerOkna
 	wypelnienieCelownika=false;
 
 	FabrykaPrzedmiotow::zwrocInstancje()->ustawKontenery(&mury,&zaslony);
-	FabrykaPociskow::zwrocInstancje()->ustawKontenery(&plomienie,&strzaly, &belty, &pociskiBalistyczne, &pociskiKierowane);
+	FabrykaPociskow::zwrocInstancje()->ustawKontenery(&plomienie,&strzaly, &belty, &pociskiBalistyczne, &pociskiKierowane, &pociskiKasetowe, &odlamki);
 	FabrykaLudzi::zwrocInstancje()->ustawKontenery(&strzelcy,&balisty,&kaplani);
 
 	reset();
@@ -127,6 +127,11 @@ void Model::wyznaczKolejnyStanObiektow()
     pociskiBalistyczne.wyznaczPrzestrzenKolizji();
 	pociskiKierowane.wyznaczKolejnyStan();
     pociskiKierowane.wyznaczKlatkeAnimacji();
+    pociskiKasetowe.wyznaczKolejnyStan();
+    pociskiKasetowe.wyznaczKlatkeAnimacji();
+    usunZniszczonePociskiKasetowe();
+    odlamki.wyznaczKolejnyStan();
+    odlamki.wyznaczKlatkeAnimacji();
 
 	zaslony.wyznaczKolejnyStan();
 	zaslony.wyznaczKlatkeAnimacji();
@@ -152,7 +157,27 @@ void Model::wyznaczKolejnyStanObiektow()
 	//*/
 	obsluzKolizje();
 }
+//##########################################################DEDYKOWANE######################################################
+void Model::usunZniszczonePociskiKasetowe()
+{
+	std::list<PociskKasetowy> *pk = zwrocPociskiKasetowe()->zwrocObiekty();
 
+	for(std::list<PociskKasetowy>::iterator i=pk->begin(); i!=pk->end() ;i++)
+	{
+		if(i->czyZniszczony())
+		{
+			ParametryPociskuKasetowego parametry = i->zwrocParametry();
+			for(int j=0;j<parametry.iloscOdlamkow;j++)
+			{
+				double v = parametry.sredniaPredkoscOdlamkow+(((double)(rand()%100)/100)*parametry.odchyleniePredkosciOdlamkow-parametry.odchyleniePredkosciOdlamkow/2);
+				double a = (double)(rand()%62831)/10000;
+				Punkt predkosc = Punkt(v*cos(a),v*sin(a));
+				FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::odlamek,i->zwrocPozycje()+predkosc, predkosc , parametry.czasTrwaniaOdlamkow, a, i->zwrocObrazenia());
+			}
+			i->usun();
+		}
+	}
+}
 //##########################################################KOLIZJE#########################################################
 
 void Model::obsluzKolizje()
@@ -176,11 +201,12 @@ void Model::obsluzKolizje()
 		plomienie.sprawdzKolizje((Obiekt*)(*i),zniszczPocisk,zadajObrazenia,PrzestrzenKolizji::okrag,true);
 	}
 
-	//Smok kontra strzaly
+	//Smok kontra pociski
 	strzaly.sprawdzKolizje(&smok,usun,zadajObrazenia,PrzestrzenKolizji::okrag);
 	belty.sprawdzKolizje(&smok,usun,zadajObrazenia,PrzestrzenKolizji::okrag);
 	pociskiBalistyczne.sprawdzKolizje(&smok,nic,zadajObrazenia,PrzestrzenKolizji::okrag);
 	pociskiKierowane.sprawdzKolizje(&smok,usun,zadajObrazenia,PrzestrzenKolizji::okrag);
+	odlamki.sprawdzKolizje(&smok,usun,zadajObrazenia,PrzestrzenKolizji::okrag);
 
 	//Mury
 	std::list<Mur> *listaMurow = mury.zwrocObiekty();

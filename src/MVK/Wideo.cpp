@@ -82,6 +82,8 @@ void Wideo::zamkniecieOkna()
 	SDL_DestroyTexture(belt);
 	SDL_DestroyTexture(strzala);
 	SDL_DestroyTexture(pociskBalistyczny);
+	SDL_DestroyTexture(pociskKierowany);
+	SDL_DestroyTexture(pociskKasetowy);
 
 	SDL_DestroyTexture(mur);
 	SDL_DestroyTexture(zaslona);
@@ -208,15 +210,15 @@ int Wideo::wczytanieObrazka(const char* nazwa, SDL_Texture ** grafika)
 	SDL_Surface *bmp= SDL_LoadBMP( nazwa );
 	if(bmp)
 	{
-		std::cout << "[  OK  ] ";
+		//std::cout << "[  OK  ] ";
 		odszyfrowanieObrazka(bmp);
 		//SDL_SaveBMP(bmp, nazwa);
 		SDL_SetColorKey( bmp, SDL_TRUE, SDL_MapRGB( bmp->format, 255, 0, 128 ) );
 		*grafika = SDL_CreateTextureFromSurface(render, bmp);
 		 SDL_SetTextureBlendMode(*grafika,SDL_BLENDMODE_BLEND);
 	}
-	else 		std::cout << "[NOT OK] ";
-	std::cout << "wczytywanie obrazka " << nazwa << "\n";
+	//else 		std::cout << "[NOT OK] ";
+	//std::cout << "wczytywanie obrazka " << nazwa << "\n";
 	SDL_FreeSurface(bmp);
 	return (*grafika==NULL)?1:0;
 }
@@ -830,6 +832,57 @@ void Wideo::wyswietleniePociskowKierowanych()
 		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}
 }
+void Wideo::wyswietleniePociskowKasetowych()
+{
+	Punkt pozycjaKamery=model->zwrocKamere()->zwrocPozycje();
+	int rozmiarKlatki=71;
+
+	std::list<PociskKasetowy> *pk = model->zwrocPociskiKasetowe()->zwrocObiekty();
+
+	for(std::list<PociskKasetowy>::iterator i=pk->begin(); i!=pk->end() ;i++)
+	{
+		if(!i->czyIstnieje()) continue;
+		Punkt pozycja = i->zwrocPozycje();
+		Punkt klatka = i->zwrocKlatkeAnimacji();
+
+		Punkt p = pozycja;
+		if(!i->czyZniszczony() && !model->czyWyswietlacPrzeciwnikow())
+			p=czyWychodziZaEkran(pozycjaKamery,pozycja,i->zwrocPredkosc(),1);
+
+		if(p==pozycja)
+			wyswietlenieKlatki(pociskKasetowy,p,pozycjaKamery,klatka,rozmiarKlatki);
+		else
+			wyswietlenieOstrzezenia(p, pozycjaKamery,1);
+
+		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
+	}
+}
+
+void Wideo::wyswietlenieOdlamkow()
+{
+	Punkt pozycjaKamery=model->zwrocKamere()->zwrocPozycje();
+	int rozmiarKlatki=71;
+
+	std::list<Odlamek> *o = model->zwrocOdlamki()->zwrocObiekty();
+
+	for(std::list<Odlamek>::iterator i=o->begin(); i!=o->end() ;i++)
+	{
+		if(!i->czyIstnieje()) continue;
+		Punkt pozycja = i->zwrocPozycje();
+		Punkt klatka = i->zwrocKlatkeAnimacji();
+
+		Punkt p = pozycja;
+		if(!i->czyZniszczony() && !model->czyWyswietlacPrzeciwnikow())
+			p=czyWychodziZaEkran(pozycjaKamery,pozycja,i->zwrocPredkosc(),1);
+
+		if(p==pozycja)
+			wyswietlenieKlatki(pociskKasetowy,p,pozycjaKamery,klatka,rozmiarKlatki);
+		else
+			wyswietlenieOstrzezenia(p, pozycjaKamery,1);
+
+		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
+	}
+}
 
 void Wideo::wyswietlenieMuru()
 {
@@ -973,6 +1026,8 @@ void Wideo::wyswietlenieEkranu()
 	wyswietlenieStrzal();
 	wyswietleniePociskowBalistycznych();
 	wyswietleniePociskowKierowanych();
+	wyswietlenieOdlamkow();
+	wyswietleniePociskowKasetowych();
 
 	wyswietlenieCelownika();
 

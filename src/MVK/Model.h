@@ -35,11 +35,16 @@ public:
 	Wymiary zwrocWymiaryEkranu() { return wymiaryEkranu;}
 	void ustawPelnyEkran(bool p) {pelnyEkran=p;}
 	bool zwrocPelnyEkran() {return pelnyEkran;}
+
+	double zwrocWypelnienieCelownika() {return wypelnienieCelownika;}
+	void ustawWypelnienieCelownika(double wypelnienie) {wypelnienieCelownika=wypelnienie;}
+
 	bool czyWyswietlacInstrukcje() {return wyswietlenieInstrukcji;}
 	bool czyWyswietlacOdNowa() {return wyswietlenieOdNowa;} //Todo: tymczasowe
 	bool czyWyswietlacPrzeciwnikow() {return klawiatura.czyWcisnietoKlawiszFunkcyjny(0);}
-	double zwrocWypelnienieCelownika() {return wypelnienieCelownika;}
-	void ustawWypelnienieCelownika(double wypelnienie) {wypelnienieCelownika=wypelnienie;}
+
+	//Metody dedykowane dla Obiektow
+	void usunZniszczonePociskiKasetowe();
 
 	//Zwracanie inputu
 	Myszka* zwrocMyszke() {return &myszka;}
@@ -54,6 +59,8 @@ public:
 	KontenerPociskow<Belt>* zwrocBelty() {return &belty;}
 	KontenerPociskow<PociskBalistyczny>* zwrocPociskiBalistyczne() {return &pociskiBalistyczne;}
 	KontenerPociskow<PociskKierowany>* zwrocPociskiKierowane() {return &pociskiKierowane;}
+	KontenerPociskow<PociskKasetowy>* zwrocPociskiKasetowe() {return &pociskiKasetowe;}
+	KontenerPociskow<Odlamek>* zwrocOdlamki() {return &odlamki;}
 	KontenerPostaci<Strzelec>* zwrocStrzelcow() {return &strzelcy;}
 	KontenerPostaci<Balista>* zwrocBalisty() {return &balisty;}
 	KontenerPostaci<Kaplan>* zwrocKaplanow() {return &kaplani;}
@@ -93,6 +100,8 @@ private:
 	KontenerPociskow<Belt> belty;
 	KontenerPociskow<PociskBalistyczny> pociskiBalistyczne;
 	KontenerPociskow<PociskKierowany> pociskiKierowane;
+	KontenerPociskow<PociskKasetowy> pociskiKasetowe;
+	KontenerPociskow<Odlamek> odlamki;
 
 	KontenerPrzedmiotow<Mur> mury;
 	KontenerPrzedmiotow<Zaslona> zaslony;

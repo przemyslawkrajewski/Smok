@@ -12,7 +12,7 @@ Kaplan::Kaplan() {
 
 	zwroconyWPrawo=true;
 	zycie=30;
-	obrazenia=500;
+	obrazenia=5;
 }
 
 //#####################################################################################################
@@ -62,8 +62,28 @@ void Kaplan::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 					v.x=parametry.predkoscPociskuKierowanego*cos(kat);
 					v.y=parametry.predkoscPociskuKierowanego*sin(kat);
 					if(kat>6.28) kat-=6.28;
-					FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::pociskKierowany,p,v,parametry.czasTrwaniaPocuskuKierowanego,kat,parametry.obrazenia,cel);
-					//Fabryka->stworzPocisk()
+					FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::pociskKierowany,p,v,parametry.czasTrwaniaPocuskuKierowanego,kat,parametry.obrazeniaKierowanegoPocisku,cel);
+				}
+		}
+		else if(klawiatura->czyWcisnietoKlawiszFunkcyjny(0))
+		{
+			stan = zaklecieKasetowy;
+			stanChodu=0;
+			stanRzucaniaZaklec++;
+
+				if(stanRzucaniaZaklec>parametry.czasRzucaniaKasetowegoPocisku)
+				{
+					stanRzucaniaZaklec=0;
+
+					double kat = atan2((-myszka->zwrocX()),(myszka->zwrocY()))-1.57;
+					Punkt p;
+					p.x=pozycja.x+(parametry.minimalnaOdleglosc)*cos(kat);
+					p.y=pozycja.y+(parametry.minimalnaOdleglosc)*sin(kat);
+					Punkt v;
+					v.x=parametry.predkoscPociskuKierowanego*cos(kat);
+					v.y=parametry.predkoscPociskuKierowanego*sin(kat);
+					if(kat>6.28) kat-=6.28;
+					FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::pociskKasetowy,p,v,parametry.czasTrwaniaPocuskuKierowanego,kat,parametry.obrazeniaKasetowegoPocisku,cel);
 				}
 		}
 		else
@@ -104,7 +124,8 @@ std::pair<Klawiatura,Myszka> Kaplan::wyznaczSterowanie()
 
 	if(fabs(pozycjaCelu.x-pozycja.x)<minOdleglosc && ((pozycjaCelu.x>=pozycja.x && zwroconyWPrawo==true) || (pozycjaCelu.x<=pozycja.x && zwroconyWPrawo!=true)))
 	{
-		m.ustawLPM(true);
+		//m.ustawLPM(true);
+		k.ustawWcisnietoKlawiszFunkcyjny(true,0);
 	}
 	else if(pozycjaCelu.x>pozycja.x)
 	{
@@ -159,6 +180,10 @@ void Kaplan::wyznaczKlatkeAnimacji()
 		case zaklecieKierowany:
 			klatkaAnimacji.x=0;
 			klatkaAnimacji.y=stanRzucaniaZaklec/(1+parametry.czasRzucaniaKierowanegoPocisku/3);
+			break;
+		case zaklecieKasetowy:
+			klatkaAnimacji.x=0;
+			klatkaAnimacji.y=stanRzucaniaZaklec/(1+parametry.czasRzucaniaKasetowegoPocisku/3);
 			break;
 		case umiera:
 			if(klatkaAnimacji.x!=0 || klatkaAnimacji.y<2)

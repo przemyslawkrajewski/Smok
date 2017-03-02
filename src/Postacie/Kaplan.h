@@ -26,7 +26,7 @@ struct ParametryKaplana
 	double minimalnaOdleglosc;
 
 	double czasRzucaniaKierowanegoPocisku;
-	double czasRzucaniaKaskadowegoPocisku;
+	double czasRzucaniaKasetowegoPocisku;
 	double czasRzucaniaPersonalnejTarczy;
 	double czasRzucaniaObszarowejTarczy;
 
@@ -35,7 +35,8 @@ struct ParametryKaplana
 	double predkoscPociskuKierowanego;
 
 	double maxZycia;
-	double obrazenia;
+	double obrazeniaKierowanegoPocisku;
+	double obrazeniaKasetowegoPocisku;
 
 	ParametryKaplana()
 	{
@@ -48,7 +49,7 @@ struct ParametryKaplana
 
 
 		czasRzucaniaKierowanegoPocisku=50;
-		czasRzucaniaKaskadowegoPocisku=80;
+		czasRzucaniaKasetowegoPocisku=80;
 		czasRzucaniaPersonalnejTarczy=150;
 		czasRzucaniaObszarowejTarczy=50;
 
@@ -57,14 +58,15 @@ struct ParametryKaplana
 		predkoscPociskuKierowanego=15;
 
 		maxZycia=10;
-		obrazenia=5;
+		obrazeniaKierowanegoPocisku=5;
+		obrazeniaKasetowegoPocisku=5;
 	}
 };
 
 class Kaplan: public Postac
 {
 public:
-	enum StanKaplana {stoi, idzie, umiera, zaklecieKierowany, zaklecieKaskadowy, tarczaPersonalna, tarczaObszarowa};
+	enum StanKaplana {stoi, idzie, umiera, zaklecieKierowany, zaklecieKasetowy, tarczaPersonalna, tarczaObszarowa};
 
 	Kaplan();
 

@@ -62,6 +62,8 @@ private:
 	void wyswietlenieStrzal();
 	void wyswietleniePociskowBalistycznych();
 	void wyswietleniePociskowKierowanych();
+	void wyswietleniePociskowKasetowych();
+	void wyswietlenieOdlamkow();
 
 	void wyswietlenieMuru();
 	void wyswietlenieZaslon();
