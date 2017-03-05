@@ -110,6 +110,7 @@ private:
 
 	SDL_Texture * mur;
 	SDL_Texture * zaslona;
+	SDL_Texture * tarczaPersonalna;
 
 	SDL_Texture * pasekOgnia;
 	SDL_Texture * pasekZdrowia;

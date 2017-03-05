@@ -36,9 +36,13 @@ Wideo::Wideo(Model *nModel)
 	lucznikL=0;
 	belt=0;
 	strzala=0;
+	pociskBalistyczny=0;
+	pociskKierowany=0;
+	pociskKasetowy=0;
 
 	mur=0;
 	zaslona=0;
+	tarczaPersonalna=0;
 
 	odNowa=0;
 	instrukcja=0;
@@ -87,6 +91,7 @@ void Wideo::zamkniecieOkna()
 
 	SDL_DestroyTexture(mur);
 	SDL_DestroyTexture(zaslona);
+	SDL_DestroyTexture(tarczaPersonalna);
 
 	SDL_DestroyTexture(tlo);
 	SDL_DestroyTexture(drugiPlan);
@@ -190,6 +195,7 @@ void Wideo::wczytanieObrazkow()
 	   wczytanieObrazka("Grafika/PociskKasetowy.bmp",&pociskKasetowy) ||
 	   wczytanieObrazka("Grafika/Mur.bmp",&mur) ||
 	   wczytanieObrazka("Grafika/Zaslona.bmp",&zaslona) ||
+	   wczytanieObrazka("Grafika/TarczaPersonalna.bmp",&tarczaPersonalna) ||
 	   wczytanieObrazka("Grafika/Chodnik1.bmp",&pierwszyPlan) ||
 	   wczytanieObrazka("Grafika/DrugiPlanTrawa.bmp",&drugiPlan) ||
 	   wczytanieObrazka("Grafika/TloChmurno.bmp",&tlo) ||

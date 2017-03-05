@@ -46,6 +46,7 @@ protected:
 
 	double zycie;
 	double obrazenia;
+	bool maTarcze;
 	Obiekt *cel;
 
 	static ParametryObiektow parametryObiektow;
