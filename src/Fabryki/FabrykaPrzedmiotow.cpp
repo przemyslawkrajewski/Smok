@@ -10,6 +10,7 @@
 FabrykaPrzedmiotow* FabrykaPrzedmiotow::ptr=0;
 KontenerPrzedmiotow<Mur>* FabrykaPrzedmiotow::mury=0;
 KontenerPrzedmiotow<Zaslona>* FabrykaPrzedmiotow::zaslony=0;
+KontenerPrzedmiotow<TarczaPersonalna>* FabrykaPrzedmiotow::tarczePersonalne=0;
 
 
 FabrykaPrzedmiotow* FabrykaPrzedmiotow::zwrocInstancje()
@@ -27,14 +28,16 @@ FabrykaPrzedmiotow::~FabrykaPrzedmiotow()
 	delete ptr;
 }
 
-void FabrykaPrzedmiotow::ustawKontenery(KontenerPrzedmiotow<Mur>* m, KontenerPrzedmiotow<Zaslona>* z)
+void FabrykaPrzedmiotow::ustawKontenery(KontenerPrzedmiotow<Mur>* m, KontenerPrzedmiotow<Zaslona>* z, KontenerPrzedmiotow<TarczaPersonalna>* tp)
 {
 	zaslony=z;
 	mury=m;
+	tarczePersonalne=tp;
 }
 
-void FabrykaPrzedmiotow::stworzPrzedmiot(TypPrzedmiotu typ, Punkt pozycja)
+void FabrykaPrzedmiotow::stworzPrzedmiot(TypPrzedmiotu typ, Punkt pozycja, Obiekt* cel)
 {
+	TarczaPersonalna* tp;
 	switch(typ)
 	{
 	case sredniMur:
@@ -46,8 +49,16 @@ void FabrykaPrzedmiotow::stworzPrzedmiot(TypPrzedmiotu typ, Punkt pozycja)
 		(mury->dodaj(Mur(Mur::duzy,pozycja)))->wyznaczPrzestrzenKolizji();
 		break;
 	case zaslona:
-		assert("Kontener 'Mury' nie ustawiony" && zaslony!=0);
+		assert("Kontener 'Zaslony' nie ustawiony" && zaslony!=0);
 		(zaslony->dodaj(Zaslona(pozycja)))->wyznaczPrzestrzenKolizji();
+		break;
+	case tarczaPersonalna:
+		assert("Kontener 'TarczePersonalne' nie ustawione" && tarczePersonalne!=0);
+		assert("Do stworzenia tarczy personalnej potrzebny jest cel" && cel!=0);
+		tp=tarczePersonalne->dodaj(TarczaPersonalna(cel->zwrocPozycje()+Punkt(0,-10)));
+		tp->wyznaczPrzestrzenKolizji();
+		tp->ustawPunktZaczepu(cel);
+		break;
 	}
 }
 

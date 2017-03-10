@@ -98,8 +98,10 @@ public:
 	void ustawCel(Obiekt* p) {cel=p;}
 	void zadajObrazenia(double obrazenia) {zycie-=obrazenia;}
 	void ustawObrazenia(double o) {obrazenia=o;}
+	void ustawCzyPosiadaTarcze(bool b) {maTarcze=b;}
 	double zwrocObrazenia() {return obrazenia;}
 	double zwrocZycie() {return zycie;}
+	bool czyPosiadaTarcze() { return maTarcze;}
 
 };
 

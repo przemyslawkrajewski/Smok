@@ -7,7 +7,7 @@
 
 #include "Kaplan.h"
 
-Kaplan::Kaplan() {
+Kaplan::Kaplan(): Postac() {
 	stan=stoi;
 
 	zwroconyWPrawo=true;
@@ -86,6 +86,19 @@ void Kaplan::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 					FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::pociskKasetowy,p,v,parametry.czasTrwaniaPocuskuKierowanego,kat,parametry.obrazeniaKasetowegoPocisku,cel);
 				}
 		}
+		else if(klawiatura->czyWcisnietoKlawiszFunkcyjny(1) && najblizszyKompan!=0)
+		{
+			stan = tarczaPersonalna;
+			stanChodu=0;
+			stanRzucaniaZaklec++;
+
+			if(stanRzucaniaZaklec>parametry.czasRzucaniaPersonalnejTarczy)
+			{
+				stanRzucaniaZaklec=0;
+				FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::tarczaPersonalna,Punkt(),najblizszyKompan);
+				najblizszyKompan->ustawCzyPosiadaTarcze(true);
+			}
+		}
 		else
 		{
 			stan = stoi;
@@ -125,7 +138,8 @@ std::pair<Klawiatura,Myszka> Kaplan::wyznaczSterowanie()
 	if(fabs(pozycjaCelu.x-pozycja.x)<minOdleglosc && ((pozycjaCelu.x>=pozycja.x && zwroconyWPrawo==true) || (pozycjaCelu.x<=pozycja.x && zwroconyWPrawo!=true)))
 	{
 		//m.ustawLPM(true);
-		k.ustawWcisnietoKlawiszFunkcyjny(true,0);
+		//k.ustawWcisnietoKlawiszFunkcyjny(true,0);
+		k.ustawWcisnietoKlawiszFunkcyjny(true,1);
 	}
 	else if(pozycjaCelu.x>pozycja.x)
 	{
@@ -184,6 +198,10 @@ void Kaplan::wyznaczKlatkeAnimacji()
 		case zaklecieKasetowy:
 			klatkaAnimacji.x=0;
 			klatkaAnimacji.y=stanRzucaniaZaklec/(1+parametry.czasRzucaniaKasetowegoPocisku/3);
+			break;
+		case tarczaPersonalna:
+			klatkaAnimacji.x=0;
+			klatkaAnimacji.y=stanRzucaniaZaklec/(1+parametry.czasRzucaniaPersonalnejTarczy/3);
 			break;
 		case umiera:
 			if(klatkaAnimacji.x!=0 || klatkaAnimacji.y<2)

@@ -14,4 +14,6 @@ Postac::Postac() :Obiekt()
 
 	przeszkodaPoLewej=false;
 	przeszkodaPoPrawej=false;
+
+	najblizszyKompan=0;
 }

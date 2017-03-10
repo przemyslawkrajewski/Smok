@@ -13,6 +13,7 @@
 #include "../Obiekty/Obiekt.h"
 
 #include "../Fabryki/FabrykaPociskow.h"
+#include "../Fabryki/FabrykaPrzedmiotow.h"
 
 class Postac : public Obiekt
 {
@@ -32,9 +33,13 @@ public:
 	TypPostaci zwrocTypPostaci() {return typPostaci;}
 
 	void ustawCzyIstniejePrzeszkoda(bool poLewej, bool poPrawej) {przeszkodaPoLewej=poLewej;przeszkodaPoPrawej=poPrawej;}
+	void ustawNajblizszegoKompana(Obiekt *o) {najblizszyKompan=o;}
+
+protected:
 
 	TypPostaci typPostaci;
 	bool przeszkodaPoLewej,przeszkodaPoPrawej;
+	Obiekt* najblizszyKompan;
 };
 
 #endif /* POSTAC_H_ */

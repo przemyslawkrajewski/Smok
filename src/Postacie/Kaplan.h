@@ -81,11 +81,9 @@ public:
 	ParametryKaplana parametry;
 	StanKaplana stan;
 
+private:
 	int stanChodu;
 	int stanRzucaniaZaklec;
-
-
-private:
 
 
 };

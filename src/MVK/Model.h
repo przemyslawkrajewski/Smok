@@ -66,17 +66,23 @@ public:
 	KontenerPostaci<Kaplan>* zwrocKaplanow() {return &kaplani;}
 	KontenerPrzedmiotow<Mur>* zwrocMury() {return &mury;}
 	KontenerPrzedmiotow<Zaslona>* zwrocZaslony() {return &zaslony;}
+	KontenerPrzedmiotow<TarczaPersonalna>* zwrocTarczePersonalne() {return &tarczePersonalne;}
 
 	//Obsluga kolizji
 	void obsluzKolizje();
 	static void zniszcz(Obiekt *o,Obiekt *o2, Punkt punktKolizji);
 	static void zniszczPocisk(Obiekt *o,Obiekt *o2, Punkt punktKolizji);
+	static void rozbijPociskOTarcze(Obiekt *o,Obiekt *o2, Punkt punktKolizji);
 	static void usun(Obiekt *o,Obiekt *o2, Punkt punktKolizji);
 	static void nic(Obiekt *o,Obiekt *o2, Punkt punktKolizji);
 	static void zadajObrazenia(Obiekt*o, Obiekt *o2, Punkt punktKolizji);
 	static void kolizjaPlomieniazMurem(Obiekt *o,Obiekt *o2,Punkt punktKolizji);
 	static void kolizjaSmokaZMurem(Obiekt*o, Obiekt *o2, Punkt punktKolizji);
 	static void kolizjaSmokaZPlatforma(Obiekt*o, Obiekt *o2, Punkt punktKolizji);
+
+private:
+	//wyliczenia
+	void ustawNajblizszegoKompana(Postac* k, std::list<Postac*>* s);
 
 private:
 	Punkt wymiaryEkranu;
@@ -105,6 +111,7 @@ private:
 
 	KontenerPrzedmiotow<Mur> mury;
 	KontenerPrzedmiotow<Zaslona> zaslony;
+	KontenerPrzedmiotow<TarczaPersonalna> tarczePersonalne;
 };
 
 #endif /* MODEL_H_ */

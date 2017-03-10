@@ -15,7 +15,7 @@ Model::Model(int szerOkna,int wysOkna, bool ekran): wymiaryEkranu(Punkt(szerOkna
 	wyswietlenieInstrukcji=true;
 	wypelnienieCelownika=false;
 
-	FabrykaPrzedmiotow::zwrocInstancje()->ustawKontenery(&mury,&zaslony);
+	FabrykaPrzedmiotow::zwrocInstancje()->ustawKontenery(&mury,&zaslony, &tarczePersonalne);
 	FabrykaPociskow::zwrocInstancje()->ustawKontenery(&plomienie,&strzaly, &belty, &pociskiBalistyczne, &pociskiKierowane, &pociskiKasetowe, &odlamki);
 	FabrykaLudzi::zwrocInstancje()->ustawKontenery(&strzelcy,&balisty,&kaplani);
 
@@ -35,8 +35,10 @@ void Model::reset()
 	belty.wyczysc();
 	pociskiBalistyczne.wyczysc();
 	pociskiKierowane.wyczysc();
+	pociskiKasetowe.wyczysc();
 	mury.wyczysc();
 	zaslony.wyczysc();
+	tarczePersonalne.wyczysc();
 
 	smok.reset();
 
@@ -45,11 +47,12 @@ void Model::reset()
 
 	//FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniMur,Punkt(1400,300));
 
-	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::lucznik,Punkt(1300,130));
+	FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::lucznik,Punkt(1300,130));
 	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(1400,130));
 	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::balista,Punkt(1400,200),false);
 	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::balista,Punkt(1000,200),true);
 	FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::kaplan,Punkt(1000,120),true);
+	FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::tarczaPersonalna,Punkt(),(*(kaplani.zwrocObiekty().begin())));
 
 	/*for(int i=0;i<10;i++)
 	{
@@ -114,6 +117,13 @@ void Model::wyznaczKolejnyStanObiektow()
 	kaplani.ustawCel(&smok);
 	kaplani.wyznaczKolejnyStan();
 	kaplani.wyznaczKlatkeAnimacji();
+	std::list<Postac*> k = kaplani.zwrocObiekty();
+	std::list<Postac*> s = strzelcy.zwrocObiekty();
+	for(std::list<Postac*>::iterator i= k.begin();i!=k.end();i++)
+	{
+		ustawNajblizszegoKompana((*i),&s);
+	}
+
 
 	//Pociski
 	plomienie.wyznaczKolejnyStan();
@@ -135,6 +145,8 @@ void Model::wyznaczKolejnyStanObiektow()
 
 	zaslony.wyznaczKolejnyStan();
 	zaslony.wyznaczKlatkeAnimacji();
+	tarczePersonalne.wyznaczKolejnyStan();
+    tarczePersonalne.wyznaczKlatkeAnimacji();
 
 	if((balisty.czyPusty() && strzelcy.czyPusty() && kaplani.czyPusty()) || smok.czyZniszczony()) wyswietlenieOdNowa=true;
 
@@ -182,6 +194,20 @@ void Model::usunZniszczonePociskiKasetowe()
 
 void Model::obsluzKolizje()
 {
+	//Plomienie Zaslony
+	std::list<Zaslona> *listaZaslon = zaslony.zwrocObiekty();
+	for(std::list<Zaslona>::iterator i=listaZaslon->begin();i!=listaZaslon->end();i++)
+	{
+		plomienie.sprawdzKolizje((Obiekt*)&(*i),zniszczPocisk,zadajObrazenia,PrzestrzenKolizji::prostokat,true);
+	}
+
+	//Plomienie Tarcze Personalne
+	std::list<TarczaPersonalna> *listaTarczPersonalnych = tarczePersonalne.zwrocObiekty();
+	for(std::list<TarczaPersonalna>::iterator i=listaTarczPersonalnych->begin();i!=listaTarczPersonalnych->end();i++)
+	{
+		plomienie.sprawdzKolizje((Obiekt*)&(*i),rozbijPociskOTarcze,zadajObrazenia,PrzestrzenKolizji::okrag,true);
+	}
+
 	//Strzelcy kontra plomienie
 	std::list<Postac*> listaStrzelcow = strzelcy.zwrocObiekty();
 	for(std::list<Postac*>::iterator i=listaStrzelcow.begin();i!=listaStrzelcow.end();i++)
@@ -208,7 +234,7 @@ void Model::obsluzKolizje()
 	pociskiKierowane.sprawdzKolizje(&smok,usun,zadajObrazenia,PrzestrzenKolizji::okrag);
 	odlamki.sprawdzKolizje(&smok,usun,zadajObrazenia,PrzestrzenKolizji::okrag);
 
-	//Mury
+	//Mury vs pociski
 	std::list<Mur> *listaMurow = mury.zwrocObiekty();
 	for(std::list<Mur>::iterator i=listaMurow->begin();i!=listaMurow->end();i++)
 	{
@@ -216,12 +242,6 @@ void Model::obsluzKolizje()
 		belty.sprawdzKolizje((Obiekt*)&(*i),kolizjaPlomieniazMurem,nic,PrzestrzenKolizji::prostokat,true);
 		strzaly.sprawdzKolizje((Obiekt*)&(*i),kolizjaPlomieniazMurem,nic,PrzestrzenKolizji::prostokat,true);
 		pociskiBalistyczne.sprawdzKolizje((Obiekt*)&(*i),kolizjaPlomieniazMurem,nic,PrzestrzenKolizji::prostokat,true);
-	}
-	//Plomienie Zaslony
-	std::list<Zaslona> *listaZaslon = zaslony.zwrocObiekty();
-	for(std::list<Zaslona>::iterator i=listaZaslon->begin();i!=listaZaslon->end();i++)
-	{
-		plomienie.sprawdzKolizje((Obiekt*)&(*i),zniszczPocisk,zadajObrazenia,PrzestrzenKolizji::prostokat,true);
 	}
 
 	mury.sprawdzKolizje(&smok,nic,kolizjaSmokaZMurem,PrzestrzenKolizji::prostokat,false);
@@ -232,6 +252,7 @@ void Model::zniszcz(Obiekt *o,Obiekt *o2,Punkt punktKolizji)
 {
 	o->zniszcz();
 }
+
 void Model::zniszczPocisk(Obiekt *o,Obiekt *o2,Punkt punktKolizji)
 {
 	if(!o->czyZniszczony())
@@ -242,6 +263,27 @@ void Model::zniszczPocisk(Obiekt *o,Obiekt *o2,Punkt punktKolizji)
 		else punktKolizji.y-=2;
 
 		o->ustawPozycje(punktKolizji);
+		o->ustawPunktZaczepu(o2);
+	}
+	o->zniszcz();
+}
+
+void Model::rozbijPociskOTarcze(Obiekt *o,Obiekt *o2,Punkt punktKolizji)
+{
+	if(!o->czyZniszczony())
+	{
+		Punkt p1 = o->zwrocPozycje();
+		Punkt p2 = o2->zwrocPozycje();
+		//Zakladamy ze jak doszlo do kolizji to MUSI cos byc w przestrzeni kolizji
+		double r = (*(o2->zwrocPrzestrzenKolizji()->zwrocOkregi()))[0].zwrocPromien();
+		double a = atan2(-p2.y+p1.y,-p2.x+p1.x);
+
+		if(punktKolizji.x>o2->zwrocPozycje().x) p2.x+=2;
+		else p2.x-=2;
+		if(punktKolizji.y>o2->zwrocPozycje().y) p2.y+=2;
+		else p2.y-=2;
+
+		o->ustawPozycje(Punkt(p2.x+cos(a)*r,p2.y+sin(a)*r));
 		o->ustawPunktZaczepu(o2);
 	}
 	o->zniszcz();
@@ -349,4 +391,22 @@ void Model::kolizjaPlomieniazMurem(Obiekt *o,Obiekt *o2,Punkt punktKolizji)
 		o->ustawPunktZaczepu(o2);
 	}
 	o->zniszcz();
+}
+
+//########################################################################################################################
+void Model::ustawNajblizszegoKompana(Postac* k, std::list<Postac*>* s)
+{
+	double minR;
+	Obiekt* o=0;
+	for(std::list<Postac*>::iterator i = s->begin();i!=s->end();i++)
+	{
+		double r = fabs((*i)->zwrocPozycje().x-k->zwrocPozycje().x);
+		if((r<minR || o==0) && !(*i)->czyPosiadaTarcze())
+		{
+			o=(*i);
+			minR=r;
+		}
+	}
+
+	k->ustawNajblizszegoKompana(o);
 }

@@ -8,8 +8,8 @@
 #ifndef WIDEO_H_
 #define WIDEO_H_
 
-#define DRAW_CHECKBOX
-#define DRAW_CHECKSPHERE
+//#define DRAW_CHECKBOX
+//#define DRAW_CHECKSPHERE
 
 #include <iostream>
 #include <fstream>
@@ -67,6 +67,7 @@ private:
 
 	void wyswietlenieMuru();
 	void wyswietlenieZaslon();
+	void wyswietlenieTarczPersonalnych();
 
 	void wyswietlenieKomunikatow();
 	void wyswietlenieCelownika();

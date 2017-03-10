@@ -956,6 +956,26 @@ void Wideo::wyswietlenieZaslon()
 	}
 }
 
+void Wideo::wyswietlenieTarczPersonalnych()
+{
+	Punkt pozycjaKamery=model->zwrocKamere()->zwrocPozycje();
+	int rozmiarKlatki=100;
+
+	std::list<TarczaPersonalna> *tp = model->zwrocTarczePersonalne()->zwrocObiekty();
+
+	for(std::list<TarczaPersonalna>::iterator i=tp->begin(); i!=tp->end() ;i++)
+	{
+		if(!i->czyIstnieje()) continue;
+		Punkt pozycja = i->zwrocPozycje();
+		Punkt klatka = i->zwrocKlatkeAnimacji();
+
+		if(!(i->czyZniszczony()))
+			wyswietlenieKlatki(tarczaPersonalna,pozycja,pozycjaKamery,klatka,rozmiarKlatki);
+
+		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
+	}
+}
+
 void Wideo::wyswietlenieKomunikatow()
 {
 	if(model->czyWyswietlacInstrukcje()) wyswietlenieObrazka(instrukcja,0,0,0,0,szerokoscOkna,wysokoscOkna);
@@ -1028,6 +1048,7 @@ void Wideo::wyswietlenieEkranu()
 	wyswietlenieBalist();
 	wyswietlenieKaplanow();
 	wyswietlenieStrzelcow();
+	wyswietlenieTarczPersonalnych();
 	wyswietlenieSmoka();
 	wyswietlenieStrzal();
 	wyswietleniePociskowBalistycznych();
