@@ -48,10 +48,10 @@ void Model::reset()
 	//FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniMur,Punkt(1400,300));
 
 	FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::lucznik,Punkt(1300,130));
-	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(1400,130));
+	FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(1400,130));
 	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::balista,Punkt(1400,200),false);
 	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::balista,Punkt(1000,200),true);
-	FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::kaplan,Punkt(1000,120),true);
+	FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::kaplan,Punkt(1200,130),true);
 	FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::tarczaPersonalna,Punkt(),(*(kaplani.zwrocObiekty().begin())));
 
 	/*for(int i=0;i<10;i++)
@@ -302,7 +302,8 @@ void Model::nic(Obiekt *o,Obiekt *o2,Punkt punktKolizji)
 
 void Model::zadajObrazenia(Obiekt*o, Obiekt *o2, Punkt punktKolizji)
 {
-	o->zadajObrazenia(o2->zwrocObrazenia());
+	if(!o->czyPosiadaTarcze())
+		o->zadajObrazenia(o2->zwrocObrazenia());
 }
 
 void Model::kolizjaSmokaZMurem(Obiekt*o, Obiekt *o2, Punkt punktKolizji)

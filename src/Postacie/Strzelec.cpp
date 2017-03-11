@@ -26,6 +26,7 @@ Strzelec::Strzelec(): Postac()
 
 void Strzelec::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 {
+	std::cout << zycie << "\n";
 	if(!zniszczony)
 	{
 		if (klawiatura->czyWcisnietoPrawo())
@@ -111,7 +112,7 @@ void Strzelec::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 
 std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 {
-	int maxOdleglosc=4000;
+	int maxOdleglosc=200;
 	int minOdleglosc=100;
 	int odleglosc=400;
 
@@ -167,6 +168,7 @@ void Strzelec::wyznaczKatStrzalu(Punkt cel)
 	if(parametry.spust)
 	{
 		katCelowaniaWprost = atan2((-cel.x),(cel.y))-1.57;
+		if(katCelowaniaWprost<0) katCelowaniaWprost+=M_PI*2;
 		katCelowaniaZGory = katCelowaniaWprost;
 		return;
 	}

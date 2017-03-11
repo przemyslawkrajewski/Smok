@@ -55,7 +55,7 @@ void FabrykaPrzedmiotow::stworzPrzedmiot(TypPrzedmiotu typ, Punkt pozycja, Obiek
 	case tarczaPersonalna:
 		assert("Kontener 'TarczePersonalne' nie ustawione" && tarczePersonalne!=0);
 		assert("Do stworzenia tarczy personalnej potrzebny jest cel" && cel!=0);
-		tp=tarczePersonalne->dodaj(TarczaPersonalna(cel->zwrocPozycje()+Punkt(0,-10)));
+		tp=tarczePersonalne->dodaj(TarczaPersonalna(cel->zwrocPozycje()+Punkt(0,-5)));
 		tp->wyznaczPrzestrzenKolizji();
 		tp->ustawPunktZaczepu(cel);
 		break;

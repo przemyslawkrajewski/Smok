@@ -46,7 +46,7 @@ void Plomien::zniszcz()
 		predkosc.x=predkosc.y=0;
 		czasTrwania=parametry.czasPalenia;
 		stan = naCelu;
-		obrazenia*=parametry.obrazeniaNaCelu;
+		obrazenia=bazoweObrazenia*parametry.obrazeniaNaCelu;
 	}
 }
 
@@ -59,6 +59,7 @@ void Plomien::wyznaczKolejnyStan()
 {
 	if(!zniszczony) //Plomien leci
 	{
+
 		pozycja.x+=predkosc.x;
 		pozycja.y+=predkosc.y;
 
@@ -75,7 +76,7 @@ void Plomien::wyznaczKolejnyStan()
 		{
 			pozycja.y-=parametry.predkoscOpadania;
 		}
-		if(!czyZaczepiony) obrazenia*=parametry.obrazeniaNaZiemi;
+		if(!czyZaczepiony) obrazenia=bazoweObrazenia*parametry.obrazeniaNaZiemi;
 
 		if(czyZaczepiony) bylZaczepiony=true;
 	}

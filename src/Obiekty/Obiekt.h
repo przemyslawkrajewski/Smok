@@ -97,7 +97,7 @@ public:
 	//Mechanika gry
 	void ustawCel(Obiekt* p) {cel=p;}
 	void zadajObrazenia(double obrazenia) {zycie-=obrazenia;}
-	void ustawObrazenia(double o) {obrazenia=o;}
+	virtual void ustawObrazenia(double o) {obrazenia=o;}
 	void ustawCzyPosiadaTarcze(bool b) {maTarcze=b;}
 	double zwrocObrazenia() {return obrazenia;}
 	double zwrocZycie() {return zycie;}

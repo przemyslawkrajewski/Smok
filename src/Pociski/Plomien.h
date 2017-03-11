@@ -47,6 +47,7 @@ public:
 	virtual void wyznaczPrzestrzenKolizji();
 	virtual void zniszcz();
 
+	virtual void ustawObrazenia(double o) {bazoweObrazenia=o;obrazenia=o;}
 	int zwrocCzasTrwania() {return czasTrwania;}
 	double zwrocKat();
 	bool czyBylZaczepiony() {return bylZaczepiony;}
@@ -55,7 +56,8 @@ private:
 	static ParametryOgnia parametry;
 	StanPlomienia stan;
 
-	double bylZaczepiony;
+	bool bylZaczepiony;
+	double bazoweObrazenia;
 };
 
 

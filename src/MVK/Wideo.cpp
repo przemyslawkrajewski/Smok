@@ -736,7 +736,8 @@ void Wideo::wyswietlenieKaplanow()
 			p=czyWychodziZaEkran(pozycjaKamery,pozycja,(*i)->zwrocPredkosc(),3);
 
 		if(p==pozycja)
-		wyswietlenieKlatki(*animacja,pozycja,pozycjaKamery,klatka,rozmiarKlatki);
+			//obnizamy o 10 pikseli kaplana bo jego rozmiar klatki jest mniejszy niz strzelcow
+			wyswietlenieKlatki(*animacja,pozycja-Punkt(0,10),pozycjaKamery,klatka,rozmiarKlatki);
 		else
 			wyswietlenieOstrzezenia(p, pozycjaKamery,1);
 		wyswietleniePrzestrzeniKolizji((*i)->zwrocPrzestrzenKolizji(),pozycjaKamery);
