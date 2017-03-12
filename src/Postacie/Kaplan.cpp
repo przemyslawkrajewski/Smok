@@ -172,7 +172,7 @@ std::pair<Klawiatura,Myszka> Kaplan::wyznaczSterowanie()
 	{
 		//m.ustawLPM(true);
 		//k.ustawWcisnietoKlawiszFunkcyjny(true,0);
-		k.ustawWcisnietoKlawiszFunkcyjny(true,2);
+		k.ustawWcisnietoKlawiszFunkcyjny(true,1);
 	}
 	else if(pozycjaCelu.x>pozycja.x)
 	{

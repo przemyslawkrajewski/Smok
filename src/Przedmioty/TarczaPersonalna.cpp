@@ -25,7 +25,6 @@ TarczaPersonalna::~TarczaPersonalna()
 
 void TarczaPersonalna::zniszcz()
 {
-	Obiekt::usun();
 	if(punktZaczepu!=0)	punktZaczepu->ustawCzyPosiadaTarcze(false);
 }
 
@@ -51,7 +50,7 @@ void TarczaPersonalna::wyznaczKolejnyStan()
 	{
 		zycie=0;
 		przestrzenKolizji.wyczyscFigury();
-		zniszcz();
+		usun();
 	}
 	else
 	{
