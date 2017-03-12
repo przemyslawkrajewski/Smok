@@ -67,12 +67,14 @@ public:
 	KontenerPrzedmiotow<Mur>* zwrocMury() {return &mury;}
 	KontenerPrzedmiotow<Zaslona>* zwrocZaslony() {return &zaslony;}
 	KontenerPrzedmiotow<TarczaPersonalna>* zwrocTarczePersonalne() {return &tarczePersonalne;}
+	KontenerPrzedmiotow<TarczaObszarowa>* zwrocTarczeObszarowe() {return &tarczeObszarowe;}
 
 	//Obsluga kolizji
 	void obsluzKolizje();
 	static void zniszcz(Obiekt *o,Obiekt *o2, Punkt punktKolizji);
 	static void zniszczPocisk(Obiekt *o,Obiekt *o2, Punkt punktKolizji);
 	static void rozbijPociskOTarcze(Obiekt *o,Obiekt *o2, Punkt punktKolizji);
+	static void odepchnijOdTarczy(Obiekt *o,Obiekt *o2, Punkt punktKolizji);
 	static void usun(Obiekt *o,Obiekt *o2, Punkt punktKolizji);
 	static void nic(Obiekt *o,Obiekt *o2, Punkt punktKolizji);
 	static void zadajObrazenia(Obiekt*o, Obiekt *o2, Punkt punktKolizji);
@@ -112,6 +114,7 @@ private:
 	KontenerPrzedmiotow<Mur> mury;
 	KontenerPrzedmiotow<Zaslona> zaslony;
 	KontenerPrzedmiotow<TarczaPersonalna> tarczePersonalne;
+	KontenerPrzedmiotow<TarczaObszarowa> tarczeObszarowe;
 };
 
 #endif /* MODEL_H_ */

@@ -26,7 +26,6 @@ Strzelec::Strzelec(): Postac()
 
 void Strzelec::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 {
-	std::cout << zycie << "\n";
 	if(!zniszczony)
 	{
 		if (klawiatura->czyWcisnietoPrawo())

@@ -1,5 +1,5 @@
 /*
- * Zaslona.cpp
+ * TarczaPersonalna.cpp
  *
  *  Created on: 27-09-2016
  *      Author: przemo
@@ -13,7 +13,6 @@ TarczaPersonalna::TarczaPersonalna(Punkt p)
 {
 	pozycja=p;
 	zycie=100;
-	zycieStare=0;
 	stanWidocznosci=parametry.czasWidocznosci;
 	wyznaczPrzestrzenKolizji();
 	wyznaczKlatkeAnimacji();
@@ -26,8 +25,14 @@ TarczaPersonalna::~TarczaPersonalna()
 
 void TarczaPersonalna::zniszcz()
 {
-	Obiekt::zniszcz();
+	Obiekt::usun();
 	if(punktZaczepu!=0)	punktZaczepu->ustawCzyPosiadaTarcze(false);
+}
+
+void TarczaPersonalna::zadajObrazenia(double obrazenia)
+{
+	zycie-=obrazenia;
+	stanWidocznosci=parametry.czasWidocznosci;
 }
 
 void TarczaPersonalna::wyznaczPrzestrzenKolizji()
@@ -50,8 +55,6 @@ void TarczaPersonalna::wyznaczKolejnyStan()
 	}
 	else
 	{
-		if(zycieStare-zycie>parametry.granicaUbytkuZycia) stanWidocznosci=parametry.czasWidocznosci;
-		zycieStare=zycie;
 		if(stanWidocznosci>0) stanWidocznosci--;
 	}
 

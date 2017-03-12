@@ -65,6 +65,7 @@ public:
 	bool czyZwroconyWPrawo() {return zwroconyWPrawo;}
 	bool czyNaZiemi() {return naZiemi;}
 	void ustawPozycje(Punkt p) {pozycja=p;}
+	void ustawPredkosc(Wektor p) {predkosc=p;}
 	void ustawCzyZwroconyWPrawo(bool zwrocony) {zwroconyWPrawo=zwrocony;}
 
 	Obiekt* zwrocPtr() {return this;}
@@ -96,7 +97,7 @@ public:
 
 	//Mechanika gry
 	void ustawCel(Obiekt* p) {cel=p;}
-	void zadajObrazenia(double obrazenia) {zycie-=obrazenia;}
+	virtual void zadajObrazenia(double obrazenia) {zycie-=obrazenia;}
 	virtual void ustawObrazenia(double o) {obrazenia=o;}
 	void ustawCzyPosiadaTarcze(bool b) {maTarcze=b;}
 	double zwrocObrazenia() {return obrazenia;}

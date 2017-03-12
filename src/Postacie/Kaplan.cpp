@@ -13,6 +13,11 @@ Kaplan::Kaplan(): Postac() {
 	zwroconyWPrawo=true;
 	zycie=30;
 	obrazenia=5;
+
+	stanChodu=0;
+	stanRzucaniaZaklec=0;
+
+	tarcza=0;
 }
 
 //#####################################################################################################
@@ -99,6 +104,20 @@ void Kaplan::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 				najblizszyKompan->ustawCzyPosiadaTarcze(true);
 			}
 		}
+		else if(klawiatura->czyWcisnietoKlawiszFunkcyjny(2))
+		{
+			//Tarcza Obszarowa
+			stan = tarczaObszarowa;
+			stanChodu=0;
+			stanRzucaniaZaklec++;
+
+			if(stanRzucaniaZaklec>=parametry.czasRzucaniaObszarowejTarczy)
+			{
+				stanRzucaniaZaklec=parametry.czasRzucaniaObszarowejTarczy;
+				if(tarcza==0)
+					tarcza=FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::tarczaObszarowa,pozycja);
+			}
+		}
 		else
 		{
 			stan = stoi;
@@ -107,6 +126,20 @@ void Kaplan::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 		}
 		if(stanRzucaniaZaklec<0) stanRzucaniaZaklec=0;
 		if(zycie<=0) zniszcz();
+
+		if(tarcza!=0)
+		{
+			if(tarcza->czyZniszczony())
+			{
+				tarcza->usun();
+				tarcza=0;
+			}
+			else if(stan!=tarczaObszarowa)
+			{
+				tarcza->zniszcz();
+			}
+		}
+
 	}
 	else
 	{
@@ -139,7 +172,7 @@ std::pair<Klawiatura,Myszka> Kaplan::wyznaczSterowanie()
 	{
 		//m.ustawLPM(true);
 		//k.ustawWcisnietoKlawiszFunkcyjny(true,0);
-		k.ustawWcisnietoKlawiszFunkcyjny(true,1);
+		k.ustawWcisnietoKlawiszFunkcyjny(true,2);
 	}
 	else if(pozycjaCelu.x>pozycja.x)
 	{
@@ -202,6 +235,10 @@ void Kaplan::wyznaczKlatkeAnimacji()
 		case tarczaPersonalna:
 			klatkaAnimacji.x=0;
 			klatkaAnimacji.y=stanRzucaniaZaklec/(1+parametry.czasRzucaniaPersonalnejTarczy/3);
+			break;
+		case tarczaObszarowa:
+			klatkaAnimacji.x=0;
+			klatkaAnimacji.y=stanRzucaniaZaklec/(1+parametry.czasRzucaniaObszarowejTarczy/3);
 			break;
 		case umiera:
 			if(klatkaAnimacji.x!=0 || klatkaAnimacji.y<2)

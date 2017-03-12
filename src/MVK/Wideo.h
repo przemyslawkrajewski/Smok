@@ -68,6 +68,7 @@ private:
 	void wyswietlenieMuru();
 	void wyswietlenieZaslon();
 	void wyswietlenieTarczPersonalnych();
+	void wyswietlenieTarczObszarowych();
 
 	void wyswietlenieKomunikatow();
 	void wyswietlenieCelownika();
@@ -112,6 +113,7 @@ private:
 	SDL_Texture * mur;
 	SDL_Texture * zaslona;
 	SDL_Texture * tarczaPersonalna;
+	SDL_Texture * tarczaObszarowa;
 
 	SDL_Texture * pasekOgnia;
 	SDL_Texture * pasekZdrowia;

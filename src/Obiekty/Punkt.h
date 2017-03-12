@@ -8,6 +8,8 @@
 #ifndef PUNKT_H_
 #define PUNKT_H_
 
+#include<math.h>
+
 class Punkt
 {
 public:
@@ -28,6 +30,10 @@ public:
 	{
 		x=p.x;
 		y=p.y;
+	}
+	double dlugosc()
+	{
+		return sqrt(x*x+y*y);
 	}
 	bool operator==(Punkt p)
 	{

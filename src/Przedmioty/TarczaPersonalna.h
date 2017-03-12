@@ -34,11 +34,11 @@ public:
 	virtual void wyznaczPrzestrzenKolizji();
 
 	virtual void zniszcz();
+	void zadajObrazenia(double obrazenia);
 
 
 private:
 	static ParametryTarczyPersonalnej parametry;
-	double zycieStare;
 	int stanWidocznosci;
 
 };

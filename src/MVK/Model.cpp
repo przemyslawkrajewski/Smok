@@ -15,7 +15,7 @@ Model::Model(int szerOkna,int wysOkna, bool ekran): wymiaryEkranu(Punkt(szerOkna
 	wyswietlenieInstrukcji=true;
 	wypelnienieCelownika=false;
 
-	FabrykaPrzedmiotow::zwrocInstancje()->ustawKontenery(&mury,&zaslony, &tarczePersonalne);
+	FabrykaPrzedmiotow::zwrocInstancje()->ustawKontenery(&mury,&zaslony, &tarczePersonalne, &tarczeObszarowe);
 	FabrykaPociskow::zwrocInstancje()->ustawKontenery(&plomienie,&strzaly, &belty, &pociskiBalistyczne, &pociskiKierowane, &pociskiKasetowe, &odlamki);
 	FabrykaLudzi::zwrocInstancje()->ustawKontenery(&strzelcy,&balisty,&kaplani);
 
@@ -47,12 +47,13 @@ void Model::reset()
 
 	//FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniMur,Punkt(1400,300));
 
-	FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::lucznik,Punkt(1300,130));
-	FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(1400,130));
+	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::lucznik,Punkt(1300,130));
+	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(1400,130));
 	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::balista,Punkt(1400,200),false);
 	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::balista,Punkt(1000,200),true);
 	FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::kaplan,Punkt(1200,130),true);
-	FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::tarczaPersonalna,Punkt(),(*(kaplani.zwrocObiekty().begin())));
+	//FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::tarczaPersonalna,Punkt(),(*(kaplani.zwrocObiekty().begin())));
+	//FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::tarczaObszarowa,Punkt(),(*(kaplani.zwrocObiekty().begin())));
 
 	/*for(int i=0;i<10;i++)
 	{
@@ -143,10 +144,13 @@ void Model::wyznaczKolejnyStanObiektow()
     odlamki.wyznaczKolejnyStan();
     odlamki.wyznaczKlatkeAnimacji();
 
+    //Przedmioty
 	zaslony.wyznaczKolejnyStan();
 	zaslony.wyznaczKlatkeAnimacji();
 	tarczePersonalne.wyznaczKolejnyStan();
     tarczePersonalne.wyznaczKlatkeAnimacji();
+	tarczeObszarowe.wyznaczKolejnyStan();
+    tarczeObszarowe.wyznaczKlatkeAnimacji();
 
 	if((balisty.czyPusty() && strzelcy.czyPusty() && kaplani.czyPusty()) || smok.czyZniszczony()) wyswietlenieOdNowa=true;
 
@@ -190,6 +194,23 @@ void Model::usunZniszczonePociskiKasetowe()
 		}
 	}
 }
+
+void Model::ustawNajblizszegoKompana(Postac* k, std::list<Postac*>* s)
+{
+	double minR;
+	Obiekt* o=0;
+	for(std::list<Postac*>::iterator i = s->begin();i!=s->end();i++)
+	{
+		double r = fabs((*i)->zwrocPozycje().x-k->zwrocPozycje().x);
+		if((r<minR || o==0) && !(*i)->czyPosiadaTarcze())
+		{
+			o=(*i);
+			minR=r;
+		}
+	}
+
+	k->ustawNajblizszegoKompana(o);
+}
 //##########################################################KOLIZJE#########################################################
 
 void Model::obsluzKolizje()
@@ -204,6 +225,13 @@ void Model::obsluzKolizje()
 	//Plomienie Tarcze Personalne
 	std::list<TarczaPersonalna> *listaTarczPersonalnych = tarczePersonalne.zwrocObiekty();
 	for(std::list<TarczaPersonalna>::iterator i=listaTarczPersonalnych->begin();i!=listaTarczPersonalnych->end();i++)
+	{
+		plomienie.sprawdzKolizje((Obiekt*)&(*i),rozbijPociskOTarcze,zadajObrazenia,PrzestrzenKolizji::okrag,true);
+	}
+
+	//Plomienie Tarcze Obszarowe
+	std::list<TarczaObszarowa> *listaTarczObszarowych = tarczeObszarowe.zwrocObiekty();
+	for(std::list<TarczaObszarowa>::iterator i=listaTarczObszarowych->begin();i!=listaTarczObszarowych->end();i++)
 	{
 		plomienie.sprawdzKolizje((Obiekt*)&(*i),rozbijPociskOTarcze,zadajObrazenia,PrzestrzenKolizji::okrag,true);
 	}
@@ -233,6 +261,9 @@ void Model::obsluzKolizje()
 	pociskiBalistyczne.sprawdzKolizje(&smok,nic,zadajObrazenia,PrzestrzenKolizji::okrag);
 	pociskiKierowane.sprawdzKolizje(&smok,usun,zadajObrazenia,PrzestrzenKolizji::okrag);
 	odlamki.sprawdzKolizje(&smok,usun,zadajObrazenia,PrzestrzenKolizji::okrag);
+
+	//Smok kontra tarcze obszarowe
+	tarczeObszarowe.sprawdzKolizje(&smok,nic,odepchnijOdTarczy,PrzestrzenKolizji::okrag);
 
 	//Mury vs pociski
 	std::list<Mur> *listaMurow = mury.zwrocObiekty();
@@ -287,6 +318,24 @@ void Model::rozbijPociskOTarcze(Obiekt *o,Obiekt *o2,Punkt punktKolizji)
 		o->ustawPunktZaczepu(o2);
 	}
 	o->zniszcz();
+}
+
+void Model::odepchnijOdTarczy(Obiekt *o,Obiekt *o2,Punkt punktKolizji)
+{
+	if(!o->czyZniszczony())
+	{
+		Punkt p1 = o->zwrocPozycje();
+		Punkt p2 = o2->zwrocPozycje();
+		Wektor v1 = o->zwrocPredkosc();
+
+		double rv = v1.dlugosc();
+		double r = 20;
+		double a = atan2(-p2.y+p1.y,-p2.x+p1.x);
+
+		o->ustawPredkosc(Wektor(cos(a)*rv,sin(a)*rv));
+		o->ustawPozycje(o->zwrocPozycje()-Punkt(cos(a+M_PI)*r,sin(a+M_PI)*r));
+	}
+	o2->zadajObrazenia(0);
 }
 
 void Model::usun(Obiekt *o,Obiekt *o2,Punkt punktKolizji)
@@ -394,20 +443,3 @@ void Model::kolizjaPlomieniazMurem(Obiekt *o,Obiekt *o2,Punkt punktKolizji)
 	o->zniszcz();
 }
 
-//########################################################################################################################
-void Model::ustawNajblizszegoKompana(Postac* k, std::list<Postac*>* s)
-{
-	double minR;
-	Obiekt* o=0;
-	for(std::list<Postac*>::iterator i = s->begin();i!=s->end();i++)
-	{
-		double r = fabs((*i)->zwrocPozycje().x-k->zwrocPozycje().x);
-		if((r<minR || o==0) && !(*i)->czyPosiadaTarcze())
-		{
-			o=(*i);
-			minR=r;
-		}
-	}
-
-	k->ustawNajblizszegoKompana(o);
-}

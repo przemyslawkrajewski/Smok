@@ -85,6 +85,8 @@ private:
 	int stanChodu;
 	int stanRzucaniaZaklec;
 
+	Obiekt* tarcza;
+
 
 };
 

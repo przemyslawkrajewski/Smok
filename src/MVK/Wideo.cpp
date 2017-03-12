@@ -43,6 +43,7 @@ Wideo::Wideo(Model *nModel)
 	mur=0;
 	zaslona=0;
 	tarczaPersonalna=0;
+	tarczaObszarowa=0;
 
 	odNowa=0;
 	instrukcja=0;
@@ -92,6 +93,7 @@ void Wideo::zamkniecieOkna()
 	SDL_DestroyTexture(mur);
 	SDL_DestroyTexture(zaslona);
 	SDL_DestroyTexture(tarczaPersonalna);
+	SDL_DestroyTexture(tarczaObszarowa);
 
 	SDL_DestroyTexture(tlo);
 	SDL_DestroyTexture(drugiPlan);
@@ -196,6 +198,7 @@ void Wideo::wczytanieObrazkow()
 	   wczytanieObrazka("Grafika/Mur.bmp",&mur) ||
 	   wczytanieObrazka("Grafika/Zaslona.bmp",&zaslona) ||
 	   wczytanieObrazka("Grafika/TarczaPersonalna.bmp",&tarczaPersonalna) ||
+	   wczytanieObrazka("Grafika/TarczaObszarowa.bmp",&tarczaObszarowa) ||
 	   wczytanieObrazka("Grafika/Chodnik1.bmp",&pierwszyPlan) ||
 	   wczytanieObrazka("Grafika/DrugiPlanTrawa.bmp",&drugiPlan) ||
 	   wczytanieObrazka("Grafika/TloChmurno.bmp",&tlo) ||
@@ -977,6 +980,27 @@ void Wideo::wyswietlenieTarczPersonalnych()
 	}
 }
 
+void Wideo::wyswietlenieTarczObszarowych()
+{
+	Punkt pozycjaKamery=model->zwrocKamere()->zwrocPozycje();
+	int rozmiarKlatki=700;
+
+	std::list<TarczaObszarowa> *tp = model->zwrocTarczeObszarowe()->zwrocObiekty();
+
+	for(std::list<TarczaObszarowa>::iterator i=tp->begin(); i!=tp->end() ;i++)
+	{
+		if(!i->czyIstnieje()) continue;
+		Punkt pozycja = i->zwrocPozycje();
+		Punkt klatka = i->zwrocKlatkeAnimacji();
+
+		if(!(i->czyZniszczony()))
+			wyswietlenieKlatki(tarczaObszarowa,pozycja,pozycjaKamery,klatka,rozmiarKlatki);
+
+		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
+	}
+}
+
+
 void Wideo::wyswietlenieKomunikatow()
 {
 	if(model->czyWyswietlacInstrukcje()) wyswietlenieObrazka(instrukcja,0,0,0,0,szerokoscOkna,wysokoscOkna);
@@ -1042,6 +1066,8 @@ void Wideo::wyswietlenieEkranu()
 	wyswietlenieTla(x,y);
 	wyswietlenieDrugiegoPlanu(x,y);
 	wyswietleniePierwszegoPlanu(x,y);
+
+	wyswietlenieTarczObszarowych();
 
 	wyswietlenieMuru();
 	wyswietlenieZaslon();
