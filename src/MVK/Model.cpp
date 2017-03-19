@@ -55,7 +55,7 @@ void Model::reset()
 	//FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::tarczaPersonalna,Punkt(),(*(kaplani.zwrocObiekty().begin())));
 	//FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::tarczaObszarowa,Punkt(),(*(kaplani.zwrocObiekty().begin())));
 
-	/*for(int i=0;i<10;i++)
+	for(int i=0;i<1000;i++)
 	{
 		int x = rand()%3000+5000;
 		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::lucznik,Punkt(x,130));
@@ -118,11 +118,11 @@ void Model::wyznaczKolejnyStanObiektow()
 	kaplani.ustawCel(&smok);
 	kaplani.wyznaczKolejnyStan();
 	kaplani.wyznaczKlatkeAnimacji();
-	std::list<Postac*> k = kaplani.zwrocObiekty();
-	std::list<Postac*> s = strzelcy.zwrocObiekty();
-	for(std::list<Postac*>::iterator i= k.begin();i!=k.end();i++)
+	std::list<Kaplan> *k = kaplani.zwrocObiekty();
+	std::list<Strzelec> *s = strzelcy.zwrocObiekty();
+	for(std::list<Kaplan>::iterator i= k->begin();i!=k->end();i++)
 	{
-		ustawNajblizszegoKompana((*i),&s);
+		ustawNajblizszegoStrzelca(&(*i),s);
 	}
 
 
@@ -165,7 +165,7 @@ void Model::wyznaczKolejnyStanObiektow()
 	//std::cout << strzelcy.zwrocObiekty().size() << "\n";
 	//								Losowe tworzenie krzyzowcow
 
-	/*if(strzelcy.zwrocObiekty().size()<100)
+	/*if(strzelcy.zwrocObiekty().size()<1000000)
 	{
 		int x = rand()%10000+1000;
 		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(x,130));
@@ -195,16 +195,16 @@ void Model::usunZniszczonePociskiKasetowe()
 	}
 }
 
-void Model::ustawNajblizszegoKompana(Postac* k, std::list<Postac*>* s)
+void Model::ustawNajblizszegoStrzelca(Postac* k, std::list<Strzelec>* s)
 {
 	double minR;
 	Obiekt* o=0;
-	for(std::list<Postac*>::iterator i = s->begin();i!=s->end();i++)
+	for(std::list<Strzelec>::iterator i = s->begin();i!=s->end();i++)
 	{
-		double r = fabs((*i)->zwrocPozycje().x-k->zwrocPozycje().x);
-		if((r<minR || o==0) && !(*i)->czyPosiadaTarcze())
+		double r = fabs(i->zwrocPozycje().x-k->zwrocPozycje().x);
+		if((r<minR || o==0) && !i->czyPosiadaTarcze())
 		{
-			o=(*i);
+			o=&(*i);
 			minR=r;
 		}
 	}
@@ -237,22 +237,22 @@ void Model::obsluzKolizje()
 	}
 
 	//Strzelcy kontra plomienie
-	std::list<Postac*> listaStrzelcow = strzelcy.zwrocObiekty();
-	for(std::list<Postac*>::iterator i=listaStrzelcow.begin();i!=listaStrzelcow.end();i++)
+	std::list<Strzelec> *listaStrzelcow = strzelcy.zwrocObiekty();
+	for(std::list<Strzelec>::iterator i=listaStrzelcow->begin();i!=listaStrzelcow->end();i++)
 	{
-		plomienie.sprawdzKolizje((Obiekt*)(*i),zniszczPocisk,zadajObrazenia,PrzestrzenKolizji::okrag,true);
+		plomienie.sprawdzKolizje((Obiekt*)&(*i),zniszczPocisk,zadajObrazenia,PrzestrzenKolizji::okrag,true);
 	}
 	//Balisty kontra plomienie
-	std::list<Postac*> listaBalist = balisty.zwrocObiekty();
-	for(std::list<Postac*>::iterator i=listaBalist.begin();i!=listaBalist.end();i++)
+	std::list<Balista> *listaBalist = balisty.zwrocObiekty();
+	for(std::list<Balista>::iterator i=listaBalist->begin();i!=listaBalist->end();i++)
 	{
-		plomienie.sprawdzKolizje((Obiekt*)(*i),zniszczPocisk,zadajObrazenia,PrzestrzenKolizji::prostokat,true);
+		plomienie.sprawdzKolizje((Obiekt*)&(*i),zniszczPocisk,zadajObrazenia,PrzestrzenKolizji::prostokat,true);
 	}
 	//Kaplani kontra plomienie
-	std::list<Postac*> listaKaplanow = kaplani.zwrocObiekty();
-	for(std::list<Postac*>::iterator i=listaKaplanow.begin();i!=listaKaplanow.end();i++)
+	std::list<Kaplan> *listaKaplanow = kaplani.zwrocObiekty();
+	for(std::list<Kaplan>::iterator i=listaKaplanow->begin();i!=listaKaplanow->end();i++)
 	{
-		plomienie.sprawdzKolizje((Obiekt*)(*i),zniszczPocisk,zadajObrazenia,PrzestrzenKolizji::okrag,true);
+		plomienie.sprawdzKolizje((Obiekt*)&(*i),zniszczPocisk,zadajObrazenia,PrzestrzenKolizji::okrag,true);
 	}
 
 	//Smok kontra pociski

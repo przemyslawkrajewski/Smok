@@ -635,34 +635,34 @@ void Wideo::wyswietlenieStrzelcow()
 	Punkt pozycjaKamery=model->zwrocKamere()->zwrocPozycje();
 	int rozmiarKlatki=100;
 
-	std::list<Postac*> postacie  = model->zwrocStrzelcow()->zwrocObiekty();
+	std::list<Strzelec> *strzelcy  = model->zwrocStrzelcow()->zwrocObiekty();
 
 	SDL_Texture **animacja;
 
-	for(std::list<Postac*>::iterator i=postacie.begin(); i!=postacie.end() ;i++)
+	for(std::list<Strzelec>::iterator i=strzelcy->begin(); i!=strzelcy->end() ;i++)
 	{
-		if((*i)->zwrocTypPostaci()==Postac::krzyzowiec)
+		if(i->zwrocTypPostaci()==Postac::krzyzowiec)
 		{
-			if((*i)->czyZwroconyWPrawo()) animacja=&krzyzowiecP;
+			if(i->czyZwroconyWPrawo()) animacja=&krzyzowiecP;
 			else animacja=&krzyzowiecL;
 		}
-		else if((*i)->zwrocTypPostaci()==Postac::lucznik)
+		else if(i->zwrocTypPostaci()==Postac::lucznik)
 		{
-			if((*i)->czyZwroconyWPrawo()) animacja=&lucznikP;
+			if(i->czyZwroconyWPrawo()) animacja=&lucznikP;
 			else animacja=&lucznikL;
 		}
-		Punkt pozycja = (*i)->zwrocPozycje();
-		Punkt klatka = (*i)->zwrocKlatkeAnimacji();
+		Punkt pozycja = i->zwrocPozycje();
+		Punkt klatka = i->zwrocKlatkeAnimacji();
 
 		Punkt p = pozycja;
-		if(!(*i)->czyZniszczony() && model->czyWyswietlacPrzeciwnikow())
-			p=czyWychodziZaEkran(pozycjaKamery,pozycja,(*i)->zwrocPredkosc(),3);
+		if(!i->czyZniszczony() && model->czyWyswietlacPrzeciwnikow())
+			p=czyWychodziZaEkran(pozycjaKamery,pozycja,i->zwrocPredkosc(),3);
 
 		if(p==pozycja)
 		wyswietlenieKlatki(*animacja,pozycja,pozycjaKamery,klatka,rozmiarKlatki);
 		else
 			wyswietlenieOstrzezenia(p, pozycjaKamery,1);
-		wyswietleniePrzestrzeniKolizji((*i)->zwrocPrzestrzenKolizji(),pozycjaKamery);
+		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}
 }
 
@@ -673,15 +673,15 @@ void Wideo::wyswietlenieBalist()
 	int rozmiarKlatkiInzyniera=75;
 	int rozmiarKlatkiZebatki=36;
 
-	std::list<Postac*> postacie  = model->zwrocBalisty()->zwrocObiekty();
+	std::list<Balista> *balisty  = model->zwrocBalisty()->zwrocObiekty();
 
 	SDL_Texture **animacja;
 	SDL_Texture **animacjaInzyniera1;
 	SDL_Texture **animacjaInzyniera2;
 
-	for(std::list<Postac*>::iterator i=postacie.begin(); i!=postacie.end() ;i++)
+	for(std::list<Balista>::iterator i=balisty->begin(); i!=balisty->end() ;i++)
 	{
-		if((*i)->czyZwroconyWPrawo())
+		if(i->czyZwroconyWPrawo())
 		{
 			animacja=&balistaP;
 			animacjaInzyniera1=&inzynierL;
@@ -694,13 +694,13 @@ void Wideo::wyswietlenieBalist()
 			animacjaInzyniera2=&inzynierL;
 		}
 
-		double wPrawo = (*i)->czyZwroconyWPrawo()?-1:1;
-		Punkt pozycja = (*i)->zwrocPozycje();
-		Punkt klatka = (*i)->zwrocKlatkeAnimacji();
+		double wPrawo = i->czyZwroconyWPrawo()?-1:1;
+		Punkt pozycja = i->zwrocPozycje();
+		Punkt klatka = i->zwrocKlatkeAnimacji();
 
 		Punkt p = pozycja;
-		if(!(*i)->czyZniszczony() && model->czyWyswietlacPrzeciwnikow())
-			p=czyWychodziZaEkran(pozycjaKamery,pozycja,(*i)->zwrocPredkosc(),3);
+		if(!i->czyZniszczony() && model->czyWyswietlacPrzeciwnikow())
+			p=czyWychodziZaEkran(pozycjaKamery,pozycja,i->zwrocPredkosc(),3);
 
 		if(p==pozycja)
 		{
@@ -713,7 +713,7 @@ void Wideo::wyswietlenieBalist()
 		}
 		else
 			wyswietlenieOstrzezenia(p, pozycjaKamery,1);
-		wyswietleniePrzestrzeniKolizji((*i)->zwrocPrzestrzenKolizji(),pozycjaKamery);
+		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}
 }
 
@@ -722,28 +722,28 @@ void Wideo::wyswietlenieKaplanow()
 	Punkt pozycjaKamery=model->zwrocKamere()->zwrocPozycje();
 	int rozmiarKlatki=80;
 
-	std::list<Postac*> postacie  = model->zwrocKaplanow()->zwrocObiekty();
+	std::list<Kaplan> *kaplani  = model->zwrocKaplanow()->zwrocObiekty();
 
 	SDL_Texture **animacja;
 
-	for(std::list<Postac*>::iterator i=postacie.begin(); i!=postacie.end() ;i++)
+	for(std::list<Kaplan>::iterator i=kaplani->begin(); i!=kaplani->end() ;i++)
 	{
-		if((*i)->czyZwroconyWPrawo()) animacja=&kaplanP;
+		if(i->czyZwroconyWPrawo()) animacja=&kaplanP;
 		else animacja=&kaplanL;
 
-		Punkt pozycja = (*i)->zwrocPozycje();
-		Punkt klatka = (*i)->zwrocKlatkeAnimacji();
+		Punkt pozycja = i->zwrocPozycje();
+		Punkt klatka = i->zwrocKlatkeAnimacji();
 
 		Punkt p = pozycja;
-		if(!(*i)->czyZniszczony() && model->czyWyswietlacPrzeciwnikow())
-			p=czyWychodziZaEkran(pozycjaKamery,pozycja,(*i)->zwrocPredkosc(),3);
+		if(!i->czyZniszczony() && model->czyWyswietlacPrzeciwnikow())
+			p=czyWychodziZaEkran(pozycjaKamery,pozycja,i->zwrocPredkosc(),3);
 
 		if(p==pozycja)
 			//obnizamy o 10 pikseli kaplana bo jego rozmiar klatki jest mniejszy niz strzelcow
 			wyswietlenieKlatki(*animacja,pozycja-Punkt(0,10),pozycjaKamery,klatka,rozmiarKlatki);
 		else
 			wyswietlenieOstrzezenia(p, pozycjaKamery,1);
-		wyswietleniePrzestrzeniKolizji((*i)->zwrocPrzestrzenKolizji(),pozycjaKamery);
+		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}
 }
 

@@ -24,9 +24,6 @@ public:
 	virtual void wyznaczKolejnyStan();
 	virtual void wyznaczPrzestrzenKolizji();
 
-	std::list<T> * zwrocObiekty() {return &(KontenerObiektow<T>::obiekty);}
-
-
 
 private:
 	void testujDziedziczenie() {T t = T(Punkt(),Punkt(),0,0);Pocisk *p = &t;}

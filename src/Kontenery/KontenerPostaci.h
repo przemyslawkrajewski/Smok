@@ -25,8 +25,6 @@ public:
 	virtual void wyznaczKolejnyStan();
 	void ustawCel(Obiekt *c) {cel=c;}
 
-	std::list<Postac*> zwrocObiekty();
-
 private:
 	void testujDziedziczenie() {T t = T();Postac *p = &t;}
 };
@@ -61,19 +59,5 @@ void KontenerPostaci<T>::wyznaczKolejnyStan()
 		i++;
 	}
 }
-
-template <class T>
-std::list<Postac*>  KontenerPostaci<T>::zwrocObiekty()
-{
-	std::list<Postac*> postac;
-
-	for(typename std::list<T>::iterator i=KontenerObiektow<T>::obiekty.begin();i!=KontenerObiektow<T>::obiekty.end();i++)
-	{
-		postac.push_back(&(*i));
-	}
-
-	return postac;
-}
-
 
 #endif /* SRC_KONTENERY_KONTENERPOSTACI_H_ */

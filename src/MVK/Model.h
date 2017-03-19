@@ -84,7 +84,7 @@ public:
 
 private:
 	//wyliczenia
-	void ustawNajblizszegoKompana(Postac* k, std::list<Postac*>* s);
+	void ustawNajblizszegoStrzelca(Postac* k, std::list<Strzelec>* s);
 
 private:
 	Punkt wymiaryEkranu;
