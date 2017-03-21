@@ -107,7 +107,7 @@ void Strzelec::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 		naZiemi=false;
 		przeszkodaPoPrawej=false;
 		przeszkodaPoLewej=false;
-		stanNaciagania=-1;
+
 		if(zycie<=0) zniszcz();
 	}
 	else
