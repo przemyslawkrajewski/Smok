@@ -163,14 +163,29 @@ void Kontroler::obsluzZdarzenia()
 
 void Kontroler::obsluzZegar()
 {
-	if(SDL_GetTicks()-timer>30)
+	if(SDL_GetTicks()-timer>=30)
 	{
 		//std::cout << SDL_GetTicks()-timer << "\n";
 		timer = SDL_GetTicks();
 		model->wyznaczKolejnyStan();
 		wideo->wyswietlenieEkranu();
 
+	}//*/
+
+	/*Punkt p;
+	const Punkt p1;
+	OkragKolizji k1 = OkragKolizji(&p1,&p1,p,50);
+	OkragKolizji k2 = OkragKolizji(&p1,&p1,p,50);
+	int i=0;
+	timer = SDL_GetTicks();
+	while(SDL_GetTicks()-timer<31)
+	{
+		//model->zwrocStrzelcow()->zwrocObiekty();
+		k1.sprawdzKolizje(&k2);
+		i++;
+
 	}
+	std::cout << i << "\n";//*/
 }
 
 void Kontroler::zmienStosunek()
