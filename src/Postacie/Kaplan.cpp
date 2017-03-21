@@ -27,7 +27,7 @@ void Kaplan::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 {
 	if(!zniszczony)
 	{
-		if (klawiatura->czyWcisnietoPrawo())
+		if (klawiatura->czyWcisnietoPrawo() && !przeszkodaPoPrawej)
 		{
 			zwroconyWPrawo=true;
 			stan = idzie;
@@ -38,7 +38,7 @@ void Kaplan::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 			pozycja.x+=parametry.predkoscChodu;
 			stanRzucaniaZaklec=-1;
 		}
-		else if (klawiatura->czyWcisnietoLewo())
+		else if (klawiatura->czyWcisnietoLewo() && !przeszkodaPoLewej)
 		{
 			zwroconyWPrawo=false;
 			stan = idzie;
@@ -126,6 +126,19 @@ void Kaplan::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 		}
 		if(stanRzucaniaZaklec<0) stanRzucaniaZaklec=0;
 		if(zycie<=0) zniszcz();
+
+		if(pozycja.y<=parametry.wysokosc+parametryObiektow.poziomZiemi)
+		{
+			pozycja.y=parametry.wysokosc+parametryObiektow.poziomZiemi;
+			naZiemi=true;
+		}
+		if(!naZiemi)
+		{
+			pozycja.y-=10;
+		}
+		naZiemi=false;
+		przeszkodaPoPrawej=false;
+		przeszkodaPoLewej=false;
 
 		if(tarcza!=0)
 		{

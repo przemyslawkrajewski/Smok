@@ -32,13 +32,11 @@ public:
 	void ustawTypPostaci(TypPostaci typ) {typPostaci=typ;}
 	TypPostaci zwrocTypPostaci() {return typPostaci;}
 
-	void ustawCzyIstniejePrzeszkoda(bool poLewej, bool poPrawej) {przeszkodaPoLewej=poLewej;przeszkodaPoPrawej=poPrawej;}
 	void ustawNajblizszegoKompana(Obiekt *o) {najblizszyKompan=o;}
 
 protected:
 
 	TypPostaci typPostaci;
-	bool przeszkodaPoLewej,przeszkodaPoPrawej;
 	Obiekt* najblizszyKompan;
 };
 

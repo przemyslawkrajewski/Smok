@@ -28,7 +28,7 @@ void Strzelec::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 {
 	if(!zniszczony)
 	{
-		if (klawiatura->czyWcisnietoPrawo())
+		if (klawiatura->czyWcisnietoPrawo() && !przeszkodaPoPrawej)
 		{
 			zwroconyWPrawo=true;
 			stan = biegnie;
@@ -41,7 +41,7 @@ void Strzelec::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 			if(!parametry.spust || stanNaciagania>0) stanNaciagania=parametry.maxNaciagniecie;
 			stanCelowania=0;
 		}
-		else if (klawiatura->czyWcisnietoLewo())
+		else if (klawiatura->czyWcisnietoLewo() && !przeszkodaPoLewej)
 		{
 			zwroconyWPrawo=false;
 			stan = biegnie;
@@ -94,7 +94,20 @@ void Strzelec::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 			stanCelowania=0;
 			if(!parametry.spust || stanNaciagania>0) stanNaciagania=parametry.maxNaciagniecie;
 		}
-		if(stanNaciagania<-1) stanNaciagania=-1;
+
+		if(pozycja.y<=parametry.wysokosc+parametryObiektow.poziomZiemi)
+		{
+			pozycja.y=parametry.wysokosc+parametryObiektow.poziomZiemi;
+			naZiemi=true;
+		}
+		if(!naZiemi)
+		{
+			pozycja.y-=10;
+		}
+		naZiemi=false;
+		przeszkodaPoPrawej=false;
+		przeszkodaPoLewej=false;
+		stanNaciagania=-1;
 		if(zycie<=0) zniszcz();
 	}
 	else
@@ -173,8 +186,8 @@ void Strzelec::wyznaczKatStrzalu(Punkt cel)
 	}
 
 	//do wzoru, jak zgubisz kartke to zle
-	double A=-abs(cel.y);
-	double B=abs(cel.x);
+	double A=-cel.y;
+	double B=cel.x;
 	double C=B*B*Strzala::parametry.wspolczynnikGrawitacji/(2*parametry.predkoscStrzaly*parametry.predkoscStrzaly);
 
 	if(B==0)

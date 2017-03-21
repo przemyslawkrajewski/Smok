@@ -18,6 +18,8 @@
 
 struct ParametryStrzelca
 {
+	double wysokosc;
+
 	double predkoscAnimacjiBiegu1;
 	double predkoscAnimacjiBiegu2;
 	double iloscKlatekAnimacjiBiegu;
@@ -36,6 +38,8 @@ struct ParametryStrzelca
 
 	ParametryStrzelca()
 	{
+		wysokosc=50;
+
 		predkoscAnimacjiBiegu1=0.4;
 		predkoscAnimacjiBiegu2=0.2;
 		iloscKlatekAnimacjiBiegu = 8;

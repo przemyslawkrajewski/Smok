@@ -18,6 +18,8 @@
 
 struct ParametryKaplana
 {
+	double wysokosc;
+
 	int predkoscAnimacjiChodu;
 	int iloscKlatekAnimacjiChodu;
 	int predkoscAnimacjiRzucaniaZaklec;
@@ -40,6 +42,8 @@ struct ParametryKaplana
 
 	ParametryKaplana()
 	{
+		wysokosc=50;
+
 		predkoscAnimacjiChodu=6;
 		iloscKlatekAnimacjiChodu=8;
 		predkoscAnimacjiRzucaniaZaklec=30;

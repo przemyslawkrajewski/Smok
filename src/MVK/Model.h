@@ -80,6 +80,7 @@ public:
 	static void zadajObrazenia(Obiekt*o, Obiekt *o2, Punkt punktKolizji);
 	static void kolizjaPlomieniazMurem(Obiekt *o,Obiekt *o2,Punkt punktKolizji);
 	static void kolizjaSmokaZMurem(Obiekt*o, Obiekt *o2, Punkt punktKolizji);
+	static void kolizjaCzlowiekaZMurem(Obiekt*o, Obiekt *o2, Punkt punktKolizji);
 	static void kolizjaSmokaZPlatforma(Obiekt*o, Obiekt *o2, Punkt punktKolizji);
 
 private:

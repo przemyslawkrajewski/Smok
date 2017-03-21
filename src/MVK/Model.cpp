@@ -45,13 +45,14 @@ void Model::reset()
 	//FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::zaslona,Punkt(1200,600));
 	//FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::zaslona,Punkt(1500,600));
 
-	//FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniMur,Punkt(1400,300));
+	FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniMur,Punkt(1400,180));
 
-	FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::lucznik,Punkt(1300,130));
+	FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::lucznik,Punkt(2300,130));
+	FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::lucznik,Punkt(100,130));
 	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(1400,130));
 	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::balista,Punkt(1400,200),false);
 	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::balista,Punkt(1000,200),true);
-	FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::kaplan,Punkt(1200,130),true);
+	FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::kaplan,Punkt(1200,430),true);
 	//FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::tarczaPersonalna,Punkt(),(*(kaplani.zwrocObiekty().begin())));
 	//FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::tarczaObszarowa,Punkt(),(*(kaplani.zwrocObiekty().begin())));
 
@@ -215,41 +216,43 @@ void Model::ustawNajblizszegoStrzelca(Postac* k, std::list<Strzelec>* s)
 
 void Model::obsluzKolizje()
 {
-	//Plomienie Zaslony
 	std::list<Zaslona> *listaZaslon = zaslony.zwrocObiekty();
+	std::list<TarczaPersonalna> *listaTarczPersonalnych = tarczePersonalne.zwrocObiekty();
+	std::list<TarczaObszarowa> *listaTarczObszarowych = tarczeObszarowe.zwrocObiekty();
+	std::list<Strzelec> *listaStrzelcow = strzelcy.zwrocObiekty();
+	std::list<Balista> *listaBalist = balisty.zwrocObiekty();
+	std::list<Kaplan> *listaKaplanow = kaplani.zwrocObiekty();
+	std::list<Mur> *listaMurow = mury.zwrocObiekty();
+
+	//Plomienie Zaslony
 	for(std::list<Zaslona>::iterator i=listaZaslon->begin();i!=listaZaslon->end();i++)
 	{
 		plomienie.sprawdzKolizje((Obiekt*)&(*i),zniszczPocisk,zadajObrazenia,PrzestrzenKolizji::prostokat,true);
 	}
 
 	//Plomienie Tarcze Personalne
-	std::list<TarczaPersonalna> *listaTarczPersonalnych = tarczePersonalne.zwrocObiekty();
 	for(std::list<TarczaPersonalna>::iterator i=listaTarczPersonalnych->begin();i!=listaTarczPersonalnych->end();i++)
 	{
 		plomienie.sprawdzKolizje((Obiekt*)&(*i),rozbijPociskOTarcze,zadajObrazenia,PrzestrzenKolizji::okrag,true);
 	}
 
 	//Plomienie Tarcze Obszarowe
-	std::list<TarczaObszarowa> *listaTarczObszarowych = tarczeObszarowe.zwrocObiekty();
 	for(std::list<TarczaObszarowa>::iterator i=listaTarczObszarowych->begin();i!=listaTarczObszarowych->end();i++)
 	{
 		plomienie.sprawdzKolizje((Obiekt*)&(*i),rozbijPociskOTarcze,zadajObrazenia,PrzestrzenKolizji::okrag,true);
 	}
 
 	//Strzelcy kontra plomienie
-	std::list<Strzelec> *listaStrzelcow = strzelcy.zwrocObiekty();
 	for(std::list<Strzelec>::iterator i=listaStrzelcow->begin();i!=listaStrzelcow->end();i++)
 	{
 		plomienie.sprawdzKolizje((Obiekt*)&(*i),zniszczPocisk,zadajObrazenia,PrzestrzenKolizji::okrag,true);
 	}
 	//Balisty kontra plomienie
-	std::list<Balista> *listaBalist = balisty.zwrocObiekty();
 	for(std::list<Balista>::iterator i=listaBalist->begin();i!=listaBalist->end();i++)
 	{
 		plomienie.sprawdzKolizje((Obiekt*)&(*i),zniszczPocisk,zadajObrazenia,PrzestrzenKolizji::prostokat,true);
 	}
 	//Kaplani kontra plomienie
-	std::list<Kaplan> *listaKaplanow = kaplani.zwrocObiekty();
 	for(std::list<Kaplan>::iterator i=listaKaplanow->begin();i!=listaKaplanow->end();i++)
 	{
 		plomienie.sprawdzKolizje((Obiekt*)&(*i),zniszczPocisk,zadajObrazenia,PrzestrzenKolizji::okrag,true);
@@ -266,7 +269,6 @@ void Model::obsluzKolizje()
 	tarczeObszarowe.sprawdzKolizje(&smok,nic,odepchnijOdTarczy,PrzestrzenKolizji::okrag);
 
 	//Mury vs pociski
-	std::list<Mur> *listaMurow = mury.zwrocObiekty();
 	for(std::list<Mur>::iterator i=listaMurow->begin();i!=listaMurow->end();i++)
 	{
 		plomienie.sprawdzKolizje((Obiekt*)&(*i),kolizjaPlomieniazMurem,nic,PrzestrzenKolizji::prostokat,true);
@@ -274,7 +276,12 @@ void Model::obsluzKolizje()
 		strzaly.sprawdzKolizje((Obiekt*)&(*i),kolizjaPlomieniazMurem,nic,PrzestrzenKolizji::prostokat,true);
 		pociskiBalistyczne.sprawdzKolizje((Obiekt*)&(*i),kolizjaPlomieniazMurem,nic,PrzestrzenKolizji::prostokat,true);
 	}
-
+	//Mury vs postacie
+	for(std::list<Mur>::iterator i=listaMurow->begin();i!=listaMurow->end();i++)
+	{
+		strzelcy.sprawdzKolizje((Obiekt*)&(*i),kolizjaCzlowiekaZMurem,nic,PrzestrzenKolizji::prostokat,true);
+		kaplani.sprawdzKolizje((Obiekt*)&(*i),kolizjaCzlowiekaZMurem,nic,PrzestrzenKolizji::prostokat,true);
+	}
 	mury.sprawdzKolizje(&smok,nic,kolizjaSmokaZMurem,PrzestrzenKolizji::prostokat,false);
 	zaslony.sprawdzKolizje(&smok,nic,kolizjaSmokaZPlatforma,PrzestrzenKolizji::prostokat,false);
 }
@@ -396,6 +403,41 @@ void Model::kolizjaSmokaZMurem(Obiekt*o, Obiekt *o2, Punkt punktKolizji)
 	if(o->zwrocPozycje().y-prostokat1.zwrocBok2()/32<maxY)
 	{
 		o->zatrzymajNaSuficie();
+	}
+
+
+}
+
+void Model::kolizjaCzlowiekaZMurem(Obiekt*o, Obiekt *o2, Punkt punktKolizji)
+{
+	assert("Czlowiek nie ma ustalonego prostokata kolizji" && !o->zwrocPrzestrzenKolizji()->zwrocProstokaty()->empty());
+	ProstokatKolizji prostokat1 = (*(o->zwrocPrzestrzenKolizji()->zwrocProstokaty()))[0];
+	ProstokatKolizji prostokat2 = (*(o2->zwrocPrzestrzenKolizji()->zwrocProstokaty()))[0];
+	double minY = o2->zwrocPozycje().y+prostokat1.zwrocBok2()/2+prostokat2.zwrocBok2()/2;
+	double maxY = o2->zwrocPozycje().y-prostokat1.zwrocBok2()/2-prostokat2.zwrocBok2()/2;
+	double minX = o2->zwrocPozycje().x-prostokat1.zwrocBok1()/2-prostokat2.zwrocBok1()/2;
+	double maxX = o2->zwrocPozycje().x+prostokat1.zwrocBok1()/2+prostokat2.zwrocBok1()/2;
+
+	if(o->zwrocPozycje().y+prostokat1.zwrocBok2()/2>=minY)
+	{
+		if(prostokat1.zwrocPozycje().x-6*prostokat1.zwrocBok1()/8<minX)
+			o->ustawCzyIstniejePrzeszkodaPoLewej(true);
+		else if(prostokat1.zwrocPozycje().x+6*prostokat1.zwrocBok1()/8>maxX)
+			o->ustawCzyIstniejePrzeszkodaPoPrawej(true);
+		o->postawNaZiemi(minY-1);
+	}
+	else if(o->zwrocPozycje().x-prostokat1.zwrocBok1()/2<minX || o->zwrocPredkosc().x>prostokat1.zwrocBok1()/2)
+	{
+
+		o->ustawCzyIstniejePrzeszkodaPoPrawej(true);
+		o->zatrzymajNaScianie();
+		o->ustawPozycje(Punkt(minX+0.01,o->zwrocPozycje().y));
+	}
+	else if(o->zwrocPozycje().x+prostokat1.zwrocBok1()/2>maxX || o->zwrocPredkosc().x<-prostokat1.zwrocBok1()/2)
+	{
+		o->ustawCzyIstniejePrzeszkodaPoLewej(true);
+		o->zatrzymajNaScianie();
+		o->ustawPozycje(Punkt(maxX-0.01,o->zwrocPozycje().y));
 	}
 
 

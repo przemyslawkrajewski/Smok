@@ -39,6 +39,7 @@ protected:
 
 	bool zwroconyWPrawo;
 	bool naZiemi;
+	bool przeszkodaPoLewej,przeszkodaPoPrawej;
 
 	Punkt klatkaAnimacji;		//nr klatki animacji jakiegos ruchu
 
@@ -103,6 +104,8 @@ public:
 	double zwrocObrazenia() {return obrazenia;}
 	double zwrocZycie() {return zycie;}
 	bool czyPosiadaTarcze() { return maTarcze;}
+	void ustawCzyIstniejePrzeszkodaPoLewej(bool poLewej) {przeszkodaPoLewej=poLewej;}
+	void ustawCzyIstniejePrzeszkodaPoPrawej(bool poPrawej) {przeszkodaPoPrawej=poPrawej;}
 
 };
 
