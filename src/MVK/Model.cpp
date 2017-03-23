@@ -47,19 +47,17 @@ void Model::reset()
 
 	//FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniMur,Punkt(1400,180));
 
-	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::lucznik,Punkt(2300,130));
-	FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::lucznik,Punkt(100,130));
-	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(1400,130));
-	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::balista,Punkt(1400,200),false);
+	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::lucznik,Punkt(1400,430));
+	FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(1400,430));
 	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::balista,Punkt(1000,200),true);
-	FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::kaplan,Punkt(1200,430),true);
+	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::kaplan,Punkt(1400,430),true);
 	//FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::tarczaPersonalna,Punkt(),(*(kaplani.zwrocObiekty().begin())));
 	//FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::tarczaObszarowa,Punkt(),(*(kaplani.zwrocObiekty().begin())));
 
-	/*for(int i=0;i<1000;i++)
+	/*for(int i=0;i<300;i++)
 	{
 		int x = rand()%3000+5000;
-		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::lucznik,Punkt(x,130));
+		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(x,130));
 	}//*/
 	smok.ustawPozycje(Punkt(1000,100));
 	kamera.ustawPozycje(smok.zwrocPozycje());
@@ -212,6 +210,96 @@ void Model::ustawNajblizszegoStrzelca(Postac* k, std::list<Strzelec>* s)
 
 	k->ustawNajblizszegoKompana(o);
 }
+
+void Model::kolizjeMiedzyLudzmi()
+{
+	double minD=20;
+
+	//Strzelec VS Strzelec
+	if(!strzelcy.czyPusty())
+	{
+		for(std::list<Strzelec>::iterator i = strzelcy.zwrocObiekty()->begin();i!=strzelcy.zwrocObiekty()->end();i++)
+		{
+			for(std::list<Strzelec>::iterator j = strzelcy.zwrocObiekty()->begin();j!=strzelcy.zwrocObiekty()->end();j++)
+			{
+				if(i->zwrocPozycje().x <= j->zwrocPozycje().x && i->zwrocPozycje().x+minD >= j->zwrocPozycje().x)
+					obsluzKolizjeMiedzyLudzmi(&(*i),&(*j),true);
+				if(i->zwrocPozycje().x >= j->zwrocPozycje().x && i->zwrocPozycje().x-minD <= j->zwrocPozycje().x)
+					obsluzKolizjeMiedzyLudzmi(&(*i),&(*j),false);
+			}
+		}
+	}
+
+	//Strzelec VS Kaplan
+	if(!strzelcy.czyPusty() && !kaplani.czyPusty())
+	{
+		for(std::list<Strzelec>::iterator i = strzelcy.zwrocObiekty()->begin();i!=strzelcy.zwrocObiekty()->end();i++)
+		{
+			for(std::list<Kaplan>::iterator j = kaplani.zwrocObiekty()->begin();j!=kaplani.zwrocObiekty()->end();j++)
+			{
+				if(i->zwrocPozycje().x <= j->zwrocPozycje().x && i->zwrocPozycje().x+minD >= j->zwrocPozycje().x)
+					obsluzKolizjeMiedzyLudzmi(&(*i),&(*j),true);
+				if(i->zwrocPozycje().x >= j->zwrocPozycje().x && i->zwrocPozycje().x-minD <= j->zwrocPozycje().x)
+					obsluzKolizjeMiedzyLudzmi(&(*i),&(*j),false);
+			}
+		}
+	}
+	//Kaplan VS Kaplan
+	if(!kaplani.czyPusty())
+	{
+		for(std::list<Kaplan>::iterator i = kaplani.zwrocObiekty()->begin();i!=kaplani.zwrocObiekty()->end();i++)
+		{
+			for(std::list<Kaplan>::iterator j = kaplani.zwrocObiekty()->begin();j!=kaplani.zwrocObiekty()->end();j++)
+			{
+				if(i->zwrocPozycje().x <= j->zwrocPozycje().x && i->zwrocPozycje().x+minD >= j->zwrocPozycje().x)
+					obsluzKolizjeMiedzyLudzmi(&(*i),&(*j),true);
+				if(i->zwrocPozycje().x >= j->zwrocPozycje().x && i->zwrocPozycje().x-minD <= j->zwrocPozycje().x)
+					obsluzKolizjeMiedzyLudzmi(&(*i),&(*j),false);
+			}
+		}
+	}
+
+}
+
+void Model::obsluzKolizjeMiedzyLudzmi(Obiekt *o1, Obiekt *o2, bool prawo)
+{
+	double predkoscOdpychania=0.4;
+	if(prawo)
+	{
+		if(!o1->czyIstniejePrzeszkodaPoLewej())
+			o1->ustawPozycje(o1->zwrocPozycje()+Punkt(-predkoscOdpychania,0));
+		else
+		{
+			o2->ustawCzyIstniejePrzeszkodaPoLewej(true);
+			o2->ustawPozycje(o2->zwrocPozycje()+Punkt(-predkoscOdpychania,0));
+		}
+
+		if(!o2->czyIstniejePrzeszkodaPoPrawej())
+			o2->ustawPozycje(o2->zwrocPozycje()+Punkt(predkoscOdpychania,0));
+		else
+		{
+			o1->ustawCzyIstniejePrzeszkodaPoPrawej(true);
+			o1->ustawPozycje(o1->zwrocPozycje()+Punkt(predkoscOdpychania,0));
+		}
+	}
+	else
+	{
+		if(!o1->czyIstniejePrzeszkodaPoPrawej())
+			o1->ustawPozycje(o1->zwrocPozycje()+Punkt(predkoscOdpychania,0));
+		else
+		{
+			o2->ustawCzyIstniejePrzeszkodaPoPrawej(true);
+			o2->ustawPozycje(o2->zwrocPozycje()+Punkt(predkoscOdpychania,0));
+		}
+		if(!o2->czyIstniejePrzeszkodaPoLewej())
+			o2->ustawPozycje(o2->zwrocPozycje()+Punkt(-predkoscOdpychania,0));
+		else
+		{
+			o1->ustawCzyIstniejePrzeszkodaPoLewej(true);
+			o1->ustawPozycje(o1->zwrocPozycje()+Punkt(-predkoscOdpychania,0));
+		}
+	}
+}
 //##########################################################KOLIZJE#########################################################
 
 void Model::obsluzKolizje()
@@ -284,6 +372,8 @@ void Model::obsluzKolizje()
 	}
 	mury.sprawdzKolizje(&smok,nic,kolizjaSmokaZMurem,PrzestrzenKolizji::prostokat,false);
 	zaslony.sprawdzKolizje(&smok,nic,kolizjaSmokaZPlatforma,PrzestrzenKolizji::prostokat,false);
+
+	kolizjeMiedzyLudzmi();
 }
 
 void Model::zniszcz(Obiekt *o,Obiekt *o2,Punkt punktKolizji)

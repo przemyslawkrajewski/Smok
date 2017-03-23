@@ -86,6 +86,8 @@ public:
 private:
 	//wyliczenia
 	void ustawNajblizszegoStrzelca(Postac* k, std::list<Strzelec>* s);
+	void kolizjeMiedzyLudzmi();
+	void obsluzKolizjeMiedzyLudzmi(Obiekt *o1, Obiekt *o2, bool prawo);
 
 private:
 	Punkt wymiaryEkranu;

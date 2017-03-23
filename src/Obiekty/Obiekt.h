@@ -106,6 +106,8 @@ public:
 	bool czyPosiadaTarcze() { return maTarcze;}
 	void ustawCzyIstniejePrzeszkodaPoLewej(bool poLewej) {przeszkodaPoLewej=poLewej;}
 	void ustawCzyIstniejePrzeszkodaPoPrawej(bool poPrawej) {przeszkodaPoPrawej=poPrawej;}
+	bool czyIstniejePrzeszkodaPoLewej() {return przeszkodaPoLewej;}
+	bool czyIstniejePrzeszkodaPoPrawej() {return przeszkodaPoPrawej;}
 
 };
 
