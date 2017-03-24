@@ -54,9 +54,9 @@ void Model::reset()
 	//FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::tarczaPersonalna,Punkt(),(*(kaplani.zwrocObiekty().begin())));
 	//FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::tarczaObszarowa,Punkt(),(*(kaplani.zwrocObiekty().begin())));
 
-	/*for(int i=0;i<300;i++)
+	/*for(int i=0;i<400;i++)
 	{
-		int x = rand()%3000+5000;
+		int x = rand()%30000+5000;
 		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(x,130));
 	}//*/
 	smok.ustawPozycje(Punkt(1000,100));
@@ -213,19 +213,27 @@ void Model::ustawNajblizszegoStrzelca(Postac* k, std::list<Strzelec>* s)
 
 void Model::kolizjeMiedzyLudzmi()
 {
-	double minD=20;
+	double minD=30;
 
 	//Strzelec VS Strzelec
 	if(!strzelcy.czyPusty())
 	{
 		for(std::list<Strzelec>::iterator i = strzelcy.zwrocObiekty()->begin();i!=strzelcy.zwrocObiekty()->end();i++)
 		{
-			for(std::list<Strzelec>::iterator j = strzelcy.zwrocObiekty()->begin();j!=strzelcy.zwrocObiekty()->end();j++)
+			std::list<Strzelec>::iterator j = i;
+			j++;
+			for(;j!=strzelcy.zwrocObiekty()->end();j++)
 			{
 				if(i->zwrocPozycje().x <= j->zwrocPozycje().x && i->zwrocPozycje().x+minD >= j->zwrocPozycje().x)
+				{
 					obsluzKolizjeMiedzyLudzmi(&(*i),&(*j),true);
+					continue;
+				}
 				if(i->zwrocPozycje().x >= j->zwrocPozycje().x && i->zwrocPozycje().x-minD <= j->zwrocPozycje().x)
+				{
 					obsluzKolizjeMiedzyLudzmi(&(*i),&(*j),false);
+					continue;
+				}
 			}
 		}
 	}
@@ -249,7 +257,9 @@ void Model::kolizjeMiedzyLudzmi()
 	{
 		for(std::list<Kaplan>::iterator i = kaplani.zwrocObiekty()->begin();i!=kaplani.zwrocObiekty()->end();i++)
 		{
-			for(std::list<Kaplan>::iterator j = kaplani.zwrocObiekty()->begin();j!=kaplani.zwrocObiekty()->end();j++)
+			std::list<Kaplan>::iterator j = i;
+			j++;
+			for(;j!=kaplani.zwrocObiekty()->end();j++)
 			{
 				if(i->zwrocPozycje().x <= j->zwrocPozycje().x && i->zwrocPozycje().x+minD >= j->zwrocPozycje().x)
 					obsluzKolizjeMiedzyLudzmi(&(*i),&(*j),true);
@@ -263,7 +273,7 @@ void Model::kolizjeMiedzyLudzmi()
 
 void Model::obsluzKolizjeMiedzyLudzmi(Obiekt *o1, Obiekt *o2, bool prawo)
 {
-	double predkoscOdpychania=0.4;
+	double predkoscOdpychania=0.5;
 	if(prawo)
 	{
 		if(!o1->czyIstniejePrzeszkodaPoLewej())
