@@ -18,11 +18,11 @@ Strzelec::Strzelec(): Postac()
 	katCelowania=0;
 	stanNaciagania=-1;
 	stanCelowania=0;
-	mozliwyStrzal=false;
 
 	zycie=100;
 	obrazenia=5;
 	x1=x2=-1;
+	iteracjaCelowania=-1;
 }
 
 void Strzelec::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
@@ -32,31 +32,40 @@ void Strzelec::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 		if (klawiatura->czyWcisnietoPrawo() && !przeszkodaPoPrawej)
 		{
 			zwroconyWPrawo=true;
-			stan = biegnie;
+			if(!myszka->zwrocLPM())
+			{
+				stan = biegnie;
 
-			if((stanBiegu>2 && stanBiegu<3) || (stanBiegu>6 && stanBiegu<7)) stanBiegu += parametry.predkoscAnimacjiBiegu2;
-			else stanBiegu += parametry.predkoscAnimacjiBiegu1;
+				if((stanBiegu>2 && stanBiegu<3) || (stanBiegu>6 && stanBiegu<7)) stanBiegu += parametry.predkoscAnimacjiBiegu2;
+				else stanBiegu += parametry.predkoscAnimacjiBiegu1;
 
-			if(stanBiegu>parametry.iloscKlatekAnimacjiBiegu) stanBiegu=0;
-			pozycja.x+=parametry.predkoscBiegu;
-			if(!parametry.spust || stanNaciagania>0) stanNaciagania=parametry.maxNaciagniecie;
-			stanCelowania=0;
+				if(stanBiegu>parametry.iloscKlatekAnimacjiBiegu) stanBiegu=0;
+				pozycja.x+=parametry.predkoscBiegu;
+				if(!parametry.spust || stanNaciagania>0) stanNaciagania=parametry.maxNaciagniecie;
+				stanCelowania=0;
+			}
 		}
 		else if (klawiatura->czyWcisnietoLewo() && !przeszkodaPoLewej)
 		{
 			zwroconyWPrawo=false;
-			stan = biegnie;
+			if(!myszka->zwrocLPM())
+			{
+				stan = biegnie;
 
-			if((stanBiegu>2 && stanBiegu<3) || (stanBiegu>6 && stanBiegu<7)) stanBiegu += parametry.predkoscAnimacjiBiegu2;
-			else stanBiegu += parametry.predkoscAnimacjiBiegu1;
+				if((stanBiegu>2 && stanBiegu<3) || (stanBiegu>6 && stanBiegu<7)) stanBiegu += parametry.predkoscAnimacjiBiegu2;
+				else stanBiegu += parametry.predkoscAnimacjiBiegu1;
 
-			if(stanBiegu>parametry.iloscKlatekAnimacjiBiegu) stanBiegu=0;
-			pozycja.x-=parametry.predkoscBiegu;
-			if(!parametry.spust || stanNaciagania>0) stanNaciagania=parametry.maxNaciagniecie;
-			stanCelowania=0;
+				if(stanBiegu>parametry.iloscKlatekAnimacjiBiegu) stanBiegu=0;
+				pozycja.x-=parametry.predkoscBiegu;
+				if(!parametry.spust || stanNaciagania>0) stanNaciagania=parametry.maxNaciagniecie;
+				stanCelowania=0;
+			}
 		}
 		else if(myszka->zwrocLPM())
 		{
+			if(cel->zwrocPozycje().x-pozycja.x>0) zwroconyWPrawo=true;
+			else zwroconyWPrawo=false;
+
 			stanBiegu=0;
 			if(stanNaciagania<0)
 			{
@@ -65,6 +74,7 @@ void Strzelec::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 				if(stanCelowania > parametry.maxCelowania)
 				{
 					double kat=-katCelowania+((double)(rand()%100)/100)*parametry.celnosc - parametry.celnosc/2;
+					if((-kat>4.71 && katCelowania<4.71) || (-kat<4.71 && katCelowania>4.71)) kat = -4.71;
 
 					Punkt p;
 					p.x=pozycja.x+(parametry.minimalnaOdleglosc)*cos(kat);
@@ -87,7 +97,8 @@ void Strzelec::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 				stanNaciagania--;
 			}
 		}
-		else
+
+		if(!myszka->zwrocLPM() && !klawiatura->czyWcisnietoLewo() && !klawiatura->czyWcisnietoPrawo())
 		{
 			stan = stoi;
 			stanBiegu=0;
@@ -125,8 +136,8 @@ void Strzelec::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 {
 	int maxOdleglosc=5200;
-	int minOdleglosc=5100;
-	int odleglosc=5400;
+	int minOdleglosc=5200;
+	int odleglosc=00;
 
 	Punkt pozycjaCelu = cel->zwrocPozycjeCelu();
 
@@ -141,28 +152,21 @@ std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 	m.ustawX(pozycja.x-pozycjaCelu.x);
 	m.ustawY(pozycja.y-pozycjaCelu.y);
 
-	wyznaczKatStrzalu(Punkt((m.zwrocX()),(m.zwrocY())));
-	if(mozliwyStrzal)
-	{
-		poprawKatStrzalu(Punkt((m.zwrocX()),(m.zwrocY())),cel->zwrocPredkosc());
-		ustalKatStrzalu();
-		x1=x2=-1;
-	}
+	bool mozliwyStrzal = czyMozliwyStrzal(Punkt((m.zwrocX()),(m.zwrocY())));
 
 	if(abs(pozycjaCelu.x-pozycja.x)>maxOdleglosc) mozliwyStrzal=false;
-	if((stanNaciagania>0 && parametry.spust) || (mozliwyStrzal && ((pozycjaCelu.x>=pozycja.x && zwroconyWPrawo==true) || (pozycjaCelu.x<=pozycja.x && zwroconyWPrawo!=true))))
+	if( (stanNaciagania>0 && parametry.spust) || (mozliwyStrzal && (mozliwyStrzal)))
 	{
 		m.ustawLPM(true);
-		if(abs(pozycja.x-pozycjaCelu.x)<odleglosc) katCelowania=katCelowaniaWprost; //TODO: komunikacja tylko przez myszke i klawiature
-		else katCelowania=katCelowaniaZGory;
-	}
-	else if(pozycjaCelu.x>pozycja.x && zwroconyWPrawo==true)
-	{
-		k.ustawWcisnietoPrawo(true);
-	}
-	else if(pozycjaCelu.x<pozycja.x && zwroconyWPrawo!=true)
-	{
-		k.ustawWcisnietoLewo(true);
+		if(mozliwyStrzal)
+		{
+			if(iteracjaCelowania==-1) wyznaczKatStrzalu(Punkt((m.zwrocX()),(m.zwrocY())));
+			else poprawKatStrzalu(Punkt((m.zwrocX()),(m.zwrocY())),cel->zwrocPredkosc());
+			ustalKatStrzalu();
+		}
+		//if(abs(pozycja.x-pozycjaCelu.x)<odleglosc) katCelowania=katCelowaniaWprost; //TODO: komunikacja tylko przez myszke i klawiature
+		//else
+		katCelowania=katCelowaniaWprost;
 	}
 	else if(pozycjaCelu.x>pozycja.x )
 	{
@@ -173,6 +177,10 @@ std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 		k.ustawWcisnietoLewo(true);
 	}
 
+	if(m.zwrocLPM()==false || (m.zwrocLPM()==true && stanNaciagania==-1 && parametry.maxCelowania==stanCelowania))
+	{
+		iteracjaCelowania=-1;
+	}
 	return std::pair<Klawiatura,Myszka>(k,m);
 }
 
@@ -205,10 +213,44 @@ std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
  * x = cos(a)^2
  */
 
+bool Strzelec::czyMozliwyStrzal(Punkt dP)
+{
+	if(parametry.spust)
+	{
+		katCelowaniaWprost = atan2((-dP.x),(dP.y))-1.57;
+		if(katCelowaniaWprost<0) katCelowaniaWprost+=M_PI*2;
+		katCelowaniaZGory = katCelowaniaWprost;
+		return true;
+	}
+
+	//do wzoru
+	double B = -dP.x*parametry.predkoscStrzaly*parametry.predkoscStrzaly;
+	double D =  dP.y*parametry.predkoscStrzaly*parametry.predkoscStrzaly;
+	double E1 = dP.x*dP.x*Strzala::parametry.wspolczynnikGrawitacji/2;
+
+	//do rownania kwadratowego
+	double a = -B*B-D*D;
+	double b =  B*B+2*D*E1;
+	double c = -E1*E1;
+
+	//rownanie kwadratowe
+	double delta = b*b-4*a*c;
+
+	if(delta<0)
+	{
+		return false;
+	}
+
+	if((-b -sqrt(delta))/(2*a)<0)
+	{
+		return false;
+	}
+
+	return true;
+}
+
 void Strzelec::wyznaczKatStrzalu(Punkt dP)
 {
-	mozliwyStrzal=true;
-
 	if(parametry.spust)
 	{
 		katCelowaniaWprost = atan2((-dP.x),(dP.y))-1.57;
@@ -232,7 +274,6 @@ void Strzelec::wyznaczKatStrzalu(Punkt dP)
 
 	if(delta<0)
 	{
-		mozliwyStrzal=false;
 		return;
 	}
 	x1 = (-b -sqrt(delta))/(2*a);
@@ -240,7 +281,6 @@ void Strzelec::wyznaczKatStrzalu(Punkt dP)
 
 	if(x1<0)
 	{
-		mozliwyStrzal=false;
 		return ;
 	}
 	if(x1<x2)
@@ -258,14 +298,22 @@ void Strzelec::wyznaczKatStrzalu(Punkt dP)
 		x1 = sqrt(x1);
 		x2 = sqrt(x2);
 	}
+	iteracjaCelowania=0;
 }
 
 void Strzelec::poprawKatStrzalu(Punkt dP, Punkt v2)
 {
+	if(iteracjaCelowania==-1) return;
+
+	if(fabs(v2.x)>parametry.predkoscStrzaly)
+	{
+		iteracjaCelowania=-1;
+		return;
+	}
 	if(v2.y>-7 && v2.y<8) v2.y=0;
 	v2.x=-v2.x;
 	v2.y=-v2.y;
-	//if(x1==-1 || x2==-1) return;
+
 	//do wzoru
 	double A = dP.x*v2.x*parametry.predkoscStrzaly;
 	double B = -dP.x*parametry.predkoscStrzaly*parametry.predkoscStrzaly;
@@ -283,27 +331,30 @@ void Strzelec::poprawKatStrzalu(Punkt dP, Punkt v2)
 	double f;
 	double df;
 	double y0;
-	for(int i=0; i<1000; i++)
-	{
-		f = a*x1*x1*x1*x1 + b*x1*x1*x1 + c*x1*x1 + d*x1 + e;
-		df = 4*a*x1*x1*x1 + 3*b*x1*x1 + 2*c*x1 + d;
-		y0 = f-x1*df;
-		x1 = -y0/df;
 
-		f = a*x2*x2*x2*x2 + b*x2*x2*x2 + c*x2*x2 + d*x2 + e;
-		df = 4*a*x2*x2*x2 + 3*b*x2*x2 + 2*c*x2 + d;
-		y0 = f-x2*df;
-		x2 = -y0/df;
-	}
+	f = a*x1*x1*x1*x1 + b*x1*x1*x1 + c*x1*x1 + d*x1 + e;
+	df = 4*a*x1*x1*x1 + 3*b*x1*x1 + 2*c*x1 + d;
+	y0 = f-x1*df;
+	if(df!=0) x1 = -y0/df;
+
+	f = a*x2*x2*x2*x2 + b*x2*x2*x2 + c*x2*x2 + d*x2 + e;
+	df = 4*a*x2*x2*x2 + 3*b*x2*x2 + 2*c*x2 + d;
+	y0 = f-x2*df;
+	if(df!=0) x2 = -y0/df;
+
+	iteracjaCelowania++;
 }
 
 void Strzelec::ustalKatStrzalu()
 {
-	katCelowaniaWprost = acos(x1);
-	katCelowaniaZGory = acos(x2);
+	if(x1!=-1 && x2!=-1)
+	{
+		katCelowaniaWprost = acos(x1);
+		katCelowaniaZGory = acos(x2);
 
-	katCelowaniaWprost+=3.14;
-	katCelowaniaZGory+=3.14;
+		katCelowaniaWprost+=3.14;
+		katCelowaniaZGory+=3.14;
+	}
 }
 
 //#####################################################################################################

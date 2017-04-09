@@ -30,11 +30,11 @@ FabrykaLudzi::FabrykaLudzi()
 	parametryLucznika.minimalnaOdleglosc=10;
 	parametryLucznika.spust=false;
 	parametryLucznika.predkoscStrzaly=35;
-	parametryLucznika.celnosc=3.14/16;
-	parametryLucznika.maxNaciagniecie=30;
-	parametryLucznika.maxCelowania=30;
+	parametryLucznika.celnosc=3.14/32;
+	parametryLucznika.maxNaciagniecie=10;
+	parametryLucznika.maxCelowania=2;
 	parametryLucznika.maxZycia=200;
-	parametryLucznika.obrazenia=5;
+	parametryLucznika.obrazenia=0;
 
 	parametryKrzyzowca.predkoscAnimacjiBiegu1=0.4;
 	parametryKrzyzowca.predkoscAnimacjiBiegu2=0.2;
