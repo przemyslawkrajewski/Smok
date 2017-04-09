@@ -65,7 +65,9 @@ private:
 	void bieganie(Klawiatura* klawiatura, Myszka *myszka);
 	void strzelanie(Klawiatura* klawiatura, Myszka *myszka);
 
-	void wyznaczKatStrzalu(Punkt cel);
+	void wyznaczKatStrzalu(Punkt dP);
+	void poprawKatStrzalu(Punkt dP,Punkt v2);
+	void ustalKatStrzalu();
 
 public:
 	Strzelec();
@@ -86,6 +88,8 @@ public:
 	double katCelowaniaZGory;
 	double katCelowania;
 	bool mozliwyStrzal;
+
+	double x1,x2;
 
 	double stanBiegu;
 	double stanNaciagania;

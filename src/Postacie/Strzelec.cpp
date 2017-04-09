@@ -22,6 +22,7 @@ Strzelec::Strzelec(): Postac()
 
 	zycie=100;
 	obrazenia=5;
+	x1=x2=-1;
 }
 
 void Strzelec::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
@@ -61,7 +62,6 @@ void Strzelec::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 			{
 				stan = strzela;
 				stanCelowania++;
-
 				if(stanCelowania > parametry.maxCelowania)
 				{
 					double kat=-katCelowania+((double)(rand()%100)/100)*parametry.celnosc - parametry.celnosc/2;
@@ -124,9 +124,9 @@ void Strzelec::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 
 std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 {
-	int maxOdleglosc=200;
-	int minOdleglosc=100;
-	int odleglosc=400;
+	int maxOdleglosc=5200;
+	int minOdleglosc=5100;
+	int odleglosc=5400;
 
 	Punkt pozycjaCelu = cel->zwrocPozycjeCelu();
 
@@ -141,7 +141,14 @@ std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 	m.ustawX(pozycja.x-pozycjaCelu.x);
 	m.ustawY(pozycja.y-pozycjaCelu.y);
 
-	wyznaczKatStrzalu(Punkt((m.zwrocX()),-(m.zwrocY())));
+	wyznaczKatStrzalu(Punkt((m.zwrocX()),(m.zwrocY())));
+	if(mozliwyStrzal)
+	{
+		poprawKatStrzalu(Punkt((m.zwrocX()),(m.zwrocY())),cel->zwrocPredkosc());
+		ustalKatStrzalu();
+		x1=x2=-1;
+	}
+
 	if(abs(pozycjaCelu.x-pozycja.x)>maxOdleglosc) mozliwyStrzal=false;
 	if((stanNaciagania>0 && parametry.spust) || (mozliwyStrzal && ((pozycjaCelu.x>=pozycja.x && zwroconyWPrawo==true) || (pozycjaCelu.x<=pozycja.x && zwroconyWPrawo!=true))))
 	{
@@ -173,76 +180,130 @@ std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 //Podfunkcje Ruch
 //#####################################################################################################
 
-void Strzelec::wyznaczKatStrzalu(Punkt cel)
+/*
+ * P1.x(t) = P1.x + V1.x*t
+ * P1.y(t) = P1.y + V1.y*t-g*t^2
+ * P2.x(t) = P2.x + V2.x*t
+ * P2.y(t) = P2.x + V2.y*t
+ *
+ * dPx=P1.x-P2.x	dPy=P1.y-P2.y	cos(a)=x
+ *
+ * P1.x(tk)=P2.x(tk) => tk = ...
+ * P1.y(tk)=P2.y(tk) => A*sin(a) + B*sin(a)cos(a) + C*cos(a) + D*cos(a)^2 = E
+ * A=dPx*V2.x*V1	B=-dPx*V1^2		C=V1*(V2.y*dPx-2*dPy*V2.x)	D=dPy*V1^2	E=g*dPx^2-dPy*V2.x^2+v2.y*dPx*V2.x
+ *
+ * f(x)=a*x^4 + b*x^3 + c*x^2 + d*x + e
+ * f'(x)=4a*x^3 + 3b*x^2 + 2c*x + d
+ * a=-B^2-D^2	b=2CD-2AB	c=B^2-A^2-C^2-2DE	d=2AB+2EC	e=A^2-E^2
+ *
+ *
+ * dla V2=0
+ *
+ * B*sin(a)*cos(a)+D*cos(a)^2 = E1
+ * B=-dPx*V1^2	D=dPy*V1^2	E=g*dPx^2
+ *
+ * x = cos(a)^2
+ */
+
+void Strzelec::wyznaczKatStrzalu(Punkt dP)
 {
 	mozliwyStrzal=true;
 
 	if(parametry.spust)
 	{
-		katCelowaniaWprost = atan2((-cel.x),(cel.y))-1.57;
+		katCelowaniaWprost = atan2((-dP.x),(dP.y))-1.57;
 		if(katCelowaniaWprost<0) katCelowaniaWprost+=M_PI*2;
 		katCelowaniaZGory = katCelowaniaWprost;
 		return;
 	}
 
-	//do wzoru, jak zgubisz kartke to zle
-	double A=-cel.y;
-	double B=cel.x;
-	double C=B*B*Strzala::parametry.wspolczynnikGrawitacji/(2*parametry.predkoscStrzaly*parametry.predkoscStrzaly);
-
-	if(B==0)
-	{
-		mozliwyStrzal=false;
-		return;
-	}
+	//do wzoru
+	double B = -dP.x*parametry.predkoscStrzaly*parametry.predkoscStrzaly;
+	double D =  dP.y*parametry.predkoscStrzaly*parametry.predkoscStrzaly;
+	double E1 = dP.x*dP.x*Strzala::parametry.wspolczynnikGrawitacji/2;
 
 	//do rownania kwadratowego
-	double a=A*A+B*B;
-	double b=B*B+2*A*C;
-	double c=C*C;
+	double a = -B*B-D*D;
+	double b =  B*B+2*D*E1;
+	double c = -E1*E1;
 
 	//rownanie kwadratowe
 	double delta = b*b-4*a*c;
-
-	//std::cout << "\n";
-	//std::cout  << "a:"<< a << " b:" << b << " c:" << c << "\n";
-	//std::cout  << "A:"<< A << " B:" << B << " C:" << C << "\n";
-	//std::cout  << "delta:" << delta << "\n";
 
 	if(delta<0)
 	{
 		mozliwyStrzal=false;
 		return;
 	}
-	double kat1 = -(-b -sqrt(delta))/(2*a);
-	double kat2 = -(-b +sqrt(delta))/(2*a);
-	//std::cout << "kat1:" << kat1 << " kat2:" << kat2 << "\n";
+	x1 = (-b -sqrt(delta))/(2*a);
+	x2 = (-b +sqrt(delta))/(2*a);
 
-	if(kat1<0)
+	if(x1<0)
 	{
 		mozliwyStrzal=false;
 		return ;
 	}
-	if(kat1<kat2)
+	if(x1<x2)
 	{
-		double tmp = kat1;kat1=kat2;kat2=tmp;
+		double tmp = x1;x1=x2;x2=tmp;
 	}
 
-	if(cel.x<0)
+	if(zwroconyWPrawo)
 	{
-		katCelowaniaWprost = acos(-sqrt(kat1));
-		katCelowaniaZGory = acos(-sqrt(kat2));
+		x1 = -sqrt(x1);
+		x2 = -sqrt(x2);
 	}
 	else
 	{
-		katCelowaniaWprost = acos(sqrt(kat1));
-		katCelowaniaZGory = acos(sqrt(kat2));
+		x1 = sqrt(x1);
+		x2 = sqrt(x2);
 	}
+}
+
+void Strzelec::poprawKatStrzalu(Punkt dP, Punkt v2)
+{
+	if(v2.y>-7 && v2.y<8) v2.y=0;
+	v2.x=-v2.x;
+	v2.y=-v2.y;
+	//if(x1==-1 || x2==-1) return;
+	//do wzoru
+	double A = dP.x*v2.x*parametry.predkoscStrzaly;
+	double B = -dP.x*parametry.predkoscStrzaly*parametry.predkoscStrzaly;
+	double C = parametry.predkoscStrzaly*(v2.y*dP.x-2*dP.y*v2.x);
+	double D = dP.y*parametry.predkoscStrzaly*parametry.predkoscStrzaly;
+	double E = (dP.x*dP.x*Strzala::parametry.wspolczynnikGrawitacji/2)-(dP.y*v2.x*v2.x)+(v2.y*dP.x*v2.x);
+
+	//wielomian ultra giga nigga
+	double a = -B*B - D*D;
+	double b = -2*C*D - 2*A*B;
+	double c =  B*B - A*A - C*C + 2*D*E;
+	double d =  2*A*B + 2*E*C;
+	double e =  A*A - E*E;
+
+	double f;
+	double df;
+	double y0;
+	for(int i=0; i<1000; i++)
+	{
+		f = a*x1*x1*x1*x1 + b*x1*x1*x1 + c*x1*x1 + d*x1 + e;
+		df = 4*a*x1*x1*x1 + 3*b*x1*x1 + 2*c*x1 + d;
+		y0 = f-x1*df;
+		x1 = -y0/df;
+
+		f = a*x2*x2*x2*x2 + b*x2*x2*x2 + c*x2*x2 + d*x2 + e;
+		df = 4*a*x2*x2*x2 + 3*b*x2*x2 + 2*c*x2 + d;
+		y0 = f-x2*df;
+		x2 = -y0/df;
+	}
+}
+
+void Strzelec::ustalKatStrzalu()
+{
+	katCelowaniaWprost = acos(x1);
+	katCelowaniaZGory = acos(x2);
 
 	katCelowaniaWprost+=3.14;
 	katCelowaniaZGory+=3.14;
-
-
 }
 
 //#####################################################################################################
