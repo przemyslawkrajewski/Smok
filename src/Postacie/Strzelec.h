@@ -14,6 +14,7 @@
 #include <vector>
 #include <utility>
 
+#include "PomocnikCelowania.h"
 #include "Postac.h"
 
 struct ParametryStrzelca
@@ -65,11 +66,6 @@ private:
 	void bieganie(Klawiatura* klawiatura, Myszka *myszka);
 	void strzelanie(Klawiatura* klawiatura, Myszka *myszka);
 
-	bool czyMozliwyStrzal(Punkt dP);
-	void wyznaczKatStrzalu(Punkt dP);
-	void poprawKatStrzalu(Punkt dP,Punkt v2);
-	void ustalKatStrzalu();
-
 public:
 	Strzelec();
 
@@ -79,7 +75,11 @@ public:
 
 	std::pair<Klawiatura,Myszka> wyznaczSterowanie();
 
-	void ustawParametry(ParametryStrzelca p) {parametry=p;}
+	void ustawParametry(ParametryStrzelca p)
+	{
+		parametry=p;
+		pomocnikCelowania.ustawParametry(p.predkoscStrzaly,Strzala::parametry.wspolczynnikGrawitacji);
+	}
 
 	ParametryStrzelca parametry;
 	StanStrzelca stan;
@@ -89,7 +89,7 @@ public:
 	double katCelowaniaZGory;
 	double katCelowania;
 
-	double x1,x2,iteracjaCelowania;
+	PomocnikCelowania pomocnikCelowania;
 
 	double stanBiegu;
 	double stanNaciagania;
