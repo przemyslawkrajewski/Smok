@@ -198,11 +198,19 @@ public:
 
 		iteracjaCelowania++;
 		ustalKatStrzalu();
+		double b1 = 3*M_PI-a1;
+		double f1 = fabs(A*sin(a1) + B*sin(a1)*cos(a1) + C*cos(a1) + D*cos(a1)*cos(a1) - E);
+		double f2 = fabs(A*sin(b1) + B*sin(b1)*cos(b1) + C*cos(b1) + D*cos(b1)*cos(b1) - E);
+		if( f1 < f2)
+		{
+			a1=b1;
+			a2=3*M_PI-a2;
+		}
 	}
 
 	void ustalKatStrzalu()
 	{
-		if(x1!=-1 && x2!=-1 && g!=0)
+		if(fabs(x1)<1 && fabs(x2)<1 && g!=0)
 		{
 			a1 = acos(x1);
 			a2 = acos(x2);
