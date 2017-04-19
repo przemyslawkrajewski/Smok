@@ -153,7 +153,7 @@ std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 	bool mozliwyStrzal = pomocnikCelowania.czyMozliwyStrzal(Punkt((m.zwrocX()),(m.zwrocY())));
 
 	if(abs(pozycjaCelu.x-pozycja.x)>maxOdleglosc) mozliwyStrzal=false;
-	if( (stanNaciagania>0 && parametry.spust) || (mozliwyStrzal && (mozliwyStrzal)))
+	if( (stanNaciagania>0 && parametry.spust) || mozliwyStrzal)
 	{
 		m.ustawLPM(true);
 		if(mozliwyStrzal)
@@ -164,7 +164,8 @@ std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 		}
 		//if(abs(pozycja.x-pozycjaCelu.x)<odleglosc) katCelowania=katCelowaniaWprost; //TODO: komunikacja tylko przez myszke i klawiature
 		//else
-		katCelowania=katCelowaniaWprost;
+		if(pozycja.y<pozycjaCelu.y) katCelowania=katCelowaniaWprost;
+		else katCelowania=katCelowaniaZGory;
 	}
 	else if(pozycjaCelu.x>pozycja.x )
 	{
