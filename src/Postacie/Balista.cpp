@@ -64,10 +64,7 @@ void Balista::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 			if(czyPrzekroczonoMaksKatCelowania())
 			{
 				stanNaciagania--;
-				if(stanNaciagania==0)
-				{
-					pomocnikCelowania.resetCelowania();
-				}
+				if(stanNaciagania==0) pomocnikCelowania.resetCelowania();
 			}
 			else podniesCelownik();
 		}

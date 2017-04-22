@@ -154,14 +154,14 @@ std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 	bool mozliwyStrzal = pomocnikCelowania.czyMozliwyStrzal(Punkt((m.zwrocX()),(m.zwrocY())));
 
 	if(abs(pozycjaCelu.x-pozycja.x)>maxOdleglosc) mozliwyStrzal=false;
-	if( (stanNaciagania>0 && parametry.spust) || mozliwyStrzal)
+	if( (stanNaciagania>0 && parametry.spust && mozliwyStrzal) || mozliwyStrzal)
 	{
 		m.ustawLPM(true);
 		if(mozliwyStrzal)
 		{
 			Punkt poprawka = (*(cel->zwrocPrzestrzenKolizji()->zwrocOkregi()))[0].zwrocPozycjeWzgledemObiektu();
 			poprawka.y=-poprawka.y+10;
-			poprawka.x=-poprawka.x+100;
+			poprawka.x=-poprawka.x;
 			if(cel->czyZwroconyWPrawo()) poprawka.x+=30;
 			else poprawka.x-=30;
 

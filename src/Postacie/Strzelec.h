@@ -78,7 +78,8 @@ public:
 	void ustawParametry(ParametryStrzelca p)
 	{
 		parametry=p;
-		pomocnikCelowania.ustawParametry(p.predkoscStrzaly,Strzala::parametry.wspolczynnikGrawitacji);
+		if(p.spust) pomocnikCelowania.ustawParametry(p.predkoscStrzaly,0);
+		else pomocnikCelowania.ustawParametry(p.predkoscStrzaly,Strzala::parametry.wspolczynnikGrawitacji);
 	}
 
 	ParametryStrzelca parametry;
