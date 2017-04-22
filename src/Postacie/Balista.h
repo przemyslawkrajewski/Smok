@@ -80,8 +80,6 @@ private:
 	void opuscCelownik();
 	void podniesCelownik();
 
-	double katCelowaniaWprost;
-	double katCelowaniaZGory;
 	double katCelowania;
 	bool mozliwyStrzal;
 

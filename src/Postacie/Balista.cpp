@@ -12,8 +12,6 @@ Balista::Balista() {
 	stanCelowania=0;
 
 	mozliwyStrzal=false;
-	katCelowaniaZGory=0;
-	katCelowaniaWprost=0;
 	katCelowania=0;
 
 	stanNaciagania=0;
@@ -39,7 +37,7 @@ void Balista::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 		if(czyKatPrzekraczaMaks(-katMyszki) || czyKatPrzekraczaMin(-katMyszki)) return;
 		double kat;
 		kat=katCelowania;
-		if(fabs((double)katCelowaniaWprost-katCelowania)<parametry.predkoscCelowania)
+		if(fabs(katMyszki-katCelowania)<parametry.predkoscCelowania)
 		{
 			kat=-katMyszki;
 		}
@@ -96,28 +94,18 @@ std::pair<Klawiatura,Myszka> Balista::wyznaczSterowanie()
 
 	Punkt poprawka = (*(cel->zwrocPrzestrzenKolizji()->zwrocOkregi()))[0].zwrocPozycjeWzgledemObiektu();
 	poprawka.y=-poprawka.y+40;
-	poprawka.x=-poprawka.x+100;
+	poprawka.x=-poprawka.x;
 	if(cel->czyZwroconyWPrawo()) poprawka.x+=30;
 	else poprawka.x-=30;
 
 	pomocnikCelowania.wyznaczKatStrzalu(Punkt(pozycja.x-pozycjaCelu.x,pozycja.y-pozycjaCelu.y)+poprawka,cel->zwrocPredkosc());
-	katCelowaniaWprost = M_PI*2-pomocnikCelowania.zwrocKat(PomocnikCelowania::katWprost);
-	katCelowaniaZGory = M_PI*2-pomocnikCelowania.zwrocKat(PomocnikCelowania::katZGory);
+	double kat = M_PI*2-pomocnikCelowania.zwrocKat(PomocnikCelowania::katWprost);
 
-	if(!czyKatPrzekraczaMaks(katCelowaniaWprost) && !czyKatPrzekraczaMin(katCelowaniaWprost))
-	{
-		m.ustawX(cos(katCelowaniaWprost)*10000);
-		m.ustawY(-sin(katCelowaniaWprost)*10000);
+	m.ustawX(cos(kat)*10000);
+	m.ustawY(-sin(kat)*10000);
 
-	}
-	else if(!czyKatPrzekraczaMaks(katCelowaniaZGory) && !czyKatPrzekraczaMin(katCelowaniaZGory))
-	{
-		m.ustawX(cos(katCelowaniaZGory)*10000);
-		m.ustawY(-sin(katCelowaniaZGory)*10000);
 
-	}
-
-	if(fabs((double)katCelowaniaWprost-katCelowania)<=parametry.predkoscCelowania)
+	if(fabs(kat-katCelowania)<=parametry.predkoscCelowania)
 	{
 		m.ustawLPM(true);
 	}

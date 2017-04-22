@@ -14,11 +14,9 @@ Strzelec::Strzelec(): Postac()
 	pozycja.y=parametryObiektow.poziomZiemi+50;
 	stan = stoi;
 	stanBiegu=0;
-	katCelowaniaWprost=0;
-	katCelowaniaZGory=0;
-	katCelowania=0;
 	stanNaciagania=-1;
 	stanCelowania=0;
+	katCelowania=0;
 
 	zycie=100;
 	obrazenia=5;
@@ -72,8 +70,8 @@ void Strzelec::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 				stanCelowania++;
 				if(stanCelowania > parametry.maxCelowania)
 				{
-					double kat=-katCelowania+((double)(rand()%100)/100)*parametry.celnosc - parametry.celnosc/2;
-					if((-kat>4.71 && katCelowania<4.71) || (-kat<4.71 && katCelowania>4.71)) kat = -4.71;
+					double kat = atan2((myszka->zwrocX()),(myszka->zwrocY()))-1.57;
+					kat=-kat+((double)(rand()%100)/100)*parametry.celnosc - parametry.celnosc/2;
 
 					Punkt p;
 					p.x=pozycja.x+(parametry.minimalnaOdleglosc)*cos(kat);
@@ -81,7 +79,6 @@ void Strzelec::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 					Punkt v;
 					v.x=parametry.predkoscStrzaly*cos(kat);
 					v.y=parametry.predkoscStrzaly*sin(kat);
-					kat = katCelowania+1.57;//+3.14+6.28
 					if(kat>6.28) kat-=6.28;
 					if(parametry.spust) FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::belt,p,v,parametry.czasTrwaniaStrzaly,kat,parametry.obrazenia);
 					else FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::strzala,p,v,parametry.czasTrwaniaStrzaly,kat,parametry.obrazenia);
@@ -148,10 +145,7 @@ std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 		return std::pair<Klawiatura,Myszka>(k,m);
 	}
 
-	m.ustawX(pozycja.x-pozycjaCelu.x);
-	m.ustawY(pozycja.y-pozycjaCelu.y);
-
-	bool mozliwyStrzal = pomocnikCelowania.czyMozliwyStrzal(Punkt((m.zwrocX()),(m.zwrocY())));
+	bool mozliwyStrzal = pomocnikCelowania.czyMozliwyStrzal(pozycja-pozycjaCelu);
 
 	if(abs(pozycjaCelu.x-pozycja.x)>maxOdleglosc) mozliwyStrzal=false;
 	if( (stanNaciagania>0 && parametry.spust && mozliwyStrzal) || mozliwyStrzal)
@@ -164,15 +158,16 @@ std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 			poprawka.x=-poprawka.x;
 			if(cel->czyZwroconyWPrawo()) poprawka.x+=30;
 			else poprawka.x-=30;
+			pomocnikCelowania.wyznaczKatStrzalu(pozycja-pozycjaCelu+poprawka,cel->zwrocPredkosc());
 
-			pomocnikCelowania.wyznaczKatStrzalu(Punkt(m.zwrocX(),m.zwrocY())+poprawka,cel->zwrocPredkosc());
-			katCelowaniaWprost = pomocnikCelowania.zwrocKat(PomocnikCelowania::katWprost);
-			katCelowaniaZGory = pomocnikCelowania.zwrocKat(PomocnikCelowania::katZGory);
 		}
-		//if(abs(pozycja.x-pozycjaCelu.x)<odleglosc) katCelowania=katCelowaniaWprost; //TODO: komunikacja tylko przez myszke i klawiature
-		//else
-		if(pozycja.y<pozycjaCelu.y) katCelowania=katCelowaniaWprost;
-		else katCelowania=katCelowaniaZGory;
+		double kat = 0;
+		if(pozycja.y<pozycjaCelu.y) kat = pomocnikCelowania.zwrocKat(PomocnikCelowania::katWprost);
+		else kat = pomocnikCelowania.zwrocKat(PomocnikCelowania::katZGory);
+
+		m.ustawX(1000*cos(-kat));
+		m.ustawY(1000*sin(-kat));
+		katCelowania=kat;
 	}
 	else if(pozycjaCelu.x>pozycja.x )
 	{

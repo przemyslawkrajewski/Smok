@@ -86,8 +86,6 @@ public:
 	StanStrzelca stan;
 
 	//Parametry stanu Strzelca
-	double katCelowaniaWprost;
-	double katCelowaniaZGory;
 	double katCelowania;
 
 	PomocnikCelowania pomocnikCelowania;
