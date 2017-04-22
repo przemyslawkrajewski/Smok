@@ -162,7 +162,7 @@ public:
 
 	void wyznaczKatStrzalu(Punkt dP, Punkt v2)
 	{
-		if(v2.y>-7 && v2.y<8) v2.y=0;
+		if(v2.y>-7 && v2.y<8 && fabs(v2.x)<18) v2.y=0;
 		v2.x=-v2.x;
 		v2.y=-v2.y;
 
@@ -208,10 +208,10 @@ public:
 
 		iteracjaCelowania++;
 		ustalKatStrzalu();
-		if(dP.y<0 && ((dP.x<0 && v2.x>0) || (dP.x>0 && v2.x<0)))
+		if(dP.y<0 && ((dP.x<=0 && v2.x>0) || (dP.x>0 && v2.x<0)))
 		{
-			double b1 = 3*M_PI-a2;
-			double f1 = fabs(A*sin(a2) + B*sin(a2)*cos(a2) + C*cos(a2) + D*cos(a2)*cos(a2) - E);
+			double b1 = 3*M_PI-a1;
+			double f1 = fabs(A*sin(a1) + B*sin(a1)*cos(a1) + C*cos(a1) + D*cos(a1)*cos(a1) - E);
 			double f2 = fabs(A*sin(b1) + B*sin(b1)*cos(b1) + C*cos(b1) + D*cos(b1)*cos(b1) - E);
 			if( (f1 < f2))
 			{
@@ -219,7 +219,7 @@ public:
 				a2=3*M_PI-a2;
 			}
 		}
-		else if(dP.y>0)
+		else
 		{
 			if((dP.x<0 && a1<4.71) || (dP.x>0 && a1>4.71))
 			{

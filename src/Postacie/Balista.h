@@ -14,6 +14,7 @@
 #include <vector>
 #include <utility>
 
+#include "PomocnikCelowania.h"
 #include "Postac.h"
 
 struct ParametryBalisty
@@ -61,14 +62,17 @@ public:
 
 	void ustawKatCelowania(double kat) {katCelowania=kat;}
 
-	void ustawParametry(ParametryBalisty p) {parametry=p;}
+	void ustawParametry(ParametryBalisty p)
+	{
+		parametry=p;
+		pomocnikCelowania.ustawParametry(p.predkoscStrzaly,PociskBalistyczny::parametry.wspolczynnikGrawitacji);
+	}
 
 	ParametryBalisty parametry;
 	StanBalisty stan;
 
 private:
 
-	void wyznaczKatStrzalu(Punkt cel);
 	bool czyPrzekroczonoMaksKatCelowania();
 	bool czyPrzekroczonoMinKatCelowania();
 	bool czyKatPrzekraczaMaks(double kat);
@@ -80,6 +84,8 @@ private:
 	double katCelowaniaZGory;
 	double katCelowania;
 	bool mozliwyStrzal;
+
+	PomocnikCelowania pomocnikCelowania;
 
 	int stanNaciagania;
 	int stanCelowania;

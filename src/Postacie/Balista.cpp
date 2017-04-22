@@ -64,6 +64,10 @@ void Balista::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 			if(czyPrzekroczonoMaksKatCelowania())
 			{
 				stanNaciagania--;
+				if(stanNaciagania==0)
+				{
+					pomocnikCelowania.resetCelowania();
+				}
 			}
 			else podniesCelownik();
 		}
@@ -93,8 +97,15 @@ std::pair<Klawiatura,Myszka> Balista::wyznaczSterowanie()
 		return std::pair<Klawiatura,Myszka>(k,m);
 	}
 
+	Punkt poprawka = (*(cel->zwrocPrzestrzenKolizji()->zwrocOkregi()))[0].zwrocPozycjeWzgledemObiektu();
+	poprawka.y=-poprawka.y+40;
+	poprawka.x=-poprawka.x+100;
+	if(cel->czyZwroconyWPrawo()) poprawka.x+=30;
+	else poprawka.x-=30;
 
-	wyznaczKatStrzalu(Punkt((pozycja.x-pozycjaCelu.x),-(pozycja.y-pozycjaCelu.y)));
+	pomocnikCelowania.wyznaczKatStrzalu(Punkt(pozycja.x-pozycjaCelu.x,pozycja.y-pozycjaCelu.y)+poprawka,cel->zwrocPredkosc());
+	katCelowaniaWprost = M_PI*2-pomocnikCelowania.zwrocKat(PomocnikCelowania::katWprost);
+	katCelowaniaZGory = M_PI*2-pomocnikCelowania.zwrocKat(PomocnikCelowania::katZGory);
 
 	if(!czyKatPrzekraczaMaks(katCelowaniaWprost) && !czyKatPrzekraczaMin(katCelowaniaWprost))
 	{
@@ -109,7 +120,7 @@ std::pair<Klawiatura,Myszka> Balista::wyznaczSterowanie()
 
 	}
 
-	if(fabs((double)katCelowaniaWprost-katCelowania)<parametry.predkoscCelowania)
+	if(fabs((double)katCelowaniaWprost-katCelowania)<=parametry.predkoscCelowania)
 	{
 		m.ustawLPM(true);
 	}
@@ -120,67 +131,6 @@ std::pair<Klawiatura,Myszka> Balista::wyznaczSterowanie()
 //#####################################################################################################
 //Podfunkcje Ruch
 //#####################################################################################################
-
-void Balista::wyznaczKatStrzalu(Punkt cel)
-{
-	katCelowaniaWprost = 0;
-    katCelowaniaZGory = 0;
-	mozliwyStrzal=true;
-
-	//do wzoru, jak zgubisz kartke to zle
-	double A=-cel.y;
-	double B=cel.x;
-	double C=B*B*(Strzala::parametry.wspolczynnikGrawitacji)/(2*parametry.predkoscStrzaly*parametry.predkoscStrzaly);
-
-	if(B==0)
-	{
-		mozliwyStrzal=false;
-		return;
-	}
-
-	//do rownania kwadratowego
-	double a=A*A+B*B;
-	double b=B*B+2*A*C;
-	double c=C*C;
-
-	//rownanie kwadratowe
-	double delta = b*b-4*a*c;
-
-	if(delta<0)
-	{
-		mozliwyStrzal=false;
-		return;
-	}
-	double kat1 = -(-b -sqrt(delta))/(2*a);
-	double kat2 = -(-b +sqrt(delta))/(2*a);
-
-	if(kat1<0)
-	{
-		mozliwyStrzal=false;
-		return ;
-	}
-	if(kat1<kat2)
-	{
-		double tmp = kat1;kat1=kat2;kat2=tmp;
-	}
-
-	if(cel.x<0)
-	{
-		katCelowaniaWprost = acos(-sqrt(kat1));
-		katCelowaniaZGory = acos(-sqrt(kat2));
-	}
-	else
-	{
-		katCelowaniaWprost = acos(sqrt(kat1));
-		katCelowaniaZGory = acos(sqrt(kat2));
-	}
-
-	katCelowaniaWprost+=3.14;
-	katCelowaniaZGory+=3.14;
-
-	katCelowaniaWprost=M_PI*2-katCelowaniaWprost;
-	katCelowaniaZGory=M_PI*2-katCelowaniaZGory;
-}
 
 bool Balista::czyPrzekroczonoMaksKatCelowania()
 {

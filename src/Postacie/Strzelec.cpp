@@ -6,6 +6,7 @@
  */
 
 #include "Strzelec.h"
+#include "PomocnikCelowania.h"
 
 Strzelec::Strzelec(): Postac()
 {
@@ -133,8 +134,8 @@ void Strzelec::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 
 std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 {
-	int maxOdleglosc=5200;
-	int minOdleglosc=5200;
+	int maxOdleglosc=15200;
+	int minOdleglosc=15200;
 	int odleglosc=00;
 
 	Punkt pozycjaCelu = cel->zwrocPozycjeCelu();
@@ -158,7 +159,13 @@ std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 		m.ustawLPM(true);
 		if(mozliwyStrzal)
 		{
-			pomocnikCelowania.wyznaczKatStrzalu(Punkt((m.zwrocX()),(m.zwrocY())),cel->zwrocPredkosc());
+			Punkt poprawka = (*(cel->zwrocPrzestrzenKolizji()->zwrocOkregi()))[0].zwrocPozycjeWzgledemObiektu();
+			poprawka.y=-poprawka.y+10;
+			poprawka.x=-poprawka.x+100;
+			if(cel->czyZwroconyWPrawo()) poprawka.x+=30;
+			else poprawka.x-=30;
+
+			pomocnikCelowania.wyznaczKatStrzalu(Punkt(m.zwrocX(),m.zwrocY())+poprawka,cel->zwrocPredkosc());
 			katCelowaniaWprost = pomocnikCelowania.zwrocKat(PomocnikCelowania::katWprost);
 			katCelowaniaZGory = pomocnikCelowania.zwrocKat(PomocnikCelowania::katZGory);
 		}
