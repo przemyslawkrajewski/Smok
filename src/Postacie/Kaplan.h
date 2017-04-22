@@ -15,6 +15,7 @@
 #include <utility>
 
 #include "Postac.h"
+#include "PomocnikCelowania.h"
 
 struct ParametryKaplana
 {
@@ -53,7 +54,7 @@ struct ParametryKaplana
 
 
 		czasRzucaniaKierowanegoPocisku=50;
-		czasRzucaniaKasetowegoPocisku=80;
+		czasRzucaniaKasetowegoPocisku=0;
 		czasRzucaniaPersonalnejTarczy=150;
 		czasRzucaniaObszarowejTarczy=50;
 
@@ -80,7 +81,11 @@ public:
 
 	std::pair<Klawiatura,Myszka> wyznaczSterowanie();
 
-	void ustawParametry(ParametryKaplana p) {parametry=p;}
+	void ustawParametry(ParametryKaplana p)
+	{
+		parametry=p;
+		pomocnikCelowania.ustawParametry(parametry.predkoscPociskuKierowanego,0);
+	}
 
 	ParametryKaplana parametry;
 	StanKaplana stan;
@@ -88,6 +93,8 @@ public:
 private:
 	int stanChodu;
 	int stanRzucaniaZaklec;
+
+	PomocnikCelowania pomocnikCelowania;
 
 	Obiekt* tarcza;
 

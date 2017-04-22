@@ -18,6 +18,7 @@ Kaplan::Kaplan(): Postac() {
 	stanRzucaniaZaklec=0;
 
 	tarcza=0;
+	pomocnikCelowania.ustawParametry(parametry.predkoscPociskuKierowanego,0);
 }
 
 //#####################################################################################################
@@ -59,7 +60,7 @@ void Kaplan::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 				{
 					stanRzucaniaZaklec=0;
 
-					double kat = atan2((-myszka->zwrocX()),(myszka->zwrocY()))-1.57;
+					double kat = atan2((myszka->zwrocX()),(myszka->zwrocY()))-1.57;
 					Punkt p;
 					p.x=pozycja.x+(parametry.minimalnaOdleglosc)*cos(kat);
 					p.y=pozycja.y+(parametry.minimalnaOdleglosc)*sin(kat);
@@ -80,7 +81,7 @@ void Kaplan::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 				{
 					stanRzucaniaZaklec=0;
 
-					double kat = atan2((-myszka->zwrocX()),(myszka->zwrocY()))-1.57;
+					double kat = atan2((myszka->zwrocX()),(myszka->zwrocY()))-1.57;
 					Punkt p;
 					p.x=pozycja.x+(parametry.minimalnaOdleglosc)*cos(kat);
 					p.y=pozycja.y+(parametry.minimalnaOdleglosc)*sin(kat);
@@ -164,9 +165,9 @@ void Kaplan::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 
 std::pair<Klawiatura,Myszka> Kaplan::wyznaczSterowanie()
 {
-	int maxOdleglosc=4000;
-	int minOdleglosc=600;
-	int odleglosc=400;
+	int maxOdleglosc=10000;
+	int minOdleglosc=10000;
+	int odleglosc=10000;
 
 	Punkt pozycjaCelu = cel->zwrocPozycjeCelu();
 
@@ -178,14 +179,22 @@ std::pair<Klawiatura,Myszka> Kaplan::wyznaczSterowanie()
 		return std::pair<Klawiatura,Myszka>(k,m);
 	}
 
-	m.ustawX(pozycja.x-pozycjaCelu.x);
-	m.ustawY(pozycja.y-pozycjaCelu.y);
-
 	if(fabs(pozycjaCelu.x-pozycja.x)<minOdleglosc && ((pozycjaCelu.x>=pozycja.x && zwroconyWPrawo==true) || (pozycjaCelu.x<=pozycja.x && zwroconyWPrawo!=true)))
 	{
-		//m.ustawLPM(true);
+		m.ustawLPM(true);
 		//k.ustawWcisnietoKlawiszFunkcyjny(true,0);
-		k.ustawWcisnietoKlawiszFunkcyjny(true,1);
+		//k.ustawWcisnietoKlawiszFunkcyjny(true,1);
+
+		Punkt poprawka = (*(cel->zwrocPrzestrzenKolizji()->zwrocOkregi()))[0].zwrocPozycjeWzgledemObiektu();
+		poprawka.y=-poprawka.y+10;
+		poprawka.x=-poprawka.x;
+		if(cel->czyZwroconyWPrawo()) poprawka.x+=30;
+		else poprawka.x-=30;
+
+		pomocnikCelowania.wyznaczKatStrzalu(Punkt(pozycja.x-pozycjaCelu.x,pozycja.y-pozycjaCelu.y)+poprawka,cel->zwrocPredkosc());
+		double kat = pomocnikCelowania.zwrocKat(PomocnikCelowania::katWprost);
+		m.ustawX(1000*cos(kat));
+		m.ustawY(1000*sin(kat));
 	}
 	else if(pozycjaCelu.x>pozycja.x)
 	{

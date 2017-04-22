@@ -46,7 +46,7 @@ void PociskKasetowy::wyznaczKolejnyStan()
 		{
 			Punkt p = (pozycja-cel->zwrocPozycje());
 			double odleglosc = sqrt(p.x*p.x+p.y*p.y);
-			if(((p.x<0)==(predkosc.x<0)) || ((p.y<0)==(predkosc.y<0)) || odleglosc<parametry.minimalnaOdleglosc) zniszcz();
+			if( odleglosc<parametry.minimalnaOdleglosc) zniszcz();
 		}
 		czasTrwania--;
 	}

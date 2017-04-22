@@ -187,7 +187,7 @@ public:
 
 	void wyznaczKatStrzalu(Punkt dP, Punkt v2)
 	{
-		if(v2.y>-7 && v2.y<8 && fabs(v2.x)<18) v2.y=0;
+		if(v2.y>-7 && v2.y<9 && fabs(v2.x)<18) v2.y=0;
 		v2.x=-v2.x;
 		v2.y=-v2.y;
 

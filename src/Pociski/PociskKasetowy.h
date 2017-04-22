@@ -27,7 +27,7 @@ struct ParametryPociskuKasetowego
 		iloscOdlamkow=40;
 		czasTrwaniaOdlamkow=50;
 
-		minimalnaOdleglosc=60;
+		minimalnaOdleglosc=100;
 	}
 };
 
