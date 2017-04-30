@@ -100,7 +100,7 @@ void Strzelec::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 		else if(klawiatura->czyWcisnietoKlawiszFunkcyjny(0) && !czyPosiadaTarcze())
 		{
 			// Tarcza personalna
-			stan = stoi;
+			stan = tarczaPersonalna;
 			stanRzucaniaZaklec++;
 
 			if(stanRzucaniaZaklec>parametry.czasRzucaniaPersonalnejTarczy)
@@ -271,7 +271,7 @@ std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 	if(abs(pozycjaCelu.x-pozycja.x)>maxOdleglosc) mozliwyStrzal=false;
 	if( (stanNaciagania>0 && parametry.spust) || (mozliwyStrzal && wSerii))
 	{
-		k.ustawWcisnietoKlawiszFunkcyjny(true,2);
+		k.ustawWcisnietoKlawiszFunkcyjny(true,0);
 
 		//m.ustawLPM(true);
 	}
@@ -371,8 +371,12 @@ void Strzelec::wyznaczKlatkeAnimacji()
 		if(klatkaAnimacji.y>3) klatkaAnimacji.y=3;
 		if(klatkaAnimacji.y<0) klatkaAnimacji.y=0;
 		break;
+	case tarczaPersonalna:
+		klatkaAnimacji.x=0;
+		klatkaAnimacji.y=6;
+		break;
 	case umiera:
-		if(klatkaAnimacji.x!=0 || klatkaAnimacji.y<1)
+		if(klatkaAnimacji.x!=0 || klatkaAnimacji.y<1 || klatkaAnimacji.y>5)
 		{
 			klatkaAnimacji.x=0;
 			klatkaAnimacji.y=1;

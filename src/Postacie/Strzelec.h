@@ -83,7 +83,7 @@ struct ParametryStrzelca
 class Strzelec: public Postac
 {
 public:
-	enum StanStrzelca {stoi,biegnie,strzela,naciaga,naciagaWSerii,umiera};
+	enum StanStrzelca {stoi,biegnie,strzela,naciaga,tarczaPersonalna,naciagaWSerii,umiera};
 
 private:
 	void bieganie(Klawiatura* klawiatura, Myszka *myszka);
