@@ -86,6 +86,7 @@ void Wideo::zamkniecieOkna()
 	SDL_DestroyTexture(plomien);
 	SDL_DestroyTexture(belt);
 	SDL_DestroyTexture(strzala);
+	SDL_DestroyTexture(swietaStrzala);
 	SDL_DestroyTexture(pociskBalistyczny);
 	SDL_DestroyTexture(pociskKierowany);
 	SDL_DestroyTexture(pociskKasetowy);
@@ -192,6 +193,7 @@ void Wideo::wczytanieObrazkow()
 	   wczytanieObrazka("Grafika/plomien.bmp",&plomien) ||
 	   wczytanieObrazka("Grafika/Belt.bmp",&belt) ||
 	   wczytanieObrazka("Grafika/Strzala.bmp",&strzala) ||
+	   wczytanieObrazka("Grafika/SwietaStrzala.bmp",&swietaStrzala) ||
 	   wczytanieObrazka("Grafika/PociskBalistyczny.bmp",&pociskBalistyczny) ||
 	   wczytanieObrazka("Grafika/PociskKierowany.bmp",&pociskKierowany) ||
 	   wczytanieObrazka("Grafika/PociskKasetowy.bmp",&pociskKasetowy) ||
@@ -784,7 +786,10 @@ void Wideo::wyswietlenieStrzal()
 			p=czyWychodziZaEkran(pozycjaKamery,pozycja,i->zwrocPredkosc(),1);
 
 		if(p==pozycja)
-			wyswietlenieKlatki(belt,p,pozycjaKamery,klatka,rozmiarKlatki);
+		{
+			if(i->czySwieta()) wyswietlenieKlatki(swietaStrzala,p,pozycjaKamery,klatka,rozmiarKlatki);
+			else wyswietlenieKlatki(belt,p,pozycjaKamery,klatka,rozmiarKlatki);
+		}
 		else
 			wyswietlenieOstrzezenia(p, pozycjaKamery,2);
 

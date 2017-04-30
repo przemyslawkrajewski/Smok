@@ -52,6 +52,7 @@ void Kaplan::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 		}
 		else if(myszka->zwrocLPM())
 		{
+			//Pocisk samonaprowadzajacy
 			stan = zaklecieKierowany;
 			stanChodu=0;
 			stanRzucaniaZaklec++;
@@ -73,6 +74,7 @@ void Kaplan::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 		}
 		else if(klawiatura->czyWcisnietoKlawiszFunkcyjny(0))
 		{
+			// Pocisk kasetowy
 			stan = zaklecieKasetowy;
 			stanChodu=0;
 			stanRzucaniaZaklec++;
@@ -94,6 +96,7 @@ void Kaplan::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 		}
 		else if(klawiatura->czyWcisnietoKlawiszFunkcyjny(1) && najblizszyKompan!=0)
 		{
+			// Tarcza personalna
 			stan = tarczaPersonalna;
 			stanChodu=0;
 			stanRzucaniaZaklec++;
@@ -117,6 +120,19 @@ void Kaplan::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 				stanRzucaniaZaklec=parametry.czasRzucaniaObszarowejTarczy;
 				if(tarcza==0)
 					tarcza=FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::tarczaObszarowa,pozycja);
+			}
+		}
+		else if(klawiatura->czyWcisnietoKlawiszFunkcyjny(3) && !czyPosiadaTarcze())
+		{
+			// Tarcza personalna na siebie
+			stan = tarczaPersonalna;
+			stanRzucaniaZaklec++;
+
+			if(stanRzucaniaZaklec>parametry.czasRzucaniaPersonalnejTarczy)
+			{
+				stanRzucaniaZaklec=0;
+				FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::tarczaPersonalna,Punkt(),this);
+				ustawCzyPosiadaTarcze(true);
 			}
 		}
 		else
@@ -181,9 +197,9 @@ std::pair<Klawiatura,Myszka> Kaplan::wyznaczSterowanie()
 
 	if(fabs(pozycjaCelu.x-pozycja.x)<minOdleglosc && ((pozycjaCelu.x>=pozycja.x && zwroconyWPrawo==true) || (pozycjaCelu.x<=pozycja.x && zwroconyWPrawo!=true)))
 	{
-		m.ustawLPM(true);
+		//m.ustawLPM(true);
 		//k.ustawWcisnietoKlawiszFunkcyjny(true,0);
-		//k.ustawWcisnietoKlawiszFunkcyjny(true,1);
+		k.ustawWcisnietoKlawiszFunkcyjny(true,3);
 
 		Punkt poprawka = (*(cel->zwrocPrzestrzenKolizji()->zwrocOkregi()))[0].zwrocPozycjeWzgledemObiektu();
 		poprawka.y=-poprawka.y+10;

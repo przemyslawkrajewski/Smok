@@ -39,8 +39,11 @@ public:
 
 	int zwrocCzasTrwania() {return czasTrwania;}
 	double zwrocKat();
+	bool czySwieta() {return swietaStrzala;}
+	void ustawCzySwieta(bool wartosc) {swietaStrzala = wartosc;}
 
 	static ParametryBeltu parametry;
+	bool swietaStrzala;
 };
 
 #endif /* SRC_POCISKI_BELT_H_ */

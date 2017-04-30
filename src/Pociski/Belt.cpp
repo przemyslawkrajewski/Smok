@@ -17,6 +17,7 @@ Belt::Belt(double nx,double ny, double nvx, double nvy, double nczasTrwania,doub
 	predkosc.x=nvx;
 	predkosc.y=nvy;
 	katNachylenia = nKat;
+	swietaStrzala=false;
 }
 
 Belt::Belt(Punkt nPozycja, Punkt nPredkosc, double nczasTrwania,double nKat): Pocisk()
@@ -26,6 +27,7 @@ Belt::Belt(Punkt nPozycja, Punkt nPredkosc, double nczasTrwania,double nKat): Po
 	predkosc=nPredkosc;
 	katNachylenia = nKat;
 	obrazenia=5;
+	swietaStrzala=false;
 }
 
 void Belt::zniszcz()

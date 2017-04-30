@@ -35,7 +35,7 @@ private:
 public:
 	~FabrykaPociskow();
 
-	enum TypPocisku {plomien,belt,strzala,cichaStrzala, pociskBalistyczny, pociskKierowany, pociskKasetowy, odlamek};
+	enum TypPocisku {plomien,belt,strzala,cichaStrzala, swietaStrzala, pociskBalistyczny, pociskKierowany, pociskKasetowy, odlamek};
 
 	static FabrykaPociskow* zwrocInstancje();
 

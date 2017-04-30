@@ -77,6 +77,13 @@ void FabrykaPociskow::stworzPocisk(TypPocisku typ,Punkt nPozycja, Punkt nPredkos
 		b->wyznaczPrzestrzenKolizji();
 		b->ustawObrazenia(obrazenia);
 		break;
+	case swietaStrzala:
+		assert("Kontener 'Belty' nie ustawiony" && belty!=0);
+		b = belty->dodaj(Belt(nPozycja,nPredkosc,nczasTrwania,nKat));
+		b->wyznaczPrzestrzenKolizji();
+		b->ustawObrazenia(obrazenia);
+		b->ustawCzySwieta(true);
+		break;
 	case pociskBalistyczny:
     	assert("Kontener 'PociskiBalistyczne' nie ustawiony" && pociskiBalistyczne!=0);
     	pb = pociskiBalistyczne->dodaj(PociskBalistyczny(nPozycja,nPredkosc,nczasTrwania,nKat));

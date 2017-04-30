@@ -106,6 +106,7 @@ private:
 
 	SDL_Texture * belt;
 	SDL_Texture * strzala;
+	SDL_Texture * swietaStrzala;
 	SDL_Texture * pociskBalistyczny;
 	SDL_Texture * pociskKierowany;
 	SDL_Texture * pociskKasetowy;

@@ -28,10 +28,9 @@ Punkt Obiekt::zwrocPozycje()
 	{
 		if(!punktZaczepu->czyIstnieje())
 		{
-			usun();
-			return Punkt();
+			usunPunktZaczepu();
 		}
-		if(punktZaczepu->czyZniszczony())
+		else if(punktZaczepu->czyZniszczony())
 		{
 			usunPunktZaczepu();
 		}

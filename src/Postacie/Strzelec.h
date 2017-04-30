@@ -34,6 +34,16 @@ struct ParametryStrzelca
 	double maxNaciagniecie;	// czas potrzebny do naciagniecia kuszy
 	double maxCelowania; // czas potrzebny do wycelowania
 
+	double czasRzucaniaPersonalnejTarczy;
+	double czasOdnawianiaSwietejStrzaly;
+	double czasTrwaniaSwietejStrzaly;
+	double predkoscSwietejStrzaly;
+	double obrazeniaSwietejStrzaly;
+	double maksymalnaIloscStrzalWSerii;
+	double maxSzybkiegoNaciagania;
+	double maxSzybkiegoCelowania;
+	double predkoscOdnawianiaSerii;
+
 	double maxZycia;
 	double obrazenia;
 
@@ -47,11 +57,24 @@ struct ParametryStrzelca
 		predkoscBiegu=5;
 		czasTrwaniaStrzaly=200;
 		minimalnaOdleglosc=10;
+
 		spust=true;
 		predkoscStrzaly=20;
 		celnosc=0;
 		maxNaciagniecie=100;
 		maxCelowania=50;
+
+		czasRzucaniaPersonalnejTarczy=250;
+		czasOdnawianiaSwietejStrzaly=200;
+		czasTrwaniaSwietejStrzaly=400;
+		predkoscSwietejStrzaly=80;
+		obrazeniaSwietejStrzaly=10;
+		maksymalnaIloscStrzalWSerii=10;
+		maxSzybkiegoNaciagania=2;
+		maxSzybkiegoCelowania=5;
+		predkoscOdnawianiaSerii=0.1;
+
+
 		maxZycia=10;
 		obrazenia=0;
 	}
@@ -60,7 +83,7 @@ struct ParametryStrzelca
 class Strzelec: public Postac
 {
 public:
-	enum StanStrzelca {stoi,biegnie,strzela,naciaga,umiera};
+	enum StanStrzelca {stoi,biegnie,strzela,naciaga,naciagaWSerii,umiera};
 
 private:
 	void bieganie(Klawiatura* klawiatura, Myszka *myszka);
@@ -93,7 +116,11 @@ public:
 	double stanBiegu;
 	double stanNaciagania;
 	double stanCelowania;
+	double stanRzucaniaZaklec;
+	bool wSerii;
 
+	double gotowoscSwietejStrzaly;
+	double iloscStrzalWSerii;
 };
 
 #endif /* STRZELEC_H_ */
