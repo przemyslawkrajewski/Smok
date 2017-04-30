@@ -54,6 +54,31 @@ void Balista::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 
 		stanNaciagania=parametry.maxNaciagania;
 	}
+	else if(klawiatura->czyWcisnietoKlawiszFunkcyjny(0) && stanNaciagania==0 )
+	{
+		double katMyszki = atan2(myszka->zwrocY(),myszka->zwrocX());
+		if(czyKatPrzekraczaMaks(-katMyszki) || czyKatPrzekraczaMin(-katMyszki)) return;
+		for(int i=0;i<parametry.iloscPociskow;i++)
+		{
+			double kat;
+			kat=katCelowania+((double)(rand()%100)/100)*parametry.rozrzut - parametry.rozrzut/2;
+			if(fabs(katMyszki-katCelowania)<parametry.predkoscCelowania)
+			{
+				kat=-katMyszki;
+			}
+			//Fabryka->stworz pocisk
+			Punkt p;
+			p.x=pozycja.x;//+(parametry.predkoscStrzaly)*cos(katCelowania);
+			p.y=pozycja.y;//+(parametry.predkoscStrzaly)*sin(katCelowania);
+			Punkt v;
+			v.x=parametry.predkoscStrzaly*cos(kat);
+			v.y=parametry.predkoscStrzaly*sin(kat);
+			double katStrzaly = kat+M_PI/2;//+3.14+6.28
+			if(katStrzaly>6.28) katStrzaly-=6.28;
+			FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::pociskBalistyczny,p,v,parametry.predkoscStrzaly,katStrzaly,parametry.obnizoneObrazenia);
+		}
+		stanNaciagania=parametry.maxNaciagania;
+	}
 	else
 	{
 		//Naciaganie
@@ -107,7 +132,8 @@ std::pair<Klawiatura,Myszka> Balista::wyznaczSterowanie()
 
 	if(fabs(kat-katCelowania)<=parametry.predkoscCelowania)
 	{
-		m.ustawLPM(true);
+		//m.ustawLPM(true);
+		k.ustawWcisnietoKlawiszFunkcyjny(true,0);
 	}
 
 	return std::pair<Klawiatura,Myszka>(k,m);

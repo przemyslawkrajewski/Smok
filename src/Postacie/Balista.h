@@ -31,6 +31,10 @@ struct ParametryBalisty
 
 	double predkoscStrzaly;
 
+	int iloscPociskow;
+	double rozrzut;
+	double obnizoneObrazenia;
+
 	ParametryBalisty()
 	{
 		predkoscAnimacjiNaciagania=20;
@@ -44,6 +48,10 @@ struct ParametryBalisty
 		maxNaciagania=200;
 		maxZycia=10;
 		obrazenia=0;
+
+		iloscPociskow=5;
+		rozrzut=3.14/16;
+		obnizoneObrazenia=0;
 	}
 };
 
