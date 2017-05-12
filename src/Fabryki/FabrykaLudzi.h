@@ -25,16 +25,28 @@ private:
 	static KontenerPostaci<Balista>* balisty;
 	static KontenerPostaci<Kaplan>* kaplani;
 
-	ParametryStrzelca parametryLucznika;
-	ParametryStrzelca parametryKrzyzowca;
-	ParametryBalisty parametryBalisty;
-	ParametryKaplana parametryKaplana;
+	ParametryStrzelca parametryLucznikaLv1;
+	ParametryStrzelca parametryLucznikaLv2;
+	ParametryStrzelca parametryLucznikaLv3;
+	ParametryStrzelca parametryLucznikaLv4;
+	ParametryStrzelca parametryRycerzaLv1;
+	ParametryStrzelca parametryRycerzaLv2;
+	ParametryStrzelca parametryRycerzaLv3;
+	ParametryBalisty parametryBalistyLv1;
+	ParametryBalisty parametryBalistyLv2;
+	ParametryKaplana parametryKaplanaLv1;
+	ParametryKaplana parametryKaplanaLv2;
+	ParametryKaplana parametryKaplanaLv3;
 
 	FabrykaLudzi();
 public:
 	~FabrykaLudzi();
 
-	enum TypCzlowieka {lucznik,wyborowyLucznik,rycerz,krzyzowiec,kaplan,biskup,balista};
+	enum TypCzlowieka {	poborowyLucznik,	szwadron,
+						zawodowyLucznik,	wyborowyLucznik,	skrytobojca,
+						rycerz,				krzyzowiec,			templariusz,
+						balista,			ulepszonaBalista,
+						mnich,				kaplan,				glowa};
 
 	static FabrykaLudzi* zwrocInstancje();
 

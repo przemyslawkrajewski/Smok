@@ -33,9 +33,9 @@ struct ParametryKaplana
 	double czasRzucaniaPersonalnejTarczy;
 	double czasRzucaniaObszarowejTarczy;
 
-	double czasTrwaniaPocuskuKierowanego;
+	double czasTrwaniaPocisku;
 
-	double predkoscPociskuKierowanego;
+	double predkoscPocisku;
 
 	double maxZycia;
 	double obrazeniaKierowanegoPocisku;
@@ -58,9 +58,9 @@ struct ParametryKaplana
 		czasRzucaniaPersonalnejTarczy=150;
 		czasRzucaniaObszarowejTarczy=50;
 
-		czasTrwaniaPocuskuKierowanego=1000;
+		czasTrwaniaPocisku=1000;
 
-		predkoscPociskuKierowanego=15;
+		predkoscPocisku=15;
 
 		maxZycia=10;
 		obrazeniaKierowanegoPocisku=5;
@@ -84,7 +84,7 @@ public:
 	void ustawParametry(ParametryKaplana p)
 	{
 		parametry=p;
-		pomocnikCelowania.ustawParametry(parametry.predkoscPociskuKierowanego,0);
+		pomocnikCelowania.ustawParametry(parametry.predkoscPocisku,0);
 	}
 
 	ParametryKaplana parametry;

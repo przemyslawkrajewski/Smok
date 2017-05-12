@@ -18,7 +18,7 @@ Kaplan::Kaplan(): Postac() {
 	stanRzucaniaZaklec=0;
 
 	tarcza=0;
-	pomocnikCelowania.ustawParametry(parametry.predkoscPociskuKierowanego,0);
+	pomocnikCelowania.ustawParametry(parametry.predkoscPocisku,0);
 }
 
 //#####################################################################################################
@@ -66,10 +66,10 @@ void Kaplan::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 					p.x=pozycja.x+(parametry.minimalnaOdleglosc)*cos(kat);
 					p.y=pozycja.y+(parametry.minimalnaOdleglosc)*sin(kat);
 					Punkt v;
-					v.x=parametry.predkoscPociskuKierowanego*cos(kat);
-					v.y=parametry.predkoscPociskuKierowanego*sin(kat);
+					v.x=parametry.predkoscPocisku*cos(kat);
+					v.y=parametry.predkoscPocisku*sin(kat);
 					if(kat>6.28) kat-=6.28;
-					FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::pociskKierowany,p,v,parametry.czasTrwaniaPocuskuKierowanego,kat,parametry.obrazeniaKierowanegoPocisku,cel);
+					FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::pociskKierowany,p,v,parametry.czasTrwaniaPocisku,kat,parametry.obrazeniaKierowanegoPocisku,cel);
 				}
 		}
 		else if(klawiatura->czyWcisnietoKlawiszFunkcyjny(0))
@@ -88,10 +88,10 @@ void Kaplan::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 					p.x=pozycja.x+(parametry.minimalnaOdleglosc)*cos(kat);
 					p.y=pozycja.y+(parametry.minimalnaOdleglosc)*sin(kat);
 					Punkt v;
-					v.x=parametry.predkoscPociskuKierowanego*cos(kat);
-					v.y=parametry.predkoscPociskuKierowanego*sin(kat);
+					v.x=parametry.predkoscPocisku*cos(kat);
+					v.y=parametry.predkoscPocisku*sin(kat);
 					if(kat>6.28) kat-=6.28;
-					FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::pociskKasetowy,p,v,parametry.czasTrwaniaPocuskuKierowanego,kat,parametry.obrazeniaKasetowegoPocisku,cel);
+					FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::pociskKasetowy,p,v,parametry.czasTrwaniaPocisku,kat,parametry.obrazeniaKasetowegoPocisku,cel);
 				}
 		}
 		else if(klawiatura->czyWcisnietoKlawiszFunkcyjny(1) && najblizszyKompan!=0)
