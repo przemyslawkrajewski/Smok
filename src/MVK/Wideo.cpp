@@ -30,15 +30,30 @@ Wideo::Wideo(Model *nModel)
 	glowaSmokaL=0;
 	plomien=0;
 
-	krzyzowiecP=0;
-	krzyzowiecL=0;
-	lucznikP=0;
-	lucznikL=0;
+	for(int i=0;i<3;i++)
+	{
+		krzyzowiecP[i]=0;
+		krzyzowiecL[i]=0;
+		lucznikP[i]=0;
+		lucznikL[i]=0;
+		kaplanP[i]=0;
+		kaplanL[i]=0;
+	}
+	lucznikP[3]=0;
+	lucznikL[3]=0;
+
+	balistaP=0;
+	balistaL=0;
+	inzynierP=0;
+	inzynierL=0;
+	zebatka=0;
+
 	belt=0;
 	strzala=0;
 	pociskBalistyczny=0;
 	pociskKierowany=0;
 	pociskKasetowy=0;
+	swietaStrzala=0;
 
 	mur=0;
 	zaslona=0;
@@ -72,10 +87,15 @@ void Wideo::zamkniecieOkna()
 	SDL_DestroyTexture(glowaSmokaP);
 	SDL_DestroyTexture(glowaSmokaL);
 
-	SDL_DestroyTexture(krzyzowiecP);
-	SDL_DestroyTexture(krzyzowiecL);
-	SDL_DestroyTexture(lucznikP);
-	SDL_DestroyTexture(lucznikL);
+	for(int i=0;i<3; i++)
+	{
+		SDL_DestroyTexture(lucznikP[i]);
+		SDL_DestroyTexture(lucznikL[i]);
+		SDL_DestroyTexture(krzyzowiecP[i]);
+		SDL_DestroyTexture(krzyzowiecL[i]);
+		SDL_DestroyTexture(kaplanP[i]);
+		SDL_DestroyTexture(kaplanL[i]);
+	}
 
 	SDL_DestroyTexture(balistaP);
 	SDL_DestroyTexture(balistaL);
@@ -179,17 +199,11 @@ void Wideo::wczytanieObrazkow()
 	   wczytanieObrazka("Grafika/SmokTL.bmp",&smokTL) ||
 	   wczytanieObrazka("Grafika/SmokGlowaP.bmp",&glowaSmokaP) ||
 	   wczytanieObrazka("Grafika/SmokGlowaL.bmp",&glowaSmokaL) ||
-	   wczytanieObrazka("Grafika/KrzyzowiecP.bmp",&krzyzowiecP) ||
-	   wczytanieObrazka("Grafika/KrzyzowiecL.bmp",&krzyzowiecL) ||
 	   wczytanieObrazka("Grafika/BalistaP.bmp",&balistaP) ||
 	   wczytanieObrazka("Grafika/BalistaL.bmp",&balistaL) ||
 	   wczytanieObrazka("Grafika/InzynierP.bmp",&inzynierP) ||
 	   wczytanieObrazka("Grafika/InzynierL.bmp",&inzynierL) ||
 	   wczytanieObrazka("Grafika/Zebatka.bmp",&zebatka) ||
-	   wczytanieObrazka("Grafika/LucznikP.bmp",&lucznikP) ||
-	   wczytanieObrazka("Grafika/LucznikL.bmp",&lucznikL) ||
-	   wczytanieObrazka("Grafika/KaplanP.bmp",&kaplanP) ||
-	   wczytanieObrazka("Grafika/KaplanL.bmp",&kaplanL) ||
 	   wczytanieObrazka("Grafika/plomien.bmp",&plomien) ||
 	   wczytanieObrazka("Grafika/Belt.bmp",&belt) ||
 	   wczytanieObrazka("Grafika/Strzala.bmp",&strzala) ||
@@ -214,6 +228,29 @@ void Wideo::wczytanieObrazkow()
 	{
 		std::cout << "Brak plikow z grafika\n";
 	}
+
+	if(wczytanieObrazka("Grafika/Krzyzowiec1P.bmp",&krzyzowiecP[0]) ||
+	   wczytanieObrazka("Grafika/Krzyzowiec1L.bmp",&krzyzowiecL[0]) ||
+	   wczytanieObrazka("Grafika/Krzyzowiec2P.bmp",&krzyzowiecP[1]) ||
+	   wczytanieObrazka("Grafika/Krzyzowiec2L.bmp",&krzyzowiecL[1]) ||
+	   wczytanieObrazka("Grafika/Krzyzowiec3P.bmp",&krzyzowiecP[2]) ||
+	   wczytanieObrazka("Grafika/Krzyzowiec3L.bmp",&krzyzowiecL[2]) ||
+	   wczytanieObrazka("Grafika/Lucznik1P.bmp",&lucznikP[0]) ||
+	   wczytanieObrazka("Grafika/Lucznik1L.bmp",&lucznikL[0]) ||
+	   wczytanieObrazka("Grafika/Lucznik2P.bmp",&lucznikP[1]) ||
+	   wczytanieObrazka("Grafika/Lucznik2L.bmp",&lucznikL[1]) ||
+	   wczytanieObrazka("Grafika/Lucznik3P.bmp",&lucznikP[2]) ||
+	   wczytanieObrazka("Grafika/Lucznik3L.bmp",&lucznikL[2]) ||
+	   wczytanieObrazka("Grafika/Kaplan1P.bmp",&kaplanP[0]) ||
+	   wczytanieObrazka("Grafika/Kaplan1L.bmp",&kaplanL[0]) ||
+	   wczytanieObrazka("Grafika/Kaplan2P.bmp",&kaplanP[1]) ||
+	   wczytanieObrazka("Grafika/Kaplan2L.bmp",&kaplanL[1]) ||
+	   wczytanieObrazka("Grafika/Kaplan3P.bmp",&kaplanP[2]) ||
+	   wczytanieObrazka("Grafika/Kaplan3L.bmp",&kaplanL[2]))
+	{
+		std::cout << "Brak plikow z grafika\n";
+	}
+
 }
 
 int Wideo::wczytanieObrazka(const char* nazwa, SDL_Texture ** grafika)
@@ -643,15 +680,16 @@ void Wideo::wyswietlenieStrzelcow()
 
 	for(std::list<Strzelec>::iterator i=strzelcy->begin(); i!=strzelcy->end() ;i++)
 	{
+		int poziom = i->zwrocPoziom();
 		if(i->zwrocTypPostaci()==Postac::krzyzowiec)
 		{
-			if(i->czyZwroconyWPrawo()) animacja=&krzyzowiecP;
-			else animacja=&krzyzowiecL;
+			if(i->czyZwroconyWPrawo()) animacja=&krzyzowiecP[poziom];
+			else animacja=&krzyzowiecL[poziom];
 		}
 		else if(i->zwrocTypPostaci()==Postac::lucznik)
 		{
-			if(i->czyZwroconyWPrawo()) animacja=&lucznikP;
-			else animacja=&lucznikL;
+			if(i->czyZwroconyWPrawo()) animacja=&lucznikP[poziom];
+			else animacja=&lucznikL[poziom];
 		}
 		Punkt pozycja = i->zwrocPozycje();
 		Punkt klatka = i->zwrocKlatkeAnimacji();
@@ -730,8 +768,9 @@ void Wideo::wyswietlenieKaplanow()
 
 	for(std::list<Kaplan>::iterator i=kaplani->begin(); i!=kaplani->end() ;i++)
 	{
-		if(i->czyZwroconyWPrawo()) animacja=&kaplanP;
-		else animacja=&kaplanL;
+		int poziom = i->zwrocPoziom();
+		if(i->czyZwroconyWPrawo()) animacja=&kaplanP[poziom];
+		else animacja=&kaplanL[poziom];
 
 		Punkt pozycja = i->zwrocPozycje();
 		Punkt klatka = i->zwrocKlatkeAnimacji();

@@ -97,12 +97,12 @@ private:
 	SDL_Texture * glowaSmokaP,* glowaSmokaL;
 	SDL_Texture * plomien;
 
-	SDL_Texture * krzyzowiecP,* krzyzowiecL;
-	SDL_Texture * lucznikP,* lucznikL;
+	SDL_Texture * lucznikP[4],* lucznikL[4];
+	SDL_Texture * krzyzowiecP[3],* krzyzowiecL[3];
+	SDL_Texture * kaplanP[3], *kaplanL[3];
 	SDL_Texture * balistaP,* balistaL;
 	SDL_Texture * inzynierP,*inzynierL;
 	SDL_Texture * zebatka;
-	SDL_Texture * kaplanP, *kaplanL;
 
 	SDL_Texture * belt;
 	SDL_Texture * strzala;

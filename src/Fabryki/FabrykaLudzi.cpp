@@ -185,6 +185,7 @@ void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja, bool zwroco
 			strzelec.ustawPozycje(nPozycja);
 			strzelec.ustawCzyZwroconyWPrawo(zwroconyWPrawo);
 			strzelec.ustawParametry(parametryLucznikaLv1);
+			strzelec.ustawPoziom(0);
 			(strzelcy->dodaj(strzelec))->wyznaczPrzestrzenKolizji(); //Taki myk ze dodaje nowego strzelca i od razu wyznacza jego przestrzen kolizji
 																	//Nie mozna zrobic przez konstruktor bo wskaznik pokazuje na argument funkcji a nie obiekt w liscie
 			break;
@@ -197,6 +198,7 @@ void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja, bool zwroco
 			strzelec.ustawPozycje(nPozycja);
 			strzelec.ustawCzyZwroconyWPrawo(zwroconyWPrawo);
 			strzelec.ustawParametry(parametryLucznikaLv2);
+			strzelec.ustawPoziom(1);
 			(strzelcy->dodaj(strzelec))->wyznaczPrzestrzenKolizji();
 			break;
 		}
@@ -208,6 +210,7 @@ void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja, bool zwroco
 			strzelec.ustawPozycje(nPozycja);
 			strzelec.ustawCzyZwroconyWPrawo(zwroconyWPrawo);
 			strzelec.ustawParametry(parametryLucznikaLv3);
+			strzelec.ustawPoziom(2);
 			(strzelcy->dodaj(strzelec))->wyznaczPrzestrzenKolizji();
 			break;
 		}
@@ -219,6 +222,7 @@ void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja, bool zwroco
 			strzelec.ustawPozycje(nPozycja);
 			strzelec.ustawCzyZwroconyWPrawo(zwroconyWPrawo);
 			strzelec.ustawParametry(parametryLucznikaLv4);
+			strzelec.ustawPoziom(3);
 			(strzelcy->dodaj(strzelec))->wyznaczPrzestrzenKolizji();
 			break;
 		}
@@ -230,6 +234,7 @@ void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja, bool zwroco
 			strzelec.ustawPozycje(nPozycja);
 			strzelec.ustawCzyZwroconyWPrawo(zwroconyWPrawo);
 			strzelec.ustawParametry(parametryRycerzaLv1);
+			strzelec.ustawPoziom(0);
 			(strzelcy->dodaj(strzelec))->wyznaczPrzestrzenKolizji();
 			break;
 		}
@@ -241,6 +246,7 @@ void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja, bool zwroco
 			strzelec.ustawPozycje(nPozycja);
 			strzelec.ustawCzyZwroconyWPrawo(zwroconyWPrawo);
 			strzelec.ustawParametry(parametryRycerzaLv2);
+			strzelec.ustawPoziom(1);
 			(strzelcy->dodaj(strzelec))->wyznaczPrzestrzenKolizji();
 			break;
 		}
@@ -252,6 +258,7 @@ void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja, bool zwroco
 			strzelec.ustawPozycje(nPozycja);
 			strzelec.ustawCzyZwroconyWPrawo(zwroconyWPrawo);
 			strzelec.ustawParametry(parametryRycerzaLv3);
+			strzelec.ustawPoziom(2);
 			(strzelcy->dodaj(strzelec))->wyznaczPrzestrzenKolizji();
 			break;
 		}
@@ -264,6 +271,7 @@ void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja, bool zwroco
 			if(zwroconyWPrawo) balista.ustawKatCelowania(0.2);
 			else balista.ustawKatCelowania(2.9);
 			balista.ustawParametry(parametryBalistyLv1);
+			balista.ustawPoziom(0);
 			(balisty->dodaj(balista))->wyznaczPrzestrzenKolizji();
 			break;
 		}
@@ -276,6 +284,7 @@ void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja, bool zwroco
 			if(zwroconyWPrawo) balista.ustawKatCelowania(0.2);
 			else balista.ustawKatCelowania(2.9);
 			balista.ustawParametry(parametryBalistyLv2);
+			balista.ustawPoziom(1);
 			(balisty->dodaj(balista))->wyznaczPrzestrzenKolizji();
 			break;
 		}
@@ -286,6 +295,7 @@ void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja, bool zwroco
 			kaplan.ustawPozycje(nPozycja);
 			kaplan.ustawCzyZwroconyWPrawo(zwroconyWPrawo);
 			kaplan.ustawParametry(parametryKaplanaLv1);
+			kaplan.ustawPoziom(0);
 			(kaplani->dodaj(kaplan))->wyznaczPrzestrzenKolizji();
 			break;
 		}
@@ -296,6 +306,7 @@ void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja, bool zwroco
 			kaplan.ustawPozycje(nPozycja);
 			kaplan.ustawCzyZwroconyWPrawo(zwroconyWPrawo);
 			kaplan.ustawParametry(parametryKaplanaLv2);
+			kaplan.ustawPoziom(1);
 			(kaplani->dodaj(kaplan))->wyznaczPrzestrzenKolizji();
 			break;
 		}
@@ -306,6 +317,7 @@ void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja, bool zwroco
 			kaplan.ustawPozycje(nPozycja);
 			kaplan.ustawCzyZwroconyWPrawo(zwroconyWPrawo);
 			kaplan.ustawParametry(parametryKaplanaLv3);
+			kaplan.ustawPoziom(2);
 			(kaplani->dodaj(kaplan))->wyznaczPrzestrzenKolizji();
 			break;
 		}

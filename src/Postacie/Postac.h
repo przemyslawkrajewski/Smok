@@ -34,7 +34,12 @@ public:
 
 	void ustawNajblizszegoKompana(Obiekt *o) {najblizszyKompan=o;}
 
+	void ustawPoziom(int p) {poziom=p;}
+	int zwrocPoziom() {return poziom;}
+
 protected:
+
+	int poziom;
 
 	TypPostaci typPostaci;
 	Obiekt* najblizszyKompan;

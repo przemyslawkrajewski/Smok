@@ -234,7 +234,7 @@ std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 {
 	int maxOdleglosc=15200;
 	int minOdleglosc=15200;
-	int odleglosc=00;
+	int odleglosc=200;
 
 	Punkt pozycjaCelu = cel->zwrocPozycjeCelu();
 
@@ -271,9 +271,9 @@ std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 	if(abs(pozycjaCelu.x-pozycja.x)>maxOdleglosc) mozliwyStrzal=false;
 	if( (stanNaciagania>0 && parametry.spust) || (mozliwyStrzal && wSerii))
 	{
-		k.ustawWcisnietoKlawiszFunkcyjny(true,0);
+		//k.ustawWcisnietoKlawiszFunkcyjny(true,0);
 
-		//m.ustawLPM(true);
+		m.ustawLPM(true);
 	}
 	/*else if(pozycjaCelu.x>pozycja.x )
 	{
