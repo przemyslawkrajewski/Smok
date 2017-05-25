@@ -112,6 +112,9 @@ private:
 	SDL_Texture * pociskKasetowy;
 
 	SDL_Texture * mur;
+	SDL_Texture * skala;
+	SDL_Texture * czarneTlo;
+	SDL_Texture * szareTlo;
 	SDL_Texture * zaslona;
 	SDL_Texture * tarczaPersonalna;
 	SDL_Texture * tarczaObszarowa;

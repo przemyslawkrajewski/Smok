@@ -33,12 +33,13 @@ void Smok::reset()
 
 	zycie=500;
 	obrazenia=0.1;
+	maksymalnaPozycja= Punkt(30000,3000);
+	minimalnaPozycja= Punkt(1000,00);
 }
 
 void Smok::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 {
 	Punkt staraPredkosc(predkosc);
-
 	//zadane Y
 	if(pozycja.y-zadaneY>70) zadaneY=pozycja.y-70;
 	//grawitacja
@@ -53,9 +54,9 @@ void Smok::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 
 	//jest na ziemi
 	if(pozycja.y<=parametryObiektow.poziomZiemi+parametry.wysokosc)
-	{
 		postawNaZiemi(parametryObiektow.poziomZiemi+parametry.wysokosc);
-	}
+	//za wysoko
+	if(zadaneY>maksymalnaPozycja.y) zadaneY=maksymalnaPozycja.y;
 
 	//zadane Y ponizej ziemi
 	if(zadaneY<parametryObiektow.poziomZiemi+parametry.wysokosc) zadaneY=parametryObiektow.poziomZiemi+parametry.wysokosc;
@@ -88,7 +89,7 @@ void Smok::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 void Smok::wyznaczLot(Klawiatura *klawiatura, Myszka *myszka)
 {
 	//Obsługa klawiszy
-	if(klawiatura->czyWcisnietoPrawo() && klawiatura->czyWcisnietoGora())
+	if(klawiatura->czyWcisnietoPrawo() && klawiatura->czyWcisnietoGora() && pozycja.x<maksymalnaPozycja.x)
 	{
 		if(predkosc.x>0 && myszka->zwrocX()<0) zwroconyWPrawo=true;
 		if(naZiemi) //Jesli jestem na ziemi
@@ -140,7 +141,7 @@ void Smok::wyznaczLot(Klawiatura *klawiatura, Myszka *myszka)
 			}
 		}
 	}
-	else if(klawiatura->czyWcisnietoPrawo() && klawiatura->czyWcisnietoDol())
+	else if(klawiatura->czyWcisnietoPrawo() && klawiatura->czyWcisnietoDol() && pozycja.x<maksymalnaPozycja.x)
 	{
 		if(predkosc.x>0 && myszka->zwrocX()<0) zwroconyWPrawo=true;
 		if(naZiemi)
@@ -165,7 +166,7 @@ void Smok::wyznaczLot(Klawiatura *klawiatura, Myszka *myszka)
 			}
 		}
 	}
-	else if(klawiatura->czyWcisnietoLewo() && klawiatura->czyWcisnietoDol() && pozycja.x>500)
+	else if(klawiatura->czyWcisnietoLewo() && klawiatura->czyWcisnietoDol() && pozycja.x>minimalnaPozycja.x)
 	{
 		if(predkosc.x<0 && myszka->zwrocX()>0) zwroconyWPrawo=false;
 		if(naZiemi)
@@ -190,7 +191,7 @@ void Smok::wyznaczLot(Klawiatura *klawiatura, Myszka *myszka)
 			}
 		}
 	}
-	else if(klawiatura->czyWcisnietoLewo() && klawiatura->czyWcisnietoGora() && pozycja.x>500)
+	else if(klawiatura->czyWcisnietoLewo() && klawiatura->czyWcisnietoGora() && pozycja.x>minimalnaPozycja.x)
 	{
 		if(predkosc.x<0 && myszka->zwrocX()>0) zwroconyWPrawo=false;
 		if(naZiemi)
@@ -282,7 +283,7 @@ void Smok::wyznaczLot(Klawiatura *klawiatura, Myszka *myszka)
 			else stan=spada;
 		}
 	}
-	else if(klawiatura->czyWcisnietoPrawo()) //Lot,szybowanie, HamowanieX
+	else if(klawiatura->czyWcisnietoPrawo() && pozycja.x<maksymalnaPozycja.x) //Lot,szybowanie, HamowanieX
 	{
 		if(predkosc.x>0 && myszka->zwrocX()<0) zwroconyWPrawo=true;
 		if(naZiemi)
@@ -336,7 +337,7 @@ void Smok::wyznaczLot(Klawiatura *klawiatura, Myszka *myszka)
 			}
 		}
 	}
-	else if(klawiatura->czyWcisnietoLewo()  && pozycja.x>500)
+	else if(klawiatura->czyWcisnietoLewo()  && pozycja.x>minimalnaPozycja.x)
 	{
 		if(predkosc.x<0 && myszka->zwrocX()>0) zwroconyWPrawo=false;
 		if(naZiemi)

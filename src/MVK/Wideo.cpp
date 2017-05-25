@@ -56,6 +56,9 @@ Wideo::Wideo(Model *nModel)
 	swietaStrzala=0;
 
 	mur=0;
+	skala=0;
+	czarneTlo=0;
+	szareTlo=0;
 	zaslona=0;
 	tarczaPersonalna=0;
 	tarczaObszarowa=0;
@@ -112,6 +115,9 @@ void Wideo::zamkniecieOkna()
 	SDL_DestroyTexture(pociskKasetowy);
 
 	SDL_DestroyTexture(mur);
+	SDL_DestroyTexture(skala);
+	SDL_DestroyTexture(czarneTlo);
+	SDL_DestroyTexture(szareTlo);
 	SDL_DestroyTexture(zaslona);
 	SDL_DestroyTexture(tarczaPersonalna);
 	SDL_DestroyTexture(tarczaObszarowa);
@@ -199,11 +205,6 @@ void Wideo::wczytanieObrazkow()
 	   wczytanieObrazka("Grafika/SmokTL.bmp",&smokTL) ||
 	   wczytanieObrazka("Grafika/SmokGlowaP.bmp",&glowaSmokaP) ||
 	   wczytanieObrazka("Grafika/SmokGlowaL.bmp",&glowaSmokaL) ||
-	   wczytanieObrazka("Grafika/BalistaP.bmp",&balistaP) ||
-	   wczytanieObrazka("Grafika/BalistaL.bmp",&balistaL) ||
-	   wczytanieObrazka("Grafika/InzynierP.bmp",&inzynierP) ||
-	   wczytanieObrazka("Grafika/InzynierL.bmp",&inzynierL) ||
-	   wczytanieObrazka("Grafika/Zebatka.bmp",&zebatka) ||
 	   wczytanieObrazka("Grafika/plomien.bmp",&plomien) ||
 	   wczytanieObrazka("Grafika/Belt.bmp",&belt) ||
 	   wczytanieObrazka("Grafika/Strzala.bmp",&strzala) ||
@@ -212,6 +213,9 @@ void Wideo::wczytanieObrazkow()
 	   wczytanieObrazka("Grafika/PociskKierowany.bmp",&pociskKierowany) ||
 	   wczytanieObrazka("Grafika/PociskKasetowy.bmp",&pociskKasetowy) ||
 	   wczytanieObrazka("Grafika/Mur.bmp",&mur) ||
+	   wczytanieObrazka("Grafika/Skala.bmp",&skala) ||
+	   wczytanieObrazka("Grafika/CzarneTlo.bmp",&czarneTlo) ||
+	   wczytanieObrazka("Grafika/SzareTlo.bmp",&szareTlo) ||
 	   wczytanieObrazka("Grafika/Zaslona.bmp",&zaslona) ||
 	   wczytanieObrazka("Grafika/TarczaPersonalna.bmp",&tarczaPersonalna) ||
 	   wczytanieObrazka("Grafika/TarczaObszarowa.bmp",&tarczaObszarowa) ||
@@ -246,7 +250,12 @@ void Wideo::wczytanieObrazkow()
 	   wczytanieObrazka("Grafika/Kaplan2P.bmp",&kaplanP[1]) ||
 	   wczytanieObrazka("Grafika/Kaplan2L.bmp",&kaplanL[1]) ||
 	   wczytanieObrazka("Grafika/Kaplan3P.bmp",&kaplanP[2]) ||
-	   wczytanieObrazka("Grafika/Kaplan3L.bmp",&kaplanL[2]))
+	   wczytanieObrazka("Grafika/Kaplan3L.bmp",&kaplanL[2]) ||
+	   wczytanieObrazka("Grafika/BalistaP.bmp",&balistaP) ||
+	   wczytanieObrazka("Grafika/BalistaL.bmp",&balistaL) ||
+	   wczytanieObrazka("Grafika/InzynierP.bmp",&inzynierP) ||
+	   wczytanieObrazka("Grafika/InzynierL.bmp",&inzynierL) ||
+	   wczytanieObrazka("Grafika/Zebatka.bmp",&zebatka))
 	{
 		std::cout << "Brak plikow z grafika\n";
 	}
@@ -947,6 +956,23 @@ void Wideo::wyswietlenieMuru()
 	for(std::list<Mur>::iterator i=s->begin(); i!=s->end() ;i++)
 	{
 		if(!i->czyIstnieje()) continue;
+		SDL_Texture **animacja;
+		switch(i->zwrocTyp())
+		{
+			case Mur::mur:
+				animacja = &mur;
+				break;
+			case Mur::skala:
+				animacja = &skala;
+				break;
+			case Mur::czarneTlo:
+				animacja = &czarneTlo;
+				break;
+			case Mur::szareTlo:
+				animacja = &szareTlo;
+				break;
+		}
+
 		Wymiary wymiary = i->zwrocWymiary();
 		int wysokosc = wymiary.y;
 		int szerokosc = wymiary.x;
@@ -957,27 +983,27 @@ void Wideo::wyswietlenieMuru()
 		{
 			for(int w=0;w<wysokosc;w+=rozmiarKlatki)
 			{
-				wyswietlenieWycinka(mur,pozycjaPoczatkowa+Punkt(s,w),pozycjaKamery,Punkt(5,5),Punkt(60,60));
+				wyswietlenieWycinka(*animacja,pozycjaPoczatkowa+Punkt(s,w),pozycjaKamery,Punkt(5,5),Punkt(60,60));
 			}
 		}
 
 		//Krawedzie
 		for(int s=rozmiarKlatki;s<=szerokosc;s+=rozmiarKlatki)
 		{
-			wyswietlenieWycinka(mur,pozycjaPoczatkowa+Punkt(s,-5),pozycjaKamery,Punkt(5,65),Punkt(60,5));
-			wyswietlenieWycinka(mur,pozycjaPoczatkowa+Punkt(s,wysokosc),pozycjaKamery,Punkt(5,0),Punkt(60,5));
+			wyswietlenieWycinka(*animacja,pozycjaPoczatkowa+Punkt(s,-5),pozycjaKamery,Punkt(5,65),Punkt(60,5));
+			wyswietlenieWycinka(*animacja,pozycjaPoczatkowa+Punkt(s,wysokosc),pozycjaKamery,Punkt(5,0),Punkt(60,5));
 		}
 		for(int w=0;w<wysokosc;w+=rozmiarKlatki)
 		{
-			wyswietlenieWycinka(mur,pozycjaPoczatkowa+Punkt(0,w),pozycjaKamery,Punkt(0,5),Punkt(5,60));
-			wyswietlenieWycinka(mur,pozycjaPoczatkowa+Punkt(szerokosc+5,w),pozycjaKamery,Punkt(65,5),Punkt(5,60));
+			wyswietlenieWycinka(*animacja,pozycjaPoczatkowa+Punkt(0,w),pozycjaKamery,Punkt(0,5),Punkt(5,60));
+			wyswietlenieWycinka(*animacja,pozycjaPoczatkowa+Punkt(szerokosc+5,w),pozycjaKamery,Punkt(65,5),Punkt(5,60));
 		}
 
 		//Narozniki
-		wyswietlenieWycinka(mur,pozycjaPoczatkowa+Punkt(0,wysokosc),pozycjaKamery,Punkt(0,0),Punkt(5,5));
-		wyswietlenieWycinka(mur,pozycjaPoczatkowa+Punkt(0,-5),pozycjaKamery,Punkt(0,65),Punkt(5,5));
-		wyswietlenieWycinka(mur,pozycjaPoczatkowa+Punkt(szerokosc+5,wysokosc),pozycjaKamery,Punkt(65,0),Punkt(5,5));
-		wyswietlenieWycinka(mur,pozycjaPoczatkowa+Punkt(szerokosc+5,-5),pozycjaKamery,Punkt(65,65),Punkt(5,5));
+		wyswietlenieWycinka(*animacja,pozycjaPoczatkowa+Punkt(0,wysokosc),pozycjaKamery,Punkt(0,0),Punkt(5,5));
+		wyswietlenieWycinka(*animacja,pozycjaPoczatkowa+Punkt(0,-5),pozycjaKamery,Punkt(0,65),Punkt(5,5));
+		wyswietlenieWycinka(*animacja,pozycjaPoczatkowa+Punkt(szerokosc+5,wysokosc),pozycjaKamery,Punkt(65,0),Punkt(5,5));
+		wyswietlenieWycinka(*animacja,pozycjaPoczatkowa+Punkt(szerokosc+5,-5),pozycjaKamery,Punkt(65,65),Punkt(5,5));
 
 		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}

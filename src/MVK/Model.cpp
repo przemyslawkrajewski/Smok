@@ -45,7 +45,7 @@ void Model::reset()
 	//FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::zaslona,Punkt(1200,600));
 	//FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::zaslona,Punkt(1500,600));
 
-	//FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniMur,Punkt(1400,180));
+	FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::jaskinia,Punkt(1400,0));
 
 	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::lucznik,Punkt(1400,430));
 	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(1400,430));
@@ -54,9 +54,9 @@ void Model::reset()
 	//FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::tarczaPersonalna,Punkt(),&(*(strzelcy.zwrocObiekty()->begin())));
 	//FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::tarczaObszarowa,Punkt(),(*(kaplani.zwrocObiekty().begin())));
 
-	FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::mnich,Punkt(1400,230));
-	FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::kaplan,Punkt(1400,330));
-	FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::glowa,Punkt(1400,430));
+	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::mnich,Punkt(1400,230));
+	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::kaplan,Punkt(1400,330));
+	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::glowa,Punkt(1400,430));
 
 	/*for(int i=0;i<400;i++)
 	{

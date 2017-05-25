@@ -7,10 +7,11 @@
 
 #include "Mur.h"
 
-Mur::Mur(RozmiarMuru r,Punkt p): Przedmiot()
+Mur::Mur(Wymiary r, TypMuru t, Punkt p): Przedmiot()
 {
 	pozycja=p;
 	rozmiar = r;
+	typ = t;
 	zycie=1;
 	wyznaczPrzestrzenKolizji();
 	wyznaczKlatkeAnimacji();
@@ -19,7 +20,7 @@ Mur::Mur(RozmiarMuru r,Punkt p): Przedmiot()
 Mur::Mur(Punkt p)
 {
 	pozycja=p;
-	rozmiar = sredni;
+	rozmiar = Wymiary(60,60);
 	zycie=1;
 	wyznaczPrzestrzenKolizji();
 	wyznaczKlatkeAnimacji();
@@ -36,21 +37,19 @@ void Mur::wyznaczPrzestrzenKolizji()
 	std::vector<ProstokatKolizji> prostokaty;
 	prostokaty.clear();
 
-	prostokaty.push_back(ProstokatKolizji(&pozycja,&predkosc,Punkt(0,0),wymiary));
+	if(typ!=czarneTlo && typ!=szareTlo)
+		prostokaty.push_back(ProstokatKolizji(&pozycja,&predkosc,Punkt(0,0),wymiary));
 	ustawPrzestrzenKolizji(prostokaty);
 }
 
 Wymiary Mur::zwrocWymiary()
 {
-	switch(rozmiar)
-	{
-	case maly:
-		return Wymiary(180,60);
-	case sredni:
-		return Wymiary(600,180);
-	case duzy:
-		return Wymiary(1500,900);
-	}
+	return rozmiar;
+}
+
+Mur::TypMuru Mur::zwrocTyp()
+{
+	return typ;
 }
 
 void Mur::wyznaczKlatkeAnimacji()

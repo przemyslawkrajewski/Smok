@@ -133,6 +133,8 @@ private:
 
 	StanSmoka stan;
 	bool zieje;
+	Punkt maksymalnaPozycja;
+	Punkt minimalnaPozycja;
 
 	Punkt pozycjaGlowy;
 	double obrotGlowy;

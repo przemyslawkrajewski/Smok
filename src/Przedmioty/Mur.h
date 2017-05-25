@@ -13,9 +13,9 @@
 class Mur : public Przedmiot
 {
 public:
-	enum RozmiarMuru {maly,sredni,duzy};
+	enum TypMuru {mur, skala, czarneTlo, szareTlo};
 
-	Mur(RozmiarMuru rozmiar,Punkt pozycja);
+	Mur(Wymiary rozmiar, TypMuru t,Punkt pozycja);
 	Mur(Punkt pozycja);
 	~Mur();
 
@@ -23,8 +23,10 @@ public:
 	virtual void wyznaczPrzestrzenKolizji();
 
 	Wymiary zwrocWymiary();
+	TypMuru zwrocTyp();
 private:
-	RozmiarMuru rozmiar;
+	Wymiary rozmiar;
+	TypMuru typ;
 };
 
 #endif /* SRC_MUR_H_ */
