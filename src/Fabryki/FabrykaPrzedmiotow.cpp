@@ -52,10 +52,10 @@ Obiekt* FabrykaPrzedmiotow::stworzPrzedmiot(TypPrzedmiotu typ, Punkt pozycja, Ob
 		break;
 	case jaskinia:
 		assert("Kontener 'Mury' nie ustawiony" && mury!=0);
-		(mury->dodaj(Mur(Wymiary(2400,2400),Mur::czarneTlo,pozycja+Punkt(-10,1290))))->wyznaczPrzestrzenKolizji();
+		(mury->dodaj(Mur(Wymiary(2400,2400),Mur::czarneTlo,pozycja+Punkt(10,1290))))->wyznaczPrzestrzenKolizji();
 		(mury->dodaj(Mur(Wymiary(2400,2400),Mur::skala,pozycja+Punkt(0,1500))))->wyznaczPrzestrzenKolizji();
-		(mury->dodaj(Mur(Wymiary(2400,2400),Mur::skala,pozycja+Punkt(-1800,1270))))->wyznaczPrzestrzenKolizji();
-		(mury->dodaj(Mur(Wymiary(60,2400),Mur::szareTlo,pozycja+Punkt(-600,1505))))->wyznaczPrzestrzenKolizji();
+		(mury->dodaj(Mur(Wymiary(2400,2400),Mur::skala,pozycja+Punkt(1800,1270))))->wyznaczPrzestrzenKolizji();
+		(mury->dodaj(Mur(Wymiary(60,2400),Mur::szareTlo,pozycja+Punkt(600,1505))))->wyznaczPrzestrzenKolizji();
 		return 0;
 		break;
 	case zaslona:

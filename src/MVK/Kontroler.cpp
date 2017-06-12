@@ -94,7 +94,7 @@ void Kontroler::obsluzZdarzenia()
             		model->ustawWypelnienieCelownika(1);
             	w = (model->zwrocWypelnienieCelownika());
             	break;
-            case SDLK_ESCAPE:
+            case SDLK_q:
             	zakonczenieAplikacji=true;
             	break;
             default:

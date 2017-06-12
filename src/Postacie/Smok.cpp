@@ -83,6 +83,53 @@ void Smok::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 
 
 }
+
+void Smok::ustawPoziom(int p)
+{
+	poziom=p;
+	double maksymalnyPoziom = 10;
+	double mnoznik = ((double)poziom-1)/(maksymalnyPoziom-1);
+
+	//Zycie
+	zycie=500+1000*mnoznik;
+
+	//Ogien
+	parametry.minimalnaPredkoscOgnia=25+5*mnoznik;
+	parametry.maksymalnaPredkoscOgnia=30+15*mnoznik;
+	parametry.odchyleniePredkosciOgnia=10+5*mnoznik;
+	parametry.sredniCzasTrwaniaOgnia=15+5*mnoznik;
+	parametry.odchylenieCzasuTrwaniaOgnia=3;
+	parametry.odchylenieKataOgnia=7*M_PI/180-3*M_PI/180*mnoznik;
+	parametry.maksymalnailoscOgnia=7+5*mnoznik;
+	parametry.regeneracjaOgnia=0.07+0.05*mnoznik;
+	parametry.zuzycieOgnia=0.05;
+	obrazenia=0.3+0.6*mnoznik;
+
+	//Maksymalna predkosc
+	parametry.maksymalnaPredkoscX=20+20*mnoznik;
+	parametry.maksymalnaPredkoscY=20+20*mnoznik;
+	parametry.predkoscZblizaniaSie=7+10*mnoznik;
+	parametry.maksymalnaPredkoscTylemX=5+15*mnoznik;
+	parametry.maksymalnaPredkoscY=20+20*mnoznik;
+	parametry.maksPredkoscChodu=4+6*mnoznik;
+
+	//Przyspieszenie
+	parametry.wspolczynnikRozpedzaniaSieX=0.15+0.15*mnoznik;
+	parametry.wspolczynnikRozpedzaniaSieY=0.10+0.2*mnoznik;
+	parametry.wspolczynnikHamowaniaX=0.3+0.6*mnoznik;
+	parametry.wspolczynnikHamowaniaY=1.2+1.0*mnoznik;
+	parametry.predkoscWznoszeniaSieY=1.2+1.0*mnoznik;
+	parametry.przyspieszenieChodu=0.4+0.4*mnoznik;
+	parametry.hamowanieChodu=1.0;
+
+	//Wybicie
+	parametry.silaWybicia=10+6*mnoznik;
+	parametry.wspolczynnikSilniejszegoUnoszenia=9+3*mnoznik;
+
+	//parametry.predkoscOpadaniaPrzySzybowaniu=1;
+
+
+}
 //#####################################################################################################
 //Podfunkcje Smoka Przeliczanie
 //#####################################################################################################
@@ -277,6 +324,8 @@ void Smok::wyznaczLot(Klawiatura *klawiatura, Myszka *myszka)
 			if(predkosc.y>-parametry.maksymalnaPredkoscY) predkosc.y-=abs(predkosc.x)*0.15; //nurkowanie
 			predkosc.x*=0.8;
 
+			predkosc.y-=parametry.wspolczynnikRozpedzaniaSieY;
+
 			if(zadaneY>pozycja.y)zadaneY=pozycja.y-1;
 
 			if(abs(predkosc.x)>10 || (stan==nurkuje && predkosc.y>-12)) stan=nurkuje;
@@ -441,19 +490,20 @@ void Smok::wyznaczGlowe(Klawiatura* klawiatura, Myszka *myszka)
 		zieje=true;
 		przerwaOgnia=parametry.przerwaMiedzyMiotaniem;
 		if(iloscOgnia>0) iloscOgnia-=parametry.zuzycieOgnia;
+		double wspolczynnikSily=(iloscOgnia)/parametry.maksymalnailoscOgnia;//pow((iloscOgnia)/parametry.maksymalnailoscOgnia,0.2); //Wspolczynnik od ktorego zalezy aktualna predkosc ognia
 		for(int i=0; i<iloscOgnia;i++)
 		{
-			double wspolczynnikSily=pow((iloscOgnia)/parametry.maksymalnaPredkoscOgnia,0.1); //Wspolczynnik od ktorego zalezy aktualna predkosc ognia
-
 			double predkoscOgnia=parametry.minimalnaPredkoscOgnia+(parametry.maksymalnaPredkoscOgnia-parametry.minimalnaPredkoscOgnia)*wspolczynnikSily;
 			predkoscOgnia+=((double)(rand()%100)/100)*parametry.odchyleniePredkosciOgnia*wspolczynnikSily;
 
 			double katOgnia=((double)(rand()%100)/100)*parametry.odchylenieKataOgnia - parametry.odchylenieKataOgnia/2 + obrotGlowy;
 			double czasTrwania=parametry.sredniCzasTrwaniaOgnia+parametry.odchylenieCzasuTrwaniaOgnia*wspolczynnikSily;
 
+			double odchyleniePozycji = ((double)(rand()%100)/100)*parametry.maksymalnaPredkoscOgnia;
+
 			Punkt p;
-			p.x=parametry.poprawkaOgnia.x+pozycja.x+pozycjaGlowy.x+(parametry.minimalnaOdleglosc)*cos(katOgnia)-predkosc.x;
-			p.y=parametry.poprawkaOgnia.y+pozycja.y-pozycjaGlowy.y+(parametry.minimalnaOdleglosc)*sin(katOgnia);
+			p.x=parametry.poprawkaOgnia.x+pozycja.x+pozycjaGlowy.x+(odchyleniePozycji+parametry.minimalnaOdleglosc)*cos(katOgnia)-predkosc.x;
+			p.y=parametry.poprawkaOgnia.y+pozycja.y-pozycjaGlowy.y+(odchyleniePozycji+parametry.minimalnaOdleglosc)*sin(katOgnia);
 			Punkt v;
 			v.x=predkoscOgnia*cos(katOgnia)+predkosc.x;
 			v.y=predkoscOgnia*sin(katOgnia);
@@ -566,13 +616,25 @@ void Smok::stabilizacjaX(double kierunek)
 
 void Smok::stabilizacjaY(double kierunek)
 {
-	if(abs(predkosc.y)<abs(parametry.maksymalnaPredkoscY) && abs(predkosc.x)>6)
+	if(abs(predkosc.y)<parametry.maksymalnaPredkoscY && abs(predkosc.x)>parametry.predkoscZblizaniaSie)
 	{
-		if(stan!=wznosi) predkosc.y=-parametry.predkoscOpadaniaPrzySzybowaniu;
-		if(kierunek==1) predkosc.y+=abs(predkosc.x)*0.2;
-		else predkosc.y-=abs(predkosc.x)*0.2;
+		if(stan!=wznosi) predkosc.y=0;
+		zadaneY=predkosc.y-10;
+
+		if(kierunek==1)
+		{
+			if(predkosc.y<0) predkosc.y=0;
+			predkosc.y+=4;
+		}
+		else
+		{
+			if(predkosc.y>0) predkosc.y=0;
+			predkosc.y-=4;
+		}
 	}
-	predkosc.x*=0.8;
+	if(abs(predkosc.x)<4) predkosc.x=0;
+	else if(predkosc.x>0) predkosc.x-=4;
+	else predkosc.x+=4;
 }
 
 void Smok::rozpedzanieNaZiemi(double przyspieszenie)

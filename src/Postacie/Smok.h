@@ -41,6 +41,7 @@ struct ParametrySmoka
 	double maksymalnaPredkoscTylemX;
 	double maksymalnaPredkoscY;
 	double wspolczynnikRozpedzaniaSieX;
+	double wspolczynnikRozpedzaniaSieY;
 	double wspolczynnikHamowaniaX;
 	double wspolczynnikHamowaniaY;
 	double predkoscWznoszeniaSieY;
@@ -80,6 +81,7 @@ struct ParametrySmoka
 		maksymalnaPredkoscTylemX=10;
 		maksymalnaPredkoscY=30;
 		wspolczynnikRozpedzaniaSieX=0.2;
+		wspolczynnikRozpedzaniaSieY=0.1;
 		wspolczynnikHamowaniaX=0.6;
 		wspolczynnikHamowaniaY=1.5;
 		predkoscWznoszeniaSieY=2;
@@ -164,6 +166,10 @@ public:
 
 	//Gety stan Smoka
 	double zwrocStanOgnia() {return iloscOgnia/parametry.maksymalnailoscOgnia;}
+
+	//Metody zwiazane z sama gra
+	void ustawWymiaryManewruSmoka(Punkt min, Punkt maks) {maksymalnaPozycja=maks; minimalnaPozycja=min;}
+	void ustawPoziom(int poziom);
 
 };
 

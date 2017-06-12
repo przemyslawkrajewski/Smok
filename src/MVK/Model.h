@@ -17,6 +17,7 @@
 #include "../Fabryki/FabrykaPociskow.h"
 #include "../Fabryki/FabrykaLudzi.h"
 #include "../Fabryki/FabrykaPrzedmiotow.h"
+#include "../Fabryki/FabrykaPoziomow.h"
 
 #include "../Kontenery/KontenerPostaci.h"
 #include "../Kontenery/KontenerPociskow.h"
@@ -31,6 +32,7 @@ public:
 	void wyznaczKolejnyStan();
 	void wyznaczKolejnyStanObiektow();
 	void reset();
+	void wczytajPoziom(int numer);
 	void ustawWymiaryEkranu(Wymiary w) {wymiaryEkranu=w;}
 	Wymiary zwrocWymiaryEkranu() { return wymiaryEkranu;}
 	void ustawPelnyEkran(bool p) {pelnyEkran=p;}
@@ -39,7 +41,6 @@ public:
 	double zwrocWypelnienieCelownika() {return wypelnienieCelownika;}
 	void ustawWypelnienieCelownika(double wypelnienie) {wypelnienieCelownika=wypelnienie;}
 
-	bool czyWyswietlacInstrukcje() {return wyswietlenieInstrukcji;}
 	bool czyWyswietlacOdNowa() {return wyswietlenieOdNowa;} //Todo: tymczasowe
 	bool czyWyswietlacPrzeciwnikow() {return klawiatura.czyWcisnietoKlawiszFunkcyjny(0);}
 
@@ -92,7 +93,6 @@ private:
 private:
 	Punkt wymiaryEkranu;
 	bool pelnyEkran;
-	bool wyswietlenieInstrukcji;
 	bool wyswietlenieOdNowa;
 	double wypelnienieCelownika;
 

@@ -21,12 +21,12 @@ FabrykaLudzi* FabrykaLudzi::zwrocInstancje()
 
 FabrykaLudzi::FabrykaLudzi()
 {
-	parametryLucznikaLv1.maxZycia=200;
-	parametryLucznikaLv1.obrazenia=0;
-	parametryLucznikaLv1.celnosc=3.14/32;
+	parametryLucznikaLv1.maxZycia=100;
+	parametryLucznikaLv1.obrazenia=5;
+	parametryLucznikaLv1.celnosc=3.14/16;
 	parametryLucznikaLv1.predkoscStrzaly=35;
-	parametryLucznikaLv1.maxNaciagniecie=10;
-	parametryLucznikaLv1.maxCelowania=2;
+	parametryLucznikaLv1.maxNaciagniecie=30;
+	parametryLucznikaLv1.maxCelowania=70;
 	parametryLucznikaLv1.predkoscAnimacjiBiegu1=0.5;//0.5
 	parametryLucznikaLv1.predkoscAnimacjiBiegu2=0.30;//0.3
 	parametryLucznikaLv1.predkoscBiegu=9;

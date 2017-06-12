@@ -1073,8 +1073,7 @@ void Wideo::wyswietlenieTarczObszarowych()
 
 void Wideo::wyswietlenieKomunikatow()
 {
-	if(model->czyWyswietlacInstrukcje()) wyswietlenieObrazka(instrukcja,0,0,0,0,szerokoscOkna,wysokoscOkna);
-	else if(model->czyWyswietlacOdNowa()) wyswietlenieObrazka(odNowa,136,400,0,0,367,28);
+	if(model->czyWyswietlacOdNowa()) wyswietlenieObrazka(odNowa,136,400,0,0,367,28);
 }
 
 void Wideo::wyswietlenieCelownika()

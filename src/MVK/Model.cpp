@@ -12,20 +12,19 @@ ParametrySmoka Smok::parametry;
 
 Model::Model(int szerOkna,int wysOkna, bool ekran): wymiaryEkranu(Punkt(szerOkna,wysOkna)),pelnyEkran(ekran)
 {
-	wyswietlenieInstrukcji=true;
 	wypelnienieCelownika=false;
 
 	FabrykaPrzedmiotow::zwrocInstancje()->ustawKontenery(&mury,&zaslony, &tarczePersonalne, &tarczeObszarowe);
 	FabrykaPociskow::zwrocInstancje()->ustawKontenery(&plomienie,&strzaly, &belty, &pociskiBalistyczne, &pociskiKierowane, &pociskiKasetowe, &odlamki);
 	FabrykaLudzi::zwrocInstancje()->ustawKontenery(&strzelcy,&balisty,&kaplani);
+	FabrykaPoziomow::zwrocInstancje()->ustawSmoka(&smok);
 
 	reset();
+	wczytajPoziom(1);
 }
 
 void Model::reset()
 {
-	wyswietlenieOdNowa=false;
-
 	strzelcy.wyczysc();
 	balisty.wyczysc();
 	kaplani.wyczysc();
@@ -41,29 +40,8 @@ void Model::reset()
 	tarczePersonalne.wyczysc();
 
 	smok.reset();
+	smok.ustawPoziom(1);
 
-	//FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::zaslona,Punkt(1200,600));
-	//FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::zaslona,Punkt(1500,600));
-
-	FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::jaskinia,Punkt(1400,0));
-
-	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::lucznik,Punkt(1400,430));
-	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(1400,430));
-	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::balista,Punkt(1000,200),true);
-	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::kaplan,Punkt(1400,430),true);
-	//FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::tarczaPersonalna,Punkt(),&(*(strzelcy.zwrocObiekty()->begin())));
-	//FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::tarczaObszarowa,Punkt(),(*(kaplani.zwrocObiekty().begin())));
-
-	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::mnich,Punkt(1400,230));
-	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::kaplan,Punkt(1400,330));
-	//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::glowa,Punkt(1400,430));
-
-	/*for(int i=0;i<400;i++)
-	{
-		int x = rand()%30000+5000;
-		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(x,130));
-	}//*/
-	smok.ustawPozycje(Punkt(1000,100));
 	kamera.ustawPozycje(smok.zwrocPozycje());
 	myszka.ustawX(wymiaryEkranu.x/2);
 	myszka.ustawY(wymiaryEkranu.y/2);
@@ -71,19 +49,27 @@ void Model::reset()
 	wyznaczKolejnyStanObiektow();
 }
 
+void Model::wczytajPoziom(int numer)
+{
+	reset();
+	std::cout << "Podaj nr poziomu: ";
+	std::cin >> numer;
+	FabrykaPoziomow::zwrocInstancje()->stworzPoziom(numer);
+
+	kamera.ustawPozycje(smok.zwrocPozycje());
+	myszka.ustawX(wymiaryEkranu.x/2);
+	myszka.ustawY(wymiaryEkranu.y/2);
+	wyznaczKolejnyStanObiektow();
+
+	wyswietlenieOdNowa=false;
+}
+
 //####################################################KOLEJNY STAN#######################################################
 
 void Model::wyznaczKolejnyStan()
 {
-	if(wyswietlenieInstrukcji)
-	{
-		if(klawiatura.czyWcisnietoSpacje()) wyswietlenieInstrukcji=false;
-	}
-	else
-	{
-		if(wyswietlenieOdNowa && klawiatura.czyWcisnietoSpacje()) reset();
-		wyznaczKolejnyStanObiektow();
-	}
+	if(klawiatura.czyWcisnietoSpacje()) wczytajPoziom(2);
+	wyznaczKolejnyStanObiektow();
 }
 
 void Model::wyznaczKolejnyStanObiektow()
