@@ -101,6 +101,7 @@ public:
 	void ustawParametry(ParametryStrzelca p)
 	{
 		parametry=p;
+		zycie=p.maxZycia;
 		if(p.spust) pomocnikCelowania.ustawParametry(p.predkoscStrzaly,0);
 		else pomocnikCelowania.ustawParametry(p.predkoscStrzaly,Strzala::parametry.wspolczynnikGrawitacji);
 	}
@@ -113,12 +114,18 @@ public:
 
 	PomocnikCelowania pomocnikCelowania;
 
+	//Stan wykonywania roznych czynnosci
 	double stanBiegu;
 	double stanNaciagania;
 	double stanCelowania;
 	double stanRzucaniaZaklec;
-	bool wSerii;
 
+	//Uzywane w sterowaniu
+	bool wSerii;
+	bool pozycjaStrzelecka;
+	bool zablokowany;
+
+	//Taki odpowiednik many
 	double gotowoscSwietejStrzaly;
 	double iloscStrzalWSerii;
 };

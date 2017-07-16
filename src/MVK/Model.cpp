@@ -40,7 +40,7 @@ void Model::reset()
 	tarczePersonalne.wyczysc();
 
 	smok.reset();
-	smok.ustawPoziom(1);
+	smok.ustawPoziom(2);
 
 	kamera.ustawPozycje(smok.zwrocPozycje());
 	myszka.ustawX(wymiaryEkranu.x/2);
@@ -55,12 +55,12 @@ void Model::wczytajPoziom(int numer)
 	std::cout << "Podaj nr poziomu: ";
 	std::cin >> numer;
 	FabrykaPoziomow::zwrocInstancje()->stworzPoziom(numer);
-
+	smok.ustawPoziom((double) numer/2 + 0.5 );
+	std::cout << "Poziom smoka: " << smok.zwrocPoziom() << "\n";
 	kamera.ustawPozycje(smok.zwrocPozycje());
 	myszka.ustawX(wymiaryEkranu.x/2);
 	myszka.ustawY(wymiaryEkranu.y/2);
 	wyznaczKolejnyStanObiektow();
-
 	wyswietlenieOdNowa=false;
 }
 
@@ -97,6 +97,12 @@ void Model::wyznaczKolejnyStanObiektow()
 	strzelcy.ustawCel(&smok);
 	strzelcy.wyznaczKolejnyStan();
 	strzelcy.wyznaczKlatkeAnimacji();
+	std::list<Strzelec> *s = strzelcy.zwrocObiekty();
+	std::list<Zaslona> *z = zaslony.zwrocObiekty();
+	for(std::list<Strzelec>::iterator i=s->begin();i!=s->end();i++)
+	{
+		ustawNajblizszaZaslone(&(*i),z);
+	}
 
 	//Balisty
 	balisty.ustawCel(&smok);
@@ -108,12 +114,10 @@ void Model::wyznaczKolejnyStanObiektow()
 	kaplani.wyznaczKolejnyStan();
 	kaplani.wyznaczKlatkeAnimacji();
 	std::list<Kaplan> *k = kaplani.zwrocObiekty();
-	std::list<Strzelec> *s = strzelcy.zwrocObiekty();
 	for(std::list<Kaplan>::iterator i= k->begin();i!=k->end();i++)
 	{
 		ustawNajblizszegoStrzelca(&(*i),s);
 	}
-
 
 	//Pociski
 	plomienie.wyznaczKolejnyStan();
@@ -201,6 +205,26 @@ void Model::ustawNajblizszegoStrzelca(Postac* k, std::list<Strzelec>* s)
 	k->ustawNajblizszegoKompana(o);
 }
 
+void Model::ustawNajblizszaZaslone(Postac* p, std::list<Zaslona>* s)
+{
+	double minR;
+	Obiekt* o=0;
+	if(p->zwrocPozycje().y<300)
+	{
+		for(std::list<Zaslona>::iterator i = s->begin();i!=s->end();i++)
+		{
+			double r = fabs(i->zwrocPozycje().x-p->zwrocPozycje().x);
+			if((r<minR || o==0) && !i->czyZniszczony())
+			{
+				o=&(*i);
+				minR=r;
+			}
+		}
+	}
+
+	p->ustawNajblizszaZaslone(o);
+}
+
 void Model::kolizjeMiedzyLudzmi()
 {
 	double minD=30;
@@ -214,7 +238,7 @@ void Model::kolizjeMiedzyLudzmi()
 			j++;
 			for(;j!=strzelcy.zwrocObiekty()->end();j++)
 			{
-				if(i->zwrocPozycje().x <= j->zwrocPozycje().x && i->zwrocPozycje().x+minD >= j->zwrocPozycje().x)
+				if(i->zwrocPozycje().x < j->zwrocPozycje().x && i->zwrocPozycje().x+minD >= j->zwrocPozycje().x)
 				{
 					obsluzKolizjeMiedzyLudzmi(&(*i),&(*j),true);
 					continue;
@@ -263,41 +287,20 @@ void Model::kolizjeMiedzyLudzmi()
 
 void Model::obsluzKolizjeMiedzyLudzmi(Obiekt *o1, Obiekt *o2, bool prawo)
 {
-	double predkoscOdpychania=0.5;
+	double predkoscOdpychania=1.0;
 	if(prawo)
 	{
-		if(!o1->czyIstniejePrzeszkodaPoLewej())
-			o1->ustawPozycje(o1->zwrocPozycje()+Punkt(-predkoscOdpychania,0));
-		else
-		{
-			o2->ustawCzyIstniejePrzeszkodaPoLewej(true);
-			o2->ustawPozycje(o2->zwrocPozycje()+Punkt(-predkoscOdpychania,0));
-		}
-
-		if(!o2->czyIstniejePrzeszkodaPoPrawej())
-			o2->ustawPozycje(o2->zwrocPozycje()+Punkt(predkoscOdpychania,0));
-		else
-		{
-			o1->ustawCzyIstniejePrzeszkodaPoPrawej(true);
-			o1->ustawPozycje(o1->zwrocPozycje()+Punkt(predkoscOdpychania,0));
-		}
+		o2->ustawCzyIstniejeCzlowiekPoLewej(true);
+		o2->ustawPozycje(o2->zwrocPozycje()+Punkt(predkoscOdpychania,0));
+		o1->ustawCzyIstniejeCzlowiekPoPrawej(true);
+		o1->ustawPozycje(o1->zwrocPozycje()+Punkt(-predkoscOdpychania,0));
 	}
 	else
 	{
-		if(!o1->czyIstniejePrzeszkodaPoPrawej())
-			o1->ustawPozycje(o1->zwrocPozycje()+Punkt(predkoscOdpychania,0));
-		else
-		{
-			o2->ustawCzyIstniejePrzeszkodaPoPrawej(true);
-			o2->ustawPozycje(o2->zwrocPozycje()+Punkt(predkoscOdpychania,0));
-		}
-		if(!o2->czyIstniejePrzeszkodaPoLewej())
-			o2->ustawPozycje(o2->zwrocPozycje()+Punkt(-predkoscOdpychania,0));
-		else
-		{
-			o1->ustawCzyIstniejePrzeszkodaPoLewej(true);
-			o1->ustawPozycje(o1->zwrocPozycje()+Punkt(-predkoscOdpychania,0));
-		}
+		o2->ustawCzyIstniejeCzlowiekPoPrawej(true);
+		o2->ustawPozycje(o2->zwrocPozycje()+Punkt(-predkoscOdpychania,0));
+		o1->ustawCzyIstniejeCzlowiekPoLewej(true);
+		o1->ustawPozycje(o1->zwrocPozycje()+Punkt(predkoscOdpychania,0));
 	}
 }
 //##########################################################KOLIZJE#########################################################
@@ -360,7 +363,7 @@ void Model::obsluzKolizje()
 	for(std::list<Mur>::iterator i=listaMurow->begin();i!=listaMurow->end();i++)
 	{
 		plomienie.sprawdzKolizje((Obiekt*)&(*i),kolizjaPlomieniazMurem,nic,PrzestrzenKolizji::prostokat,true);
-		belty.sprawdzKolizje((Obiekt*)&(*i),kolizjaPlomieniazMurem,nic,PrzestrzenKolizji::prostokat,true);
+		belty.sprawdzKolizje((Obiekt*)&(*i),usun,nic,PrzestrzenKolizji::prostokat,true);
 		strzaly.sprawdzKolizje((Obiekt*)&(*i),kolizjaPlomieniazMurem,nic,PrzestrzenKolizji::prostokat,true);
 		pociskiBalistyczne.sprawdzKolizje((Obiekt*)&(*i),kolizjaPlomieniazMurem,nic,PrzestrzenKolizji::prostokat,true);
 	}

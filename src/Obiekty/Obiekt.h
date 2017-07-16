@@ -40,6 +40,7 @@ protected:
 	bool zwroconyWPrawo;
 	bool naZiemi;
 	bool przeszkodaPoLewej,przeszkodaPoPrawej;
+	bool czlowiekPoLewej,czlowiekPoPrawej;
 
 	Punkt klatkaAnimacji;		//nr klatki animacji jakiegos ruchu
 
@@ -108,6 +109,10 @@ public:
 	void ustawCzyIstniejePrzeszkodaPoPrawej(bool poPrawej) {przeszkodaPoPrawej=poPrawej;}
 	bool czyIstniejePrzeszkodaPoLewej() {return przeszkodaPoLewej;}
 	bool czyIstniejePrzeszkodaPoPrawej() {return przeszkodaPoPrawej;}
+	void ustawCzyIstniejeCzlowiekPoLewej(bool poLewej) {czlowiekPoLewej=poLewej;}
+	void ustawCzyIstniejeCzlowiekPoPrawej(bool poPrawej) {czlowiekPoPrawej=poPrawej;}
+	bool czyIstniejeCzlowiekPoLewej() {return czlowiekPoLewej;}
+	bool czyIstniejeCzlowiekPoPrawej() {return czlowiekPoPrawej;}
 
 };
 

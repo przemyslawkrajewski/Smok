@@ -21,27 +21,27 @@ FabrykaLudzi* FabrykaLudzi::zwrocInstancje()
 
 FabrykaLudzi::FabrykaLudzi()
 {
-	parametryLucznikaLv1.maxZycia=100;
-	parametryLucznikaLv1.obrazenia=5;
-	parametryLucznikaLv1.celnosc=3.14/16;
+	parametryLucznikaLv1.maxZycia=150;
+	parametryLucznikaLv1.obrazenia=10;
+	parametryLucznikaLv1.celnosc=3.14/8;
 	parametryLucznikaLv1.predkoscStrzaly=35;
 	parametryLucznikaLv1.maxNaciagniecie=30;
 	parametryLucznikaLv1.maxCelowania=70;
-	parametryLucznikaLv1.predkoscAnimacjiBiegu1=0.5;//0.5
-	parametryLucznikaLv1.predkoscAnimacjiBiegu2=0.30;//0.3
-	parametryLucznikaLv1.predkoscBiegu=9;
+	parametryLucznikaLv1.predkoscAnimacjiBiegu1=0.25;
+	parametryLucznikaLv1.predkoscAnimacjiBiegu2=0.20;
+	parametryLucznikaLv1.predkoscBiegu=3;
 	parametryLucznikaLv1.czasTrwaniaStrzaly=300;
 	parametryLucznikaLv1.spust=false;
 
-	parametryLucznikaLv2.maxZycia=200;
-	parametryLucznikaLv2.obrazenia=0;
-	parametryLucznikaLv2.celnosc=3.14/32;
+	parametryLucznikaLv2.maxZycia=150;
+	parametryLucznikaLv2.obrazenia=10;
+	parametryLucznikaLv2.celnosc=3.14/16;
 	parametryLucznikaLv2.predkoscStrzaly=35;
-	parametryLucznikaLv2.maxNaciagniecie=10;
-	parametryLucznikaLv2.maxCelowania=2;
-	parametryLucznikaLv2.predkoscAnimacjiBiegu1=0.5;//0.5
-	parametryLucznikaLv2.predkoscAnimacjiBiegu2=0.30;//0.3
-	parametryLucznikaLv2.predkoscBiegu=9;
+	parametryLucznikaLv2.maxNaciagniecie=20;
+	parametryLucznikaLv2.maxCelowania=60;
+	parametryLucznikaLv2.predkoscAnimacjiBiegu1=0.3;//0.5
+	parametryLucznikaLv2.predkoscAnimacjiBiegu2=0.20;//0.3
+	parametryLucznikaLv2.predkoscBiegu=5;
 	parametryLucznikaLv2.czasTrwaniaStrzaly=300;
 	parametryLucznikaLv2.spust=false;
 
@@ -173,7 +173,7 @@ void FabrykaLudzi::ustawKontenery(KontenerPostaci<Strzelec>* s, KontenerPostaci<
 	kaplani=k;
 }
 
-void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja, bool zwroconyWPrawo)
+void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja, int typZachowania, bool zwroconyWPrawo)
 {
 	switch(typ)
 	{
@@ -186,6 +186,7 @@ void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja, bool zwroco
 			strzelec.ustawCzyZwroconyWPrawo(zwroconyWPrawo);
 			strzelec.ustawParametry(parametryLucznikaLv1);
 			strzelec.ustawPoziom(0);
+			strzelec.ustawTypZachowania(typZachowania);
 			(strzelcy->dodaj(strzelec))->wyznaczPrzestrzenKolizji(); //Taki myk ze dodaje nowego strzelca i od razu wyznacza jego przestrzen kolizji
 																	//Nie mozna zrobic przez konstruktor bo wskaznik pokazuje na argument funkcji a nie obiekt w liscie
 			break;
@@ -199,6 +200,7 @@ void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja, bool zwroco
 			strzelec.ustawCzyZwroconyWPrawo(zwroconyWPrawo);
 			strzelec.ustawParametry(parametryLucznikaLv2);
 			strzelec.ustawPoziom(1);
+			strzelec.ustawTypZachowania(typZachowania);
 			(strzelcy->dodaj(strzelec))->wyznaczPrzestrzenKolizji();
 			break;
 		}
@@ -211,6 +213,7 @@ void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja, bool zwroco
 			strzelec.ustawCzyZwroconyWPrawo(zwroconyWPrawo);
 			strzelec.ustawParametry(parametryLucznikaLv3);
 			strzelec.ustawPoziom(2);
+			strzelec.ustawTypZachowania(typZachowania);
 			(strzelcy->dodaj(strzelec))->wyznaczPrzestrzenKolizji();
 			break;
 		}
@@ -223,6 +226,7 @@ void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja, bool zwroco
 			strzelec.ustawCzyZwroconyWPrawo(zwroconyWPrawo);
 			strzelec.ustawParametry(parametryLucznikaLv4);
 			strzelec.ustawPoziom(3);
+			strzelec.ustawTypZachowania(typZachowania);
 			(strzelcy->dodaj(strzelec))->wyznaczPrzestrzenKolizji();
 			break;
 		}
@@ -235,6 +239,7 @@ void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja, bool zwroco
 			strzelec.ustawCzyZwroconyWPrawo(zwroconyWPrawo);
 			strzelec.ustawParametry(parametryRycerzaLv1);
 			strzelec.ustawPoziom(0);
+			strzelec.ustawTypZachowania(typZachowania);
 			(strzelcy->dodaj(strzelec))->wyznaczPrzestrzenKolizji();
 			break;
 		}
@@ -247,6 +252,7 @@ void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja, bool zwroco
 			strzelec.ustawCzyZwroconyWPrawo(zwroconyWPrawo);
 			strzelec.ustawParametry(parametryRycerzaLv2);
 			strzelec.ustawPoziom(1);
+			strzelec.ustawTypZachowania(typZachowania);
 			(strzelcy->dodaj(strzelec))->wyznaczPrzestrzenKolizji();
 			break;
 		}
@@ -259,6 +265,7 @@ void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja, bool zwroco
 			strzelec.ustawCzyZwroconyWPrawo(zwroconyWPrawo);
 			strzelec.ustawParametry(parametryRycerzaLv3);
 			strzelec.ustawPoziom(2);
+			strzelec.ustawTypZachowania(typZachowania);
 			(strzelcy->dodaj(strzelec))->wyznaczPrzestrzenKolizji();
 			break;
 		}

@@ -32,7 +32,11 @@ public:
 	void ustawTypPostaci(TypPostaci typ) {typPostaci=typ;}
 	TypPostaci zwrocTypPostaci() {return typPostaci;}
 
+	void ustawTypZachowania(int typ) {typZachowania=typ;}
+	int zwrocTypZachowania() {return typZachowania;}
+
 	void ustawNajblizszegoKompana(Obiekt *o) {najblizszyKompan=o;}
+	void ustawNajblizszaZaslone(Obiekt *o) {najblizszaZaslona=o;}
 
 	void ustawPoziom(int p) {poziom=p;}
 	int zwrocPoziom() {return poziom;}
@@ -40,9 +44,11 @@ public:
 protected:
 
 	int poziom;
+	int typZachowania;
 
 	TypPostaci typPostaci;
 	Obiekt* najblizszyKompan;
+	Obiekt* najblizszaZaslona;
 };
 
 #endif /* POSTAC_H_ */

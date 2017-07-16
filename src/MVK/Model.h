@@ -87,6 +87,7 @@ public:
 private:
 	//wyliczenia
 	void ustawNajblizszegoStrzelca(Postac* k, std::list<Strzelec>* s);
+	void ustawNajblizszaZaslone(Postac* p, std::list<Zaslona>* z);
 	void kolizjeMiedzyLudzmi();
 	void obsluzKolizjeMiedzyLudzmi(Obiekt *o1, Obiekt *o2, bool prawo);
 

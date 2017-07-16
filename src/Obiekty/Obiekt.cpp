@@ -54,7 +54,6 @@ Punkt Obiekt::zwrocPozycjeCelu()
 
 void Obiekt::ustawPunktZaczepu(Obiekt *p)
 {
-
 	if(!czyZaczepiony)
 	{
 		pozycjaWzgledemObiektu.x = pozycja.x-p->zwrocPozycje().x;

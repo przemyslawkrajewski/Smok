@@ -7,10 +7,10 @@
 
 #include "Zaslona.h"
 
-Zaslona::Zaslona(Punkt p)
+Zaslona::Zaslona(Punkt p) : Przedmiot()
 {
 	pozycja=p;
-	zycie=500;
+	zycie=1000;
 	wyznaczPrzestrzenKolizji();
 	wyznaczKlatkeAnimacji();
 }

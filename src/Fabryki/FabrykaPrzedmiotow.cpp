@@ -58,9 +58,35 @@ Obiekt* FabrykaPrzedmiotow::stworzPrzedmiot(TypPrzedmiotu typ, Punkt pozycja, Ob
 		(mury->dodaj(Mur(Wymiary(60,2400),Mur::szareTlo,pozycja+Punkt(600,1505))))->wyznaczPrzestrzenKolizji();
 		return 0;
 		break;
+	case bwysokaWieza:
+		assert("Kontener 'Mury' nie ustawiony" && mury!=0);
+		(mury->dodaj(Mur(Wymiary(600,12000),Mur::mur,pozycja+Punkt(0,6080))))->wyznaczPrzestrzenKolizji();
+		return 0;
+		break;
+	case wysokaWieza:
+		assert("Kontener 'Mury' nie ustawiony" && mury!=0);
+		(mury->dodaj(Mur(Wymiary(60,120),Mur::mur,pozycja-Punkt(270,-3080))))->wyznaczPrzestrzenKolizji();
+		(mury->dodaj(Mur(Wymiary(60,120),Mur::mur,pozycja-Punkt(-270,-3080))))->wyznaczPrzestrzenKolizji();
+		(mury->dodaj(Mur(Wymiary(600,3000),Mur::mur,pozycja+Punkt(0,1580))))->wyznaczPrzestrzenKolizji();
+		return 0;
+		break;
+	case sredniaWieza:
+		assert("Kontener 'Mury' nie ustawiony" && mury!=0);
+		(mury->dodaj(Mur(Wymiary(60,120),Mur::mur,pozycja-Punkt(240,-1580))))->wyznaczPrzestrzenKolizji();
+		(mury->dodaj(Mur(Wymiary(60,120),Mur::mur,pozycja-Punkt(-240,-1580))))->wyznaczPrzestrzenKolizji();
+		(mury->dodaj(Mur(Wymiary(540,1500),Mur::mur,pozycja+Punkt(0,830))))->wyznaczPrzestrzenKolizji();
+		return 0;
+		break;
+	case niskaWieza:
+		assert("Kontener 'Mury' nie ustawiony" && mury!=0);
+		(mury->dodaj(Mur(Wymiary(60,120),Mur::mur,pozycja-Punkt(240,-800))))->wyznaczPrzestrzenKolizji();
+		(mury->dodaj(Mur(Wymiary(60,120),Mur::mur,pozycja-Punkt(-240,-800))))->wyznaczPrzestrzenKolizji();
+		(mury->dodaj(Mur(Wymiary(540,720),Mur::mur,pozycja+Punkt(0,440))))->wyznaczPrzestrzenKolizji();
+		return 0;
+		break;
 	case zaslona:
 		assert("Kontener 'Zaslony' nie ustawiony" && zaslony!=0);
-		(zaslony->dodaj(Zaslona(pozycja)))->wyznaczPrzestrzenKolizji();
+		(zaslony->dodaj(Zaslona(pozycja+Punkt(0,170))))->wyznaczPrzestrzenKolizji();
 		return 0;
 		break;
 	case tarczaPersonalna:

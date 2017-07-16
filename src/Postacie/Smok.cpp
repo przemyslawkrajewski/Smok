@@ -86,24 +86,26 @@ void Smok::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 
 void Smok::ustawPoziom(int p)
 {
-	poziom=p;
 	double maksymalnyPoziom = 10;
+	if(p > maksymalnyPoziom) p = maksymalnyPoziom;
+
+	poziom = p;
 	double mnoznik = ((double)poziom-1)/(maksymalnyPoziom-1);
 
 	//Zycie
 	zycie=500+1000*mnoznik;
 
 	//Ogien
-	parametry.minimalnaPredkoscOgnia=25+5*mnoznik;
-	parametry.maksymalnaPredkoscOgnia=30+15*mnoznik;
+	parametry.minimalnaPredkoscOgnia=25+10*mnoznik;
+	parametry.maksymalnaPredkoscOgnia=40+20*mnoznik;
 	parametry.odchyleniePredkosciOgnia=10+5*mnoznik;
-	parametry.sredniCzasTrwaniaOgnia=15+5*mnoznik;
+	parametry.sredniCzasTrwaniaOgnia=10;
 	parametry.odchylenieCzasuTrwaniaOgnia=3;
 	parametry.odchylenieKataOgnia=7*M_PI/180-3*M_PI/180*mnoznik;
 	parametry.maksymalnailoscOgnia=7+5*mnoznik;
 	parametry.regeneracjaOgnia=0.07+0.05*mnoznik;
 	parametry.zuzycieOgnia=0.05;
-	obrazenia=0.3+0.6*mnoznik;
+	obrazenia=0.3+0.9*mnoznik;
 
 	//Maksymalna predkosc
 	parametry.maksymalnaPredkoscX=20+20*mnoznik;
@@ -494,7 +496,7 @@ void Smok::wyznaczGlowe(Klawiatura* klawiatura, Myszka *myszka)
 		for(int i=0; i<iloscOgnia;i++)
 		{
 			double predkoscOgnia=parametry.minimalnaPredkoscOgnia+(parametry.maksymalnaPredkoscOgnia-parametry.minimalnaPredkoscOgnia)*wspolczynnikSily;
-			predkoscOgnia+=((double)(rand()%100)/100)*parametry.odchyleniePredkosciOgnia*wspolczynnikSily;
+			predkoscOgnia+=((double)(rand()%100)/100)*parametry.odchyleniePredkosciOgnia;
 
 			double katOgnia=((double)(rand()%100)/100)*parametry.odchylenieKataOgnia - parametry.odchylenieKataOgnia/2 + obrotGlowy;
 			double czasTrwania=parametry.sredniCzasTrwaniaOgnia+parametry.odchylenieCzasuTrwaniaOgnia*wspolczynnikSily;

@@ -29,7 +29,12 @@ private:
 public:
 	~FabrykaPrzedmiotow();
 
-	enum TypPrzedmiotu {sredniMur,jaskinia,zaslona,tarczaPersonalna,tarczaObszarowa};
+	enum TypPrzedmiotu {jaskinia,
+						sredniMur,
+						niskaWieza,sredniaWieza, wysokaWieza, bwysokaWieza,
+						zaslona,
+						tarczaPersonalna,tarczaObszarowa
+					   };
 
 	static FabrykaPrzedmiotow* zwrocInstancje();
 
