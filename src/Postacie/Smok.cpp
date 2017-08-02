@@ -33,13 +33,14 @@ void Smok::reset()
 
 	zycie=500;
 	obrazenia=0.1;
+	spopielenie = false;
 	maksymalnaPozycja= Punkt(30000,3000);
 	minimalnaPozycja= Punkt(1000,00);
 }
 
 void Smok::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 {
-	std::cout << pozycja.x << "  " << pozycja.y << "\n";
+	//std::cout << pozycja.x << "  " << pozycja.y << "\n";
 	Punkt staraPredkosc(predkosc);
 	//zadane Y
 	if(pozycja.y-zadaneY>70) zadaneY=pozycja.y-70;
@@ -512,7 +513,9 @@ void Smok::wyznaczGlowe(Klawiatura* klawiatura, Myszka *myszka)
 			v.y=predkoscOgnia*sin(katOgnia);
 			double kat = -obrotGlowy+3.14+1.57+6.28;
 			if(kat>6.28) kat-=6.28;
-			FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::plomien,p,v,czasTrwania,kat,obrazenia);
+
+			if(spopielenie)	FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::plomien2,p,v,czasTrwania,kat,obrazenia);
+			else FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::plomien,p,v,czasTrwania,kat,obrazenia);
 		}
 	}
 	else

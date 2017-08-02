@@ -51,10 +51,13 @@ public:
 	int zwrocCzasTrwania() {return czasTrwania;}
 	double zwrocKat();
 	bool czyBylZaczepiony() {return bylZaczepiony;}
+
+	void ustawSpopielenie(bool s) {spopielenie=s;}
 private:
 
 	static ParametryOgnia parametry;
 	StanPlomienia stan;
+	bool spopielenie;
 
 	bool bylZaczepiony;
 	double bazoweObrazenia;

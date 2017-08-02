@@ -57,6 +57,8 @@ void Model::wczytajPoziom(int numer)
 	FabrykaPoziomow::zwrocInstancje()->stworzPoziom(numer);
 	smok.ustawPoziom((double) numer/2 + 0.5 );
 	std::cout << "Poziom smoka: " << smok.zwrocPoziom() << "\n";
+	if(numer>9) smok.ustawSpopielenie(true);
+	else smok.ustawSpopielenie(false);
 	kamera.ustawPozycje(smok.zwrocPozycje());
 	myszka.ustawX(wymiaryEkranu.x/2);
 	myszka.ustawY(wymiaryEkranu.y/2);

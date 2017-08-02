@@ -20,6 +20,7 @@ Plomien::Plomien(double nx,double ny, double nvx, double nvy, double nczasTrwani
 	stan = wPowietrzu;
 	bylZaczepiony=false;
 	obrazenia = 0;
+	spopielenie = false;
 }
 
 Plomien::Plomien(Punkt nPozycja, Punkt nPredkosc, double nczasTrwania,double nKat) : Pocisk()
@@ -31,6 +32,7 @@ Plomien::Plomien(Punkt nPozycja, Punkt nPredkosc, double nczasTrwania,double nKa
 	stan = wPowietrzu;
 	bylZaczepiony=false;
 	obrazenia = 0;
+	spopielenie = false;
 }
 
 Plomien::~Plomien()
@@ -45,6 +47,7 @@ void Plomien::zniszcz()
 		Obiekt::zniszcz();
 		predkosc.x=predkosc.y=0;
 		czasTrwania=parametry.czasPalenia;
+		if(!spopielenie) czasTrwania*=2;
 		stan = naCelu;
 		obrazenia=bazoweObrazenia*parametry.obrazeniaNaCelu;
 	}
@@ -87,6 +90,8 @@ void Plomien::wyznaczKolejnyStan()
 
 void Plomien::wyznaczKlatkeAnimacji()
 {
+	if(spopielenie) klatkaAnimacji.y = 1;
+	else klatkaAnimacji.x = 0;
 	switch(stan)
 	{
 	case wPowietrzu:

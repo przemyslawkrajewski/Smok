@@ -147,6 +147,7 @@ private:
 
 	double iloscOgnia; //rezerwy ognia czyli ile jeszcze moze ziac i wskazuje ile plomieni na raz wytwarza smok w czasie petli
 	double przerwaOgnia;
+	bool spopielenie;
 
 	Punkt klatkaAnimacjiGlowy;
 
@@ -170,6 +171,7 @@ public:
 	//Metody zwiazane z sama gra
 	void ustawWymiaryManewruSmoka(Punkt min, Punkt maks) {maksymalnaPozycja=maks; minimalnaPozycja=min;}
 	void ustawPoziom(int poziom);
+	void ustawSpopielenie (bool s) {spopielenie=s;}
 
 };
 
