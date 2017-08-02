@@ -30,10 +30,10 @@ public:
 	~FabrykaPrzedmiotow();
 
 	enum TypPrzedmiotu {jaskinia,
-						sredniMur,
+						bmalyMur,malyMur,sredniMur,bduzyMur,
 						niskaWieza,sredniaWieza, wysokaWieza, bwysokaWieza,
 						zaslona,
-						tarczaPersonalna,tarczaObszarowa
+						tarczaPersonalna,tarczaPersonalnaRegen,tarczaObszarowa
 					   };
 
 	static FabrykaPrzedmiotow* zwrocInstancje();

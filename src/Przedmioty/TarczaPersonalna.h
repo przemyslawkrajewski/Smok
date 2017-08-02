@@ -15,10 +15,14 @@ struct ParametryTarczyPersonalnej
 	int czasWidocznosci;
 	int granicaUbytkuZycia;
 
+	double maksZycia;
+
 	ParametryTarczyPersonalnej()
 	{
 		czasWidocznosci=15;
 		granicaUbytkuZycia=0.5;
+
+		maksZycia=2000;
 	}
 };
 
@@ -36,10 +40,14 @@ public:
 	virtual void zniszcz();
 	void zadajObrazenia(double obrazenia);
 
+	void ustawPredkoscOdnawiania(double nw) {predkoscOdnawiania=nw;}
+
 
 private:
 	static ParametryTarczyPersonalnej parametry;
 	int stanWidocznosci;
+
+	double predkoscOdnawiania;
 
 };
 

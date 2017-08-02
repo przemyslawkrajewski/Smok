@@ -124,6 +124,7 @@ public:
 	bool wSerii;
 	bool pozycjaStrzelecka;
 	bool zablokowany;
+	Punkt staraPredkoscCelu;
 
 	//Taki odpowiednik many
 	double gotowoscSwietejStrzaly;

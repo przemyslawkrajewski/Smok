@@ -73,6 +73,7 @@ public:
 	void ustawParametry(ParametryBalisty p)
 	{
 		parametry=p;
+		zycie=p.maxZycia;
 		pomocnikCelowania.ustawParametry(p.predkoscStrzaly,PociskBalistyczny::parametry.wspolczynnikGrawitacji);
 	}
 
@@ -95,6 +96,9 @@ private:
 
 	int stanNaciagania;
 	int stanCelowania;
+
+	double przyspieszenieCelu;
+	double staraPredkosc;
 
 };
 

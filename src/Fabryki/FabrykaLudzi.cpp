@@ -69,11 +69,11 @@ FabrykaLudzi::FabrykaLudzi()
 	parametryLucznikaLv4.czasTrwaniaStrzaly=300;
 	parametryLucznikaLv4.spust=false;
 
-	parametryRycerzaLv1.maxZycia=200;
-	parametryRycerzaLv1.obrazenia=10;
-	parametryRycerzaLv1.celnosc=0;
+	parametryRycerzaLv1.maxZycia=400;
+	parametryRycerzaLv1.obrazenia=25;
+	parametryRycerzaLv1.celnosc=3.14/32;
 	parametryRycerzaLv1.czasTrwaniaStrzaly=100;
-	parametryRycerzaLv1.predkoscStrzaly=35;
+	parametryRycerzaLv1.predkoscStrzaly=30;
 	parametryRycerzaLv1.maxNaciagniecie=60;
 	parametryRycerzaLv1.maxCelowania=20;
 	parametryRycerzaLv1.predkoscAnimacjiBiegu1=0.4;
@@ -81,17 +81,19 @@ FabrykaLudzi::FabrykaLudzi()
 	parametryRycerzaLv1.predkoscBiegu=3;
 	parametryRycerzaLv1.spust=true;
 
-	parametryRycerzaLv2.maxZycia=200;
-	parametryRycerzaLv2.obrazenia=10;
-	parametryRycerzaLv2.celnosc=0;
+	parametryRycerzaLv2.maxZycia=700;
+	parametryRycerzaLv2.obrazenia=40;
+	parametryRycerzaLv2.celnosc=3.14/64;
 	parametryRycerzaLv2.czasTrwaniaStrzaly=100;
-	parametryRycerzaLv2.predkoscStrzaly=35;
+	parametryRycerzaLv2.predkoscStrzaly=40;
 	parametryRycerzaLv2.maxNaciagniecie=60;
 	parametryRycerzaLv2.maxCelowania=20;
 	parametryRycerzaLv2.predkoscAnimacjiBiegu1=0.4;
 	parametryRycerzaLv2.predkoscAnimacjiBiegu2=0.2;
 	parametryRycerzaLv2.predkoscBiegu=3;
 	parametryRycerzaLv2.spust=true;
+	parametryRycerzaLv2.obrazeniaSwietejStrzaly=120;
+	parametryRycerzaLv2.czasOdnawianiaSwietejStrzaly=250;
 
 	parametryRycerzaLv3.maxZycia=200;
 	parametryRycerzaLv3.obrazenia=10;
@@ -105,8 +107,8 @@ FabrykaLudzi::FabrykaLudzi()
 	parametryRycerzaLv3.predkoscBiegu=3;
 	parametryRycerzaLv3.spust=true;
 
-	parametryBalistyLv1.maxZycia=10;
-	parametryBalistyLv1.obrazenia=500;
+	parametryBalistyLv1.maxZycia=2000;
+	parametryBalistyLv1.obrazenia=1000;
 	parametryBalistyLv1.obnizoneObrazenia=0;
 	parametryBalistyLv1.rozrzut=3.14/16;
 	parametryBalistyLv1.iloscPociskow=5;
@@ -114,7 +116,7 @@ FabrykaLudzi::FabrykaLudzi()
 	parametryBalistyLv1.predkoscCelowania=0.004;
 	parametryBalistyLv1.maxKatCelowania=1.29;
 	parametryBalistyLv1.minKatCelowania=0.15;
-	parametryBalistyLv1.maxNaciagania=300;
+	parametryBalistyLv1.maxNaciagania=250;
 
 	parametryBalistyLv2.maxZycia=10;
 	parametryBalistyLv2.obrazenia=500;
@@ -253,7 +255,9 @@ void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja, int typZach
 			strzelec.ustawParametry(parametryRycerzaLv2);
 			strzelec.ustawPoziom(1);
 			strzelec.ustawTypZachowania(typZachowania);
-			(strzelcy->dodaj(strzelec))->wyznaczPrzestrzenKolizji();
+			Strzelec *s=(strzelcy->dodaj(strzelec));
+			s->wyznaczPrzestrzenKolizji();
+			FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::tarczaPersonalnaRegen,Punkt(),s);
 			break;
 		}
 		case templariusz:
@@ -279,6 +283,7 @@ void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja, int typZach
 			else balista.ustawKatCelowania(2.9);
 			balista.ustawParametry(parametryBalistyLv1);
 			balista.ustawPoziom(0);
+			balista.ustawTypZachowania(typZachowania);
 			(balisty->dodaj(balista))->wyznaczPrzestrzenKolizji();
 			break;
 		}

@@ -39,6 +39,7 @@ void Smok::reset()
 
 void Smok::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 {
+	std::cout << pozycja.x << "  " << pozycja.y << "\n";
 	Punkt staraPredkosc(predkosc);
 	//zadane Y
 	if(pozycja.y-zadaneY>70) zadaneY=pozycja.y-70;

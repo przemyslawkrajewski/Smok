@@ -35,12 +35,7 @@ void Balista::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 	{
 		double katMyszki = atan2(myszka->zwrocY(),myszka->zwrocX());
 		if(czyKatPrzekraczaMaks(-katMyszki) || czyKatPrzekraczaMin(-katMyszki)) return;
-		double kat;
-		kat=katCelowania;
-		if(fabs(katMyszki-katCelowania)<parametry.predkoscCelowania)
-		{
-			kat=-katMyszki;
-		}
+		double kat = -katMyszki;
 		//Fabryka->stworz pocisk
 		Punkt p;
 		p.x=pozycja.x;//+(parametry.predkoscStrzaly)*cos(katCelowania);
@@ -117,11 +112,16 @@ std::pair<Klawiatura,Myszka> Balista::wyznaczSterowanie()
 		return std::pair<Klawiatura,Myszka>(k,m);
 	}
 
+	przyspieszenieCelu = (cel->zwrocPredkosc().x + cel->zwrocPredkosc().y - staraPredkosc);
+	staraPredkosc = cel->zwrocPredkosc().x + cel->zwrocPredkosc().y;
+
 	Punkt poprawka = (*(cel->zwrocPrzestrzenKolizji()->zwrocOkregi()))[0].zwrocPozycjeWzgledemObiektu();
 	poprawka.y=-poprawka.y+40;
 	poprawka.x=-poprawka.x;
 	if(cel->czyZwroconyWPrawo()) poprawka.x+=30;
 	else poprawka.x-=30;
+
+	double czyMozliwyStrzal=pomocnikCelowania.czyMozliwyStrzal(Punkt(pozycja.x-pozycjaCelu.x,pozycja.y-pozycjaCelu.y)+poprawka);
 
 	pomocnikCelowania.wyznaczKatStrzalu(Punkt(pozycja.x-pozycjaCelu.x,pozycja.y-pozycjaCelu.y)+poprawka,cel->zwrocPredkosc());
 	double kat = M_PI*2-pomocnikCelowania.zwrocKat(PomocnikCelowania::katWprost);
@@ -130,10 +130,17 @@ std::pair<Klawiatura,Myszka> Balista::wyznaczSterowanie()
 	m.ustawY(-sin(kat)*10000);
 
 
-	if(fabs(kat-katCelowania)<=parametry.predkoscCelowania)
+	if(fabs(kat-katCelowania)<=parametry.predkoscCelowania && czyMozliwyStrzal && fabs(przyspieszenieCelu)<5)
 	{
-		//m.ustawLPM(true);
-		k.ustawWcisnietoKlawiszFunkcyjny(true,0);
+		if(typZachowania==0)
+		{
+			m.ustawLPM(true);
+		}
+		else
+		{
+			//Inne zachowanie
+			k.ustawWcisnietoKlawiszFunkcyjny(true,0);
+		}
 	}
 
 	return std::pair<Klawiatura,Myszka>(k,m);

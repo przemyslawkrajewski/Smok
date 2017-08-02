@@ -12,8 +12,9 @@ ParametryTarczyPersonalnej TarczaPersonalna::parametry = ParametryTarczyPersonal
 TarczaPersonalna::TarczaPersonalna(Punkt p)
 {
 	pozycja=p;
-	zycie=100;
+	zycie=parametry.maksZycia;
 	stanWidocznosci=parametry.czasWidocznosci;
+	predkoscOdnawiania=0;
 	wyznaczPrzestrzenKolizji();
 	wyznaczKlatkeAnimacji();
 }
@@ -54,9 +55,9 @@ void TarczaPersonalna::wyznaczKolejnyStan()
 	}
 	else
 	{
+		if(zycie<parametry.maksZycia) zycie += predkoscOdnawiania;
 		if(stanWidocznosci>0) stanWidocznosci--;
 	}
-
 }
 
 void TarczaPersonalna::wyznaczKlatkeAnimacji()
