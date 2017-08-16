@@ -30,6 +30,7 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 	double poziomZiemi = 130;
 	if(numer==1) //################################ POZIOM 1: OBLAWA ###############################################
 	{
+		std::cout << "Poziom 1: Obława\n";
 		smok->ustawWymiaryManewruSmoka(Punkt(2000,0),Punkt(12000,1800));
 		smok->ustawPozycje(Punkt(7000,100));
 		smok->ustawCzyZwroconyWPrawo(false);
@@ -319,28 +320,213 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 
 		//wneka
 		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::balista,Punkt(11700,795+poziomZiemi),0,false);
-		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(11500,400+poziomZiemi),4,false);
-		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::rycerz,Punkt(13000,poziomZiemi+400),1,false);
-		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::rycerz,Punkt(13000,poziomZiemi+400),1,false);
+		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(11500,380+poziomZiemi),5,false);
+		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::rycerz,Punkt(12800,poziomZiemi+380),1,false);
+		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::rycerz,Punkt(12800,poziomZiemi+380),1,false);
+	}
+	else if(numer==10) //################################ POZIOM 10: NOWA KORONACJA ##########################################
+	{
+		smok->ustawWymiaryManewruSmoka(Punkt(3000,0),Punkt(15000,4000));
+		smok->ustawPozycje(Punkt(9000,200));
+		smok->ustawCzyZwroconyWPrawo(true);
+
+
+		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::niskaWieza,Punkt(10000,0));
+		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::niskaWieza,Punkt(8000,0));
+		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniMur,Punkt(11000,0));
+		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniMur,Punkt(7000,0));
+
+		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::balista,Punkt(10400,565+poziomZiemi),0,true);
+		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::balista,Punkt(7600,565+poziomZiemi),0,false);
+		for(int i=1;i<6;i++)
+		{
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::balista,Punkt(10400+i*300,565+poziomZiemi),0,false);
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::balista,Punkt(7600-i*300,565+poziomZiemi),0,true);
+		}
+
+		for(int i=0;i<6;i++)
+		{
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::rycerz,Punkt(10000,poziomZiemi+1580),3,false);
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::rycerz,Punkt(8000,poziomZiemi+1580),3,false);
+		}
+		for(int i=0;i<10;i++)
+		{
+			int odchylenie = rand() % 1500-750;
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::zawodowyLucznik,Punkt(6850+odchylenie,poziomZiemi+570),2,false);
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::zawodowyLucznik,Punkt(11150+odchylenie,poziomZiemi+570),2,false);
+		}
+
+	}
+	else if(numer==11) //################################ POZIOM 11: PRZYGOTOWANIA DO LIKWIDACJI ##########################################
+	{
+		smok->ustawWymiaryManewruSmoka(Punkt(3000,0),Punkt(15000,4000));
+		smok->ustawPozycje(Punkt(4000,200));
+		smok->ustawCzyZwroconyWPrawo(true);
+
+		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniaWieza,Punkt(5000,0));
+		for(int i=0;i<10;i++)
+		{
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::rycerz,Punkt(5000,poziomZiemi+1580),3,false);
+		}
+
+		for(int i=0;i<5;i++)
+		{
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::rycerz,Punkt(9900+i*20,poziomZiemi),3,false);
+		}
+		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(9925,poziomZiemi),4,false);
+		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::balista,Punkt(10000,poziomZiemi+70),0,false);
+		for(int i=0;i<12;i++)
+		{
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::zawodowyLucznik,Punkt(10300,poziomZiemi),2,false);
+		}
+	}
+	else if(numer==12) //################################ POZIOM 12: NAUKI ##########################################
+	{
+		smok->ustawWymiaryManewruSmoka(Punkt(2000,0),Punkt(20000,4000));
+		smok->ustawPozycje(Punkt(19000,200));
+		smok->ustawCzyZwroconyWPrawo(false);
+
+		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::wysokaWieza,Punkt(6000,0));
+		for(int i=0;i<4;i++)
+		{
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::balista,Punkt(6500+i*150,70+poziomZiemi),0,true);
+		}
+		for(int i=0;i<10;i++)
+		{
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::rycerz,Punkt(7500+i*60,poziomZiemi),3,true);
+		}
+
+		for(int i=0;i<4;i++)
+		{
+			int odchylenie = rand() % 1200 - 600;
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(8100+odchylenie,poziomZiemi),4,true);
+		}
+
+		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::mnich,Punkt(4000,poziomZiemi+100),0,true);
+
+	}
+	else if(numer==13) //################################ POZIOM 13: ZLECENIE ##########################################
+	{
+		smok->ustawWymiaryManewruSmoka(Punkt(4000,0),Punkt(24000,4000));
+		smok->ustawPozycje(Punkt(4500,400));
+		smok->ustawCzyZwroconyWPrawo(false);
+
+		for(int i=0;i<38 ;i++) FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::ulZaslona,Punkt(5000+i*500,0));
+
+		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::skrytobojca,Punkt(12000,poziomZiemi+100),6,true);
+
+	}
+	else if(numer==14) //################################ POZIOM 14: DROGA DO FANATYKOW ##########################################
+	{
+		smok->ustawWymiaryManewruSmoka(Punkt(4000,0),Punkt(16000,4000));
+		smok->ustawPozycje(Punkt(4500,400));
+		smok->ustawCzyZwroconyWPrawo(false);
+
+		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::niskaWieza,Punkt(5000,0));
+		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniMur,Punkt(9000,0));
+		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniaWieza,Punkt(9000,0));
+		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniMur,Punkt(14000,0));
+
+		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::balista,Punkt(5500,70+poziomZiemi),0,true);
+
+		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::mnich,Punkt(7000,poziomZiemi+600),0,true);
+		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::mnich,Punkt(7000,poziomZiemi+600),0,true);
+		for(int i=0;i<6;i++) FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::wyborowyLucznik,Punkt(7000,poziomZiemi),7,true);
+
+		for (int i=0;i<3;i++)
+		{
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(8250,poziomZiemi+1700),4,true);
+		}
+
+		for (int i=0;i<3;i++)
+		{
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(9000,poziomZiemi+1700),4,true);
+		}
+
+		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::mnich,Punkt(9750,poziomZiemi+600),0,true);
+
+		for (int i=0;i<3;i++)
+		{
+			double pozycja=11000+500*i;
+			FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::zaslona,Punkt(pozycja,0));
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::wyborowyLucznik,Punkt(pozycja,poziomZiemi+670),7,true);
+		}
+
+		for(int i=0;i<5;i++)
+		{
+			int odchylenie = rand()%1000 -500;
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::wyborowyLucznik,Punkt(14000+odchylenie,poziomZiemi+670),7,true);
+		}
+	}
+	else if(numer==15) //################################ POZIOM 15: RZEZ ##########################################
+	{
+		smok->ustawWymiaryManewruSmoka(Punkt(2000,0),Punkt(14000,4000));
+		smok->ustawPozycje(Punkt(3500,400));
+		smok->ustawCzyZwroconyWPrawo(true);
+
+		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniaWieza,Punkt(3000,0));
+		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniaWieza,Punkt(11000,0));
+
+
+		for(int i=0;i<25;i++)
+		{
+			int odchylenie = rand() % 6000-3000;
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::mnich,Punkt(7000+odchylenie,poziomZiemi),0,true);
+		}
+	}
+	else if(numer==16) //################################ POZIOM 16: ZRODLO KULTU ##########################################
+	{
+		smok->ustawWymiaryManewruSmoka(Punkt(3000,0),Punkt(14000,4000));
+		smok->ustawPozycje(Punkt(3500,400));
+		smok->ustawCzyZwroconyWPrawo(true);
+
+		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniMur,Punkt(6000,0));
+		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniMur,Punkt(11000,0));
+		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniaWieza,Punkt(12000,0));
+
+		for(int i=0;i<2;i++)
+		{
+			int odchylenie = rand() % 1000-500;
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::templariusz,Punkt(6000+odchylenie,500+poziomZiemi),8,true);
+		}
+
+		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::mnich,Punkt(8000,poziomZiemi),0,true);
+		//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::mnich,Punkt(9000,poziomZiemi),0,true);
+		for(int i=0;i<2;i++)
+		{
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(9000,500+poziomZiemi),4,true);
+		}
+
+		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::mnich,Punkt(11000,500+poziomZiemi),0,true);
+		for(int i=0;i<1;i++)
+		{
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::templariusz,Punkt(11000,500+poziomZiemi),8,true);
+		}
+
+		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::mnich,Punkt(12000,1500+poziomZiemi),0,true);
+		for(int i=0;i<3;i++)
+		{
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::wyborowyLucznik,Punkt(12000,1500+poziomZiemi),7,true);
+		}
+
+	}
+	else if(numer==17) //################################ POZIOM 17: ALARM ##########################################
+	{
+		smok->ustawWymiaryManewruSmoka(Punkt(3000,0),Punkt(20000,4000));
+		smok->ustawPozycje(Punkt(20000,000));
+		smok->ustawCzyZwroconyWPrawo(false);
+
+
+		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::kaplan,Punkt(17000,poziomZiemi+10),1,false);
 	}
 	else if(numer==101)
 	{
 		smok->ustawPozycje(Punkt(2000,100));
-		smok->ustawPoziom(4);
+		smok->ustawPoziom(6);
 		smok->ustawWymiaryManewruSmoka(Punkt(1000,0),Punkt(30000,3000));
 
-		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::balista,Punkt(3000,poziomZiemi+100),0,false);
+		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::kaplan,Punkt(3000,poziomZiemi+100),0,false);
 
 
-	}
-	else if(numer==102)
-	{
-		smok->ustawPozycje(Punkt(1000,100));
-		smok->ustawWymiaryManewruSmoka(Punkt(1000,0),Punkt(30000,3000));
-		for(int i=0;i<200;i++)
-		{
-			int x = rand()%30000+5000;
-			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(x,130),0);
-		}
 	}
 }

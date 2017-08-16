@@ -28,6 +28,7 @@ void Kaplan::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 {
 	if(!zniszczony)
 	{
+		StanKaplana staryStan=stan;
 		if (klawiatura->czyWcisnietoPrawo() && !przeszkodaPoPrawej)
 		{
 			zwroconyWPrawo=true;
@@ -54,6 +55,7 @@ void Kaplan::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 		{
 			//Pocisk samonaprowadzajacy
 			stan = zaklecieKierowany;
+			if(staryStan!=stan) stanRzucaniaZaklec=0;
 			stanChodu=0;
 			stanRzucaniaZaklec++;
 
@@ -76,6 +78,7 @@ void Kaplan::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 		{
 			// Pocisk kasetowy
 			stan = zaklecieKasetowy;
+			if(staryStan!=stan) stanRzucaniaZaklec=0;
 			stanChodu=0;
 			stanRzucaniaZaklec++;
 
@@ -98,6 +101,7 @@ void Kaplan::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 		{
 			// Tarcza personalna
 			stan = tarczaPersonalna;
+			if(staryStan!=stan) stanRzucaniaZaklec=0;
 			stanChodu=0;
 			stanRzucaniaZaklec++;
 
@@ -112,12 +116,13 @@ void Kaplan::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 		{
 			//Tarcza Obszarowa
 			stan = tarczaObszarowa;
+			if(staryStan!=stan) stanRzucaniaZaklec=0;
 			stanChodu=0;
 			stanRzucaniaZaklec++;
 
 			if(stanRzucaniaZaklec>=parametry.czasRzucaniaObszarowejTarczy)
 			{
-				stanRzucaniaZaklec=parametry.czasRzucaniaObszarowejTarczy;
+				stanRzucaniaZaklec=0;
 				if(tarcza==0)
 					tarcza=FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::tarczaObszarowa,pozycja);
 			}
@@ -126,6 +131,7 @@ void Kaplan::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 		{
 			// Tarcza personalna na siebie
 			stan = tarczaPersonalna;
+			if(staryStan!=stan) stanRzucaniaZaklec=0;
 			stanRzucaniaZaklec++;
 
 			if(stanRzucaniaZaklec>parametry.czasRzucaniaPersonalnejTarczy)
@@ -141,9 +147,14 @@ void Kaplan::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 			stanChodu=0;
 			stanRzucaniaZaklec=0;
 		}
-		if(stanRzucaniaZaklec<0) stanRzucaniaZaklec=0;
+
+		//Zycie
 		if(zycie<=0) zniszcz();
 
+		//Zaklecia
+		if(stanRzucaniaZaklec<0) stanRzucaniaZaklec=0;
+
+		//pozycja Y
 		if(pozycja.y<=parametry.wysokosc+parametryObiektow.poziomZiemi)
 		{
 			pozycja.y=parametry.wysokosc+parametryObiektow.poziomZiemi;
@@ -153,12 +164,16 @@ void Kaplan::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 		{
 			pozycja.y-=10;
 		}
+
+		//Przeszkody terenowe
 		naZiemi=false;
 		przeszkodaPoPrawej=false;
 		przeszkodaPoLewej=false;
 
+		//Tarcza
 		if(tarcza!=0)
 		{
+			ustawCzyPosiadaTarcze(true);
 			if(tarcza->czyZniszczony())
 			{
 				tarcza->usun();
@@ -169,11 +184,15 @@ void Kaplan::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 				tarcza->zniszcz();
 			}
 		}
-
+		else
+		{
+			ustawCzyPosiadaTarcze(false);
+		}
 	}
 	else
 	{
 		stan = umiera;
+		if(tarcza) tarcza->usun();
 		std::vector<OkragKolizji> p;
 		ustawPrzestrzenKolizji(p);
 	}
@@ -195,30 +214,64 @@ std::pair<Klawiatura,Myszka> Kaplan::wyznaczSterowanie()
 		return std::pair<Klawiatura,Myszka>(k,m);
 	}
 
-	if(fabs(pozycjaCelu.x-pozycja.x)<minOdleglosc && ((pozycjaCelu.x>=pozycja.x && zwroconyWPrawo==true) || (pozycjaCelu.x<=pozycja.x && zwroconyWPrawo!=true)))
+	if(typZachowania==0) //Mnich
 	{
-		//m.ustawLPM(true);
-		//k.ustawWcisnietoKlawiszFunkcyjny(true,0);
-		k.ustawWcisnietoKlawiszFunkcyjny(true,3);
+		double progOdleglosci1 = 3000;
+		double progOdleglosci2 = 1200;
 
-		Punkt poprawka = (*(cel->zwrocPrzestrzenKolizji()->zwrocOkregi()))[0].zwrocPozycjeWzgledemObiektu();
-		poprawka.y=-poprawka.y+10;
-		poprawka.x=-poprawka.x;
-		if(cel->czyZwroconyWPrawo()) poprawka.x+=30;
-		else poprawka.x-=30;
+		if(fabs(pozycjaCelu.x-pozycja.x)<progOdleglosci2)
+		{
+			//Tarcza obszarowa
+			k.ustawWcisnietoKlawiszFunkcyjny(true,2);
+		}
+		else if(fabs(pozycjaCelu.x-pozycja.x)>progOdleglosci1)
+		{
+			//Tarcza personalna
+			k.ustawWcisnietoKlawiszFunkcyjny(true,1);
+		}
+		else if(pozycjaCelu.x<pozycja.x && zwroconyWPrawo==true)
+		{
+			k.ustawWcisnietoLewo(true);
+		}
+		else if(pozycjaCelu.x>pozycja.x && zwroconyWPrawo==false)
+		{
+			k.ustawWcisnietoPrawo(true);
+		}
+		else if(fabs(pozycjaCelu.x-pozycja.x)>progOdleglosci2 && fabs(pozycjaCelu.x-pozycja.x)<progOdleglosci1)
+		{
+			m.ustawLPM(true);
 
-		pomocnikCelowania.wyznaczKatStrzalu(Punkt(pozycja.x-pozycjaCelu.x,pozycja.y-pozycjaCelu.y)+poprawka,cel->zwrocPredkosc());
-		double kat = pomocnikCelowania.zwrocKat(PomocnikCelowania::katWprost);
-		m.ustawX(1000*cos(kat));
-		m.ustawY(1000*sin(kat));
+			Punkt poprawka = (*(cel->zwrocPrzestrzenKolizji()->zwrocOkregi()))[0].zwrocPozycjeWzgledemObiektu();
+			poprawka.y=-poprawka.y+10;
+			poprawka.x=-poprawka.x;
+			if(cel->czyZwroconyWPrawo()) poprawka.x+=30;
+			else poprawka.x-=30;
+
+			pomocnikCelowania.wyznaczKatStrzalu(Punkt(pozycja.x-pozycjaCelu.x,pozycja.y-pozycjaCelu.y)+poprawka,cel->zwrocPredkosc());
+			double kat = pomocnikCelowania.zwrocKat(PomocnikCelowania::katWprost);
+			m.ustawX(1000*cos(kat));
+			m.ustawY(1000*sin(kat));
+		}
 	}
-	else if(pozycjaCelu.x>pozycja.x)
+	else if(typZachowania==1) // StacjonarnyKaplan
 	{
-		k.ustawWcisnietoPrawo(true);
-	}
-	else if(pozycjaCelu.x<pozycja.x)
-	{
-		k.ustawWcisnietoLewo(true);
+		double progOdleglosci = 5000;
+
+		if(fabs(pozycjaCelu.x-pozycja.x)<progOdleglosci)
+		{
+			k.ustawWcisnietoKlawiszFunkcyjny(true,0);
+
+			Punkt poprawka = (*(cel->zwrocPrzestrzenKolizji()->zwrocOkregi()))[0].zwrocPozycjeWzgledemObiektu();
+			poprawka.y=-poprawka.y+10;
+			poprawka.x=-poprawka.x;
+			if(cel->czyZwroconyWPrawo()) poprawka.x+=30;
+			else poprawka.x-=30;
+
+			pomocnikCelowania.wyznaczKatStrzalu(Punkt(pozycja.x-pozycjaCelu.x,pozycja.y-pozycjaCelu.y)+poprawka,cel->zwrocPredkosc());
+			double kat = pomocnikCelowania.zwrocKat(PomocnikCelowania::katWprost);
+			m.ustawX(1000*cos(kat));
+			m.ustawY(1000*sin(kat));
+		}
 	}
 
 	return std::pair<Klawiatura,Myszka>(k,m);
@@ -277,6 +330,7 @@ void Kaplan::wyznaczKlatkeAnimacji()
 		case tarczaObszarowa:
 			klatkaAnimacji.x=0;
 			klatkaAnimacji.y=stanRzucaniaZaklec/(1+parametry.czasRzucaniaObszarowejTarczy/3);
+			if(tarcza != 0) klatkaAnimacji.y = 2;
 			break;
 		case umiera:
 			if(klatkaAnimacji.x!=0 || klatkaAnimacji.y<2)

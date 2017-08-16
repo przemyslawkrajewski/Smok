@@ -11,6 +11,7 @@ ParametryTarczyPersonalnej TarczaPersonalna::parametry = ParametryTarczyPersonal
 
 TarczaPersonalna::TarczaPersonalna(Punkt p)
 {
+	maTarcze=false;
 	pozycja=p;
 	zycie=parametry.maksZycia;
 	stanWidocznosci=parametry.czasWidocznosci;

@@ -72,7 +72,7 @@ struct ParametryStrzelca
 		maksymalnaIloscStrzalWSerii=10;
 		maxSzybkiegoNaciagania=2;
 		maxSzybkiegoCelowania=5;
-		predkoscOdnawianiaSerii=0.1;
+		predkoscOdnawianiaSerii=0.01;
 
 
 		maxZycia=10;
@@ -125,6 +125,9 @@ public:
 	bool pozycjaStrzelecka;
 	bool zablokowany;
 	Punkt staraPredkoscCelu;
+
+	enum StanZachowania {ostrzal,ucieczkaWPrawo,ucieczkaWLewo};
+	StanZachowania stanZachowania;
 
 	//Taki odpowiednik many
 	double gotowoscSwietejStrzaly;

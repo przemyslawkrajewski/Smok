@@ -40,7 +40,7 @@ void Smok::reset()
 
 void Smok::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 {
-	//std::cout << pozycja.x << "  " << pozycja.y << "\n";
+	std::cout << pozycja.x << "  " << pozycja.y << "\n";
 	Punkt staraPredkosc(predkosc);
 	//zadane Y
 	if(pozycja.y-zadaneY>70) zadaneY=pozycja.y-70;
@@ -119,7 +119,7 @@ void Smok::ustawPoziom(int p)
 
 	//Przyspieszenie
 	parametry.wspolczynnikRozpedzaniaSieX=0.15+0.15*mnoznik;
-	parametry.wspolczynnikRozpedzaniaSieY=0.10+0.2*mnoznik;
+	parametry.wspolczynnikRozpedzaniaSieY=0.15+0.3*mnoznik;
 	parametry.wspolczynnikHamowaniaX=0.3+0.6*mnoznik;
 	parametry.wspolczynnikHamowaniaY=1.2+1.0*mnoznik;
 	parametry.predkoscWznoszeniaSieY=1.2+1.0*mnoznik;
@@ -128,7 +128,7 @@ void Smok::ustawPoziom(int p)
 
 	//Wybicie
 	parametry.silaWybicia=10+6*mnoznik;
-	parametry.wspolczynnikSilniejszegoUnoszenia=9+3*mnoznik;
+	parametry.wspolczynnikSilniejszegoUnoszenia=9+6*mnoznik;
 
 	//parametry.predkoscOpadaniaPrzySzybowaniu=1;
 
@@ -494,7 +494,7 @@ void Smok::wyznaczGlowe(Klawiatura* klawiatura, Myszka *myszka)
 		zieje=true;
 		przerwaOgnia=parametry.przerwaMiedzyMiotaniem;
 		if(iloscOgnia>0) iloscOgnia-=parametry.zuzycieOgnia;
-		double wspolczynnikSily=(iloscOgnia)/parametry.maksymalnailoscOgnia;//pow((iloscOgnia)/parametry.maksymalnailoscOgnia,0.2); //Wspolczynnik od ktorego zalezy aktualna predkosc ognia
+		double wspolczynnikSily=0.5 + ((iloscOgnia)/parametry.maksymalnailoscOgnia)/2;//pow((iloscOgnia)/parametry.maksymalnailoscOgnia,0.2); //Wspolczynnik od ktorego zalezy aktualna predkosc ognia
 		for(int i=0; i<iloscOgnia;i++)
 		{
 			double predkoscOgnia=parametry.minimalnaPredkoscOgnia+(parametry.maksymalnaPredkoscOgnia-parametry.minimalnaPredkoscOgnia)*wspolczynnikSily;

@@ -24,7 +24,7 @@ FabrykaLudzi::FabrykaLudzi()
 	parametryLucznikaLv1.maxZycia=150;
 	parametryLucznikaLv1.obrazenia=10;
 	parametryLucznikaLv1.celnosc=3.14/8;
-	parametryLucznikaLv1.predkoscStrzaly=35;
+	parametryLucznikaLv1.predkoscStrzaly=26;
 	parametryLucznikaLv1.maxNaciagniecie=30;
 	parametryLucznikaLv1.maxCelowania=70;
 	parametryLucznikaLv1.predkoscAnimacjiBiegu1=0.25;
@@ -36,7 +36,7 @@ FabrykaLudzi::FabrykaLudzi()
 	parametryLucznikaLv2.maxZycia=150;
 	parametryLucznikaLv2.obrazenia=10;
 	parametryLucznikaLv2.celnosc=3.14/16;
-	parametryLucznikaLv2.predkoscStrzaly=35;
+	parametryLucznikaLv2.predkoscStrzaly=26;
 	parametryLucznikaLv2.maxNaciagniecie=20;
 	parametryLucznikaLv2.maxCelowania=60;
 	parametryLucznikaLv2.predkoscAnimacjiBiegu1=0.3;//0.5
@@ -45,34 +45,34 @@ FabrykaLudzi::FabrykaLudzi()
 	parametryLucznikaLv2.czasTrwaniaStrzaly=300;
 	parametryLucznikaLv2.spust=false;
 
-	parametryLucznikaLv3.maxZycia=200;
-	parametryLucznikaLv3.obrazenia=0;
-	parametryLucznikaLv3.celnosc=3.14/32;
-	parametryLucznikaLv3.predkoscStrzaly=35;
-	parametryLucznikaLv3.maxNaciagniecie=10;
-	parametryLucznikaLv3.maxCelowania=2;
+	parametryLucznikaLv3.maxZycia=400;
+	parametryLucznikaLv3.obrazenia=17;
+	parametryLucznikaLv3.celnosc=3.14/64;
+	parametryLucznikaLv3.predkoscStrzaly=55;
+	parametryLucznikaLv3.maxNaciagniecie=20;
+	parametryLucznikaLv3.maxCelowania=60;
 	parametryLucznikaLv3.predkoscAnimacjiBiegu1=0.5;//0.5
 	parametryLucznikaLv3.predkoscAnimacjiBiegu2=0.30;//0.3
 	parametryLucznikaLv3.predkoscBiegu=9;
 	parametryLucznikaLv3.czasTrwaniaStrzaly=300;
 	parametryLucznikaLv3.spust=false;
 
-	parametryLucznikaLv4.maxZycia=200;
-	parametryLucznikaLv4.obrazenia=0;
-	parametryLucznikaLv4.celnosc=3.14/32;
-	parametryLucznikaLv4.predkoscStrzaly=35;
-	parametryLucznikaLv4.maxNaciagniecie=10;
-	parametryLucznikaLv4.maxCelowania=2;
+	parametryLucznikaLv4.maxZycia=1000;
+	parametryLucznikaLv4.obrazenia=50;
+	parametryLucznikaLv4.celnosc=0;
+	parametryLucznikaLv4.predkoscStrzaly=45;
+	parametryLucznikaLv4.maxNaciagniecie=15;
+	parametryLucznikaLv4.maxCelowania=12;
 	parametryLucznikaLv4.predkoscAnimacjiBiegu1=0.5;//0.5
 	parametryLucznikaLv4.predkoscAnimacjiBiegu2=0.30;//0.3
-	parametryLucznikaLv4.predkoscBiegu=9;
+	parametryLucznikaLv4.predkoscBiegu=12;
 	parametryLucznikaLv4.czasTrwaniaStrzaly=300;
 	parametryLucznikaLv4.spust=false;
 
 	parametryRycerzaLv1.maxZycia=400;
 	parametryRycerzaLv1.obrazenia=25;
 	parametryRycerzaLv1.celnosc=3.14/32;
-	parametryRycerzaLv1.czasTrwaniaStrzaly=100;
+	parametryRycerzaLv1.czasTrwaniaStrzaly=200;
 	parametryRycerzaLv1.predkoscStrzaly=30;
 	parametryRycerzaLv1.maxNaciagniecie=60;
 	parametryRycerzaLv1.maxCelowania=20;
@@ -84,8 +84,8 @@ FabrykaLudzi::FabrykaLudzi()
 	parametryRycerzaLv2.maxZycia=700;
 	parametryRycerzaLv2.obrazenia=40;
 	parametryRycerzaLv2.celnosc=3.14/64;
-	parametryRycerzaLv2.czasTrwaniaStrzaly=100;
-	parametryRycerzaLv2.predkoscStrzaly=40;
+	parametryRycerzaLv2.czasTrwaniaStrzaly=300;
+	parametryRycerzaLv2.predkoscStrzaly=30;
 	parametryRycerzaLv2.maxNaciagniecie=60;
 	parametryRycerzaLv2.maxCelowania=20;
 	parametryRycerzaLv2.predkoscAnimacjiBiegu1=0.4;
@@ -95,24 +95,26 @@ FabrykaLudzi::FabrykaLudzi()
 	parametryRycerzaLv2.obrazeniaSwietejStrzaly=120;
 	parametryRycerzaLv2.czasOdnawianiaSwietejStrzaly=250;
 
-	parametryRycerzaLv3.maxZycia=200;
-	parametryRycerzaLv3.obrazenia=10;
+	parametryRycerzaLv3.maxZycia=1000;
+	parametryRycerzaLv3.obrazenia=50;
 	parametryRycerzaLv3.celnosc=0;
-	parametryRycerzaLv3.czasTrwaniaStrzaly=100;
-	parametryRycerzaLv3.predkoscStrzaly=35;
+	parametryRycerzaLv3.czasTrwaniaStrzaly=400;
+	parametryRycerzaLv3.predkoscStrzaly=32;
 	parametryRycerzaLv3.maxNaciagniecie=60;
 	parametryRycerzaLv3.maxCelowania=20;
 	parametryRycerzaLv3.predkoscAnimacjiBiegu1=0.4;
 	parametryRycerzaLv3.predkoscAnimacjiBiegu2=0.2;
 	parametryRycerzaLv3.predkoscBiegu=3;
 	parametryRycerzaLv3.spust=true;
+	parametryRycerzaLv3.obrazeniaSwietejStrzaly=100;
+	parametryRycerzaLv3.czasOdnawianiaSwietejStrzaly=250;
 
 	parametryBalistyLv1.maxZycia=2000;
 	parametryBalistyLv1.obrazenia=1000;
 	parametryBalistyLv1.obnizoneObrazenia=0;
 	parametryBalistyLv1.rozrzut=3.14/16;
 	parametryBalistyLv1.iloscPociskow=5;
-	parametryBalistyLv1.predkoscStrzaly=100;
+	parametryBalistyLv1.predkoscStrzaly=60;
 	parametryBalistyLv1.predkoscCelowania=0.004;
 	parametryBalistyLv1.maxKatCelowania=1.29;
 	parametryBalistyLv1.minKatCelowania=0.15;
@@ -123,31 +125,31 @@ FabrykaLudzi::FabrykaLudzi()
 	parametryBalistyLv2.obnizoneObrazenia=0;
 	parametryBalistyLv2.rozrzut=3.14/16;
 	parametryBalistyLv2.iloscPociskow=5;
-	parametryBalistyLv2.predkoscStrzaly=100;
+	parametryBalistyLv2.predkoscStrzaly=60;
 	parametryBalistyLv2.predkoscCelowania=0.004;
 	parametryBalistyLv2.maxKatCelowania=1.29;
 	parametryBalistyLv2.minKatCelowania=0.15;
 	parametryBalistyLv2.maxNaciagania=300;
 
-	parametryKaplanaLv1.maxZycia=10;
+	parametryKaplanaLv1.maxZycia=400;
 	parametryKaplanaLv1.predkoscPocisku=15;
 	parametryKaplanaLv1.czasRzucaniaKierowanegoPocisku=50;
-	parametryKaplanaLv1.obrazeniaKierowanegoPocisku=5;
-	parametryKaplanaLv1.czasTrwaniaPocisku=1000;
+	parametryKaplanaLv1.obrazeniaKierowanegoPocisku=30;
+	parametryKaplanaLv1.czasTrwaniaPocisku=200;
 	parametryKaplanaLv1.czasRzucaniaKasetowegoPocisku=0;
-	parametryKaplanaLv1.obrazeniaKasetowegoPocisku=5;
-	parametryKaplanaLv1.czasRzucaniaPersonalnejTarczy=150;
+	parametryKaplanaLv1.obrazeniaKasetowegoPocisku=0;
+	parametryKaplanaLv1.czasRzucaniaPersonalnejTarczy=400;
 	parametryKaplanaLv1.czasRzucaniaObszarowejTarczy=50;
 	parametryKaplanaLv1.predkoscChodu=0.8;
 
-	parametryKaplanaLv2.maxZycia=10;
+	parametryKaplanaLv2.maxZycia=500;
 	parametryKaplanaLv2.predkoscPocisku=15;
 	parametryKaplanaLv2.czasRzucaniaKierowanegoPocisku=50;
-	parametryKaplanaLv2.obrazeniaKierowanegoPocisku=5;
-	parametryKaplanaLv2.czasTrwaniaPocisku=1000;
-	parametryKaplanaLv2.czasRzucaniaKasetowegoPocisku=0;
+	parametryKaplanaLv2.obrazeniaKierowanegoPocisku=40;
+	parametryKaplanaLv2.czasTrwaniaPocisku=200;
+	parametryKaplanaLv2.czasRzucaniaKasetowegoPocisku=100;
 	parametryKaplanaLv2.obrazeniaKasetowegoPocisku=5;
-	parametryKaplanaLv2.czasRzucaniaPersonalnejTarczy=150;
+	parametryKaplanaLv2.czasRzucaniaPersonalnejTarczy=400;
 	parametryKaplanaLv2.czasRzucaniaObszarowejTarczy=50;
 	parametryKaplanaLv2.predkoscChodu=0.8;
 
@@ -270,7 +272,9 @@ void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja, int typZach
 			strzelec.ustawParametry(parametryRycerzaLv3);
 			strzelec.ustawPoziom(2);
 			strzelec.ustawTypZachowania(typZachowania);
-			(strzelcy->dodaj(strzelec))->wyznaczPrzestrzenKolizji();
+			Strzelec *s=(strzelcy->dodaj(strzelec));
+			s->wyznaczPrzestrzenKolizji();
+			FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::tarczaPersonalnaRegen,Punkt(),s);
 			break;
 		}
 		case balista:
@@ -297,6 +301,7 @@ void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja, int typZach
 			else balista.ustawKatCelowania(2.9);
 			balista.ustawParametry(parametryBalistyLv2);
 			balista.ustawPoziom(1);
+			balista.ustawTypZachowania(typZachowania);
 			(balisty->dodaj(balista))->wyznaczPrzestrzenKolizji();
 			break;
 		}
@@ -308,6 +313,7 @@ void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja, int typZach
 			kaplan.ustawCzyZwroconyWPrawo(zwroconyWPrawo);
 			kaplan.ustawParametry(parametryKaplanaLv1);
 			kaplan.ustawPoziom(0);
+			kaplan.ustawTypZachowania(typZachowania);
 			(kaplani->dodaj(kaplan))->wyznaczPrzestrzenKolizji();
 			break;
 		}
@@ -319,6 +325,7 @@ void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja, int typZach
 			kaplan.ustawCzyZwroconyWPrawo(zwroconyWPrawo);
 			kaplan.ustawParametry(parametryKaplanaLv2);
 			kaplan.ustawPoziom(1);
+			kaplan.ustawTypZachowania(typZachowania);
 			(kaplani->dodaj(kaplan))->wyznaczPrzestrzenKolizji();
 			break;
 		}
@@ -330,6 +337,7 @@ void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja, int typZach
 			kaplan.ustawCzyZwroconyWPrawo(zwroconyWPrawo);
 			kaplan.ustawParametry(parametryKaplanaLv3);
 			kaplan.ustawPoziom(2);
+			kaplan.ustawTypZachowania(typZachowania);
 			(kaplani->dodaj(kaplan))->wyznaczPrzestrzenKolizji();
 			break;
 		}

@@ -32,7 +32,7 @@ public:
 	enum TypPrzedmiotu {jaskinia,
 						bmalyMur,malyMur,sredniMur,bduzyMur,
 						niskaWieza,sredniaWieza, wysokaWieza, bwysokaWieza,
-						zaslona,
+						zaslona, ulZaslona,
 						tarczaPersonalna,tarczaPersonalnaRegen,tarczaObszarowa
 					   };
 

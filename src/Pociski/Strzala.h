@@ -17,7 +17,7 @@ struct ParametryStrzaly
 	double wspolczynnikGrawitacji;
 	ParametryStrzaly()
 	{
-		wspolczynnikGrawitacji=0.40;
+		wspolczynnikGrawitacji=0.30;
 	}
 };
 

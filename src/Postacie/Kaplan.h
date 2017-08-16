@@ -83,6 +83,7 @@ public:
 
 	void ustawParametry(ParametryKaplana p)
 	{
+		zycie=p.maxZycia;
 		parametry=p;
 		pomocnikCelowania.ustawParametry(parametry.predkoscPocisku,0);
 	}

@@ -28,6 +28,7 @@ Strzelec::Strzelec(): Postac()
 	pozycjaStrzelecka=false;
 	wSerii=false;
 	najblizszaZaslona=0;
+	typZachowania=ostrzal;
 }
 
 void Strzelec::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
@@ -260,6 +261,7 @@ std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 	int odleglosc=200;
 
 	Punkt pozycjaCelu = cel->zwrocPozycjeCelu();
+	Punkt predkoscCelu = cel->zwrocPredkosc();
 
 	Klawiatura k;
 	Myszka m;
@@ -309,7 +311,7 @@ std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 			m.ustawLPM(true);
 		}
 	}
-	if(typZachowania==1) // Stacjonarny
+	else if(typZachowania==1) // Stacjonarny
 	{
 		double maxOdleglosc=2000;
 
@@ -325,7 +327,7 @@ std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 			m.ustawLPM(true);
 		}
 	}
-	if(typZachowania==2) // Lucznik Zawodowy
+	else if(typZachowania==2) // Lucznik Zawodowy
 	{
 		double maxOdleglosc=3050;
 		double minOdleglosc=1500;
@@ -377,10 +379,10 @@ std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 			m.ustawLPM(true);
 		}
 	}
-	if(typZachowania==3) // Rycerz
+	else if(typZachowania==3) // Rycerz
 	{
-		double maxOdleglosc=3000;
-		double minOdleglosc=2000;
+		double maxOdleglosc=6000;
+		double minOdleglosc=5000;
 
 		if(mozliwyStrzal) pomocnikCelowania.wyznaczKatStrzalu(pozycja-pozycjaCelu+poprawka,cel->zwrocPredkosc());
 
@@ -418,10 +420,10 @@ std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 			m.ustawLPM(true);
 		}
 	}
-	if(typZachowania==4) // Krzyzowiec
+	else if(typZachowania==4 || typZachowania==5) // Krzyzowiec / Boss
 	{
-		double maxOdleglosc=6000;
-		double minOdleglosc=2000;
+		double maxOdleglosc=8000;
+		double minOdleglosc=6000;
 
 		if(mozliwyStrzal) pomocnikCelowania.wyznaczKatStrzalu(pozycja-pozycjaCelu+poprawka,cel->zwrocPredkosc());
 
@@ -455,31 +457,139 @@ std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 		}
 		else if((mozliwyStrzal && pozycjaStrzelecka) || stanNaciagania>0)
 		{
-			if(staraPredkoscCelu.x==cel->zwrocPredkosc().x && fabs(staraPredkoscCelu.y-cel->zwrocPredkosc().y)<10 && parametry.czasOdnawianiaSwietejStrzaly==gotowoscSwietejStrzaly) k.ustawWcisnietoKlawiszFunkcyjny(true,1);
+			if(typZachowania==5 && staraPredkoscCelu.x==cel->zwrocPredkosc().x && fabs(staraPredkoscCelu.y-cel->zwrocPredkosc().y)<10 && parametry.czasOdnawianiaSwietejStrzaly==gotowoscSwietejStrzaly) k.ustawWcisnietoKlawiszFunkcyjny(true,1);
 			else m.ustawLPM(true);
 		}
 		staraPredkoscCelu=cel->zwrocPredkosc();
 	}
-	else if(typZachowania==99)
+	else if(typZachowania == 6) // Lowca - Boss
 	{
-/*		double kat = 0;
-		if(pozycja.y<pozycjaCelu.y) kat = pomocnikCelowania.zwrocKat(PomocnikCelowania::katWprost);
-		else kat = pomocnikCelowania.zwrocKat(PomocnikCelowania::katZGory);
+		double maxOdleglosc = 15000;
+		double minOdleglosc = 400;
+
+		double progOdleglosciPodZaslona = 50;
 
 		if(mozliwyStrzal) pomocnikCelowania.wyznaczKatStrzalu(pozycja-pozycjaCelu+poprawka,cel->zwrocPredkosc());
 
+		double kat;
+		kat = pomocnikCelowania.zwrocKat(PomocnikCelowania::katWprost);
+
 		m.ustawX(1000*cos(-kat));
 		m.ustawY(1000*sin(-kat));
-		katCelowania=kat;
+		katCelowania = kat;//*/
 
-		if(iloscStrzalWSerii == parametry.maksymalnaIloscStrzalWSerii) wSerii=true;
-		else if(iloscStrzalWSerii<1) wSerii=false;
+		bool podZaslona = najblizszaZaslona != 0 && abs(najblizszaZaslona->zwrocPozycje().x-pozycja.x)<progOdleglosciPodZaslona;
+		bool smokWPoblizu = fabs(pozycja.x-pozycjaCelu.x) < minOdleglosc;
+		bool smokDalej = fabs(pozycja.x-pozycjaCelu.x) < minOdleglosc*2;
 
-		if(abs(pozycjaCelu.x-pozycja.x)>maxOdleglosc) mozliwyStrzal=false;
-		if( (stanNaciagania>0 && parametry.spust) || (mozliwyStrzal && wSerii))
+		if(staraPredkoscCelu.x==cel->zwrocPredkosc().x && fabs(staraPredkoscCelu.y-cel->zwrocPredkosc().y)<10 && iloscStrzalWSerii>8) wSerii = true;
+		if(iloscStrzalWSerii<1) wSerii=false;
+
+		if(stanZachowania == ostrzal)
 		{
-			m.ustawLPM(true);
-		}*/
+			if(najblizszaZaslona != 0)
+			{
+				if(!podZaslona)
+				{
+					if(najblizszaZaslona->zwrocPozycje().x>pozycja.x) stanZachowania = ucieczkaWPrawo;
+					else stanZachowania = ucieczkaWLewo;
+				}
+				if(smokWPoblizu && pozycjaCelu.y < 500)
+				{
+					if(pozycja.x < pozycjaCelu.x) stanZachowania = ucieczkaWLewo;
+					else stanZachowania = ucieczkaWPrawo;
+				}
+			}
+
+			if(zwroconyWPrawo && pozycjaCelu.x<pozycja.x) k.ustawWcisnietoLewo(true);
+			else if(!zwroconyWPrawo && pozycjaCelu.x>pozycja.x) k.ustawWcisnietoPrawo(true);
+			else
+			{
+				if(wSerii) k.ustawWcisnietoKlawiszFunkcyjny(true,2);
+				else m.ustawLPM(true);
+			}
+		}
+		else if(stanZachowania == ucieczkaWPrawo)
+		{
+			if((!smokWPoblizu && podZaslona) || najblizszaZaslona == 0) stanZachowania = ostrzal;
+			if(pozycja.x>24000) stanZachowania = ucieczkaWLewo;
+			if(smokWPoblizu && predkoscCelu.x > 14) stanZachowania = ucieczkaWLewo;
+
+			k.ustawWcisnietoPrawo(true);
+		}
+		else if(stanZachowania == ucieczkaWLewo)
+		{
+			if((!smokWPoblizu && podZaslona) || najblizszaZaslona == 0) stanZachowania = ostrzal;
+			if(pozycja.x<5000) stanZachowania = ucieczkaWPrawo;
+			if(smokWPoblizu && predkoscCelu.x < -14) stanZachowania = ucieczkaWPrawo;
+
+			k.ustawWcisnietoLewo(true);
+		}
+		else stanZachowania = ostrzal;
+		staraPredkoscCelu=cel->zwrocPredkosc();
+	}
+	else if(typZachowania == 7) // Lucznik Wyborowy
+	{
+
+		double prog = 2000;
+
+		if(mozliwyStrzal) pomocnikCelowania.wyznaczKatStrzalu(pozycja - pozycjaCelu+poprawka,cel->zwrocPredkosc());
+
+		double kat;
+		if(pozycja.y - pozycjaCelu.y <= 0 && abs(pozycja.x - pozycjaCelu.x) < prog) kat = pomocnikCelowania.zwrocKat(PomocnikCelowania::katWprost);
+		else kat = pomocnikCelowania.zwrocKat(PomocnikCelowania::katZGory);
+
+		m.ustawX(1000*cos(-kat));
+		m.ustawY(1000*sin(-kat));
+		katCelowania=kat;//*/
+
+		if(mozliwyStrzal) m.ustawLPM(true);
+	}
+	else if(typZachowania == 8) ///Templariusz
+	{
+		double maxOdleglosc=8000;
+		double minOdleglosc=6000;
+
+		if(mozliwyStrzal) pomocnikCelowania.wyznaczKatStrzalu(pozycja-pozycjaCelu+poprawka,cel->zwrocPredkosc());
+
+		double kat;
+		kat = pomocnikCelowania.zwrocKat(PomocnikCelowania::katWprost);
+
+		m.ustawX(1000*cos(-kat));
+		m.ustawY(1000*sin(-kat));
+		katCelowania=kat;//*/
+
+		double odlegloscOdZaslony;
+		bool zaslonaWPoblizu=false;
+		bool podZaslona=false;
+
+		if(abs(pozycja.x-pozycjaCelu.x)>maxOdleglosc || pozycja.y-pozycjaCelu.y>60)
+		{
+			mozliwyStrzal=false;
+			pozycjaStrzelecka=false;
+		}
+
+		if(abs(pozycja.x-pozycjaCelu.x)<minOdleglosc) pozycjaStrzelecka=true;
+		if((zwroconyWPrawo && przeszkodaPoPrawej) || (!zwroconyWPrawo && przeszkodaPoLewej)) pozycjaStrzelecka=true;
+
+		if((pozycja.y-pozycjaCelu.y>60 || abs(pozycja.x-pozycjaCelu.x)>5000) && !czyPosiadaTarcze() && stanNaciagania==0)
+		{
+			k.ustawWcisnietoKlawiszFunkcyjny(true,0);
+		}
+		else if((!podZaslona && pozycja.x-pozycjaCelu.x>0) && !pozycjaStrzelecka && abs(pozycja.x-pozycjaCelu.x)>minOdleglosc)
+		{
+			k.ustawWcisnietoLewo(true);
+		}
+		else if( (!podZaslona && pozycja.x-pozycjaCelu.x<0) && !pozycjaStrzelecka && abs(pozycja.x-pozycjaCelu.x)>minOdleglosc)
+		{
+			k.ustawWcisnietoPrawo(true);
+		}
+		else if((mozliwyStrzal && pozycjaStrzelecka) || stanNaciagania>0)
+		{
+			if(staraPredkoscCelu.x==cel->zwrocPredkosc().x && fabs(staraPredkoscCelu.y-cel->zwrocPredkosc().y)<10 && parametry.czasOdnawianiaSwietejStrzaly==gotowoscSwietejStrzaly) k.ustawWcisnietoKlawiszFunkcyjny(true,1);
+			else m.ustawLPM(true);
+		}
+		staraPredkoscCelu=cel->zwrocPredkosc();
 	}
 
 	if(m.zwrocLPM()==false || (m.zwrocLPM()==true && stanNaciagania==-1 && parametry.maxCelowania==stanCelowania))

@@ -41,6 +41,7 @@ Obiekt* FabrykaPrzedmiotow::stworzPrzedmiot(TypPrzedmiotu typ, Punkt pozycja, Ob
 {
 	TarczaPersonalna* tp;
 	TarczaObszarowa* to;
+	Zaslona* z;
 	switch(typ)
 	{
 	case jaskinia:
@@ -108,12 +109,20 @@ Obiekt* FabrykaPrzedmiotow::stworzPrzedmiot(TypPrzedmiotu typ, Punkt pozycja, Ob
 		(zaslony->dodaj(Zaslona(pozycja+Punkt(0,170))))->wyznaczPrzestrzenKolizji();
 		return 0;
 		break;
+	case ulZaslona:
+		assert("Kontener 'Zaslony' nie ustawiony" && zaslony!=0);
+		z=zaslony->dodaj(Zaslona(pozycja+Punkt(0,170)));
+		z->ulepsz();
+		z->wyznaczPrzestrzenKolizji();
+		return 0;
+		break;
 	case tarczaPersonalna:
 		assert("Kontener 'TarczePersonalne' nie ustawione" && tarczePersonalne!=0);
 		assert("Do stworzenia tarczy personalnej potrzebny jest cel" && cel!=0);
 		tp=tarczePersonalne->dodaj(TarczaPersonalna(cel->zwrocPozycje()+Punkt(0,-5)));
 		tp->wyznaczPrzestrzenKolizji();
 		tp->ustawPunktZaczepu(cel);
+		cel->ustawCzyPosiadaTarcze(true);
 		return tp;
 		break;
 	case tarczaPersonalnaRegen:
@@ -122,7 +131,8 @@ Obiekt* FabrykaPrzedmiotow::stworzPrzedmiot(TypPrzedmiotu typ, Punkt pozycja, Ob
 		tp=tarczePersonalne->dodaj(TarczaPersonalna(cel->zwrocPozycje()+Punkt(0,-5)));
 		tp->wyznaczPrzestrzenKolizji();
 		tp->ustawPunktZaczepu(cel);
-		tp->ustawPredkoscOdnawiania(0.1);
+		tp->ustawPredkoscOdnawiania(0.01);
+		cel->ustawCzyPosiadaTarcze(true);
 		return tp;
 		break;
 	case tarczaObszarowa:

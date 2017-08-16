@@ -63,7 +63,7 @@ void FabrykaPociskow::stworzPocisk(TypPocisku typ,Punkt nPozycja, Punkt nPredkos
 		assert("Kontener 'Plomienie' nie ustawiony" && plomienie!=0);
 		p = plomienie->dodaj(Plomien(nPozycja,nPredkosc,nczasTrwania,nKat));
 		p->wyznaczPrzestrzenKolizji();
-		p->ustawObrazenia(obrazenia*1.5);
+		p->ustawObrazenia(obrazenia*2);
 		p->ustawSpopielenie(true);
 		break;
 	case strzala:

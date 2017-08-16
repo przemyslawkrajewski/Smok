@@ -16,7 +16,7 @@ struct ParametryPociskuBalistycznego
 	double wspolczynnikGrawitacji;
 	ParametryPociskuBalistycznego()
 	{
-		wspolczynnikGrawitacji=0.40;
+		wspolczynnikGrawitacji=0.24;
 	}
 };
 

@@ -245,6 +245,8 @@ void Wideo::wczytanieObrazkow()
 	   wczytanieObrazka("Grafika/Lucznik2L.bmp",&lucznikL[1]) ||
 	   wczytanieObrazka("Grafika/Lucznik3P.bmp",&lucznikP[2]) ||
 	   wczytanieObrazka("Grafika/Lucznik3L.bmp",&lucznikL[2]) ||
+	   wczytanieObrazka("Grafika/Lucznik1P.bmp",&lucznikP[3]) ||
+	   wczytanieObrazka("Grafika/Lucznik1L.bmp",&lucznikL[3]) ||
 	   wczytanieObrazka("Grafika/Kaplan1P.bmp",&kaplanP[0]) ||
 	   wczytanieObrazka("Grafika/Kaplan1L.bmp",&kaplanL[0]) ||
 	   wczytanieObrazka("Grafika/Kaplan2P.bmp",&kaplanP[1]) ||
@@ -1022,7 +1024,7 @@ void Wideo::wyswietlenieZaslon()
 		Punkt pozycja = i->zwrocPozycje();
 		Punkt klatka = i->zwrocKlatkeAnimacji();
 
-		wyswietlenieKlatki(zaslona,pozycja,pozycjaKamery,Punkt(0,0),rozmiarKlatki);
+		wyswietlenieKlatki(zaslona,pozycja,pozycjaKamery,Punkt(0,klatka.y),rozmiarKlatki);
 		if(!(i->czyZniszczony()))
 			wyswietlenieKlatki(zaslona,pozycja,pozycjaKamery,klatka,rozmiarKlatki);
 

@@ -19,7 +19,7 @@ struct ParametryPociskuKierowanego
 	ParametryPociskuKierowanego()
 	{
 		maksymalnePrzyspieszenie=10;
-		wzmocnienieSterowania=0.05;
+		wzmocnienieSterowania=0.02;
 	}
 };
 

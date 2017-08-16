@@ -21,6 +21,9 @@ public:
 	virtual void wyznaczKlatkeAnimacji();
 	virtual void wyznaczPrzestrzenKolizji();
 
+	void ulepsz() {ulepszona=true;zycie=4000;}
+
+	bool ulepszona;
 private:
 };
 

@@ -329,10 +329,14 @@ void Model::obsluzKolizje()
 		plomienie.sprawdzKolizje((Obiekt*)&(*i),rozbijPociskOTarcze,zadajObrazenia,PrzestrzenKolizji::okrag,true);
 	}
 
-	//Plomienie Tarcze Obszarowe
+	//Pociski Tarcze Obszarowe
 	for(std::list<TarczaObszarowa>::iterator i=listaTarczObszarowych->begin();i!=listaTarczObszarowych->end();i++)
 	{
 		plomienie.sprawdzKolizje((Obiekt*)&(*i),rozbijPociskOTarcze,zadajObrazenia,PrzestrzenKolizji::okrag,true);
+		strzaly.sprawdzKolizje((Obiekt*)&(*i),usun,zadajObrazenia,PrzestrzenKolizji::okrag,true);
+		belty.sprawdzKolizje((Obiekt*)&(*i),usun,zadajObrazenia,PrzestrzenKolizji::okrag,true);
+		pociskiKierowane.sprawdzKolizje((Obiekt*)&(*i),usun,zadajObrazenia,PrzestrzenKolizji::okrag,true);
+		pociskiKasetowe.sprawdzKolizje((Obiekt*)&(*i),usun,zadajObrazenia,PrzestrzenKolizji::okrag,true);
 	}
 
 	//Strzelcy kontra plomienie
@@ -368,6 +372,8 @@ void Model::obsluzKolizje()
 		belty.sprawdzKolizje((Obiekt*)&(*i),usun,nic,PrzestrzenKolizji::prostokat,true);
 		strzaly.sprawdzKolizje((Obiekt*)&(*i),kolizjaPlomieniazMurem,nic,PrzestrzenKolizji::prostokat,true);
 		pociskiBalistyczne.sprawdzKolizje((Obiekt*)&(*i),kolizjaPlomieniazMurem,nic,PrzestrzenKolizji::prostokat,true);
+		pociskiKierowane.sprawdzKolizje((Obiekt*)&(*i),usun,nic,PrzestrzenKolizji::prostokat,true);
+		pociskiKasetowe.sprawdzKolizje((Obiekt*)&(*i),usun,nic,PrzestrzenKolizji::prostokat,true);
 	}
 	//Mury vs postacie
 	for(std::list<Mur>::iterator i=listaMurow->begin();i!=listaMurow->end();i++)
