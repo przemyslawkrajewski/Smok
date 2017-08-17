@@ -32,6 +32,7 @@ struct ParametryKaplana
 	double czasRzucaniaKasetowegoPocisku;
 	double czasRzucaniaPersonalnejTarczy;
 	double czasRzucaniaObszarowejTarczy;
+	double czasRzucaniaSeriiPociskow;
 
 	double czasTrwaniaPocisku;
 
@@ -39,6 +40,7 @@ struct ParametryKaplana
 
 	double maxZycia;
 	double obrazeniaKierowanegoPocisku;
+	double obrazeniaPociskuZSerii;
 	double obrazeniaKasetowegoPocisku;
 
 	ParametryKaplana()
@@ -50,13 +52,14 @@ struct ParametryKaplana
 		predkoscAnimacjiRzucaniaZaklec=30;
 
 		predkoscChodu=0.8;
-		minimalnaOdleglosc=30;
+		minimalnaOdleglosc=80;
 
 
 		czasRzucaniaKierowanegoPocisku=50;
 		czasRzucaniaKasetowegoPocisku=0;
 		czasRzucaniaPersonalnejTarczy=150;
 		czasRzucaniaObszarowejTarczy=50;
+		czasRzucaniaSeriiPociskow=200;
 
 		czasTrwaniaPocisku=1000;
 
@@ -65,15 +68,18 @@ struct ParametryKaplana
 		maxZycia=10;
 		obrazeniaKierowanegoPocisku=5;
 		obrazeniaKasetowegoPocisku=5;
+		obrazeniaPociskuZSerii=5;
 	}
 };
 
 class Kaplan: public Postac
 {
 public:
-	enum StanKaplana {stoi, idzie, umiera, zaklecieKierowany, zaklecieKasetowy, tarczaPersonalna, tarczaObszarowa};
+	enum StanKaplana {stoi, idzie, umiera, zaklecieKierowany, zaklecieKasetowy, tarczaPersonalna, tarczaObszarowa, seriaPociskow};
 
 	Kaplan();
+
+	virtual void zadajObrazenia(double obrazenia) {if(tarcza==0)zycie-=obrazenia;}
 
 	virtual void wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka);
 	virtual void wyznaczKlatkeAnimacji();
@@ -94,6 +100,10 @@ public:
 private:
 	int stanChodu;
 	int stanRzucaniaZaklec;
+
+	int rzucaneZaklecie;
+	double stareZycie;
+	bool uruchomienieOslony;
 
 	PomocnikCelowania pomocnikCelowania;
 

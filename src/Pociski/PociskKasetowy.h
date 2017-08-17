@@ -24,7 +24,7 @@ struct ParametryPociskuKasetowego
 	{
 		sredniaPredkoscOdlamkow=15;
 		odchyleniePredkosciOdlamkow=10;
-		iloscOdlamkow=40;
+		iloscOdlamkow=50;
 		czasTrwaniaOdlamkow=50;
 
 		minimalnaOdleglosc=100;
@@ -47,7 +47,7 @@ public:
 
 	static ParametryPociskuKasetowego parametry;
 private:
-
+	double odleglosc;
 };
 
 #endif /* POCISKKASETOWY_H_ */

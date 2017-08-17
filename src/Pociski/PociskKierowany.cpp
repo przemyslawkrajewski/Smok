@@ -55,7 +55,11 @@ void PociskKierowany::wyznaczKolejnyStan()
 		czasTrwania--;
 	}
 
-	if(pozycja.y<parametryObiektow.poziomZiemi || czasTrwania<0) usun();
+	if(czasTrwania<0)
+	{
+		maksymalnaPredkosc--;
+	}
+	if(pozycja.y<parametryObiektow.poziomZiemi || maksymalnaPredkosc<0) usun();
 }
 
 void PociskKierowany::wyznaczKlatkeAnimacji()

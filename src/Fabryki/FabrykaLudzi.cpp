@@ -25,7 +25,7 @@ FabrykaLudzi::FabrykaLudzi()
 	parametryLucznikaLv1.obrazenia=10;
 	parametryLucznikaLv1.celnosc=3.14/8;
 	parametryLucznikaLv1.predkoscStrzaly=26;
-	parametryLucznikaLv1.maxNaciagniecie=30;
+	parametryLucznikaLv1.maxNaciagniecie=35;
 	parametryLucznikaLv1.maxCelowania=70;
 	parametryLucznikaLv1.predkoscAnimacjiBiegu1=0.25;
 	parametryLucznikaLv1.predkoscAnimacjiBiegu2=0.20;
@@ -37,7 +37,7 @@ FabrykaLudzi::FabrykaLudzi()
 	parametryLucznikaLv2.obrazenia=10;
 	parametryLucznikaLv2.celnosc=3.14/16;
 	parametryLucznikaLv2.predkoscStrzaly=26;
-	parametryLucznikaLv2.maxNaciagniecie=20;
+	parametryLucznikaLv2.maxNaciagniecie=25;
 	parametryLucznikaLv2.maxCelowania=60;
 	parametryLucznikaLv2.predkoscAnimacjiBiegu1=0.3;//0.5
 	parametryLucznikaLv2.predkoscAnimacjiBiegu2=0.20;//0.3
@@ -49,7 +49,7 @@ FabrykaLudzi::FabrykaLudzi()
 	parametryLucznikaLv3.obrazenia=17;
 	parametryLucznikaLv3.celnosc=3.14/64;
 	parametryLucznikaLv3.predkoscStrzaly=55;
-	parametryLucznikaLv3.maxNaciagniecie=20;
+	parametryLucznikaLv3.maxNaciagniecie=25;
 	parametryLucznikaLv3.maxCelowania=60;
 	parametryLucznikaLv3.predkoscAnimacjiBiegu1=0.5;//0.5
 	parametryLucznikaLv3.predkoscAnimacjiBiegu2=0.30;//0.3
@@ -61,7 +61,7 @@ FabrykaLudzi::FabrykaLudzi()
 	parametryLucznikaLv4.obrazenia=50;
 	parametryLucznikaLv4.celnosc=0;
 	parametryLucznikaLv4.predkoscStrzaly=45;
-	parametryLucznikaLv4.maxNaciagniecie=15;
+	parametryLucznikaLv4.maxNaciagniecie=20;
 	parametryLucznikaLv4.maxCelowania=12;
 	parametryLucznikaLv4.predkoscAnimacjiBiegu1=0.5;//0.5
 	parametryLucznikaLv4.predkoscAnimacjiBiegu2=0.30;//0.3
@@ -147,21 +147,23 @@ FabrykaLudzi::FabrykaLudzi()
 	parametryKaplanaLv2.czasRzucaniaKierowanegoPocisku=50;
 	parametryKaplanaLv2.obrazeniaKierowanegoPocisku=40;
 	parametryKaplanaLv2.czasTrwaniaPocisku=200;
-	parametryKaplanaLv2.czasRzucaniaKasetowegoPocisku=100;
+	parametryKaplanaLv2.czasRzucaniaKasetowegoPocisku=150;
 	parametryKaplanaLv2.obrazeniaKasetowegoPocisku=5;
 	parametryKaplanaLv2.czasRzucaniaPersonalnejTarczy=400;
 	parametryKaplanaLv2.czasRzucaniaObszarowejTarczy=50;
 	parametryKaplanaLv2.predkoscChodu=0.8;
 
-	parametryKaplanaLv3.maxZycia=10;
-	parametryKaplanaLv3.predkoscPocisku=15;
-	parametryKaplanaLv3.czasRzucaniaKierowanegoPocisku=50;
-	parametryKaplanaLv3.obrazeniaKierowanegoPocisku=5;
-	parametryKaplanaLv3.czasTrwaniaPocisku=1000;
-	parametryKaplanaLv3.czasRzucaniaKasetowegoPocisku=0;
-	parametryKaplanaLv3.obrazeniaKasetowegoPocisku=5;
-	parametryKaplanaLv3.czasRzucaniaPersonalnejTarczy=150;
-	parametryKaplanaLv3.czasRzucaniaObszarowejTarczy=50;
+	parametryKaplanaLv3.maxZycia=2000;
+	parametryKaplanaLv3.predkoscPocisku=25;
+	parametryKaplanaLv3.czasRzucaniaKierowanegoPocisku=20;
+	parametryKaplanaLv3.obrazeniaKierowanegoPocisku=60;
+	parametryKaplanaLv3.czasTrwaniaPocisku=200;
+	parametryKaplanaLv3.czasRzucaniaKasetowegoPocisku=30;
+	parametryKaplanaLv3.obrazeniaKasetowegoPocisku=10;
+	parametryKaplanaLv3.czasRzucaniaPersonalnejTarczy=50;
+	parametryKaplanaLv3.czasRzucaniaObszarowejTarczy=20;
+	parametryKaplanaLv3.czasRzucaniaSeriiPociskow=100;
+	parametryKaplanaLv3.obrazeniaPociskuZSerii=20;
 	parametryKaplanaLv3.predkoscChodu=0.8;
 }
 
@@ -326,7 +328,9 @@ void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja, int typZach
 			kaplan.ustawParametry(parametryKaplanaLv2);
 			kaplan.ustawPoziom(1);
 			kaplan.ustawTypZachowania(typZachowania);
-			(kaplani->dodaj(kaplan))->wyznaczPrzestrzenKolizji();
+			Kaplan *k=(kaplani->dodaj(kaplan));
+			k->wyznaczPrzestrzenKolizji();
+			FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::tarczaPersonalnaRegen,Punkt(),k);
 			break;
 		}
 		case glowa:
@@ -338,7 +342,9 @@ void FabrykaLudzi::stworzCzlowieka(TypCzlowieka typ, Punkt nPozycja, int typZach
 			kaplan.ustawParametry(parametryKaplanaLv3);
 			kaplan.ustawPoziom(2);
 			kaplan.ustawTypZachowania(typZachowania);
-			(kaplani->dodaj(kaplan))->wyznaczPrzestrzenKolizji();
+			Kaplan *k=(kaplani->dodaj(kaplan));
+			k->wyznaczPrzestrzenKolizji();
+			FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::tarczaPersonalnaRegen,Punkt(),k);
 			break;
 		}
 		default:

@@ -199,7 +199,7 @@ public:
 				return;
 			}
 
-			if(fabs(v2.x)>v1)
+			if((v2.x > v1 && dP.x > 0) || (v2.x < v1 && dP.x < 0))
 			{
 				return;
 			}

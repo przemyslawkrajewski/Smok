@@ -576,11 +576,11 @@ std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 		{
 			k.ustawWcisnietoKlawiszFunkcyjny(true,0);
 		}
-		else if((!podZaslona && pozycja.x-pozycjaCelu.x>0) && !pozycjaStrzelecka && abs(pozycja.x-pozycjaCelu.x)>minOdleglosc)
+		else if(pozycjaCelu.x<pozycja.x && zwroconyWPrawo==true)
 		{
 			k.ustawWcisnietoLewo(true);
 		}
-		else if( (!podZaslona && pozycja.x-pozycjaCelu.x<0) && !pozycjaStrzelecka && abs(pozycja.x-pozycjaCelu.x)>minOdleglosc)
+		else if(pozycjaCelu.x>pozycja.x && zwroconyWPrawo==false)
 		{
 			k.ustawWcisnietoPrawo(true);
 		}

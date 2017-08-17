@@ -512,12 +512,103 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 	}
 	else if(numer==17) //################################ POZIOM 17: ALARM ##########################################
 	{
-		smok->ustawWymiaryManewruSmoka(Punkt(3000,0),Punkt(20000,4000));
+		smok->ustawWymiaryManewruSmoka(Punkt(3000,0),Punkt(20000,1500));
 		smok->ustawPozycje(Punkt(20000,000));
 		smok->ustawCzyZwroconyWPrawo(false);
 
+		for(int i=0;i<15;i++)
+		{
+			int odchylenie = rand() % 14000-7000;
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::kaplan,Punkt(11000+odchylenie,poziomZiemi+10),1,false);
+		}
+	}
+	else if(numer==18) //################################ POZIOM 18: STRAZ ##########################################
+	{
+		smok->ustawWymiaryManewruSmoka(Punkt(3000,0),Punkt(20000,1500));
+		smok->ustawPozycje(Punkt(3000,000));
+		smok->ustawCzyZwroconyWPrawo(true);
 
-		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::kaplan,Punkt(17000,poziomZiemi+10),1,false);
+		for(int i=0;i<2;i++)
+		{
+			//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::templariusz,Punkt(14000+i*30,500+poziomZiemi),8,true);
+		}
+		//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::kaplan,Punkt(14090,poziomZiemi+10),2,false);
+
+		for(int i=0;i<2;i++)
+		{
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::templariusz,Punkt(15500+i*30,500+poziomZiemi),8,true);
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::wyborowyLucznik,Punkt(15500+i*30,1500+poziomZiemi),7,true);
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::wyborowyLucznik,Punkt(15500+i*30,1500+poziomZiemi),7,true);
+		}
+		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::kaplan,Punkt(15530,poziomZiemi+10),2,false);
+
+		for(int i=0;i<5;i++)
+		{
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::wyborowyLucznik,Punkt(17000+i*30,1500+poziomZiemi),7,true);
+		}
+		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::kaplan,Punkt(17030,poziomZiemi+10),2,false);
+	}
+	else if(numer==19) //################################ POZIOM 19: SERCE KULTU ##########################################
+	{
+		smok->ustawWymiaryManewruSmoka(Punkt(3000,0),Punkt(20000,5000));
+		smok->ustawPozycje(Punkt(3000,000));
+		smok->ustawCzyZwroconyWPrawo(true);
+
+		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::niskaWieza,Punkt(5000,3000));
+		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniaWieza,Punkt(6000,0));
+
+		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniMur,Punkt(13000,0));
+		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::wysokaWieza,Punkt(14000,0));
+
+		//Latajaca Wieza
+		for(int i=0;i<10;i++)
+		{
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::wyborowyLucznik,Punkt(5000,3700+poziomZiemi),7,true);
+		}
+
+		//Wieza1
+		for(int i=0;i<2;i++)
+		{
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::templariusz,Punkt(6000,1500+poziomZiemi),8,true);
+		}
+
+		//Ziemia
+		for(int i=0;i<6;i++)
+		{
+			int odchylenie = rand() % 4000-2000;
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::wyborowyLucznik,Punkt(9000+odchylenie,poziomZiemi),7,true);
+		}
+		for(int i=0;i<2;i++)
+		{
+			int odchylenie = rand() % 4000-2000;
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::templariusz,Punkt(9000+odchylenie,poziomZiemi),8,true);
+		}
+		for(int i=0;i<1;i++)
+		{
+			int odchylenie = rand() % 4000-2000;
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::kaplan,Punkt(9000+odchylenie,poziomZiemi),2,false);
+		}
+
+		//Mur
+		for(int i=0;i<3;i++)
+		{
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::templariusz,Punkt(12000+i*500,poziomZiemi+500),8,true);
+		}
+		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::balista,Punkt(13500,poziomZiemi+563),0,false);
+
+		//Wieza2
+		for(int i=0;i<10;i++)
+		{
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::wyborowyLucznik,Punkt(14000,poziomZiemi+3060),7,true);
+		}
+	}
+	else if(numer==20) //################################ POZIOM 20: GLOWA ##########################################
+	{
+		smok->ustawWymiaryManewruSmoka(Punkt(3000,0),Punkt(20000,1500));
+		smok->ustawPozycje(Punkt(10500,200));
+		smok->ustawCzyZwroconyWPrawo(false);
+
+		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::glowa,Punkt(10000,poziomZiemi),3,true);
 	}
 	else if(numer==101)
 	{
@@ -525,8 +616,7 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 		smok->ustawPoziom(6);
 		smok->ustawWymiaryManewruSmoka(Punkt(1000,0),Punkt(30000,3000));
 
-		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::kaplan,Punkt(3000,poziomZiemi+100),0,false);
-
+		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::kaplan,Punkt(3000,poziomZiemi+100),2,false);
 
 	}
 }

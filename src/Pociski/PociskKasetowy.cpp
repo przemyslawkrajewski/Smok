@@ -16,6 +16,7 @@ PociskKasetowy::PociskKasetowy(Punkt nPozycja, Punkt nPredkosc, double nczasTrwa
 	predkosc=nPredkosc;
 	katNachylenia = nKat;
 	obrazenia=5;
+	odleglosc=-1;
 }
 
 void PociskKasetowy::zniszcz()
@@ -45,8 +46,10 @@ void PociskKasetowy::wyznaczKolejnyStan()
 		if(cel)
 		{
 			Punkt p = (pozycja-cel->zwrocPozycje());
-			double odleglosc = sqrt(p.x*p.x+p.y*p.y);
-			if( odleglosc<parametry.minimalnaOdleglosc) zniszcz();
+			double d = sqrt(p.x*p.x+p.y*p.y);
+			if(d>odleglosc && odleglosc>0) zniszcz();
+			if( d<parametry.minimalnaOdleglosc) zniszcz();
+			odleglosc=d;
 		}
 		czasTrwania--;
 	}
@@ -64,5 +67,15 @@ void PociskKasetowy::wyznaczKlatkeAnimacji()
 
 void PociskKasetowy::wyznaczPrzestrzenKolizji()
 {
+	double rozmiarKlatki = 30/2;
+	std::vector<OkragKolizji> okregi;
+	okregi.clear();
+	std::vector<ProstokatKolizji> prostokaty;
+	prostokaty.clear();
 
+	prostokaty.push_back(ProstokatKolizji(&pozycja,&predkosc,Punkt(15-rozmiarKlatki,-15+rozmiarKlatki),8));
+	ustawPrzestrzenKolizji(prostokaty);
+
+	okregi.push_back(OkragKolizji(&pozycja,&predkosc,Punkt(15-rozmiarKlatki,-15+rozmiarKlatki),4));
+	ustawPrzestrzenKolizji(okregi);
 }
