@@ -98,7 +98,7 @@ private:
 	int stanCelowania;
 
 	double przyspieszenieCelu;
-	double staraPredkosc;
+	Punkt staraPredkoscCelu;
 
 };
 

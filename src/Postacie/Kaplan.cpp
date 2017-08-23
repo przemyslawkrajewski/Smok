@@ -277,13 +277,13 @@ std::pair<Klawiatura,Myszka> Kaplan::wyznaczSterowanie()
 	}
 	else if(typZachowania==1) // StacjonarnyKaplan
 	{
-		double progOdleglosci = 5000;
+		double progOdleglosci = 6000;
 
-		if(pozycjaCelu.x<pozycja.x && zwroconyWPrawo==true)
+		if(pozycjaCelu.x<pozycja.x && zwroconyWPrawo==true && stanRzucaniaZaklec<2)
 		{
 			k.ustawWcisnietoLewo(true);
 		}
-		else if(pozycjaCelu.x>pozycja.x && zwroconyWPrawo==false)
+		else if(pozycjaCelu.x>pozycja.x && zwroconyWPrawo==false && stanRzucaniaZaklec<2)
 		{
 			k.ustawWcisnietoPrawo(true);
 		}
@@ -358,7 +358,6 @@ std::pair<Klawiatura,Myszka> Kaplan::wyznaczSterowanie()
 	}
 	else if (typZachowania == 3) // Glowa
 	{
-		std::cout << zycie << "  " << fabs(pozycjaCelu.x-pozycja.x) << "  " << maTarcze << "\n";
 		double progOdleglosci2 = 1700;
 
 		if(stareZycie>zycie) uruchomienieOslony = true;

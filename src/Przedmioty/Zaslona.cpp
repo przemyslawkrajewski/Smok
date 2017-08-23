@@ -10,7 +10,7 @@
 Zaslona::Zaslona(Punkt p) : Przedmiot()
 {
 	pozycja=p;
-	zycie=1000;
+	zycie=500;
 	ulepszona=false;
 	wyznaczPrzestrzenKolizji();
 	wyznaczKlatkeAnimacji();
@@ -55,9 +55,9 @@ void Zaslona::wyznaczKolejnyStan()
 
 void Zaslona::wyznaczKlatkeAnimacji()
 {
-	if(zycie > 750) klatkaAnimacji.x = 1;
-	else if (zycie > 500) klatkaAnimacji.x = 2;
-	else if (zycie > 250) klatkaAnimacji.x = 3;
+	if(zycie > 375) klatkaAnimacji.x = 1;
+	else if (zycie > 250) klatkaAnimacji.x = 2;
+	else if (zycie > 125) klatkaAnimacji.x = 3;
 	else klatkaAnimacji.x = 4;
 
 	if(ulepszona) klatkaAnimacji.y = 1;

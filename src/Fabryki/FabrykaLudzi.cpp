@@ -21,10 +21,10 @@ FabrykaLudzi* FabrykaLudzi::zwrocInstancje()
 
 FabrykaLudzi::FabrykaLudzi()
 {
-	parametryLucznikaLv1.maxZycia=150;
-	parametryLucznikaLv1.obrazenia=10;
+	parametryLucznikaLv1.maxZycia=75;
+	parametryLucznikaLv1.obrazenia=5;
 	parametryLucznikaLv1.celnosc=3.14/8;
-	parametryLucznikaLv1.predkoscStrzaly=26;
+	parametryLucznikaLv1.predkoscStrzaly=30;
 	parametryLucznikaLv1.maxNaciagniecie=35;
 	parametryLucznikaLv1.maxCelowania=70;
 	parametryLucznikaLv1.predkoscAnimacjiBiegu1=0.25;
@@ -33,10 +33,10 @@ FabrykaLudzi::FabrykaLudzi()
 	parametryLucznikaLv1.czasTrwaniaStrzaly=300;
 	parametryLucznikaLv1.spust=false;
 
-	parametryLucznikaLv2.maxZycia=150;
-	parametryLucznikaLv2.obrazenia=10;
+	parametryLucznikaLv2.maxZycia=75;
+	parametryLucznikaLv2.obrazenia=5;
 	parametryLucznikaLv2.celnosc=3.14/16;
-	parametryLucznikaLv2.predkoscStrzaly=26;
+	parametryLucznikaLv2.predkoscStrzaly=30;
 	parametryLucznikaLv2.maxNaciagniecie=25;
 	parametryLucznikaLv2.maxCelowania=60;
 	parametryLucznikaLv2.predkoscAnimacjiBiegu1=0.3;//0.5
@@ -45,10 +45,10 @@ FabrykaLudzi::FabrykaLudzi()
 	parametryLucznikaLv2.czasTrwaniaStrzaly=300;
 	parametryLucznikaLv2.spust=false;
 
-	parametryLucznikaLv3.maxZycia=400;
-	parametryLucznikaLv3.obrazenia=17;
+	parametryLucznikaLv3.maxZycia=200;
+	parametryLucznikaLv3.obrazenia=8;
 	parametryLucznikaLv3.celnosc=3.14/64;
-	parametryLucznikaLv3.predkoscStrzaly=55;
+	parametryLucznikaLv3.predkoscStrzaly=60;
 	parametryLucznikaLv3.maxNaciagniecie=25;
 	parametryLucznikaLv3.maxCelowania=60;
 	parametryLucznikaLv3.predkoscAnimacjiBiegu1=0.5;//0.5
@@ -60,20 +60,20 @@ FabrykaLudzi::FabrykaLudzi()
 	parametryLucznikaLv4.maxZycia=1000;
 	parametryLucznikaLv4.obrazenia=50;
 	parametryLucznikaLv4.celnosc=0;
-	parametryLucznikaLv4.predkoscStrzaly=45;
-	parametryLucznikaLv4.maxNaciagniecie=20;
+	parametryLucznikaLv4.predkoscStrzaly=50;
+	parametryLucznikaLv4.maxNaciagniecie=12;
 	parametryLucznikaLv4.maxCelowania=12;
 	parametryLucznikaLv4.predkoscAnimacjiBiegu1=0.5;//0.5
 	parametryLucznikaLv4.predkoscAnimacjiBiegu2=0.30;//0.3
-	parametryLucznikaLv4.predkoscBiegu=12;
+	parametryLucznikaLv4.predkoscBiegu=16;
 	parametryLucznikaLv4.czasTrwaniaStrzaly=300;
 	parametryLucznikaLv4.spust=false;
 
-	parametryRycerzaLv1.maxZycia=400;
-	parametryRycerzaLv1.obrazenia=25;
+	parametryRycerzaLv1.maxZycia=200;
+	parametryRycerzaLv1.obrazenia=12;
 	parametryRycerzaLv1.celnosc=3.14/32;
 	parametryRycerzaLv1.czasTrwaniaStrzaly=200;
-	parametryRycerzaLv1.predkoscStrzaly=30;
+	parametryRycerzaLv1.predkoscStrzaly=35;
 	parametryRycerzaLv1.maxNaciagniecie=60;
 	parametryRycerzaLv1.maxCelowania=20;
 	parametryRycerzaLv1.predkoscAnimacjiBiegu1=0.4;
@@ -81,32 +81,32 @@ FabrykaLudzi::FabrykaLudzi()
 	parametryRycerzaLv1.predkoscBiegu=3;
 	parametryRycerzaLv1.spust=true;
 
-	parametryRycerzaLv2.maxZycia=700;
-	parametryRycerzaLv2.obrazenia=40;
+	parametryRycerzaLv2.maxZycia=350;
+	parametryRycerzaLv2.obrazenia=20;
 	parametryRycerzaLv2.celnosc=3.14/64;
 	parametryRycerzaLv2.czasTrwaniaStrzaly=300;
-	parametryRycerzaLv2.predkoscStrzaly=30;
+	parametryRycerzaLv2.predkoscStrzaly=40;
 	parametryRycerzaLv2.maxNaciagniecie=60;
 	parametryRycerzaLv2.maxCelowania=20;
 	parametryRycerzaLv2.predkoscAnimacjiBiegu1=0.4;
 	parametryRycerzaLv2.predkoscAnimacjiBiegu2=0.2;
 	parametryRycerzaLv2.predkoscBiegu=3;
 	parametryRycerzaLv2.spust=true;
-	parametryRycerzaLv2.obrazeniaSwietejStrzaly=120;
+	parametryRycerzaLv2.obrazeniaSwietejStrzaly=60;
 	parametryRycerzaLv2.czasOdnawianiaSwietejStrzaly=250;
 
-	parametryRycerzaLv3.maxZycia=1000;
-	parametryRycerzaLv3.obrazenia=50;
+	parametryRycerzaLv3.maxZycia=500;
+	parametryRycerzaLv3.obrazenia=25;
 	parametryRycerzaLv3.celnosc=0;
 	parametryRycerzaLv3.czasTrwaniaStrzaly=400;
-	parametryRycerzaLv3.predkoscStrzaly=32;
+	parametryRycerzaLv3.predkoscStrzaly=50;
 	parametryRycerzaLv3.maxNaciagniecie=60;
 	parametryRycerzaLv3.maxCelowania=20;
 	parametryRycerzaLv3.predkoscAnimacjiBiegu1=0.4;
 	parametryRycerzaLv3.predkoscAnimacjiBiegu2=0.2;
 	parametryRycerzaLv3.predkoscBiegu=3;
 	parametryRycerzaLv3.spust=true;
-	parametryRycerzaLv3.obrazeniaSwietejStrzaly=100;
+	parametryRycerzaLv3.obrazeniaSwietejStrzaly=50;
 	parametryRycerzaLv3.czasOdnawianiaSwietejStrzaly=250;
 
 	parametryBalistyLv1.maxZycia=2000;
@@ -131,10 +131,10 @@ FabrykaLudzi::FabrykaLudzi()
 	parametryBalistyLv2.minKatCelowania=0.15;
 	parametryBalistyLv2.maxNaciagania=300;
 
-	parametryKaplanaLv1.maxZycia=400;
+	parametryKaplanaLv1.maxZycia=200;
 	parametryKaplanaLv1.predkoscPocisku=15;
 	parametryKaplanaLv1.czasRzucaniaKierowanegoPocisku=50;
-	parametryKaplanaLv1.obrazeniaKierowanegoPocisku=30;
+	parametryKaplanaLv1.obrazeniaKierowanegoPocisku=15;
 	parametryKaplanaLv1.czasTrwaniaPocisku=200;
 	parametryKaplanaLv1.czasRzucaniaKasetowegoPocisku=0;
 	parametryKaplanaLv1.obrazeniaKasetowegoPocisku=0;
@@ -142,10 +142,10 @@ FabrykaLudzi::FabrykaLudzi()
 	parametryKaplanaLv1.czasRzucaniaObszarowejTarczy=50;
 	parametryKaplanaLv1.predkoscChodu=0.8;
 
-	parametryKaplanaLv2.maxZycia=500;
+	parametryKaplanaLv2.maxZycia=250;
 	parametryKaplanaLv2.predkoscPocisku=15;
 	parametryKaplanaLv2.czasRzucaniaKierowanegoPocisku=50;
-	parametryKaplanaLv2.obrazeniaKierowanegoPocisku=40;
+	parametryKaplanaLv2.obrazeniaKierowanegoPocisku=20;
 	parametryKaplanaLv2.czasTrwaniaPocisku=200;
 	parametryKaplanaLv2.czasRzucaniaKasetowegoPocisku=150;
 	parametryKaplanaLv2.obrazeniaKasetowegoPocisku=5;
@@ -159,8 +159,8 @@ FabrykaLudzi::FabrykaLudzi()
 	parametryKaplanaLv3.obrazeniaKierowanegoPocisku=60;
 	parametryKaplanaLv3.czasTrwaniaPocisku=200;
 	parametryKaplanaLv3.czasRzucaniaKasetowegoPocisku=30;
-	parametryKaplanaLv3.obrazeniaKasetowegoPocisku=10;
-	parametryKaplanaLv3.czasRzucaniaPersonalnejTarczy=50;
+	parametryKaplanaLv3.obrazeniaKasetowegoPocisku=8;
+	parametryKaplanaLv3.czasRzucaniaPersonalnejTarczy=10;
 	parametryKaplanaLv3.czasRzucaniaObszarowejTarczy=20;
 	parametryKaplanaLv3.czasRzucaniaSeriiPociskow=100;
 	parametryKaplanaLv3.obrazeniaPociskuZSerii=20;

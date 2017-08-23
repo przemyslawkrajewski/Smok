@@ -22,7 +22,7 @@ struct ParametryTarczyPersonalnej
 		czasWidocznosci=15;
 		granicaUbytkuZycia=0.5;
 
-		maksZycia=2000;
+		maksZycia=1000;
 	}
 };
 

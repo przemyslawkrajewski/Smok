@@ -91,7 +91,8 @@ void Plomien::wyznaczKolejnyStan()
 void Plomien::wyznaczKlatkeAnimacji()
 {
 	if(spopielenie) klatkaAnimacji.y = 1;
-	else klatkaAnimacji.x = 0;
+	else klatkaAnimacji.y = 0;
+
 	switch(stan)
 	{
 	case wPowietrzu:

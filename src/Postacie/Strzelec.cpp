@@ -284,8 +284,8 @@ std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 
 	if(typZachowania==0) // Primitywny Lucznik
 	{
-		double maxOdleglosc=1250;
-		double minOdleglosc=900;
+		double maxOdleglosc=1750;
+		double minOdleglosc=1400;
 
 		if(mozliwyStrzal) pomocnikCelowania.wyznaczKatStrzalu(pozycja-pozycjaCelu+poprawka);
 
@@ -329,8 +329,8 @@ std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 	}
 	else if(typZachowania==2) // Lucznik Zawodowy
 	{
-		double maxOdleglosc=3050;
-		double minOdleglosc=1500;
+		double maxOdleglosc=3250;
+		double minOdleglosc=2000;
 
 		if(mozliwyStrzal) pomocnikCelowania.wyznaczKatStrzalu(pozycja-pozycjaCelu+poprawka,cel->zwrocPredkosc());
 
@@ -511,7 +511,7 @@ std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 		}
 		else if(stanZachowania == ucieczkaWPrawo)
 		{
-			if((!smokWPoblizu && podZaslona) || najblizszaZaslona == 0) stanZachowania = ostrzal;
+			if((!smokDalej && podZaslona) || najblizszaZaslona == 0) stanZachowania = ostrzal;
 			if(pozycja.x>24000) stanZachowania = ucieczkaWLewo;
 			if(smokWPoblizu && predkoscCelu.x > 14) stanZachowania = ucieczkaWLewo;
 
@@ -519,7 +519,7 @@ std::pair<Klawiatura,Myszka> Strzelec::wyznaczSterowanie()
 		}
 		else if(stanZachowania == ucieczkaWLewo)
 		{
-			if((!smokWPoblizu && podZaslona) || najblizszaZaslona == 0) stanZachowania = ostrzal;
+			if((!smokDalej && podZaslona) || najblizszaZaslona == 0) stanZachowania = ostrzal;
 			if(pozycja.x<5000) stanZachowania = ucieczkaWPrawo;
 			if(smokWPoblizu && predkoscCelu.x < -14) stanZachowania = ucieczkaWPrawo;
 

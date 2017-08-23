@@ -35,13 +35,13 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 		smok->ustawPozycje(Punkt(7000,100));
 		smok->ustawCzyZwroconyWPrawo(false);
 
-		for(int i=0;i<6;i++)
+		for(int i=0;i<12;i++)
 		{
 			int odchylenie = rand() % 1000-500;
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::poborowyLucznik,Punkt(6000+odchylenie,poziomZiemi),0);
 		}
 
-		for(int i=0;i<6;i++)
+		for(int i=0;i<12;i++)
 		{
 			int odchylenie = rand() % 1000-500;
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::poborowyLucznik,Punkt(8000+odchylenie,poziomZiemi),0);
@@ -53,19 +53,21 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 		smok->ustawPozycje(Punkt(10800,100));
 		smok->ustawCzyZwroconyWPrawo(false);
 
-		for(int i=0;i<8;i++)
+		//W srodku
+		for(int i=0;i<16;i++)
 		{
 			int odchylenie = rand() % 2000-1000;
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::poborowyLucznik,Punkt(9700+odchylenie,poziomZiemi),1);
 		}
 
-		for(int i=0;i<8;i++)
+		//Na zewnatrz
+		for(int i=0;i<12;i++)
 		{
 			int odchylenie = rand() % 1000-500;
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::poborowyLucznik,Punkt(8400+odchylenie,poziomZiemi),1);
 		}
 
-		for(int i=0;i<12;i++)
+		for(int i=0;i<16;i++)
 		{
 			int odchylenie = rand() % 1000-500;
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::zawodowyLucznik,Punkt(8400+odchylenie,poziomZiemi),1);
@@ -81,17 +83,17 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 		smok->ustawPozycje(Punkt(4000,100));
 		smok->ustawCzyZwroconyWPrawo(true);
 
-		for(int i=0;i<12;i++)
+		for(int i=0;i<18;i++)
 		{
 			int odchylenie = rand() % 100-50;
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::zawodowyLucznik,Punkt(10400+odchylenie,poziomZiemi+1600),2);
 		}
-		for(int i=0;i<25;i++)
+		for(int i=0;i<50;i++)
 		{
 			int odchylenie = rand() % 2000-1000;
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::zawodowyLucznik,Punkt(9000+odchylenie,poziomZiemi),2);
 		}
-		for(int i=0;i<10;i++)
+		for(int i=0;i<20;i++)
 		{
 			int odchylenie = rand() % 2000-1000;
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::poborowyLucznik,Punkt(9000+odchylenie,poziomZiemi),0);
@@ -108,37 +110,37 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::niskaWieza,Punkt(8000,0));
 
 		//Ludzie na murze
-		for(int i=0;i<4;i++)
+		for(int i=0;i<8;i++)
 		{
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::zawodowyLucznik,Punkt(8000,poziomZiemi+800),2);
 		}
 
 		//Ludzie pod zaslonami
 		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::zaslona,Punkt(9500,0));
-		for(int i=0;i<3;i++)
+		for(int i=0;i<5;i++)
 		{
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::zawodowyLucznik,Punkt(9500,poziomZiemi),2);
 		}
 		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::zaslona,Punkt(10500,0));
-		for(int i=0;i<3;i++)
+		for(int i=0;i<5;i++)
 		{
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::zawodowyLucznik,Punkt(10500,poziomZiemi),2);
 		}
 
 		//Wolnobiegajacy ludzie
-		for(int i=0;i<3;i++)
+		for(int i=0;i<6;i++)
 		{
-			int odchylenie = i*150;
+			int odchylenie = i*75;
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::poborowyLucznik,Punkt(8600+odchylenie,poziomZiemi),0);
 		}
-		for(int i=0;i<3;i++)
+		for(int i=0;i<6;i++)
 		{
-			int odchylenie = i*150;
+			int odchylenie = i*75;
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::poborowyLucznik,Punkt(9850+odchylenie,poziomZiemi),0);
 		}
-		for(int i=0;i<3;i++)
+		for(int i=0;i<6;i++)
 		{
-			int odchylenie = i*150;
+			int odchylenie = i*75;
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::poborowyLucznik,Punkt(11000+odchylenie,poziomZiemi),0);
 		}
 
@@ -154,7 +156,7 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::niskaWieza,Punkt(8000,0));
 
 
-		for(int i=0;i<32;i++)
+		for(int i=0;i<60;i++)
 		{
 			int odchylenie = rand() % 4000-2000;
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::poborowyLucznik,Punkt(6000+odchylenie,poziomZiemi),0);
@@ -170,12 +172,12 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniMur,Punkt(5000,0));
 
 
-		for(int i=0;i<15;i++)
+		for(int i=0;i<30;i++)
 		{
 			int odchylenie = rand() % 2000-1000;
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::zawodowyLucznik,Punkt(7500+odchylenie,poziomZiemi),2);
 		}
-		for(int i=0;i<15;i++)
+		for(int i=0;i<30;i++)
 		{
 			int odchylenie = rand() % 2000-1000;
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::zawodowyLucznik,Punkt(5000+odchylenie,poziomZiemi+500),2);
@@ -192,31 +194,31 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniMur,Punkt(9000,0));
 
 		//Wieza
-		for(int i=0;i<4;i++)
+		for(int i=0;i<8;i++)
 		{
 			int odchylenie = rand() % 200-100;
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::zawodowyLucznik,Punkt(5000+odchylenie,poziomZiemi+800),2,false);
 		}
-		for(int i=0;i<3;i++)
+		for(int i=0;i<6;i++)
 		{
 			int odchylenie = rand() % 200-100;
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::rycerz,Punkt(5000+odchylenie,poziomZiemi+800),3,false);
 		}
 
 		//Ziemia
-		for(int i=0;i<6;i++)
+		for(int i=0;i<12;i++)
 		{
 			int odchylenie = rand() % 2000-1000;
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::zawodowyLucznik,Punkt(6500+odchylenie,poziomZiemi),2,false);
 		}
 
 		//Mur
-		for(int i=0;i<2;i++)
+		for(int i=0;i<4;i++)
 		{
 			int odchylenie = rand() % 200-100;
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::rycerz,Punkt(8300+odchylenie,poziomZiemi+500),3,false);
 		}
-		for(int i=0;i<10;i++)
+		for(int i=0;i<20;i++)
 		{
 			int odchylenie = rand() % 1000-500;
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::zawodowyLucznik,Punkt(9300+odchylenie,poziomZiemi+500),2,false);
@@ -236,7 +238,7 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniaWieza,Punkt(10000,0));
 
 		//Mur
-		for(int i=0;i<2;i++)
+		for(int i=0;i<4;i++)
 		{
 			int odchylenie = rand() % 200-100;
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::rycerz,Punkt(6300+odchylenie,poziomZiemi+300),3,false);
@@ -245,7 +247,7 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::balista,Punkt(9300,poziomZiemi+378),0,false);
 
 		//Ziemia
-		for(int i=0;i<2;i++)
+		for(int i=0;i<4;i++)
 		{
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::zawodowyLucznik,Punkt(7200,poziomZiemi),2,false);
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::zawodowyLucznik,Punkt(7500,poziomZiemi),2,false);
@@ -253,9 +255,11 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 		}
 
 		//Wieza
-		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::rycerz,Punkt(10000,poziomZiemi+1580),3,false);
-		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::rycerz,Punkt(10000,poziomZiemi+1580),3,false);
-		for(int i=0;i<3;i++)
+		for(int i=0;i<4;i++)
+		{
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::rycerz,Punkt(10000,poziomZiemi+1580),3,false);
+		}
+		for(int i=0;i<6;i++)
 		{
 			int odchylenie = rand() % 200-100;
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::zawodowyLucznik,Punkt(10000+odchylenie,poziomZiemi+1580),2,false);
@@ -278,7 +282,7 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::bduzyMur,Punkt(12090,1320));
 
 		//1st wieza
-		for(int i=0;i<6;i++)
+		for(int i=0;i<12;i++)
 		{
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::zawodowyLucznik,Punkt(6000,poziomZiemi+1580),2,false);
 		}
@@ -289,7 +293,7 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::zaslona,Punkt(7500,0));
 		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::zaslona,Punkt(8000,0));
 		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::zaslona,Punkt(8500,0));
-		for(int i=0;i<6;i++)
+		for(int i=0;i<12;i++)
 		{
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::zawodowyLucznik,Punkt(6500,poziomZiemi),2,false);
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::zawodowyLucznik,Punkt(7000,poziomZiemi),2,false);
@@ -300,7 +304,7 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 
 
 		//mur
-		for(int i=0;i<8;i++)
+		for(int i=0;i<16;i++)
 		{
 			int odchylenie = rand() % 1000-500;
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::rycerz,Punkt(10000+odchylenie,poziomZiemi+400),3,false);
@@ -309,11 +313,11 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 
 
 		//2nd wieza
-		for(int i=0;i<4;i++)
+		for(int i=0;i<8;i++)
 		{
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::zawodowyLucznik,Punkt(11000,poziomZiemi+800),2,false);
 		}
-		for(int i=0;i<3;i++)
+		for(int i=0;i<6;i++)
 		{
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::rycerz,Punkt(11000,poziomZiemi+800),3,false);
 		}
@@ -321,8 +325,10 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 		//wneka
 		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::balista,Punkt(11700,795+poziomZiemi),0,false);
 		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(11500,380+poziomZiemi),5,false);
-		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::rycerz,Punkt(12800,poziomZiemi+380),1,false);
-		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::rycerz,Punkt(12800,poziomZiemi+380),1,false);
+		for(int i=0;i<6;i++)
+		{
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::rycerz,Punkt(12800,poziomZiemi+380),1,false);
+		}
 	}
 	else if(numer==10) //################################ POZIOM 10: NOWA KORONACJA ##########################################
 	{
@@ -344,12 +350,12 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::balista,Punkt(7600-i*300,565+poziomZiemi),0,true);
 		}
 
-		for(int i=0;i<6;i++)
+		for(int i=0;i<12;i++)
 		{
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::rycerz,Punkt(10000,poziomZiemi+1580),3,false);
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::rycerz,Punkt(8000,poziomZiemi+1580),3,false);
 		}
-		for(int i=0;i<10;i++)
+		for(int i=0;i<40;i++)
 		{
 			int odchylenie = rand() % 1500-750;
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::zawodowyLucznik,Punkt(6850+odchylenie,poziomZiemi+570),2,false);
@@ -364,18 +370,20 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 		smok->ustawCzyZwroconyWPrawo(true);
 
 		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniaWieza,Punkt(5000,0));
-		for(int i=0;i<10;i++)
+		for(int i=0;i<14;i++)
 		{
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::rycerz,Punkt(5000,poziomZiemi+1580),3,false);
 		}
 
-		for(int i=0;i<5;i++)
+		for(int i=0;i<10;i++)
 		{
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::rycerz,Punkt(9900+i*20,poziomZiemi),3,false);
 		}
 		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(9925,poziomZiemi),4,false);
+		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(10000,poziomZiemi),4,false);
+		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(9975,poziomZiemi),4,false);
 		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::balista,Punkt(10000,poziomZiemi+70),0,false);
-		for(int i=0;i<12;i++)
+		for(int i=0;i<24;i++)
 		{
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::zawodowyLucznik,Punkt(10300,poziomZiemi),2,false);
 		}
@@ -387,16 +395,16 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 		smok->ustawCzyZwroconyWPrawo(false);
 
 		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::wysokaWieza,Punkt(6000,0));
-		for(int i=0;i<4;i++)
+		for(int i=0;i<5;i++)
 		{
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::balista,Punkt(6500+i*150,70+poziomZiemi),0,true);
 		}
-		for(int i=0;i<10;i++)
+		for(int i=0;i<20;i++)
 		{
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::rycerz,Punkt(7500+i*60,poziomZiemi),3,true);
 		}
 
-		for(int i=0;i<4;i++)
+		for(int i=0;i<12;i++)
 		{
 			int odchylenie = rand() % 1200 - 600;
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(8100+odchylenie,poziomZiemi),4,true);
@@ -431,14 +439,14 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 
 		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::mnich,Punkt(7000,poziomZiemi+600),0,true);
 		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::mnich,Punkt(7000,poziomZiemi+600),0,true);
-		for(int i=0;i<6;i++) FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::wyborowyLucznik,Punkt(7000,poziomZiemi),7,true);
+		for(int i=0;i<12;i++) FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::wyborowyLucznik,Punkt(7000,poziomZiemi),7,true);
 
-		for (int i=0;i<3;i++)
+		for (int i=0;i<6;i++)
 		{
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(8250,poziomZiemi+1700),4,true);
 		}
 
-		for (int i=0;i<3;i++)
+		for (int i=0;i<6;i++)
 		{
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(9000,poziomZiemi+1700),4,true);
 		}
@@ -450,9 +458,10 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 			double pozycja=11000+500*i;
 			FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::zaslona,Punkt(pozycja,0));
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::wyborowyLucznik,Punkt(pozycja,poziomZiemi+670),7,true);
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::wyborowyLucznik,Punkt(pozycja,poziomZiemi+670),7,true);
 		}
 
-		for(int i=0;i<5;i++)
+		for(int i=0;i<7;i++)
 		{
 			int odchylenie = rand()%1000 -500;
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::wyborowyLucznik,Punkt(14000+odchylenie,poziomZiemi+670),7,true);
@@ -468,7 +477,7 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniaWieza,Punkt(11000,0));
 
 
-		for(int i=0;i<25;i++)
+		for(int i=0;i<50;i++)
 		{
 			int odchylenie = rand() % 6000-3000;
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::mnich,Punkt(7000+odchylenie,poziomZiemi),0,true);
@@ -490,21 +499,22 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::templariusz,Punkt(6000+odchylenie,500+poziomZiemi),8,true);
 		}
 
-		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::mnich,Punkt(8000,poziomZiemi),0,true);
-		//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::mnich,Punkt(9000,poziomZiemi),0,true);
+		//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::mnich,Punkt(8000,poziomZiemi),0,true);
+		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::mnich,Punkt(9000,poziomZiemi),0,true);
 		for(int i=0;i<2;i++)
 		{
-			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(9000,500+poziomZiemi),4,true);
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(8000,poziomZiemi),4,true);
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(9000,poziomZiemi),4,true);
 		}
 
 		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::mnich,Punkt(11000,500+poziomZiemi),0,true);
-		for(int i=0;i<1;i++)
+		for(int i=0;i<4;i++)
 		{
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::templariusz,Punkt(11000,500+poziomZiemi),8,true);
 		}
 
 		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::mnich,Punkt(12000,1500+poziomZiemi),0,true);
-		for(int i=0;i<3;i++)
+		for(int i=0;i<6;i++)
 		{
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::wyborowyLucznik,Punkt(12000,1500+poziomZiemi),7,true);
 		}
@@ -516,7 +526,7 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 		smok->ustawPozycje(Punkt(20000,000));
 		smok->ustawCzyZwroconyWPrawo(false);
 
-		for(int i=0;i<15;i++)
+		for(int i=0;i<30;i++)
 		{
 			int odchylenie = rand() % 14000-7000;
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::kaplan,Punkt(11000+odchylenie,poziomZiemi+10),1,false);
@@ -530,11 +540,11 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 
 		for(int i=0;i<2;i++)
 		{
-			//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::templariusz,Punkt(14000+i*30,500+poziomZiemi),8,true);
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::templariusz,Punkt(14000+i*30,500+poziomZiemi),8,true);
 		}
-		//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::kaplan,Punkt(14090,poziomZiemi+10),2,false);
+		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::kaplan,Punkt(14090,poziomZiemi+10),2,false);
 
-		for(int i=0;i<2;i++)
+		for(int i=0;i<4;i++)
 		{
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::templariusz,Punkt(15500+i*30,500+poziomZiemi),8,true);
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::wyborowyLucznik,Punkt(15500+i*30,1500+poziomZiemi),7,true);
@@ -542,7 +552,7 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 		}
 		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::kaplan,Punkt(15530,poziomZiemi+10),2,false);
 
-		for(int i=0;i<5;i++)
+		for(int i=0;i<10;i++)
 		{
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::wyborowyLucznik,Punkt(17000+i*30,1500+poziomZiemi),7,true);
 		}
@@ -565,20 +575,21 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 		{
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::wyborowyLucznik,Punkt(5000,3700+poziomZiemi),7,true);
 		}
+		//FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::kaplan,Punkt(5000,3700+poziomZiemi),2,false);
 
 		//Wieza1
-		for(int i=0;i<2;i++)
+		for(int i=0;i<4;i++)
 		{
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::templariusz,Punkt(6000,1500+poziomZiemi),8,true);
 		}
 
 		//Ziemia
-		for(int i=0;i<6;i++)
+		for(int i=0;i<8;i++)
 		{
 			int odchylenie = rand() % 4000-2000;
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::wyborowyLucznik,Punkt(9000+odchylenie,poziomZiemi),7,true);
 		}
-		for(int i=0;i<2;i++)
+		for(int i=0;i<4;i++)
 		{
 			int odchylenie = rand() % 4000-2000;
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::templariusz,Punkt(9000+odchylenie,poziomZiemi),8,true);
@@ -592,12 +603,12 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 		//Mur
 		for(int i=0;i<3;i++)
 		{
-			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::templariusz,Punkt(12000+i*500,poziomZiemi+500),8,true);
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::templariusz,Punkt(12000+i*250,poziomZiemi+500),8,true);
 		}
 		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::balista,Punkt(13500,poziomZiemi+563),0,false);
 
 		//Wieza2
-		for(int i=0;i<10;i++)
+		for(int i=0;i<12;i++)
 		{
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::wyborowyLucznik,Punkt(14000,poziomZiemi+3060),7,true);
 		}

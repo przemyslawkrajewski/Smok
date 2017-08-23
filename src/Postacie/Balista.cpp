@@ -112,8 +112,6 @@ std::pair<Klawiatura,Myszka> Balista::wyznaczSterowanie()
 		return std::pair<Klawiatura,Myszka>(k,m);
 	}
 
-	przyspieszenieCelu = (cel->zwrocPredkosc().x + cel->zwrocPredkosc().y - staraPredkosc);
-	staraPredkosc = cel->zwrocPredkosc().x + cel->zwrocPredkosc().y;
 
 	Punkt poprawka = (*(cel->zwrocPrzestrzenKolizji()->zwrocOkregi()))[0].zwrocPozycjeWzgledemObiektu();
 	poprawka.y=-poprawka.y+40;
@@ -130,7 +128,7 @@ std::pair<Klawiatura,Myszka> Balista::wyznaczSterowanie()
 	m.ustawY(-sin(kat)*10000);
 
 
-	if(fabs(kat-katCelowania)<=parametry.predkoscCelowania && czyMozliwyStrzal && fabs(przyspieszenieCelu)<5)
+	if(rand()%50 == 0 && fabs(kat-katCelowania)<=parametry.predkoscCelowania && czyMozliwyStrzal && fabs(staraPredkoscCelu.x-cel->zwrocPredkosc().x) < 5 && fabs(staraPredkoscCelu.y-cel->zwrocPredkosc().y) < 10)
 	{
 		if(typZachowania==0)
 		{
@@ -143,6 +141,7 @@ std::pair<Klawiatura,Myszka> Balista::wyznaczSterowanie()
 		}
 	}
 
+	staraPredkoscCelu = cel->zwrocPredkosc();
 	return std::pair<Klawiatura,Myszka>(k,m);
 }
 
