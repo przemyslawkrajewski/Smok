@@ -616,7 +616,7 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 	else if(numer==20) //################################ POZIOM 20: GLOWA ##########################################
 	{
 		smok->ustawWymiaryManewruSmoka(Punkt(3000,0),Punkt(20000,1500));
-		smok->ustawPozycje(Punkt(10500,200));
+		smok->ustawPozycje(Punkt(12000,200));
 		smok->ustawCzyZwroconyWPrawo(false);
 
 		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::glowa,Punkt(10000,poziomZiemi),3,true);

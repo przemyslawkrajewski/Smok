@@ -534,7 +534,7 @@ void Smok::wyznaczSmierc()
 	predkosc.y-=parametry.wspolczynnikGrawitacji;
 	predkosc.x*=0.95;
 	if(abs(predkosc.x)<1) predkosc.x=0;
-	if(pozycja.y>parametryObiektow.poziomZiemi+parametry.wysokosc)
+	if(!naZiemi)
 	{
 		if(zadaneY>pozycja.y)zadaneY=pozycja.y-1;
 		stan=spadaZabity;

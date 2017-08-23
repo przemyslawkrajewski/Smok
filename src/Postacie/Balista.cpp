@@ -128,7 +128,7 @@ std::pair<Klawiatura,Myszka> Balista::wyznaczSterowanie()
 	m.ustawY(-sin(kat)*10000);
 
 
-	if(rand()%50 == 0 && fabs(kat-katCelowania)<=parametry.predkoscCelowania && czyMozliwyStrzal && fabs(staraPredkoscCelu.x-cel->zwrocPredkosc().x) < 5 && fabs(staraPredkoscCelu.y-cel->zwrocPredkosc().y) < 10)
+	if(fabs(kat-katCelowania)<=parametry.predkoscCelowania && czyMozliwyStrzal && fabs(staraPredkoscCelu.x-cel->zwrocPredkosc().x) < 5 && fabs(staraPredkoscCelu.y-cel->zwrocPredkosc().y) < 10)
 	{
 		if(typZachowania==0)
 		{
