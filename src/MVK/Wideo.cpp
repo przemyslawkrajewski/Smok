@@ -575,8 +575,8 @@ void Wideo::wyswietlenieDrugiegoPlanu(int pozX,int pozY)
 {
 	int wysokoscObrazka = 768;
 	if(pozY<wysokoscOkna/2) pozY=wysokoscOkna/2;
-	wyswietlenieObrazka(drugiPlan,-pozX%szerokoscOkna,pozY/5-(wysokoscObrazka-wysokoscOkna),0,0,szerokoscOkna,wysokoscObrazka);
-	wyswietlenieObrazka(drugiPlan,-pozX%szerokoscOkna+szerokoscOkna,pozY/5-(wysokoscObrazka-wysokoscOkna),0,0,szerokoscOkna,wysokoscObrazka);
+	wyswietlenieObrazka(drugiPlan,-(pozX/5)%szerokoscOkna,pozY/5-(wysokoscObrazka-wysokoscOkna),0,0,szerokoscOkna,wysokoscObrazka);
+	wyswietlenieObrazka(drugiPlan,-(pozX/5)%szerokoscOkna+szerokoscOkna,pozY/5-(wysokoscObrazka-wysokoscOkna),0,0,szerokoscOkna,wysokoscObrazka);
 }
 
 void Wideo::wyswietlenieTla(int pozX,int pozY)
