@@ -19,8 +19,7 @@ Wideo::Wideo(Model *nModel)
 	render=0;
 	ekran=0;
 
-	tmp=0;
-	tmp2=0;
+	ekranWczytywania=0;
 
 	smokPP=0;
 	smokPL=0;
@@ -83,6 +82,8 @@ Wideo::~Wideo()
 
 void Wideo::zamkniecieOkna()
 {
+	SDL_DestroyTexture(ekranWczytywania);
+
 	SDL_DestroyTexture(smokPP);
 	SDL_DestroyTexture(smokTP);
 	SDL_DestroyTexture(smokPL);
@@ -133,9 +134,6 @@ void Wideo::zamkniecieOkna()
 
 	SDL_DestroyTexture(instrukcja);
 	SDL_DestroyTexture(odNowa);
-
-	SDL_DestroyTexture(tmp);
-	SDL_DestroyTexture(tmp2);
 
 	SDL_DestroyWindow(okno);
 	SDL_Quit();
@@ -198,6 +196,8 @@ void Wideo::pelnyEkran(bool p)
 
 void Wideo::wczytanieObrazow()
 {
+	wyswietlenieEkranuWczytywania();
+
     //std::cout << "Wczytywanie obrazkow\n";
 	if(wczytanieObrazka("Grafika/SmokPP.bmp",&smokPP) ||
 	   wczytanieObrazka("Grafika/SmokTP.bmp",&smokTP) ||
@@ -263,6 +263,8 @@ void Wideo::wczytanieObrazow()
 
 void Wideo::wczytanieObrazowScenerii(int typ)
 {
+	wyswietlenieEkranuWczytywania();
+
 	// 5 - Zamek, 4 - Miasto, 3 - Las, 2 - Osada, Default - Pole
 	if(typ== 5)
 	{
@@ -1200,5 +1202,14 @@ void Wideo::wyswietlenieEkranu()
 
 	wyswietlenieKomunikatow();
 
+	SDL_RenderPresent(render);
+}
+
+void Wideo::wyswietlenieEkranuWczytywania()
+{
+	if( ekranWczytywania == 0 ) wczytanieObrazka("Grafika/Wczytywanie.bmp",&ekranWczytywania);
+
+	SDL_RenderClear(render);
+	wyswietlenieObrazka(ekranWczytywania,0,0,0,0,1024,768);
 	SDL_RenderPresent(render);
 }

@@ -36,6 +36,7 @@ void Smok::reset()
 	spopielenie = false;
 	maksymalnaPozycja= Punkt(30000,3000);
 	minimalnaPozycja= Punkt(1000,00);
+	predkosc=Punkt();
 }
 
 void Smok::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)

@@ -31,6 +31,7 @@ public:
 	void pelnyEkran(bool p);
 
 	void wyswietlenieEkranu();
+	void wyswietlenieEkranuWczytywania();
 
 private:
 	int wczytanieObrazka(const char* nazwa, SDL_Texture ** grafika);
@@ -90,8 +91,7 @@ private:
 	SDL_Renderer *render;
 	SDL_Texture * ekran;
 
-	SDL_Texture * tmp;
-	SDL_Texture * tmp2;
+	SDL_Texture * ekranWczytywania;
 
 	SDL_Texture * smokPP,* smokPL; //smok przod w prawo , przod w lewo
 	SDL_Texture * smokTP,* smokTL; // smok tyl w prawo, tyl w lewo
