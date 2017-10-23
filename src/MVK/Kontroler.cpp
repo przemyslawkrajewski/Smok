@@ -22,11 +22,19 @@ void Kontroler::glownaPetla()
 
 	if(!wideo->inicjacjaOkna(model->zwrocWymiaryEkranu().x,model->zwrocWymiaryEkranu().y,24,false))
 	{
-		wideo->wczytanieObrazkow();
+		wideo->wczytanieObrazow();
+		int typScenerii=1;
+		wideo->wczytanieObrazowScenerii(1);
 		while(!zakonczenieAplikacji)
 		{
+			if(typScenerii != model->zwrocTypScenerii())
+			{
+				typScenerii=model->zwrocTypScenerii();
+				wideo->wczytanieObrazowScenerii(typScenerii);
+			}
 			obsluzZegar();
 			obsluzZdarzenia();
+
 		}
 	}
 	else
@@ -196,7 +204,8 @@ void Kontroler::zmienStosunek()
 		model->ustawWymiaryEkranu(Wymiary(1024,600));
 	wideo->zamkniecieOkna();
 	wideo->inicjacjaOkna(model->zwrocWymiaryEkranu().x,model->zwrocWymiaryEkranu().y,24,model->zwrocPelnyEkran());
-	wideo->wczytanieObrazkow();
+	wideo->wczytanieObrazow();
+	wideo->wczytanieObrazowScenerii(model->zwrocTypScenerii());
 	wideo->pelnyEkran(model->zwrocPelnyEkran());
 }
 

@@ -44,6 +44,8 @@ public:
 	bool czyWyswietlacOdNowa() {return wyswietlenieOdNowa;} //Todo: tymczasowe
 	bool czyWyswietlacPrzeciwnikow() {return klawiatura.czyWcisnietoKlawiszFunkcyjny(0);}
 
+	int zwrocTypScenerii() {return typScenerii;}
+
 	//Metody dedykowane dla Obiektow
 	void usunZniszczonePociskiKasetowe();
 
@@ -96,6 +98,7 @@ private:
 	bool pelnyEkran;
 	bool wyswietlenieOdNowa;
 	double wypelnienieCelownika;
+	int typScenerii;
 
 	Klawiatura klawiatura;
 	Myszka myszka;

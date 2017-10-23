@@ -24,7 +24,8 @@ public:
 	~Wideo();
 
 	int inicjacjaOkna(int szerOkna,int wysOkna,int glebiaKolorowOkna, bool fullscreen);
-	void wczytanieObrazkow();
+	void wczytanieObrazow();
+	void wczytanieObrazowScenerii(int typ);
 	void zamkniecieOkna();
 
 	void pelnyEkran(bool p);

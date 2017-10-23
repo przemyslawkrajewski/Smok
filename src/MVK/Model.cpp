@@ -13,6 +13,7 @@ ParametrySmoka Smok::parametry;
 Model::Model(int szerOkna,int wysOkna, bool ekran): wymiaryEkranu(Punkt(szerOkna,wysOkna)),pelnyEkran(ekran)
 {
 	wypelnienieCelownika=false;
+	typScenerii=1;
 
 	FabrykaPrzedmiotow::zwrocInstancje()->ustawKontenery(&mury,&zaslony, &tarczePersonalne, &tarczeObszarowe);
 	FabrykaPociskow::zwrocInstancje()->ustawKontenery(&plomienie,&strzaly, &belty, &pociskiBalistyczne, &pociskiKierowane, &pociskiKasetowe, &odlamki);
@@ -53,19 +54,42 @@ void Model::reset()
 
 void Model::wczytajPoziom(int numer)
 {
-	reset();
 	std::cout << "Podaj nr poziomu: ";
 	std::cin >> numer;
+
+	reset();
 	FabrykaPoziomow::zwrocInstancje()->stworzPoziom(numer);
+
 	smok.ustawPoziom((double) numer/2 + 0.5 );
-	std::cout << "Poziom smoka: " << smok.zwrocPoziom() << "\n";
 	if(numer>9) smok.ustawSpopielenie(true);
 	else smok.ustawSpopielenie(false);
+
 	kamera.ustawPozycje(smok.zwrocPozycje());
 	myszka.ustawX(wymiaryEkranu.x/2);
 	myszka.ustawY(wymiaryEkranu.y/2);
 	wyznaczKolejnyStanObiektow();
 	wyswietlenieOdNowa=false;
+
+	if(numer==1) typScenerii=1;
+	else if(numer==2) typScenerii=1;
+	else if(numer==3) typScenerii=3;
+	else if(numer==4) typScenerii=1;
+	else if(numer==5) typScenerii=2;
+	else if(numer==6) typScenerii=3;
+	else if(numer==7) typScenerii=1;
+	else if(numer==8) typScenerii=2;
+	else if(numer==9) typScenerii=4;
+	else if(numer==10) typScenerii=4;
+	else if(numer==11) typScenerii=1;
+	else if(numer==12) typScenerii=2;
+	else if(numer==13) typScenerii=3;
+	else if(numer==14) typScenerii=3;
+	else if(numer==15) typScenerii=2;
+	else if(numer==16) typScenerii=4;
+	else if(numer==17) typScenerii=5;
+	else if(numer==18) typScenerii=5;
+	else if(numer==19) typScenerii=5;
+	else if(numer==20) typScenerii=5;
 }
 
 //####################################################KOLEJNY STAN#######################################################

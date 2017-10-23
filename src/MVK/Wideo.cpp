@@ -196,7 +196,7 @@ void Wideo::pelnyEkran(bool p)
 	SDL_SetWindowSize(okno, szerokoscOkna, wysokoscOkna);//*/
 }
 
-void Wideo::wczytanieObrazkow()
+void Wideo::wczytanieObrazow()
 {
     //std::cout << "Wczytywanie obrazkow\n";
 	if(wczytanieObrazka("Grafika/SmokPP.bmp",&smokPP) ||
@@ -219,9 +219,6 @@ void Wideo::wczytanieObrazkow()
 	   wczytanieObrazka("Grafika/Zaslona.bmp",&zaslona) ||
 	   wczytanieObrazka("Grafika/TarczaPersonalna.bmp",&tarczaPersonalna) ||
 	   wczytanieObrazka("Grafika/TarczaObszarowa.bmp",&tarczaObszarowa) ||
-	   wczytanieObrazka("Grafika/Chodnik1.bmp",&pierwszyPlan) ||
-	   wczytanieObrazka("Grafika/DrugiPlanTrawa.bmp",&drugiPlan) ||
-	   wczytanieObrazka("Grafika/TloChmurno.bmp",&tlo) ||
 	   wczytanieObrazka("Grafika/FireBar.bmp",&pasekOgnia) ||
 	   wczytanieObrazka("Grafika/LifeBar.bmp",&pasekZdrowia) ||
 	   wczytanieObrazka("Grafika/Ostrzezenie.bmp",&ostrzezenie) ||
@@ -262,6 +259,47 @@ void Wideo::wczytanieObrazkow()
 		std::cout << "Brak plikow z grafika\n";
 	}
 
+}
+
+void Wideo::wczytanieObrazowScenerii(int typ)
+{
+	// 5 - Zamek, 4 - Miasto, 3 - Las, 2 - Osada, Default - Pole
+	if(typ== 5)
+	{
+		if(!wczytanieObrazka("Grafika/PierwszyPlan5.bmp",&pierwszyPlan) && !wczytanieObrazka("Grafika/DrugiPlan5.bmp",&drugiPlan) && !wczytanieObrazka("Grafika/Tlo5.bmp",&tlo))
+		{
+			return;
+		}
+	}
+	else if(typ== 4)
+	{
+		if(!wczytanieObrazka("Grafika/PierwszyPlan4.bmp",&pierwszyPlan) && !wczytanieObrazka("Grafika/DrugiPlan4.bmp",&drugiPlan) && !wczytanieObrazka("Grafika/Tlo4.bmp",&tlo))
+		{
+			return;
+		}
+	}
+	else if(typ== 3)
+	{
+		if(!wczytanieObrazka("Grafika/PierwszyPlan3.bmp",&pierwszyPlan) && !wczytanieObrazka("Grafika/DrugiPlan3.bmp",&drugiPlan) && !wczytanieObrazka("Grafika/Tlo3.bmp",&tlo))
+		{
+			return;
+		}
+	}
+	else if(typ== 2)
+	{
+		if(!wczytanieObrazka("Grafika/PierwszyPlan2.bmp",&pierwszyPlan) && !wczytanieObrazka("Grafika/DrugiPlan2.bmp",&drugiPlan) && !wczytanieObrazka("Grafika/Tlo1.bmp",&tlo))
+		{
+			return;
+		}
+	}
+	else
+	{
+		if(!wczytanieObrazka("Grafika/PierwszyPlan1.bmp",&pierwszyPlan) && !wczytanieObrazka("Grafika/DrugiPlan1.bmp",&drugiPlan) && !wczytanieObrazka("Grafika/Tlo1.bmp",&tlo))
+		{
+			return;
+		}
+	}
+	std::cout << "Brak plikow z grafika\n";
 }
 
 int Wideo::wczytanieObrazka(const char* nazwa, SDL_Texture ** grafika)
