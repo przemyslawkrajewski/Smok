@@ -242,8 +242,8 @@ void Wideo::wczytanieObrazow()
 	   wczytanieObrazka("Grafika/Lucznik2L.bmp",&lucznikL[1]) ||
 	   wczytanieObrazka("Grafika/Lucznik3P.bmp",&lucznikP[2]) ||
 	   wczytanieObrazka("Grafika/Lucznik3L.bmp",&lucznikL[2]) ||
-	   wczytanieObrazka("Grafika/Lucznik1P.bmp",&lucznikP[3]) ||
-	   wczytanieObrazka("Grafika/Lucznik1L.bmp",&lucznikL[3]) ||
+	   wczytanieObrazka("Grafika/Lucznik4P.bmp",&lucznikP[3]) ||
+	   wczytanieObrazka("Grafika/Lucznik4L.bmp",&lucznikL[3]) ||
 	   wczytanieObrazka("Grafika/Kaplan1P.bmp",&kaplanP[0]) ||
 	   wczytanieObrazka("Grafika/Kaplan1L.bmp",&kaplanL[0]) ||
 	   wczytanieObrazka("Grafika/Kaplan2P.bmp",&kaplanP[1]) ||
