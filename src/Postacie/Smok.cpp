@@ -125,7 +125,7 @@ void Smok::ustawPoziom(int p)
 	parametry.wspolczynnikHamowaniaY=1.2+1.0*mnoznik;
 	parametry.predkoscWznoszeniaSieY=1.2+1.0*mnoznik;
 	parametry.przyspieszenieChodu=0.4+0.4*mnoznik;
-	parametry.hamowanieChodu=1.0;
+	parametry.hamowanieChodu=5.0;
 
 	//Wybicie
 	parametry.silaWybicia=10+6*mnoznik;
@@ -652,8 +652,8 @@ void Smok::rozpedzanieNaZiemi(double przyspieszenie)
 	}
 	else if (abs(predkosc.x)>parametry.maksPredkoscChodu+parametry.przyspieszenieChodu)
 	{
-		if(predkosc.x>0) predkosc.x-=parametry.przyspieszenieChodu;
-		else predkosc.x+=parametry.przyspieszenieChodu;
+		if(predkosc.x>0) predkosc.x-=parametry.hamowanieChodu;
+		else predkosc.x+=parametry.hamowanieChodu;
 	}
 	else
 	{

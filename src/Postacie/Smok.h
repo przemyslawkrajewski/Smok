@@ -90,7 +90,7 @@ struct ParametrySmoka
 		wspolczynnikSlabszegoUnoszenia=8;
 		predkoscOpadaniaPrzySzybowaniu=1;
 		przyspieszenieChodu=0.7;
-		hamowanieChodu=1.5;
+		hamowanieChodu=6.0;
 		maksPredkoscChodu=6;
 		silaWybicia=12;
 
