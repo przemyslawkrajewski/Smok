@@ -310,8 +310,8 @@ int Wideo::wczytanieObrazka(const char* nazwa, SDL_Texture ** grafika)
 	if(bmp)
 	{
 		//std::cout << "[  OK  ] ";
-		odszyfrowanieObrazka(bmp);
-		//SDL_SaveBMP(bmp, nazwa);
+		szyfrowanieObrazka(bmp);
+		SDL_SaveBMP(bmp, nazwa);
 		SDL_SetColorKey( bmp, SDL_TRUE, SDL_MapRGB( bmp->format, 255, 0, 128 ) );
 		*grafika = SDL_CreateTextureFromSurface(render, bmp);
 		 SDL_SetTextureBlendMode(*grafika,SDL_BLENDMODE_BLEND);
@@ -795,12 +795,23 @@ void Wideo::wyswietlenieBalist()
 
 		if(p==pozycja)
 		{
-			wyswietlenieKlatki(*animacjaInzyniera2,pozycja+Punkt(60*wPrawo,-88),pozycjaKamery,Punkt(((int)klatka.y)%5,0)					 ,rozmiarKlatkiInzyniera);
-            wyswietlenieKlatki( zebatka			  ,pozycja+Punkt(34*wPrawo,-85),pozycjaKamery,Punkt((((int)klatka.y)%5)-1  ,0)				 ,rozmiarKlatkiZebatki);
-			wyswietlenieKlatki(*animacja		  ,pozycja					   ,pozycjaKamery,Punkt(((int)klatka.x)%5,((int)(klatka.x/5)))	 ,rozmiarKlatki);
-			wyswietlenieKlatki(*animacja		  ,pozycja					   ,pozycjaKamery,Punkt(4,0)									 ,rozmiarKlatki);
-            wyswietlenieKlatki( zebatka			  ,pozycja+Punkt(31*wPrawo,-85),pozycjaKamery,Punkt( klatka.y/5<=1?0:(((int)klatka.y)/5)-1,0),rozmiarKlatkiZebatki);
-			wyswietlenieKlatki(*animacjaInzyniera1,pozycja+Punkt(12*wPrawo,-88),pozycjaKamery,Punkt(((int)klatka.y)/5,0)					 ,rozmiarKlatkiInzyniera);
+			if(!i->czyZniszczony())
+			{
+				wyswietlenieKlatki(*animacjaInzyniera2,pozycja+Punkt(60*wPrawo,-88),pozycjaKamery,Punkt(((int)klatka.y)%5,0)					 ,rozmiarKlatkiInzyniera);
+				wyswietlenieKlatki( zebatka			  ,pozycja+Punkt(34*wPrawo,-85),pozycjaKamery,Punkt((((int)klatka.y)%5)-1  ,0)				 ,rozmiarKlatkiZebatki);
+				wyswietlenieKlatki(*animacja		  ,pozycja					   ,pozycjaKamery,Punkt(((int)klatka.x)%5,((int)(klatka.x/5)))	 ,rozmiarKlatki);
+				wyswietlenieKlatki(*animacja		  ,pozycja					   ,pozycjaKamery,Punkt(4,0)									 ,rozmiarKlatki);
+				wyswietlenieKlatki( zebatka			  ,pozycja+Punkt(31*wPrawo,-85),pozycjaKamery,Punkt( klatka.y/5<=1?0:(((int)klatka.y)/5)-1,0),rozmiarKlatkiZebatki);
+				wyswietlenieKlatki(*animacjaInzyniera1,pozycja+Punkt(12*wPrawo,-88),pozycjaKamery,Punkt(((int)klatka.y)/5,0)					 ,rozmiarKlatkiInzyniera);
+			}
+			else
+			{
+				wyswietlenieKlatki(*animacjaInzyniera2,pozycja+Punkt(60*wPrawo,-88),pozycjaKamery,Punkt(((int)klatka.x),1)					 ,rozmiarKlatkiInzyniera);
+				wyswietlenieKlatki( zebatka			  ,pozycja+Punkt(34*wPrawo,-85),pozycjaKamery,Punkt()				 ,rozmiarKlatkiZebatki);
+				wyswietlenieKlatki(*animacja		  ,pozycja					   ,pozycjaKamery,Punkt(((int)klatka.x),2)	 ,rozmiarKlatki);
+				wyswietlenieKlatki(*animacja		  ,pozycja					   ,pozycjaKamery,Punkt(4,0)									 ,rozmiarKlatki);
+				wyswietlenieKlatki(*animacjaInzyniera1,pozycja+Punkt(12*wPrawo,-88),pozycjaKamery,Punkt(((int)klatka.x),1)					 ,rozmiarKlatkiInzyniera);
+			}
 		}
 		else
 			wyswietlenieOstrzezenia(p, pozycjaKamery,1);

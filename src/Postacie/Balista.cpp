@@ -25,42 +25,20 @@ Balista::Balista() {
 //#####################################################################################################
 void Balista::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 {
-	if(zycie<0)
+	if(!zniszczony)
 	{
-		//Na razie po prostu znika
-		usun();
-	}
-	//Strzal
-	if(myszka->zwrocLPM() && stanNaciagania==0 )
-	{
-		double katMyszki = atan2(myszka->zwrocY(),myszka->zwrocX());
-		if(czyKatPrzekraczaMaks(-katMyszki) || czyKatPrzekraczaMin(-katMyszki)) return;
-		double kat = -katMyszki;
-		//Fabryka->stworz pocisk
-		Punkt p;
-		p.x=pozycja.x;//+(parametry.predkoscStrzaly)*cos(katCelowania);
-		p.y=pozycja.y;//+(parametry.predkoscStrzaly)*sin(katCelowania);
-		Punkt v;
-		v.x=parametry.predkoscStrzaly*cos(kat);
-		v.y=parametry.predkoscStrzaly*sin(kat);
-		double katStrzaly = kat+M_PI/2;//+3.14+6.28
-		if(katStrzaly>6.28) katStrzaly-=6.28;
-		FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::pociskBalistyczny,p,v,parametry.predkoscStrzaly,katStrzaly,parametry.obrazenia);
-
-		stanNaciagania=parametry.maxNaciagania;
-	}
-	else if(klawiatura->czyWcisnietoKlawiszFunkcyjny(0) && stanNaciagania==0 )
-	{
-		double katMyszki = atan2(myszka->zwrocY(),myszka->zwrocX());
-		if(czyKatPrzekraczaMaks(-katMyszki) || czyKatPrzekraczaMin(-katMyszki)) return;
-		for(int i=0;i<parametry.iloscPociskow;i++)
+		if(zycie<0)
 		{
-			double kat;
-			kat=katCelowania+((double)(rand()%100)/100)*parametry.rozrzut - parametry.rozrzut/2;
-			if(fabs(katMyszki-katCelowania)<parametry.predkoscCelowania)
-			{
-				kat=-katMyszki;
-			}
+			//Na razie po prostu znika
+			zniszcz();
+			klatkaAnimacji.x=0;
+		}
+		//Strzal
+		if(myszka->zwrocLPM() && stanNaciagania==0 )
+		{
+			double katMyszki = atan2(myszka->zwrocY(),myszka->zwrocX());
+			if(czyKatPrzekraczaMaks(-katMyszki) || czyKatPrzekraczaMin(-katMyszki)) return;
+			double kat = -katMyszki;
 			//Fabryka->stworz pocisk
 			Punkt p;
 			p.x=pozycja.x;//+(parametry.predkoscStrzaly)*cos(katCelowania);
@@ -70,33 +48,63 @@ void Balista::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 			v.y=parametry.predkoscStrzaly*sin(kat);
 			double katStrzaly = kat+M_PI/2;//+3.14+6.28
 			if(katStrzaly>6.28) katStrzaly-=6.28;
-			FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::pociskBalistyczny,p,v,parametry.predkoscStrzaly,katStrzaly,parametry.obnizoneObrazenia);
+			FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::pociskBalistyczny,p,v,parametry.predkoscStrzaly,katStrzaly,parametry.obrazenia);
+
+			stanNaciagania=parametry.maxNaciagania;
 		}
-		stanNaciagania=parametry.maxNaciagania;
+		else if(klawiatura->czyWcisnietoKlawiszFunkcyjny(0) && stanNaciagania==0 )
+		{
+			double katMyszki = atan2(myszka->zwrocY(),myszka->zwrocX());
+			if(czyKatPrzekraczaMaks(-katMyszki) || czyKatPrzekraczaMin(-katMyszki)) return;
+			for(int i=0;i<parametry.iloscPociskow;i++)
+			{
+				double kat;
+				kat=katCelowania+((double)(rand()%100)/100)*parametry.rozrzut - parametry.rozrzut/2;
+				if(fabs(katMyszki-katCelowania)<parametry.predkoscCelowania)
+				{
+					kat=-katMyszki;
+				}
+				//Fabryka->stworz pocisk
+				Punkt p;
+				p.x=pozycja.x;//+(parametry.predkoscStrzaly)*cos(katCelowania);
+				p.y=pozycja.y;//+(parametry.predkoscStrzaly)*sin(katCelowania);
+				Punkt v;
+				v.x=parametry.predkoscStrzaly*cos(kat);
+				v.y=parametry.predkoscStrzaly*sin(kat);
+				double katStrzaly = kat+M_PI/2;//+3.14+6.28
+				if(katStrzaly>6.28) katStrzaly-=6.28;
+				FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::pociskBalistyczny,p,v,parametry.predkoscStrzaly,katStrzaly,parametry.obnizoneObrazenia);
+			}
+			stanNaciagania=parametry.maxNaciagania;
+		}
+		else
+		{
+			//Naciaganie
+			if(stanNaciagania>0)
+			{
+				if(czyPrzekroczonoMaksKatCelowania())
+				{
+					stanNaciagania--;
+					if(stanNaciagania==0) pomocnikCelowania.resetCelowania();
+				}
+				else podniesCelownik();
+			}
+			//Celowanie
+			else
+			{
+				double katMyszki = atan2(myszka->zwrocY(),myszka->zwrocX());
+
+				if(fabs(katCelowania-katMyszki)>parametry.predkoscCelowania && (zwroconyWPrawo == (pozycja.x<cel->zwrocPozycje().x))  )
+				{
+					if(zwroconyWPrawo==(katCelowania > -katMyszki) && !czyPrzekroczonoMinKatCelowania()) opuscCelownik();
+					else if(zwroconyWPrawo==(katCelowania < -katMyszki) && !czyPrzekroczonoMaksKatCelowania()) podniesCelownik();
+				}
+			}
+		}
 	}
 	else
 	{
-		//Naciaganie
-		if(stanNaciagania>0)
-		{
-			if(czyPrzekroczonoMaksKatCelowania())
-			{
-				stanNaciagania--;
-				if(stanNaciagania==0) pomocnikCelowania.resetCelowania();
-			}
-			else podniesCelownik();
-		}
-		//Celowanie
-		else
-		{
-			double katMyszki = atan2(myszka->zwrocY(),myszka->zwrocX());
-
-			if(fabs(katCelowania-katMyszki)>parametry.predkoscCelowania && (zwroconyWPrawo == (pozycja.x<cel->zwrocPozycje().x))  )
-			{
-				if(zwroconyWPrawo==(katCelowania > -katMyszki) && !czyPrzekroczonoMinKatCelowania()) opuscCelownik();
-				else if(zwroconyWPrawo==(katCelowania < -katMyszki) && !czyPrzekroczonoMaksKatCelowania()) podniesCelownik();
-			}
-		}
+		if( klatkaAnimacji.x >= 4 ) usun();
 	}
 }
 
@@ -223,27 +231,35 @@ void Balista::wyznaczPrzestrzenKolizji()
 //#####################################################################################################
 void Balista::wyznaczKlatkeAnimacji()
 {
-	//x/4- naladowany/rozladowany
-	//x%4 -kat celowania
-	double kat=katCelowania;
-	if(zwroconyWPrawo)
-		klatkaAnimacji.x=((double)(kat-M_PI/32)/(M_PI/16));
+	if(zycie > 0)
+	{
+		//x/4- naladowany/rozladowany
+		//x%4 -kat celowania
+		double kat=katCelowania;
+		if(zwroconyWPrawo)
+			klatkaAnimacji.x=((double)(kat-M_PI/32)/(M_PI/16));
+		else
+			klatkaAnimacji.x=((double)(M_PI-kat+M_PI/32)/(6.28/16));
+
+		if(klatkaAnimacji.x>3) klatkaAnimacji.x=3;
+		if(klatkaAnimacji.x<0) klatkaAnimacji.x=0;
+		if(stanNaciagania>0) klatkaAnimacji.x+=5;
+
+		if(stanNaciagania!=0 && stanNaciagania!=parametry.maxNaciagania)
+			klatkaAnimacji.x=9;
+		//y/4 stan celowania
+		//y%4 stan naciagania
+		if(stanNaciagania==0 || stanNaciagania==parametry.maxNaciagania)
+			klatkaAnimacji.y=0;
+		else
+			klatkaAnimacji.y=(stanNaciagania/parametry.predkoscAnimacjiNaciagania)%4+1;
+
+		if(stanNaciagania==0 || stanNaciagania==parametry.maxNaciagania)
+			klatkaAnimacji.y+=((int)stanCelowania/parametry.predkoscAnimacjiCelowania)* 5+5;
+	}
 	else
-		klatkaAnimacji.x=((double)(M_PI-kat+M_PI/32)/(6.28/16));
-
-	if(klatkaAnimacji.x>3) klatkaAnimacji.x=3;
-	if(klatkaAnimacji.x<0) klatkaAnimacji.x=0;
-	if(stanNaciagania>0) klatkaAnimacji.x+=5;
-
-	if(stanNaciagania!=0 && stanNaciagania!=parametry.maxNaciagania)
-		klatkaAnimacji.x=9;
-	//y/4 stan celowania
-	//y%4 stan naciagania
-	if(stanNaciagania==0 || stanNaciagania==parametry.maxNaciagania)
+	{
 		klatkaAnimacji.y=0;
-	else
-		klatkaAnimacji.y=(stanNaciagania/parametry.predkoscAnimacjiNaciagania)%4+1;
-
-	if(stanNaciagania==0 || stanNaciagania==parametry.maxNaciagania)
-		klatkaAnimacji.y+=((int)stanCelowania/parametry.predkoscAnimacjiCelowania)* 5+5;
+		klatkaAnimacji.x+=0.4;
+	}
 }

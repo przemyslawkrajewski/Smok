@@ -627,7 +627,7 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 		smok->ustawPoziom(6);
 		smok->ustawWymiaryManewruSmoka(Punkt(1000,0),Punkt(30000,3000));
 
-		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::kaplan,Punkt(3000,poziomZiemi+100),2,false);
+		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::balista,Punkt(3000,poziomZiemi+100),2,true);
 
 	}
 }
