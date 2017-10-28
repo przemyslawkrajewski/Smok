@@ -310,8 +310,8 @@ int Wideo::wczytanieObrazka(const char* nazwa, SDL_Texture ** grafika)
 	if(bmp)
 	{
 		//std::cout << "[  OK  ] ";
-		szyfrowanieObrazka(bmp);
-		SDL_SaveBMP(bmp, nazwa);
+		odszyfrowanieObrazka(bmp);
+		//SDL_SaveBMP(bmp, nazwa);
 		SDL_SetColorKey( bmp, SDL_TRUE, SDL_MapRGB( bmp->format, 255, 0, 128 ) );
 		*grafika = SDL_CreateTextureFromSurface(render, bmp);
 		 SDL_SetTextureBlendMode(*grafika,SDL_BLENDMODE_BLEND);

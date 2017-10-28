@@ -71,19 +71,19 @@ void Model::wczytajPoziom(int numer)
 	wyswietlenieOdNowa=false;
 
 	if(numer==1) typScenerii=1;
-	else if(numer==2) typScenerii=1;
+	else if(numer==2) typScenerii=3;
 	else if(numer==3) typScenerii=3;
 	else if(numer==4) typScenerii=1;
 	else if(numer==5) typScenerii=2;
-	else if(numer==6) typScenerii=3;
+	else if(numer==6) typScenerii=1;
 	else if(numer==7) typScenerii=1;
 	else if(numer==8) typScenerii=2;
 	else if(numer==9) typScenerii=4;
 	else if(numer==10) typScenerii=4;
 	else if(numer==11) typScenerii=1;
-	else if(numer==12) typScenerii=2;
+	else if(numer==12) typScenerii=3;
 	else if(numer==13) typScenerii=3;
-	else if(numer==14) typScenerii=3;
+	else if(numer==14) typScenerii=2;
 	else if(numer==15) typScenerii=2;
 	else if(numer==16) typScenerii=4;
 	else if(numer==17) typScenerii=5;
