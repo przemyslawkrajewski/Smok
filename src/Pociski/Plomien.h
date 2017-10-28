@@ -24,7 +24,7 @@ struct ParametryOgnia
 	ParametryOgnia()
 	{
 		czasWygasania=20;
-		czasPalenia=50;
+		czasPalenia=20;
 		predkoscOpadania=5;
 
 		obrazeniaNaCelu=0.025;

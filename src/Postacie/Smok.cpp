@@ -515,8 +515,35 @@ void Smok::wyznaczGlowe(Klawiatura* klawiatura, Myszka *myszka)
 			double kat = -obrotGlowy+3.14+1.57+6.28;
 			if(kat>6.28) kat-=6.28;
 
-			if(spopielenie)	FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::plomien2,p,v,czasTrwania,kat,obrazenia);
-			else FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::plomien,p,v,czasTrwania,kat,obrazenia);
+			FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::plomien,p,v,czasTrwania,kat,obrazenia);
+		}
+	}
+	else if(myszka->zwrocPPM() && spopielenie)
+	{
+		zieje=true;
+		przerwaOgnia=parametry.przerwaMiedzyMiotaniem;
+		if(iloscOgnia>0) iloscOgnia-=parametry.zuzycieOgnia;
+		double wspolczynnikSily=0.5 + ((iloscOgnia)/parametry.maksymalnailoscOgnia)/2;//pow((iloscOgnia)/parametry.maksymalnailoscOgnia,0.2); //Wspolczynnik od ktorego zalezy aktualna predkosc ognia
+		for(int i=0; i<iloscOgnia;i++)
+		{
+			double predkoscOgnia=parametry.minimalnaPredkoscOgnia+(parametry.maksymalnaPredkoscOgnia-parametry.minimalnaPredkoscOgnia)*wspolczynnikSily;
+			predkoscOgnia+=((double)(rand()%100)/100)*parametry.odchyleniePredkosciOgnia;
+
+			double katOgnia=((double)(rand()%100)/100)*parametry.odchylenieKataOgnia - parametry.odchylenieKataOgnia/2 + obrotGlowy;
+			double czasTrwania=parametry.sredniCzasTrwaniaOgnia+parametry.odchylenieCzasuTrwaniaOgnia*wspolczynnikSily;
+
+			double odchyleniePozycji = ((double)(rand()%100)/100)*parametry.maksymalnaPredkoscOgnia;
+
+			Punkt p;
+			p.x=parametry.poprawkaOgnia.x+pozycja.x+pozycjaGlowy.x+(odchyleniePozycji+parametry.minimalnaOdleglosc)*cos(katOgnia)-predkosc.x;
+			p.y=parametry.poprawkaOgnia.y+pozycja.y-pozycjaGlowy.y+(odchyleniePozycji+parametry.minimalnaOdleglosc)*sin(katOgnia);
+			Punkt v;
+			v.x=predkoscOgnia*cos(katOgnia)+predkosc.x;
+			v.y=predkoscOgnia*sin(katOgnia);
+			double kat = -obrotGlowy+3.14+1.57+6.28;
+			if(kat>6.28) kat-=6.28;
+
+			FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::plomien2,p,v,czasTrwania/3,kat,obrazenia);
 		}
 	}
 	else

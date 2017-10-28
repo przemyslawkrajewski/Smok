@@ -158,6 +158,10 @@ void Kontroler::obsluzZdarzenia()
             {
         		model->zwrocMyszke()->ustawLPM(true);
             }
+        	else if( zdarzenie.button.button == SDL_BUTTON_RIGHT)
+			{
+				model->zwrocMyszke()->ustawPPM(true);
+			}
         }
         if( zdarzenie.type == SDL_MOUSEBUTTONUP )
         {
@@ -165,6 +169,10 @@ void Kontroler::obsluzZdarzenia()
             {
         		model->zwrocMyszke()->ustawLPM(false);
             }
+        	else if( zdarzenie.button.button == SDL_BUTTON_RIGHT)
+			{
+				model->zwrocMyszke()->ustawPPM(false);
+			}
         }
     }
 }

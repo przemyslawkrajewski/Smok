@@ -47,7 +47,7 @@ void Plomien::zniszcz()
 		Obiekt::zniszcz();
 		predkosc.x=predkosc.y=0;
 		czasTrwania=parametry.czasPalenia;
-		if(!spopielenie) czasTrwania*=2;
+		if(!spopielenie) czasTrwania*=3;
 		stan = naCelu;
 		obrazenia=bazoweObrazenia*parametry.obrazeniaNaCelu;
 	}
@@ -102,7 +102,7 @@ void Plomien::wyznaczKlatkeAnimacji()
 		if(klatkaAnimacji.x>31) klatkaAnimacji.x=0;
 		break;
 	case naCelu:
-		if(czasTrwania>parametry.czasWygasania)
+		if((!spopielenie && czasTrwania>parametry.czasWygasania) || (spopielenie && czasTrwania>parametry.czasWygasania/2))
 		{
 			klatkaAnimacji.x+=0.5;
 			if(klatkaAnimacji.x>=35) klatkaAnimacji.x=32;

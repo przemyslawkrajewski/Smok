@@ -621,13 +621,13 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 
 		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::glowa,Punkt(10000,poziomZiemi),3,true);
 	}
-	else if(numer==101)
+	else if(numer==101) //################################ CUSTOM ##########################################
 	{
 		smok->ustawPozycje(Punkt(2000,100));
 		smok->ustawPoziom(6);
 		smok->ustawWymiaryManewruSmoka(Punkt(1000,0),Punkt(30000,3000));
 
-		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::balista,Punkt(3000,poziomZiemi+100),2,true);
+		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::poborowyLucznik,Punkt(3000,poziomZiemi+100),0,true);
 
 	}
 }
