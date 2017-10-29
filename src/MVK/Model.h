@@ -31,6 +31,7 @@ public:
 	//Mechanika gry
 	void wyznaczKolejnyStan();
 	void wyznaczKolejnyStanObiektow();
+	void wyznaczStanCelu();
 	void reset();
 	void wczytajPoziom(int numer);
 	void ustawWymiaryEkranu(Wymiary w) {wymiaryEkranu=w;}
@@ -40,11 +41,10 @@ public:
 
 	double zwrocWypelnienieCelownika() {return wypelnienieCelownika;}
 	void ustawWypelnienieCelownika(double wypelnienie) {wypelnienieCelownika=wypelnienie;}
-
-	bool czyWyswietlacOdNowa() {return wyswietlenieOdNowa;} //Todo: tymczasowe
 	bool czyWyswietlacPrzeciwnikow() {return klawiatura.czyWcisnietoKlawiszFunkcyjny(0);}
 
 	int zwrocTypScenerii() {return typScenerii;}
+	int zwrocTypCelu() {return typCelu;}
 
 	//Metody dedykowane dla Obiektow
 	void usunZniszczonePociskiKasetowe();
@@ -96,9 +96,9 @@ private:
 private:
 	Punkt wymiaryEkranu;
 	bool pelnyEkran;
-	bool wyswietlenieOdNowa;
 	double wypelnienieCelownika;
 	int typScenerii;
+	int typCelu;
 
 	Klawiatura klawiatura;
 	Myszka myszka;

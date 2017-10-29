@@ -20,6 +20,8 @@ struct ParametrySmoka
 {
 	double wysokosc;
 
+	double maksymalnaIloscZdrowia;
+
 	//Parametry związane z ogniem
 	double maksymalnailoscOgnia;
 	double regeneracjaOgnia;
@@ -61,6 +63,8 @@ struct ParametrySmoka
 	ParametrySmoka()
 	{
 		wysokosc=80;
+
+		maksymalnaIloscZdrowia=500;
 
 		maksymalnailoscOgnia=10;
 		regeneracjaOgnia=0.08;
@@ -166,7 +170,9 @@ public:
 	Punkt zwrocKlatkeAnimacjiGlowy() {return klatkaAnimacjiGlowy;}
 
 	//Gety stan Smoka
-	double zwrocStanOgnia() {return iloscOgnia/parametry.maksymalnailoscOgnia;}
+	double zwrocStanOgnia() {return iloscOgnia;}
+	double zwrocMaksOgnia() {return parametry.maksymalnailoscOgnia;}
+	double zwrocMaksZycia() {return parametry.maksymalnaIloscZdrowia;}
 
 	//Metody zwiazane z sama gra
 	void ustawWymiaryManewruSmoka(Punkt min, Punkt maks) {maksymalnaPozycja=maks; minimalnaPozycja=min;}

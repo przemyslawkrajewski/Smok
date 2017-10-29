@@ -62,13 +62,15 @@ Wideo::Wideo(Model *nModel)
 	tarczaPersonalna=0;
 	tarczaObszarowa=0;
 
-	odNowa=0;
 	instrukcja=0;
 
 	pasekOgnia=0;
-	pasekZdrowia=0;
+
 	ostrzezenie=0;
 	fiolkaHUD=0;
+	napisyHUD=0;
+	paskiHUD=0;
+	tloHUD=0;
 
 
 	pierwszyPlan=0;
@@ -128,12 +130,13 @@ void Wideo::zamkniecieOkna()
 	SDL_DestroyTexture(pierwszyPlan);
 
 	SDL_DestroyTexture(pasekOgnia);
-	SDL_DestroyTexture(pasekZdrowia);
 	SDL_DestroyTexture(ostrzezenie);
+	SDL_DestroyTexture(tloHUD);
+	SDL_DestroyTexture(napisyHUD);
+	SDL_DestroyTexture(paskiHUD);
 	SDL_DestroyTexture(fiolkaHUD);
 
 	SDL_DestroyTexture(instrukcja);
-	SDL_DestroyTexture(odNowa);
 
 	SDL_DestroyWindow(okno);
 	SDL_Quit();
@@ -220,11 +223,12 @@ void Wideo::wczytanieObrazow()
 	   wczytanieObrazka("Grafika/TarczaPersonalna.bmp",&tarczaPersonalna) ||
 	   wczytanieObrazka("Grafika/TarczaObszarowa.bmp",&tarczaObszarowa) ||
 	   wczytanieObrazka("Grafika/FireBar.bmp",&pasekOgnia) ||
-	   wczytanieObrazka("Grafika/LifeBar.bmp",&pasekZdrowia) ||
 	   wczytanieObrazka("Grafika/Ostrzezenie.bmp",&ostrzezenie) ||
 	   wczytanieObrazka("Grafika/Vial.bmp",&fiolkaHUD) ||
-	   wczytanieObrazka("Grafika/Instrukcja.bmp",&instrukcja) ||
-	   wczytanieObrazka("Grafika/OdNowa.bmp",&odNowa)
+	   wczytanieObrazka("Grafika/NapisyHUD.bmp",&napisyHUD) ||
+	   wczytanieObrazka("Grafika/PaskiHUD.bmp",&paskiHUD) ||
+	   wczytanieObrazka("Grafika/HUDTlo.bmp",&tloHUD) ||
+	   wczytanieObrazka("Grafika/Instrukcja.bmp",&instrukcja)
 	   )
 	{
 		std::cout << "Brak plikow z grafika\n";
@@ -1123,12 +1127,6 @@ void Wideo::wyswietlenieTarczObszarowych()
 	}
 }
 
-
-void Wideo::wyswietlenieKomunikatow()
-{
-	if(model->czyWyswietlacOdNowa()) wyswietlenieObrazka(odNowa,136,400,0,0,367,28);
-}
-
 void Wideo::wyswietlenieCelownika()
 {
 	if(model->zwrocWypelnienieCelownika()!=0)
@@ -1154,23 +1152,49 @@ void Wideo::wyswietlenieWysokosciomierza()
 	wyswietlenieObrazka(ostrzezenie,0,wysokoscOkna-h-50,55,1,16,16);
 }
 
+void Wideo::wyswietlenieHUD()
+{
+	double stanZdrowia = model->zwrocSmoka()->zwrocZycie();
+	double stanOgnia = model->zwrocSmoka()->zwrocStanOgnia();
+	double maksZdrowia = model->zwrocSmoka()->zwrocMaksZycia();
+	double maksOgnia = model->zwrocSmoka()->zwrocMaksOgnia();
+
+	//Tlo
+	wyswietlenieObrazka(tloHUD,0,0,0,0,1024,80);
+	//Ogien
+	int doNarysowaniaOgnia = (maksOgnia/15)*300;
+	wyswietlenieObrazka(paskiHUD,40+10,45,0,50,doNarysowaniaOgnia,25);
+	doNarysowaniaOgnia = (stanOgnia/15)*300;
+	wyswietlenieObrazka(paskiHUD,40+10,45,0,25,doNarysowaniaOgnia,25);
+	wyswietlenieObrazka(paskiHUD,40,40,0,75,15,37);
+	wyswietlenieObrazka(paskiHUD,40+(maksOgnia/15)*300+5,40,16,75,15,37);
+
+	//Zycie
+	int doNarysowaniaZycia = (maksZdrowia/1500)*300;
+	wyswietlenieObrazka(paskiHUD,40+7,10,0,50,doNarysowaniaZycia,25);
+	doNarysowaniaZycia = (stanZdrowia/1500)*300;
+	wyswietlenieObrazka(paskiHUD,40+7,10,0,0,doNarysowaniaZycia,25);
+	wyswietlenieObrazka(paskiHUD,40,5,0,75,15,37);
+	wyswietlenieObrazka(paskiHUD,40+(maksZdrowia/1500)*300+5,5,16,75,15,37);
+
+	//Czas
+	wyswietlenieObrazka(paskiHUD,450,15,0,50,500,15);
+
+	//Cel
+	int cel=model->zwrocTypCelu();
+	wyswietlenieObrazka(paskiHUD,450,50,0,50,500,25);
+	if(cel >= 0)
+	wyswietlenieObrazka(napisyHUD,450+130,50,0,25*cel,270,25);
+
+}
+
 void Wideo::wyswietlenieStanuOgnia()
 {
-	double stanOgnia = model->zwrocSmoka()->zwrocStanOgnia();
-	int doNarysowania = stanOgnia*150;
-
-	wyswietlenieObrazka(pasekOgnia,2,40,0,0,doNarysowania,25);
-	wyswietlenieObrazka(fiolkaHUD,0,30,0,0,170,50);
 
 }
 
 void Wideo::wyswietlenieStanuZdrowia()
 {
-	double stanZdrowia = model->zwrocSmoka()->zwrocZycie();
-	int doNarysowania = (stanZdrowia/500)*150;
-
-	wyswietlenieObrazka(pasekZdrowia,2,10,0,0,doNarysowania,25);
-	wyswietlenieObrazka(fiolkaHUD,0,0,0,0,170,50);
 
 }
 
@@ -1207,11 +1231,8 @@ void Wideo::wyswietlenieEkranu()
 
 	wyswietlenieCelownika();
 
-	wyswietlenieStanuOgnia();
-	wyswietlenieStanuZdrowia();
+	wyswietlenieHUD();
 	wyswietlenieWysokosciomierza();
-
-	wyswietlenieKomunikatow();
 
 	SDL_RenderPresent(render);
 }

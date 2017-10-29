@@ -14,6 +14,7 @@ Model::Model(int szerOkna,int wysOkna, bool ekran): wymiaryEkranu(Punkt(szerOkna
 {
 	wypelnienieCelownika=false;
 	typScenerii=1;
+	typCelu=0;
 
 	FabrykaPrzedmiotow::zwrocInstancje()->ustawKontenery(&mury,&zaslony, &tarczePersonalne, &tarczeObszarowe);
 	FabrykaPociskow::zwrocInstancje()->ustawKontenery(&plomienie,&strzaly, &belty, &pociskiBalistyczne, &pociskiKierowane, &pociskiKasetowe, &odlamki);
@@ -68,28 +69,27 @@ void Model::wczytajPoziom(int numer)
 	myszka.ustawX(wymiaryEkranu.x/2);
 	myszka.ustawY(wymiaryEkranu.y/2);
 	wyznaczKolejnyStanObiektow();
-	wyswietlenieOdNowa=false;
 
-	if(numer==1) typScenerii=1;
-	else if(numer==2) typScenerii=3;
-	else if(numer==3) typScenerii=3;
-	else if(numer==4) typScenerii=1;
-	else if(numer==5) typScenerii=2;
-	else if(numer==6) typScenerii=1;
-	else if(numer==7) typScenerii=1;
-	else if(numer==8) typScenerii=2;
-	else if(numer==9) typScenerii=4;
-	else if(numer==10) typScenerii=4;
-	else if(numer==11) typScenerii=1;
-	else if(numer==12) typScenerii=3;
-	else if(numer==13) typScenerii=3;
-	else if(numer==14) typScenerii=2;
-	else if(numer==15) typScenerii=2;
-	else if(numer==16) typScenerii=4;
-	else if(numer==17) typScenerii=5;
-	else if(numer==18) typScenerii=5;
-	else if(numer==19) typScenerii=5;
-	else if(numer==20) typScenerii=5;
+	if(numer==1) 	   {typScenerii=1;typCelu=0;}
+	else if(numer==2)  {typScenerii=3;typCelu=0;}
+	else if(numer==3)  {typScenerii=3;typCelu=0;}
+	else if(numer==4)  {typScenerii=1;typCelu=0;}
+	else if(numer==5)  {typScenerii=2;typCelu=0;}
+	else if(numer==6)  {typScenerii=1;typCelu=0;}
+	else if(numer==7)  {typScenerii=1;typCelu=0;}
+	else if(numer==8)  {typScenerii=2;typCelu=0;}
+	else if(numer==9)  {typScenerii=4;typCelu=0;}
+	else if(numer==10) {typScenerii=4;typCelu=0;}
+	else if(numer==11) {typScenerii=1;typCelu=0;}
+	else if(numer==12) {typScenerii=3;typCelu=0;}
+	else if(numer==13) {typScenerii=3;typCelu=0;}
+	else if(numer==14) {typScenerii=2;typCelu=0;}
+	else if(numer==15) {typScenerii=2;typCelu=0;}
+	else if(numer==16) {typScenerii=4;typCelu=0;}
+	else if(numer==17) {typScenerii=5;typCelu=0;}
+	else if(numer==18) {typScenerii=5;typCelu=0;}
+	else if(numer==19) {typScenerii=5;typCelu=0;}
+	else if(numer==20) {typScenerii=5;typCelu=0;}
 }
 
 //####################################################KOLEJNY STAN#######################################################
@@ -97,7 +97,38 @@ void Model::wczytajPoziom(int numer)
 void Model::wyznaczKolejnyStan()
 {
 	if(klawiatura.czyWcisnietoSpacje()) wczytajPoziom(2);
+
+	//Menu
+
+	//Mechanika gry
+	wyznaczStanCelu();
 	wyznaczKolejnyStanObiektow();
+}
+
+void Model::wyznaczStanCelu()
+{
+	if(smok.czyZniszczony()) typCelu=-1;
+
+	if(typCelu==0) //Zniszcz wszystko
+	{
+		if(strzelcy.czyPusty() && balisty.czyPusty() && kaplani.czyPusty()) typCelu=4;
+	}
+	else if(typCelu==1) // Uciekaj
+	{
+
+	}
+	else if(typCelu==2) // Zniszcz cel
+	{
+
+	}
+	else if(typCelu==3) // Zniszcz wszystko na czas
+	{
+
+	}
+	else if(typCelu==4) // Spacja
+	{
+
+	}
 }
 
 void Model::wyznaczKolejnyStanObiektow()
@@ -172,8 +203,6 @@ void Model::wyznaczKolejnyStanObiektow()
     tarczePersonalne.wyznaczKlatkeAnimacji();
 	tarczeObszarowe.wyznaczKolejnyStan();
     tarczeObszarowe.wyznaczKlatkeAnimacji();
-
-	if((balisty.czyPusty() && strzelcy.czyPusty() && kaplani.czyPusty()) || smok.czyZniszczony()) wyswietlenieOdNowa=true;
 
 	//									Sadzenie krzyzowcow
 	/*

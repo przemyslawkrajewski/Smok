@@ -76,6 +76,7 @@ private:
 	void wyswietlenieCelownika();
 	void wyswietlenieWysokosciomierza();
 
+	void wyswietlenieHUD();
 	void wyswietlenieStanuOgnia();
 	void wyswietlenieStanuZdrowia();
 	void wyswietlenieOstrzezenia(Punkt pozycja,Punkt pozycjaKamery,int kolor);
@@ -121,12 +122,13 @@ private:
 	SDL_Texture * tarczaObszarowa;
 
 	SDL_Texture * pasekOgnia;
-	SDL_Texture * pasekZdrowia;
 	SDL_Texture * ostrzezenie;
+	SDL_Texture * paskiHUD;
+	SDL_Texture * napisyHUD;
 	SDL_Texture * fiolkaHUD;
+	SDL_Texture * tloHUD;
 
 	SDL_Texture * instrukcja;
-	SDL_Texture * odNowa;
 
 	SDL_Texture * pierwszyPlan;
 	SDL_Texture * drugiPlan;

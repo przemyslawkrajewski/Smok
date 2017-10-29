@@ -83,6 +83,10 @@ void Smok::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 		zycie=0;
 		zniszcz();
 	}
+	if(zycie > parametry.maksymalnaIloscZdrowia)
+	{
+		zycie = parametry.maksymalnaIloscZdrowia;
+	}
 
 
 }
@@ -97,6 +101,7 @@ void Smok::ustawPoziom(int p)
 
 	//Zycie
 	zycie=500+1000*mnoznik;
+	parametry.maksymalnaIloscZdrowia=zycie;
 
 	//Ogien
 	parametry.minimalnaPredkoscOgnia=25+10*mnoznik;
@@ -105,7 +110,7 @@ void Smok::ustawPoziom(int p)
 	parametry.sredniCzasTrwaniaOgnia=10;
 	parametry.odchylenieCzasuTrwaniaOgnia=3;
 	parametry.odchylenieKataOgnia=7*M_PI/180-3*M_PI/180*mnoznik;
-	parametry.maksymalnailoscOgnia=7+5*mnoznik;
+	parametry.maksymalnailoscOgnia=7.5+7.5*mnoznik;
 	parametry.regeneracjaOgnia=0.07+0.05*mnoznik;
 	parametry.zuzycieOgnia=0.05;
 	obrazenia=0.3+0.9*mnoznik;
@@ -550,6 +555,7 @@ void Smok::wyznaczGlowe(Klawiatura* klawiatura, Myszka *myszka)
 	{
 		zieje=false;
 		if(iloscOgnia<parametry.maksymalnailoscOgnia && przerwaOgnia<=0) iloscOgnia+=parametry.regeneracjaOgnia;
+		if(iloscOgnia>parametry.maksymalnailoscOgnia) iloscOgnia=parametry.maksymalnailoscOgnia;
 		if(przerwaOgnia>0) przerwaOgnia--;
 	}
 
