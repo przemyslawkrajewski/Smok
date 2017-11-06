@@ -71,11 +71,57 @@ Wideo::Wideo(Model *nModel)
 	napisyHUD=0;
 	paskiHUD=0;
 	tloHUD=0;
-
+	alfabet=0;
 
 	pierwszyPlan=0;
 	drugiPlan=0;
 	tlo=0;
+
+	wymiaryLiter['a'] = Punkt(1,44);
+	wymiaryLiter['!'] = Punkt(46,45);
+	wymiaryLiter['b'] = Punkt(92,41);
+	wymiaryLiter['c'] = Punkt(134,47);
+	wymiaryLiter['@'] = Punkt(182,47);
+	wymiaryLiter['d'] = Punkt(230,44);
+	wymiaryLiter['e'] = Punkt(275,48);
+	wymiaryLiter['#'] = Punkt(324,48);
+	wymiaryLiter['f'] = Punkt(373,41);
+	wymiaryLiter['g'] = Punkt(415,50);
+	wymiaryLiter['h'] = Punkt(466,44);
+	wymiaryLiter['i'] = Punkt(511,22);
+	wymiaryLiter['j'] = Punkt(534,25);
+	wymiaryLiter['k'] = Punkt(560,40);
+	wymiaryLiter['l'] = Punkt(601,33);
+	wymiaryLiter[']'] = Punkt(635,35);
+	wymiaryLiter['m'] = Punkt(671,68);
+	wymiaryLiter['n'] = Punkt(740,46);
+	wymiaryLiter['$'] = Punkt(787,46);
+	wymiaryLiter['o'] = Punkt(834,47);
+	wymiaryLiter['%'] = Punkt(882,47);
+	wymiaryLiter['p'] = Punkt(930,47);
+	wymiaryLiter['r'] = Punkt(978,39);
+	wymiaryLiter['s'] = Punkt(1018,42);
+	wymiaryLiter['^'] = Punkt(1061,42);
+	wymiaryLiter['t'] = Punkt(1104,42);
+	wymiaryLiter['u'] = Punkt(1147,49);
+	wymiaryLiter['w'] = Punkt(1197,65);
+	wymiaryLiter['y'] = Punkt(1263,44);
+	wymiaryLiter['z'] = Punkt(1308,45);
+	wymiaryLiter['&'] = Punkt(1354,45);
+	wymiaryLiter['*'] = Punkt(1400,45);
+	wymiaryLiter['1'] = Punkt(1446,45);
+	wymiaryLiter['2'] = Punkt(1492,41);
+	wymiaryLiter['3'] = Punkt(1534,39);
+	wymiaryLiter['4'] = Punkt(1574,51);
+	wymiaryLiter['5'] = Punkt(1626,39);
+	wymiaryLiter['6'] = Punkt(1666,48);
+	wymiaryLiter['7'] = Punkt(1715,40);
+	wymiaryLiter['8'] = Punkt(1756,41);
+	wymiaryLiter['9'] = Punkt(1798,46);
+	wymiaryLiter['0'] = Punkt(1845,47);
+	wymiaryLiter['.'] = Punkt(1893,12);
+	wymiaryLiter[' '] = Punkt(1906,45);
+
 }
 Wideo::~Wideo()
 {
@@ -135,6 +181,7 @@ void Wideo::zamkniecieOkna()
 	SDL_DestroyTexture(napisyHUD);
 	SDL_DestroyTexture(paskiHUD);
 	SDL_DestroyTexture(fiolkaHUD);
+	SDL_DestroyTexture(alfabet);
 
 	SDL_DestroyTexture(instrukcja);
 
@@ -228,6 +275,7 @@ void Wideo::wczytanieObrazow()
 	   wczytanieObrazka("Grafika/NapisyHUD.bmp",&napisyHUD) ||
 	   wczytanieObrazka("Grafika/PaskiHUD.bmp",&paskiHUD) ||
 	   wczytanieObrazka("Grafika/HUDTlo.bmp",&tloHUD) ||
+	   wczytanieObrazka("Grafika/Alfabet.bmp",&alfabet) ||
 	   wczytanieObrazka("Grafika/Instrukcja.bmp",&instrukcja)
 	   )
 	{
@@ -579,6 +627,23 @@ void Wideo::wyswietleniePrzestrzeniKolizji(PrzestrzenKolizji *p, Punkt pozycjaKa
 	}//*/
 
 	#endif
+}
+
+void Wideo::wyswietlenieNapisu(int wysokosc, std::string napis)
+{
+	int dlugoscNapisu = 0;
+	int nasuniecie = 0;
+	for(std::string::iterator i = napis.begin() ; i!=napis.end(); i++)
+	{
+		dlugoscNapisu+=wymiaryLiter[*i].y - nasuniecie;
+	}
+
+	int x = szerokoscOkna/2 - dlugoscNapisu/2;
+	for(std::string::iterator i = napis.begin() ; i!=napis.end(); i++)
+	{
+		wyswietlenieObrazka(alfabet,x,wysokosc,wymiaryLiter[*i].x,1,wymiaryLiter[*i].y,76);
+		x += wymiaryLiter[*i].y - nasuniecie;
+	}
 }
 
 Punkt Wideo::czyWychodziZaEkran(Punkt pozycjaKamery, Punkt p, Wektor v, int iloscObiektow)
@@ -1188,14 +1253,13 @@ void Wideo::wyswietlenieHUD()
 
 }
 
-void Wideo::wyswietlenieStanuOgnia()
+void Wideo::wyswietlenieTytuluPoziomu()
 {
-
-}
-
-void Wideo::wyswietlenieStanuZdrowia()
-{
-
+	if(model->zwrocCzyWyswietlicTytulPoziomu())
+	{
+		wyswietlenieNapisu(wysokoscOkna/2-60,model->zwrocNapisNumeruPoziomu());
+		wyswietlenieNapisu(wysokoscOkna/2+60,model->zwrocTytulPoziomu());
+	}
 }
 
 void Wideo::wyswietlenieOstrzezenia(Punkt pozycja, Punkt pozycjaKamery,int kolor)
@@ -1232,6 +1296,7 @@ void Wideo::wyswietlenieEkranu()
 	wyswietlenieCelownika();
 
 	wyswietlenieHUD();
+	wyswietlenieTytuluPoziomu();
 	wyswietlenieWysokosciomierza();
 
 	SDL_RenderPresent(render);

@@ -13,6 +13,8 @@
 
 #include <iostream>
 #include <fstream>
+#include <map>
+#include <string>
 #include <math.h>
 #include <SDL2/SDL.h>
 #include "Model.h"
@@ -47,6 +49,7 @@ private:
 	void wyswietleniePiksela(int pozX, int pozY);
 	void wyswietleniePolProstej(Punkt p1,Punkt p2, double wypelnienie);
 	void wyswietleniePrzestrzeniKolizji(PrzestrzenKolizji *p, Punkt pozycjaKamery);
+	void wyswietlenieNapisu(int wysokosc, std::string napis);
 	Punkt czyWychodziZaEkran(Punkt pozycjaKamery, Punkt p, Wektor v, int iloscObiektow);
 
 	void wyswietleniePierwszegoPlanu(int pozX,int pozY);
@@ -77,8 +80,7 @@ private:
 	void wyswietlenieWysokosciomierza();
 
 	void wyswietlenieHUD();
-	void wyswietlenieStanuOgnia();
-	void wyswietlenieStanuZdrowia();
+	void wyswietlenieTytuluPoziomu();
 	void wyswietlenieOstrzezenia(Punkt pozycja,Punkt pozycjaKamery,int kolor);
 
 	Model *model;
@@ -87,6 +89,8 @@ private:
 	int wysokoscOkna;
 	int odlegloscOstrzezenia;
 	int zasiegOstrzezenia;
+
+	std::map<char,Punkt> wymiaryLiter;
 
 	SDL_Window *okno;
 	SDL_Renderer *render;
@@ -127,13 +131,13 @@ private:
 	SDL_Texture * napisyHUD;
 	SDL_Texture * fiolkaHUD;
 	SDL_Texture * tloHUD;
+	SDL_Texture * alfabet;
 
 	SDL_Texture * instrukcja;
 
 	SDL_Texture * pierwszyPlan;
 	SDL_Texture * drugiPlan;
 	SDL_Texture * tlo;
-
 };
 
 #endif /* WIDEO_H_ */

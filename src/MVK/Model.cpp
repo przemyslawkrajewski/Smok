@@ -70,26 +70,28 @@ void Model::wczytajPoziom(int numer)
 	myszka.ustawY(wymiaryEkranu.y/2);
 	wyznaczKolejnyStanObiektow();
 
-	if(numer==1) 	   {typScenerii=1;typCelu=0;}
-	else if(numer==2)  {typScenerii=3;typCelu=0;}
-	else if(numer==3)  {typScenerii=3;typCelu=0;}
-	else if(numer==4)  {typScenerii=1;typCelu=0;}
-	else if(numer==5)  {typScenerii=2;typCelu=0;}
-	else if(numer==6)  {typScenerii=1;typCelu=0;}
-	else if(numer==7)  {typScenerii=1;typCelu=0;}
-	else if(numer==8)  {typScenerii=2;typCelu=0;}
-	else if(numer==9)  {typScenerii=4;typCelu=0;}
-	else if(numer==10) {typScenerii=4;typCelu=0;}
-	else if(numer==11) {typScenerii=1;typCelu=0;}
-	else if(numer==12) {typScenerii=3;typCelu=0;}
-	else if(numer==13) {typScenerii=3;typCelu=0;}
-	else if(numer==14) {typScenerii=2;typCelu=0;}
-	else if(numer==15) {typScenerii=2;typCelu=0;}
-	else if(numer==16) {typScenerii=4;typCelu=0;}
-	else if(numer==17) {typScenerii=5;typCelu=0;}
-	else if(numer==18) {typScenerii=5;typCelu=0;}
-	else if(numer==19) {typScenerii=5;typCelu=0;}
-	else if(numer==20) {typScenerii=5;typCelu=0;}
+	numerPoziomu = numer;
+	czyWyswietlicTytulPoziomu = 100;
+	if(numer==1) 	   {typScenerii=1;typCelu=0;tytulPoziomu=std::string("ob]awa cz.1");}
+	else if(numer==2)  {typScenerii=3;typCelu=0;tytulPoziomu=std::string("ob]awa cz.2");}
+	else if(numer==3)  {typScenerii=3;typCelu=0;tytulPoziomu=std::string("wygnanie");}
+	else if(numer==4)  {typScenerii=1;typCelu=0;tytulPoziomu=std::string("g]%d");}
+	else if(numer==5)  {typScenerii=2;typCelu=0;tytulPoziomu=std::string("napad");}
+	else if(numer==6)  {typScenerii=1;typCelu=0;tytulPoziomu=std::string("przysi#ga zemsty");}
+	else if(numer==7)  {typScenerii=1;typCelu=0;tytulPoziomu=std::string("obl#*enie");}
+	else if(numer==8)  {typScenerii=2;typCelu=0;tytulPoziomu=std::string("obl#*enie cz.2");}
+	else if(numer==9)  {typScenerii=4;typCelu=0;tytulPoziomu=std::string("zemsta");}
+	else if(numer==10) {typScenerii=4;typCelu=0;tytulPoziomu=std::string("nowa koronacja");}
+	else if(numer==11) {typScenerii=1;typCelu=0;tytulPoziomu=std::string("mobilizacja wojsk");}
+	else if(numer==12) {typScenerii=3;typCelu=0;tytulPoziomu=std::string("nauki");}
+	else if(numer==13) {typScenerii=3;typCelu=0;tytulPoziomu=std::string("zlecenie");}
+	else if(numer==14) {typScenerii=2;typCelu=0;tytulPoziomu=std::string("droga do fanatyk%w");}
+	else if(numer==15) {typScenerii=2;typCelu=0;tytulPoziomu=std::string("rze&");}
+	else if(numer==16) {typScenerii=4;typCelu=0;tytulPoziomu=std::string("&rod]o kultu");}
+	else if(numer==17) {typScenerii=5;typCelu=0;tytulPoziomu=std::string("alarm");}
+	else if(numer==18) {typScenerii=5;typCelu=0;tytulPoziomu=std::string("gospodarz");}
+	else if(numer==19) {typScenerii=5;typCelu=0;tytulPoziomu=std::string("g]%wna siedziba");}
+	else if(numer==20) {typScenerii=5;typCelu=0;tytulPoziomu=std::string("sprawca");}
 }
 
 //####################################################KOLEJNY STAN#######################################################
@@ -101,6 +103,8 @@ void Model::wyznaczKolejnyStan()
 	//Menu
 
 	//Mechanika gry
+	if(czyWyswietlicTytulPoziomu > 0) czyWyswietlicTytulPoziomu--;
+	else czyWyswietlicTytulPoziomu = 0;
 	wyznaczStanCelu();
 	wyznaczKolejnyStanObiektow();
 }
@@ -115,7 +119,10 @@ void Model::wyznaczStanCelu()
 	}
 	else if(typCelu==1) // Uciekaj
 	{
+		if(miejsceUcieczki.y > 0 && smok.zwrocPozycje().x > miejsceUcieczki.x)
+		{
 
+		}
 	}
 	else if(typCelu==2) // Zniszcz cel
 	{
@@ -644,3 +651,52 @@ void Model::kolizjaPlomieniazMurem(Obiekt *o,Obiekt *o2,Punkt punktKolizji)
 	o->zniszcz();
 }
 
+//#########################################################   ZWRACANIE     ################################################################
+std::string Model::zwrocNapisNumeruPoziomu()
+{
+	switch(numerPoziomu)
+	{
+	case 1:
+		return std::string("poziom 1");
+	case 2:
+		return std::string("poziom 2");
+	case 3:
+		return std::string("poziom 3");
+	case 4:
+		return std::string("poziom 4");
+	case 5:
+		return std::string("poziom 5");
+	case 6:
+		return std::string("poziom 6");
+	case 7:
+		return std::string("poziom 7");
+	case 8:
+		return std::string("poziom 8");
+	case 9:
+		return std::string("poziom 9");
+	case 10:
+		return std::string("poziom 10");
+	case 11:
+		return std::string("poziom 11");
+	case 12:
+		return std::string("poziom 12");
+	case 13:
+		return std::string("poziom 13");
+	case 14:
+		return std::string("poziom 14");
+	case 15:
+		return std::string("poziom 15");
+	case 16:
+		return std::string("poziom 16");
+	case 17:
+		return std::string("poziom 17");
+	case 18:
+		return std::string("poziom 18");
+	case 19:
+		return std::string("poziom 19");
+	case 20:
+		return std::string("poziom 20");
+	default:
+		return std::string("tutorial");
+	}
+}

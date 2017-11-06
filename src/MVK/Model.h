@@ -8,6 +8,8 @@
 #ifndef MODEL_H_
 #define MODEL_H_
 
+#include <string>
+
 #include "../WeWy/Klawiatura.h"
 #include "../WeWy/Myszka.h"
 #include "../Postacie/Smok.h"
@@ -45,6 +47,9 @@ public:
 
 	int zwrocTypScenerii() {return typScenerii;}
 	int zwrocTypCelu() {return typCelu;}
+	std::string zwrocTytulPoziomu() {return tytulPoziomu;}
+	std::string zwrocNapisNumeruPoziomu();
+	bool zwrocCzyWyswietlicTytulPoziomu() { return czyWyswietlicTytulPoziomu > 0;}
 
 	//Metody dedykowane dla Obiektow
 	void usunZniszczonePociskiKasetowe();
@@ -99,6 +104,12 @@ private:
 	double wypelnienieCelownika;
 	int typScenerii;
 	int typCelu;
+
+	Punkt miejsceUcieczki;
+
+	std::string tytulPoziomu;
+	int numerPoziomu;
+	int czyWyswietlicTytulPoziomu;
 
 	Klawiatura klawiatura;
 	Myszka myszka;
