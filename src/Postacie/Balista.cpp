@@ -90,7 +90,7 @@ void Balista::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 				else podniesCelownik();
 			}
 			//Celowanie
-			else
+			else if(cel != 0)
 			{
 				double katMyszki = atan2(myszka->zwrocY(),myszka->zwrocX());
 
@@ -110,10 +110,12 @@ void Balista::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 
 std::pair<Klawiatura,Myszka> Balista::wyznaczSterowanie()
 {
-	Punkt pozycjaCelu = cel->zwrocPozycjeCelu();
-
 	Klawiatura k;
 	Myszka m;
+
+	if(cel == 0) return std::pair<Klawiatura,Myszka>(k,m);
+
+	Punkt pozycjaCelu = cel->zwrocPozycjeCelu();
 
 	if(cel->czyZniszczony())
 	{

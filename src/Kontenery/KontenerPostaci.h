@@ -53,7 +53,9 @@ void KontenerPostaci<T>::wyznaczKolejnyStan()
 			continue;
 		}
 		i->ustawCel(cel);
-		std::pair<Klawiatura,Myszka> sterowanie = i->wyznaczSterowanie();
+
+		std::pair<Klawiatura,Myszka> sterowanie;
+		if(cel != 0) sterowanie = i->wyznaczSterowanie();
 		i->wyznaczKolejnyStan(&sterowanie.first,&sterowanie.second);
 
 		i++;

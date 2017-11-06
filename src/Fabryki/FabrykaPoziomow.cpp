@@ -270,6 +270,7 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 		smok->ustawWymiaryManewruSmoka(Punkt(3000,0),Punkt(15000,4000));
 		smok->ustawPozycje(Punkt(3500,200));
 		smok->ustawCzyZwroconyWPrawo(true);
+		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(11500,380+poziomZiemi),5,false);
 
 		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniaWieza,Punkt(6000,0));
 
@@ -324,7 +325,6 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 
 		//wneka
 		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::balista,Punkt(11700,795+poziomZiemi),0,false);
-		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(11500,380+poziomZiemi),5,false);
 		for(int i=0;i<6;i++)
 		{
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::rycerz,Punkt(12800,poziomZiemi+380),1,false);

@@ -73,25 +73,25 @@ void Model::wczytajPoziom(int numer)
 	numerPoziomu = numer;
 	czyWyswietlicTytulPoziomu = 100;
 	if(numer==1) 	   {typScenerii=1;typCelu=0;tytulPoziomu=std::string("ob]awa cz.1");}
-	else if(numer==2)  {typScenerii=3;typCelu=0;tytulPoziomu=std::string("ob]awa cz.2");}
-	else if(numer==3)  {typScenerii=3;typCelu=0;tytulPoziomu=std::string("wygnanie");}
-	else if(numer==4)  {typScenerii=1;typCelu=0;tytulPoziomu=std::string("g]%d");}
+	else if(numer==2)  {typScenerii=3;typCelu=1;tytulPoziomu=std::string("ob]awa cz.2");miejsceUcieczki=Punkt(5000,-1);}
+	else if(numer==3)  {typScenerii=3;typCelu=1;tytulPoziomu=std::string("wygnanie");miejsceUcieczki=Punkt(12000,1);}
+	else if(numer==4)  {typScenerii=1;typCelu=3;tytulPoziomu=std::string("g]%d");}
 	else if(numer==5)  {typScenerii=2;typCelu=0;tytulPoziomu=std::string("napad");}
 	else if(numer==6)  {typScenerii=1;typCelu=0;tytulPoziomu=std::string("przysi#ga zemsty");}
 	else if(numer==7)  {typScenerii=1;typCelu=0;tytulPoziomu=std::string("obl#*enie");}
 	else if(numer==8)  {typScenerii=2;typCelu=0;tytulPoziomu=std::string("obl#*enie cz.2");}
-	else if(numer==9)  {typScenerii=4;typCelu=0;tytulPoziomu=std::string("zemsta");}
-	else if(numer==10) {typScenerii=4;typCelu=0;tytulPoziomu=std::string("nowa koronacja");}
+	else if(numer==9)  {typScenerii=4;typCelu=2;tytulPoziomu=std::string("zemsta");celDoZniszczenia=&*(strzelcy.zwrocObiekty()->begin());}
+	else if(numer==10) {typScenerii=4;typCelu=1;tytulPoziomu=std::string("nowa koronacja");miejsceUcieczki=Punkt(3000,15000);}
 	else if(numer==11) {typScenerii=1;typCelu=0;tytulPoziomu=std::string("mobilizacja wojsk");}
 	else if(numer==12) {typScenerii=3;typCelu=0;tytulPoziomu=std::string("nauki");}
-	else if(numer==13) {typScenerii=3;typCelu=0;tytulPoziomu=std::string("zlecenie");}
+	else if(numer==13) {typScenerii=3;typCelu=2;tytulPoziomu=std::string("zlecenie");celDoZniszczenia=&*(strzelcy.zwrocObiekty()->begin());}
 	else if(numer==14) {typScenerii=2;typCelu=0;tytulPoziomu=std::string("droga do fanatyk%w");}
-	else if(numer==15) {typScenerii=2;typCelu=0;tytulPoziomu=std::string("rze&");}
+	else if(numer==15) {typScenerii=2;typCelu=3;tytulPoziomu=std::string("rze&");}
 	else if(numer==16) {typScenerii=4;typCelu=0;tytulPoziomu=std::string("&rod]o kultu");}
-	else if(numer==17) {typScenerii=5;typCelu=0;tytulPoziomu=std::string("alarm");}
+	else if(numer==17) {typScenerii=5;typCelu=1;tytulPoziomu=std::string("alarm");miejsceUcieczki=Punkt(3000,-1);}
 	else if(numer==18) {typScenerii=5;typCelu=0;tytulPoziomu=std::string("gospodarz");}
 	else if(numer==19) {typScenerii=5;typCelu=0;tytulPoziomu=std::string("g]%wna siedziba");}
-	else if(numer==20) {typScenerii=5;typCelu=0;tytulPoziomu=std::string("sprawca");}
+	else if(numer==20) {typScenerii=5;typCelu=2;tytulPoziomu=std::string("sprawca");celDoZniszczenia=&*(kaplani.zwrocObiekty()->begin());}
 }
 
 //####################################################KOLEJNY STAN#######################################################
@@ -119,14 +119,25 @@ void Model::wyznaczStanCelu()
 	}
 	else if(typCelu==1) // Uciekaj
 	{
-		if(miejsceUcieczki.y > 0 && smok.zwrocPozycje().x > miejsceUcieczki.x)
+		if(miejsceUcieczki.y != -1 && miejsceUcieczki.y != 1)
 		{
-
+			if(smok.zwrocPozycje().x < miejsceUcieczki.x || smok.zwrocPozycje().x > miejsceUcieczki.y)
+			{
+				typCelu=4;
+			}
+		}
+		else if((miejsceUcieczki.y > 0 && smok.zwrocPozycje().x > miejsceUcieczki.x) || (miejsceUcieczki.y < 0 && smok.zwrocPozycje().x < miejsceUcieczki.x))
+		{
+			typCelu=4;
 		}
 	}
 	else if(typCelu==2) // Zniszcz cel
 	{
-
+		if(celDoZniszczenia != 0 && celDoZniszczenia->czyZniszczony())
+		{
+			celDoZniszczenia = 0;
+			typCelu=4;
+		}
 	}
 	else if(typCelu==3) // Zniszcz wszystko na czas
 	{
@@ -160,8 +171,8 @@ void Model::wyznaczKolejnyStanObiektow()
 	kamera.wyznaczKolejnyStan(punktMyszkiKamery);
 
 	//Strzelcy
-	strzelcy.ustawCel(&smok);
-	strzelcy.wyznaczKolejnyStan();
+	strzelcy.ustawCel(typCelu != 4 ? &smok : 0);
+    strzelcy.wyznaczKolejnyStan();
 	strzelcy.wyznaczKlatkeAnimacji();
 	std::list<Strzelec> *s = strzelcy.zwrocObiekty();
 	std::list<Zaslona> *z = zaslony.zwrocObiekty();
@@ -171,12 +182,12 @@ void Model::wyznaczKolejnyStanObiektow()
 	}
 
 	//Balisty
-	balisty.ustawCel(&smok);
+	balisty.ustawCel(typCelu != 4 ? &smok : 0);
 	balisty.wyznaczKolejnyStan();
 	balisty.wyznaczKlatkeAnimacji();
 
 	//Kaplani
-	kaplani.ustawCel(&smok);
+	kaplani.ustawCel(typCelu != 4 ? &smok : 0);
 	kaplani.wyznaczKolejnyStan();
 	kaplani.wyznaczKlatkeAnimacji();
 	std::list<Kaplan> *k = kaplani.zwrocObiekty();

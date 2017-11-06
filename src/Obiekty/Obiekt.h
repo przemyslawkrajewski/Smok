@@ -84,7 +84,7 @@ public:
 	bool czyIstnieje() {return istnieje;}
 	bool czyZniszczony() {return zniszczony;}
 	void usun() {zniszcz();istnieje=false;}
-	virtual void zniszcz() {zniszczony=true;}
+	virtual void zniszcz() {zniszczony=true;zycie=0;}
 
 	//Animacja
 	Punkt zwrocKlatkeAnimacji() {return Punkt((int)klatkaAnimacji.x,(int)klatkaAnimacji.y);}

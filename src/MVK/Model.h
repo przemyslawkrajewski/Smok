@@ -106,6 +106,7 @@ private:
 	int typCelu;
 
 	Punkt miejsceUcieczki;
+	Obiekt* celDoZniszczenia;
 
 	std::string tytulPoziomu;
 	int numerPoziomu;
