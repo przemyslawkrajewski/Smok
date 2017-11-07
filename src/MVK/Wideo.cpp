@@ -931,7 +931,7 @@ void Wideo::wyswietlenieStrzal()
 		Punkt klatka = i->zwrocKlatkeAnimacji();
 
 		Punkt p = pozycja;
-		if(!i->czyZniszczony() && !model->czyWyswietlacPrzeciwnikow())
+		if(!i->czyZniszczony())
 			p=czyWychodziZaEkran(pozycjaKamery,pozycja,i->zwrocPredkosc(),1);
 
 		if(p!=pozycja && !i->czyCicha()) wyswietlenieOstrzezenia(p, pozycjaKamery,2);
@@ -949,7 +949,7 @@ void Wideo::wyswietlenieStrzal()
 		Punkt klatka = i->zwrocKlatkeAnimacji();
 
 		Punkt p = pozycja;
-		if(!i->czyZniszczony() && !model->czyWyswietlacPrzeciwnikow())
+		if(!i->czyZniszczony())
 			p=czyWychodziZaEkran(pozycjaKamery,pozycja,i->zwrocPredkosc(),1);
 
 		if(p!=pozycja) wyswietlenieOstrzezenia(p, pozycjaKamery,2);
@@ -977,7 +977,7 @@ void Wideo::wyswietleniePociskowBalistycznych()
 		Punkt klatka = i->zwrocKlatkeAnimacji();
 
 		Punkt p = pozycja;
-		if(!i->czyZniszczony() && !model->czyWyswietlacPrzeciwnikow())
+		if(!i->czyZniszczony())
 			p=czyWychodziZaEkran(pozycjaKamery,pozycja,i->zwrocPredkosc(),1);
 
 		if(p!=pozycja) wyswietlenieOstrzezenia(p, pozycjaKamery,0);
@@ -1000,7 +1000,7 @@ void Wideo::wyswietleniePociskowKierowanych()
 		Punkt klatka = i->zwrocKlatkeAnimacji();
 
 		Punkt p = pozycja;
-		if(!i->czyZniszczony() && !model->czyWyswietlacPrzeciwnikow())
+		if(!i->czyZniszczony())
 			p=czyWychodziZaEkran(pozycjaKamery,pozycja,i->zwrocPredkosc(),1);
 
 		if(p!=pozycja) wyswietlenieOstrzezenia(p, pozycjaKamery,2);
@@ -1023,7 +1023,7 @@ void Wideo::wyswietleniePociskowKasetowych()
 		Punkt klatka = i->zwrocKlatkeAnimacji();
 
 		Punkt p = pozycja;
-		if(!i->czyZniszczony() && !model->czyWyswietlacPrzeciwnikow())
+		if(!i->czyZniszczony())
 			p=czyWychodziZaEkran(pozycjaKamery,pozycja,i->zwrocPredkosc(),1);
 
 		if(p!=pozycja) wyswietlenieOstrzezenia(p, pozycjaKamery,2);
@@ -1047,7 +1047,7 @@ void Wideo::wyswietlenieOdlamkow()
 		Punkt klatka = i->zwrocKlatkeAnimacji();
 
 		Punkt p = pozycja;
-		if(!i->czyZniszczony() && !model->czyWyswietlacPrzeciwnikow())
+		if(!i->czyZniszczony())
 			p=czyWychodziZaEkran(pozycjaKamery,pozycja,i->zwrocPredkosc(),1);
 
 		if(p!=pozycja) wyswietlenieOstrzezenia(p, pozycjaKamery,2);
@@ -1238,6 +1238,15 @@ void Wideo::wyswietlenieHUD()
 	wyswietlenieObrazka(paskiHUD,450,50,0,50,500,25);
 	if(cel >= 0)
 	wyswietlenieObrazka(napisyHUD,450+130,50,0,25*cel,270,25);
+
+	//Cel do zniszczenia
+	if(model->zwrocCelDoZniszczenia() != 0)
+	{
+		Punkt pozycja = model->zwrocCelDoZniszczenia()->zwrocPozycje();
+		Punkt p=czyWychodziZaEkran(model->zwrocKamere()->zwrocPozycje(),pozycja,model->zwrocCelDoZniszczenia()->zwrocPredkosc(),3);
+
+		if(model->czyWyswietlacPrzeciwnikow() || p!=pozycja) wyswietlenieOstrzezenia(p, model->zwrocKamere()->zwrocPozycje(),1);
+	}
 
 }
 

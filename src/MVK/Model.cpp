@@ -115,10 +115,12 @@ void Model::wyznaczStanCelu()
 
 	if(typCelu==0) //Zniszcz wszystko
 	{
+		celDoZniszczenia = 0;
 		if(strzelcy.czyPusty() && balisty.czyPusty() && kaplani.czyPusty()) typCelu=4;
 	}
 	else if(typCelu==1) // Uciekaj
 	{
+		celDoZniszczenia = 0;
 		if(miejsceUcieczki.y != -1 && miejsceUcieczki.y != 1)
 		{
 			if(smok.zwrocPozycje().x < miejsceUcieczki.x || smok.zwrocPozycje().x > miejsceUcieczki.y)
@@ -141,6 +143,7 @@ void Model::wyznaczStanCelu()
 	}
 	else if(typCelu==3) // Zniszcz wszystko na czas
 	{
+		celDoZniszczenia = 0;
 
 	}
 	else if(typCelu==4) // Spacja

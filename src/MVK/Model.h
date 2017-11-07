@@ -50,6 +50,7 @@ public:
 	std::string zwrocTytulPoziomu() {return tytulPoziomu;}
 	std::string zwrocNapisNumeruPoziomu();
 	bool zwrocCzyWyswietlicTytulPoziomu() { return czyWyswietlicTytulPoziomu > 0;}
+	Obiekt* zwrocCelDoZniszczenia() {return celDoZniszczenia;}
 
 	//Metody dedykowane dla Obiektow
 	void usunZniszczonePociskiKasetowe();
