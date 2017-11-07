@@ -51,6 +51,7 @@ public:
 	std::string zwrocNapisNumeruPoziomu();
 	bool zwrocCzyWyswietlicTytulPoziomu() { return czyWyswietlicTytulPoziomu > 0;}
 	Obiekt* zwrocCelDoZniszczenia() {return celDoZniszczenia;}
+	Punkt zwrocCzas() {return czas;}
 
 	//Metody dedykowane dla Obiektow
 	void usunZniszczonePociskiKasetowe();
@@ -108,6 +109,7 @@ private:
 
 	Punkt miejsceUcieczki;
 	Obiekt* celDoZniszczenia;
+	Punkt czas;
 
 	std::string tytulPoziomu;
 	int numerPoziomu;

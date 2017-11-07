@@ -1232,6 +1232,11 @@ void Wideo::wyswietlenieHUD()
 
 	//Czas
 	wyswietlenieObrazka(paskiHUD,450,15,0,50,500,15);
+	if(model->zwrocCzas().y > 0)
+	{
+		int doNarysowaniaCzas = (model->zwrocCzas().x/model->zwrocCzas().y)*500;
+		wyswietlenieObrazka(paskiHUD,450,15,50,75,doNarysowaniaCzas,15);
+	}
 
 	//Cel
 	int cel=model->zwrocTypCelu();

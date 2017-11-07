@@ -75,8 +75,8 @@ void Model::wczytajPoziom(int numer)
 	if(numer==1) 	   {typScenerii=1;typCelu=0;tytulPoziomu=std::string("ob]awa cz.1");}
 	else if(numer==2)  {typScenerii=3;typCelu=1;tytulPoziomu=std::string("ob]awa cz.2");miejsceUcieczki=Punkt(5000,-1);}
 	else if(numer==3)  {typScenerii=3;typCelu=1;tytulPoziomu=std::string("wygnanie");miejsceUcieczki=Punkt(12000,1);}
-	else if(numer==4)  {typScenerii=1;typCelu=3;tytulPoziomu=std::string("g]%d");}
-	else if(numer==5)  {typScenerii=2;typCelu=0;tytulPoziomu=std::string("napad");}
+	else if(numer==4)  {typScenerii=1;typCelu=0;tytulPoziomu=std::string("g]%d");}
+	else if(numer==5)  {typScenerii=2;typCelu=3;tytulPoziomu=std::string("napad");czas=Punkt(10000,10000);}
 	else if(numer==6)  {typScenerii=1;typCelu=0;tytulPoziomu=std::string("przysi#ga zemsty");}
 	else if(numer==7)  {typScenerii=1;typCelu=0;tytulPoziomu=std::string("obl#*enie");}
 	else if(numer==8)  {typScenerii=2;typCelu=0;tytulPoziomu=std::string("obl#*enie cz.2");}
@@ -86,7 +86,7 @@ void Model::wczytajPoziom(int numer)
 	else if(numer==12) {typScenerii=3;typCelu=0;tytulPoziomu=std::string("nauki");}
 	else if(numer==13) {typScenerii=3;typCelu=2;tytulPoziomu=std::string("zlecenie");celDoZniszczenia=&*(strzelcy.zwrocObiekty()->begin());}
 	else if(numer==14) {typScenerii=2;typCelu=0;tytulPoziomu=std::string("droga do fanatyk%w");}
-	else if(numer==15) {typScenerii=2;typCelu=3;tytulPoziomu=std::string("rze&");}
+	else if(numer==15) {typScenerii=2;typCelu=3;tytulPoziomu=std::string("rze&");czas=Punkt(1000,1000);}
 	else if(numer==16) {typScenerii=4;typCelu=0;tytulPoziomu=std::string("&rod]o kultu");}
 	else if(numer==17) {typScenerii=5;typCelu=1;tytulPoziomu=std::string("alarm");miejsceUcieczki=Punkt(3000,-1);}
 	else if(numer==18) {typScenerii=5;typCelu=0;tytulPoziomu=std::string("gospodarz");}
@@ -116,11 +116,13 @@ void Model::wyznaczStanCelu()
 	if(typCelu==0) //Zniszcz wszystko
 	{
 		celDoZniszczenia = 0;
+		czas=Punkt();
 		if(strzelcy.czyPusty() && balisty.czyPusty() && kaplani.czyPusty()) typCelu=4;
 	}
 	else if(typCelu==1) // Uciekaj
 	{
 		celDoZniszczenia = 0;
+		czas=Punkt();
 		if(miejsceUcieczki.y != -1 && miejsceUcieczki.y != 1)
 		{
 			if(smok.zwrocPozycje().x < miejsceUcieczki.x || smok.zwrocPozycje().x > miejsceUcieczki.y)
@@ -135,6 +137,7 @@ void Model::wyznaczStanCelu()
 	}
 	else if(typCelu==2) // Zniszcz cel
 	{
+		czas=Punkt();
 		if(celDoZniszczenia != 0 && celDoZniszczenia->czyZniszczony())
 		{
 			celDoZniszczenia = 0;
@@ -144,7 +147,10 @@ void Model::wyznaczStanCelu()
 	else if(typCelu==3) // Zniszcz wszystko na czas
 	{
 		celDoZniszczenia = 0;
+		if(czas.x>0) czas.x--;
+		else smok.zniszcz();
 
+		if(strzelcy.czyPusty() && balisty.czyPusty() && kaplani.czyPusty()) typCelu=4;
 	}
 	else if(typCelu==4) // Spacja
 	{
