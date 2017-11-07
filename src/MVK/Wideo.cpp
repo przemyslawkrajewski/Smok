@@ -648,7 +648,8 @@ void Wideo::wyswietlenieNapisu(int wysokosc, std::string napis)
 
 Punkt Wideo::czyWychodziZaEkran(Punkt pozycjaKamery, Punkt p, Wektor v, int iloscObiektow)
 {
-	Punkt wymiary= Punkt(szerokoscOkna-odlegloscOstrzezenia*2,wysokoscOkna-odlegloscOstrzezenia*2);
+	int wysokoscHUD = 80;
+	Punkt wymiary= Punkt(szerokoscOkna-odlegloscOstrzezenia*2,wysokoscOkna-odlegloscOstrzezenia*2-wysokoscHUD);
 	if(pozycjaKamery.y<wysokoscOkna/2) pozycjaKamery.y=wysokoscOkna/2;
 
 
@@ -666,8 +667,8 @@ Punkt Wideo::czyWychodziZaEkran(Punkt pozycjaKamery, Punkt p, Wektor v, int ilos
 
 	if(p.x-pozycjaKamery.x<-wymiary.x/2 && (iloscObiektow>=3 || v.x>0 && iloscObiektow>=1)) p.x=pozycjaKamery.x-wymiary.x/2;
 	if(p.x-pozycjaKamery.x>wymiary.x/2  && (iloscObiektow>=3 || v.x<0 && iloscObiektow>=1)) p.x=wymiary.x/2+pozycjaKamery.x;
-	if(p.y-pozycjaKamery.y<-wymiary.y/2 && (iloscObiektow>=3 || v.y>0 && iloscObiektow>=1)) p.y=pozycjaKamery.y-wymiary.y/2;
-	if(p.y-pozycjaKamery.y>wymiary.y/2  && (iloscObiektow>=3 || v.y<0 && iloscObiektow>=1)) p.y=wymiary.y/2+pozycjaKamery.y;
+	if(p.y-pozycjaKamery.y<-wymiary.y/2-wysokoscHUD/2 && (iloscObiektow>=3 || v.y>0 && iloscObiektow>=1)) p.y=pozycjaKamery.y-wymiary.y/2-wysokoscHUD/2;
+	if(p.y-pozycjaKamery.y>wymiary.y/2-wysokoscHUD/2  && (iloscObiektow>=3 || v.y<0 && iloscObiektow>=1)) p.y=wymiary.y/2+pozycjaKamery.y-wysokoscHUD/2;
 
 	return p;
 }
@@ -818,10 +819,9 @@ void Wideo::wyswietlenieStrzelcow()
 		if(!i->czyZniszczony() && model->czyWyswietlacPrzeciwnikow())
 			p=czyWychodziZaEkran(pozycjaKamery,pozycja,i->zwrocPredkosc(),3);
 
-		if(p==pozycja)
+		if(p!=pozycja) wyswietlenieOstrzezenia(p, pozycjaKamery,4);
+
 		wyswietlenieKlatki(*animacja,pozycja,pozycjaKamery,klatka,rozmiarKlatki);
-		else
-			wyswietlenieOstrzezenia(p, pozycjaKamery,1);
 		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}
 }
@@ -862,28 +862,26 @@ void Wideo::wyswietlenieBalist()
 		if(!i->czyZniszczony() && model->czyWyswietlacPrzeciwnikow())
 			p=czyWychodziZaEkran(pozycjaKamery,pozycja,i->zwrocPredkosc(),3);
 
-		if(p==pozycja)
+		if(p!=pozycja) wyswietlenieOstrzezenia(p, pozycjaKamery,4);
+
+		if(!i->czyZniszczony())
 		{
-			if(!i->czyZniszczony())
-			{
-				wyswietlenieKlatki(*animacjaInzyniera2,pozycja+Punkt(60*wPrawo,-88),pozycjaKamery,Punkt(((int)klatka.y)%5,0)					 ,rozmiarKlatkiInzyniera);
-				wyswietlenieKlatki( zebatka			  ,pozycja+Punkt(34*wPrawo,-85),pozycjaKamery,Punkt((((int)klatka.y)%5)-1  ,0)				 ,rozmiarKlatkiZebatki);
-				wyswietlenieKlatki(*animacja		  ,pozycja					   ,pozycjaKamery,Punkt(((int)klatka.x)%5,((int)(klatka.x/5)))	 ,rozmiarKlatki);
-				wyswietlenieKlatki(*animacja		  ,pozycja					   ,pozycjaKamery,Punkt(4,0)									 ,rozmiarKlatki);
-				wyswietlenieKlatki( zebatka			  ,pozycja+Punkt(31*wPrawo,-85),pozycjaKamery,Punkt( klatka.y/5<=1?0:(((int)klatka.y)/5)-1,0),rozmiarKlatkiZebatki);
-				wyswietlenieKlatki(*animacjaInzyniera1,pozycja+Punkt(12*wPrawo,-88),pozycjaKamery,Punkt(((int)klatka.y)/5,0)					 ,rozmiarKlatkiInzyniera);
-			}
-			else
-			{
-				wyswietlenieKlatki(*animacjaInzyniera2,pozycja+Punkt(60*wPrawo,-88),pozycjaKamery,Punkt(((int)klatka.x),1)					 ,rozmiarKlatkiInzyniera);
-				wyswietlenieKlatki( zebatka			  ,pozycja+Punkt(34*wPrawo,-85),pozycjaKamery,Punkt()				 ,rozmiarKlatkiZebatki);
-				wyswietlenieKlatki(*animacja		  ,pozycja					   ,pozycjaKamery,Punkt(((int)klatka.x),2)	 ,rozmiarKlatki);
-				wyswietlenieKlatki(*animacja		  ,pozycja					   ,pozycjaKamery,Punkt(4,0)									 ,rozmiarKlatki);
-				wyswietlenieKlatki(*animacjaInzyniera1,pozycja+Punkt(12*wPrawo,-88),pozycjaKamery,Punkt(((int)klatka.x),1)					 ,rozmiarKlatkiInzyniera);
-			}
+			wyswietlenieKlatki(*animacjaInzyniera2,pozycja+Punkt(60*wPrawo,-88),pozycjaKamery,Punkt(((int)klatka.y)%5,0)					 ,rozmiarKlatkiInzyniera);
+			wyswietlenieKlatki( zebatka			  ,pozycja+Punkt(34*wPrawo,-85),pozycjaKamery,Punkt((((int)klatka.y)%5)-1  ,0)				 ,rozmiarKlatkiZebatki);
+			wyswietlenieKlatki(*animacja		  ,pozycja					   ,pozycjaKamery,Punkt(((int)klatka.x)%5,((int)(klatka.x/5)))	 ,rozmiarKlatki);
+			wyswietlenieKlatki(*animacja		  ,pozycja					   ,pozycjaKamery,Punkt(4,0)									 ,rozmiarKlatki);
+			wyswietlenieKlatki( zebatka			  ,pozycja+Punkt(31*wPrawo,-85),pozycjaKamery,Punkt( klatka.y/5<=1?0:(((int)klatka.y)/5)-1,0),rozmiarKlatkiZebatki);
+			wyswietlenieKlatki(*animacjaInzyniera1,pozycja+Punkt(12*wPrawo,-88),pozycjaKamery,Punkt(((int)klatka.y)/5,0)					 ,rozmiarKlatkiInzyniera);
 		}
 		else
-			wyswietlenieOstrzezenia(p, pozycjaKamery,1);
+		{
+			wyswietlenieKlatki(*animacjaInzyniera2,pozycja+Punkt(60*wPrawo,-88),pozycjaKamery,Punkt(((int)klatka.x),1)					 ,rozmiarKlatkiInzyniera);
+			wyswietlenieKlatki( zebatka			  ,pozycja+Punkt(34*wPrawo,-85),pozycjaKamery,Punkt()				 ,rozmiarKlatkiZebatki);
+			wyswietlenieKlatki(*animacja		  ,pozycja					   ,pozycjaKamery,Punkt(((int)klatka.x),2)	 ,rozmiarKlatki);
+			wyswietlenieKlatki(*animacja		  ,pozycja					   ,pozycjaKamery,Punkt(4,0)									 ,rozmiarKlatki);
+			wyswietlenieKlatki(*animacjaInzyniera1,pozycja+Punkt(12*wPrawo,-88),pozycjaKamery,Punkt(((int)klatka.x),1)					 ,rozmiarKlatkiInzyniera);
+		}
+
 		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}
 }
@@ -910,11 +908,11 @@ void Wideo::wyswietlenieKaplanow()
 		if(!i->czyZniszczony() && model->czyWyswietlacPrzeciwnikow())
 			p=czyWychodziZaEkran(pozycjaKamery,pozycja,i->zwrocPredkosc(),3);
 
-		if(p==pozycja)
-			//obnizamy o 10 pikseli kaplana bo jego rozmiar klatki jest mniejszy niz strzelcow
-			wyswietlenieKlatki(*animacja,pozycja-Punkt(0,10),pozycjaKamery,klatka,rozmiarKlatki);
-		else
-			wyswietlenieOstrzezenia(p, pozycjaKamery,1);
+		if(p!=pozycja) wyswietlenieOstrzezenia(p, pozycjaKamery,4);
+
+		//obnizamy o 10 pikseli kaplana bo jego rozmiar klatki jest mniejszy niz strzelcow
+		wyswietlenieKlatki(*animacja,pozycja-Punkt(0,10),pozycjaKamery,klatka,rozmiarKlatki);
+
 		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}
 }
@@ -936,10 +934,9 @@ void Wideo::wyswietlenieStrzal()
 		if(!i->czyZniszczony() && !model->czyWyswietlacPrzeciwnikow())
 			p=czyWychodziZaEkran(pozycjaKamery,pozycja,i->zwrocPredkosc(),1);
 
-		if(p==pozycja)
-			wyswietlenieKlatki(strzala,p,pozycjaKamery,klatka,rozmiarKlatki);
-		else if(!i->czyCicha())
-			wyswietlenieOstrzezenia(p, pozycjaKamery,2);
+		if(p!=pozycja && !i->czyCicha()) wyswietlenieOstrzezenia(p, pozycjaKamery,2);
+		else wyswietlenieKlatki(strzala,p,pozycjaKamery,klatka,rozmiarKlatki);
+
 		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}
 
@@ -955,13 +952,12 @@ void Wideo::wyswietlenieStrzal()
 		if(!i->czyZniszczony() && !model->czyWyswietlacPrzeciwnikow())
 			p=czyWychodziZaEkran(pozycjaKamery,pozycja,i->zwrocPredkosc(),1);
 
-		if(p==pozycja)
+		if(p!=pozycja) wyswietlenieOstrzezenia(p, pozycjaKamery,2);
+		else
 		{
 			if(i->czySwieta()) wyswietlenieKlatki(swietaStrzala,p,pozycjaKamery,klatka,rozmiarKlatki);
 			else wyswietlenieKlatki(belt,p,pozycjaKamery,klatka,rozmiarKlatki);
 		}
-		else
-			wyswietlenieOstrzezenia(p, pozycjaKamery,2);
 
 		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}
@@ -984,10 +980,8 @@ void Wideo::wyswietleniePociskowBalistycznych()
 		if(!i->czyZniszczony() && !model->czyWyswietlacPrzeciwnikow())
 			p=czyWychodziZaEkran(pozycjaKamery,pozycja,i->zwrocPredkosc(),1);
 
-		if(p==pozycja)
-			wyswietlenieKlatki(pociskBalistyczny,p,pozycjaKamery,klatka,rozmiarKlatki);
-		else
-			wyswietlenieOstrzezenia(p, pozycjaKamery,0);
+		if(p!=pozycja) wyswietlenieOstrzezenia(p, pozycjaKamery,0);
+		else wyswietlenieKlatki(pociskBalistyczny,p,pozycjaKamery,klatka,rozmiarKlatki);
 
 		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}
@@ -1009,10 +1003,8 @@ void Wideo::wyswietleniePociskowKierowanych()
 		if(!i->czyZniszczony() && !model->czyWyswietlacPrzeciwnikow())
 			p=czyWychodziZaEkran(pozycjaKamery,pozycja,i->zwrocPredkosc(),1);
 
-		if(p==pozycja)
-			wyswietlenieKlatki(pociskKierowany,p,pozycjaKamery,klatka,rozmiarKlatki);
-		else
-			wyswietlenieOstrzezenia(p, pozycjaKamery,1);
+		if(p!=pozycja) wyswietlenieOstrzezenia(p, pozycjaKamery,2);
+		else wyswietlenieKlatki(pociskKierowany,p,pozycjaKamery,klatka,rozmiarKlatki);
 
 		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}
@@ -1034,10 +1026,8 @@ void Wideo::wyswietleniePociskowKasetowych()
 		if(!i->czyZniszczony() && !model->czyWyswietlacPrzeciwnikow())
 			p=czyWychodziZaEkran(pozycjaKamery,pozycja,i->zwrocPredkosc(),1);
 
-		if(p==pozycja)
-			wyswietlenieKlatki(pociskKasetowy,p,pozycjaKamery,klatka,rozmiarKlatki);
-		else
-			wyswietlenieOstrzezenia(p, pozycjaKamery,1);
+		if(p!=pozycja) wyswietlenieOstrzezenia(p, pozycjaKamery,2);
+		else wyswietlenieKlatki(pociskKasetowy,p,pozycjaKamery,klatka,rozmiarKlatki);
 
 		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}
@@ -1060,10 +1050,8 @@ void Wideo::wyswietlenieOdlamkow()
 		if(!i->czyZniszczony() && !model->czyWyswietlacPrzeciwnikow())
 			p=czyWychodziZaEkran(pozycjaKamery,pozycja,i->zwrocPredkosc(),1);
 
-		if(p==pozycja)
-			wyswietlenieKlatki(pociskKasetowy,p,pozycjaKamery,klatka,rozmiarKlatki);
-		else
-			wyswietlenieOstrzezenia(p, pozycjaKamery,1);
+		if(p!=pozycja) wyswietlenieOstrzezenia(p, pozycjaKamery,2);
+		else wyswietlenieKlatki(pociskKasetowy,p,pozycjaKamery,klatka,rozmiarKlatki);
 
 		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}

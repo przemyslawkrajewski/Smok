@@ -39,6 +39,10 @@ public:
 	{
 		return (x==p.x && y==p.y);
 	}
+	bool operator!=(Punkt p)
+	{
+		return (x!=p.x || y!=p.y);
+	}
 	Punkt operator+(Punkt p)
 	{
 		return Punkt(x+p.x,y+p.y);
