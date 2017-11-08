@@ -71,7 +71,8 @@ void Model::wczytajPoziom(int numer)
 	wyznaczKolejnyStanObiektow();
 
 	numerPoziomu = numer;
-	czyWyswietlicTytulPoziomu = 100;
+	czyWyswietlicTytulPoziomu = 200;
+	czyWyswietlicZwycienstwo = 0;
 	if(numer==1) 	   {typScenerii=1;typCelu=0;tytulPoziomu=std::string("ob]awa cz.1");}
 	else if(numer==2)  {typScenerii=3;typCelu=1;tytulPoziomu=std::string("ob]awa cz.2");miejsceUcieczki=Punkt(5000,-1);}
 	else if(numer==3)  {typScenerii=3;typCelu=1;tytulPoziomu=std::string("wygnanie");miejsceUcieczki=Punkt(12000,1);}
@@ -105,19 +106,33 @@ void Model::wyznaczKolejnyStan()
 	//Mechanika gry
 	if(czyWyswietlicTytulPoziomu > 0) czyWyswietlicTytulPoziomu--;
 	else czyWyswietlicTytulPoziomu = 0;
+	if(czyWyswietlicZwycienstwo > 0) czyWyswietlicZwycienstwo--;
+	else czyWyswietlicZwycienstwo = 0;
+
 	wyznaczStanCelu();
 	wyznaczKolejnyStanObiektow();
 }
 
 void Model::wyznaczStanCelu()
 {
-	if(smok.czyZniszczony()) typCelu=-1;
+
+	if(smok.czyZniszczony() && typCelu != -1)
+	{
+		czyWyswietlicZwycienstwo = 200;
+		czyWyswietlicTytulPoziomu = 0;
+		typCelu=-1;
+	}
 
 	if(typCelu==0) //Zniszcz wszystko
 	{
 		celDoZniszczenia = 0;
 		czas=Punkt();
-		if(strzelcy.czyPusty() && balisty.czyPusty() && kaplani.czyPusty()) typCelu=4;
+		if(strzelcy.czyPusty() && balisty.czyPusty() && kaplani.czyPusty())
+		{
+			czyWyswietlicZwycienstwo = 200;
+			czyWyswietlicTytulPoziomu = 0;
+			typCelu=4;
+		}
 	}
 	else if(typCelu==1) // Uciekaj
 	{
@@ -127,11 +142,15 @@ void Model::wyznaczStanCelu()
 		{
 			if(smok.zwrocPozycje().x < miejsceUcieczki.x || smok.zwrocPozycje().x > miejsceUcieczki.y)
 			{
+				czyWyswietlicZwycienstwo = 200;
+				czyWyswietlicTytulPoziomu = 0;
 				typCelu=4;
 			}
 		}
 		else if((miejsceUcieczki.y > 0 && smok.zwrocPozycje().x > miejsceUcieczki.x) || (miejsceUcieczki.y < 0 && smok.zwrocPozycje().x < miejsceUcieczki.x))
 		{
+			czyWyswietlicZwycienstwo = 200;
+			czyWyswietlicTytulPoziomu = 0;
 			typCelu=4;
 		}
 	}
@@ -141,6 +160,8 @@ void Model::wyznaczStanCelu()
 		if(celDoZniszczenia != 0 && celDoZniszczenia->czyZniszczony())
 		{
 			celDoZniszczenia = 0;
+			czyWyswietlicZwycienstwo = 200;
+			czyWyswietlicTytulPoziomu = 0;
 			typCelu=4;
 		}
 	}
@@ -150,7 +171,12 @@ void Model::wyznaczStanCelu()
 		if(czas.x>0) czas.x--;
 		else smok.zniszcz();
 
-		if(strzelcy.czyPusty() && balisty.czyPusty() && kaplani.czyPusty()) typCelu=4;
+		if(strzelcy.czyPusty() && balisty.czyPusty() && kaplani.czyPusty())
+		{
+			czyWyswietlicZwycienstwo = 200;
+			czyWyswietlicTytulPoziomu = 0;
+			typCelu=4;
+		}
 	}
 	else if(typCelu==4) // Spacja
 	{

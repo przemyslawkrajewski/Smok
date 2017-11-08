@@ -1266,7 +1266,12 @@ void Wideo::wyswietlenieHUD()
 
 void Wideo::wyswietlenieTytuluPoziomu()
 {
-	if(model->zwrocCzyWyswietlicTytulPoziomu())
+	if(model->zwrocCzyWyswietlicZwycienstwo())
+	{
+		if(model->zwrocSmoka()->czyZniszczony()) wyswietlenieNapisu(wysokoscOkna/2,"pora*ka");
+		else wyswietlenieNapisu(wysokoscOkna/2,"zwyci#stwo");
+	}
+	else if(model->zwrocCzyWyswietlicTytulPoziomu())
 	{
 		wyswietlenieNapisu(wysokoscOkna/2-60,model->zwrocNapisNumeruPoziomu());
 		wyswietlenieNapisu(wysokoscOkna/2+60,model->zwrocTytulPoziomu());

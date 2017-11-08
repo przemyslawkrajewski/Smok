@@ -50,6 +50,7 @@ public:
 	std::string zwrocTytulPoziomu() {return tytulPoziomu;}
 	std::string zwrocNapisNumeruPoziomu();
 	bool zwrocCzyWyswietlicTytulPoziomu() { return czyWyswietlicTytulPoziomu > 0;}
+	bool zwrocCzyWyswietlicZwycienstwo() { return czyWyswietlicZwycienstwo > 0;}
 	Obiekt* zwrocCelDoZniszczenia() {return celDoZniszczenia;}
 	Punkt zwrocCzas() {return czas;}
 
@@ -114,6 +115,7 @@ private:
 	std::string tytulPoziomu;
 	int numerPoziomu;
 	int czyWyswietlicTytulPoziomu;
+	int czyWyswietlicZwycienstwo;
 
 	Klawiatura klawiatura;
 	Myszka myszka;
