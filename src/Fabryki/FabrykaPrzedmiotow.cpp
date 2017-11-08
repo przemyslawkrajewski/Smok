@@ -116,6 +116,16 @@ Obiekt* FabrykaPrzedmiotow::stworzPrzedmiot(TypPrzedmiotu typ, Punkt pozycja, Ob
 		z->wyznaczPrzestrzenKolizji();
 		return 0;
 		break;
+	case martwySmok:
+		assert("Kontener 'Zaslony' nie ustawiony" && zaslony!=0);
+		z=zaslony->dodaj(Zaslona(pozycja+Punkt(-130,120)));
+		z->oznaczJakoOzdobe(2);
+		z->wyznaczPrzestrzenKolizji();
+		z=zaslony->dodaj(Zaslona(pozycja+Punkt(130,120)));
+		z->oznaczJakoOzdobe(3);
+		z->wyznaczPrzestrzenKolizji();
+		return 0;
+		break;
 	case tarczaPersonalna:
 		assert("Kontener 'TarczePersonalne' nie ustawione" && tarczePersonalne!=0);
 		assert("Do stworzenia tarczy personalnej potrzebny jest cel" && cel!=0);

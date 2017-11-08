@@ -30,7 +30,6 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 	double poziomZiemi = 130;
 	if(numer==1) //################################ POZIOM 1: OBLAWA ###############################################
 	{
-		std::cout << "Poziom 1: Obława\n";
 		smok->ustawWymiaryManewruSmoka(Punkt(2000,0),Punkt(12000,1800));
 		smok->ustawPozycje(Punkt(7000,100));
 		smok->ustawCzyZwroconyWPrawo(false);
@@ -49,7 +48,7 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 	}
 	else if(numer==2) //################################ POZIOM 2: OBLAWA CZ.2 ##########################################
 	{
-		smok->ustawWymiaryManewruSmoka(Punkt(5000,0),Punkt(15000,1500));
+		smok->ustawWymiaryManewruSmoka(Punkt(5000,0),Punkt(11200,1500));
 		smok->ustawPozycje(Punkt(10800,100));
 		smok->ustawCzyZwroconyWPrawo(false);
 
@@ -59,6 +58,8 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 			int odchylenie = rand() % 2000-1000;
 			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::poborowyLucznik,Punkt(9700+odchylenie,poziomZiemi),1);
 		}
+
+		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::martwySmok,Punkt(9100,0));
 
 		//Na zewnatrz
 		for(int i=0;i<12;i++)
@@ -79,7 +80,7 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 	}
 	else if(numer==3) //################################ POZIOM 3: WYGNANIE ##########################################
 	{
-		smok->ustawWymiaryManewruSmoka(Punkt(5000,0),Punkt(12000,4000));
+		smok->ustawWymiaryManewruSmoka(Punkt(4000,0),Punkt(12000,4000));
 		smok->ustawPozycje(Punkt(4000,100));
 		smok->ustawCzyZwroconyWPrawo(true);
 
@@ -103,7 +104,7 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 	}
 	else if(numer==4) //################################ POZIOM 4: GLOD ##########################################
 	{
-		smok->ustawWymiaryManewruSmoka(Punkt(5000,0),Punkt(14000,5000));
+		smok->ustawWymiaryManewruSmoka(Punkt(4000,0),Punkt(14000,5000));
 		smok->ustawPozycje(Punkt(4000,100));
 		smok->ustawCzyZwroconyWPrawo(true);
 
@@ -417,7 +418,7 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 	{
 		smok->ustawWymiaryManewruSmoka(Punkt(4000,0),Punkt(24000,4000));
 		smok->ustawPozycje(Punkt(4500,400));
-		smok->ustawCzyZwroconyWPrawo(false);
+		smok->ustawCzyZwroconyWPrawo(true);
 
 		for(int i=0;i<38 ;i++) FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::ulZaslona,Punkt(5000+i*500,0));
 
@@ -428,7 +429,7 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 	{
 		smok->ustawWymiaryManewruSmoka(Punkt(4000,0),Punkt(16000,4000));
 		smok->ustawPozycje(Punkt(4500,400));
-		smok->ustawCzyZwroconyWPrawo(false);
+		smok->ustawCzyZwroconyWPrawo(true);
 
 		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::niskaWieza,Punkt(5000,0));
 		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniMur,Punkt(9000,0));

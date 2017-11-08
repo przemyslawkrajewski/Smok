@@ -176,6 +176,7 @@ public:
 
 	//Metody zwiazane z sama gra
 	void ustawWymiaryManewruSmoka(Punkt min, Punkt maks) {maksymalnaPozycja=maks; minimalnaPozycja=min;}
+	std::pair<Punkt,Punkt> zwrocWymiaryManewruSmoka() {return std::pair<Punkt,Punkt>(minimalnaPozycja,maksymalnaPozycja);}
 	void ustawPoziom(int poziom);
 	void ustawSpopielenie (bool s) {spopielenie=s;}
 

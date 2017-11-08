@@ -22,8 +22,10 @@ public:
 	virtual void wyznaczPrzestrzenKolizji();
 
 	void ulepsz() {ulepszona=true;zycie=4000;}
+	void oznaczJakoOzdobe(int i) {ozdoba=i;}
 
 	bool ulepszona;
+	int ozdoba;
 private:
 };
 

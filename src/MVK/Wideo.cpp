@@ -1202,7 +1202,16 @@ void Wideo::wyswietlenieCelownika()
 void Wideo::wyswietlenieWysokosciomierza()
 {
 	int h = model->zwrocSmoka()->zwrocPozycje().y/30;
-	wyswietlenieObrazka(ostrzezenie,0,wysokoscOkna-h-50,55,1,16,16);
+	std::pair<Punkt,Punkt> wymiaryPlanszy = model->zwrocSmoka()->zwrocWymiaryManewruSmoka();
+	wyswietlenieObrazka(ostrzezenie,-3,wysokoscOkna-5-55,59,0,14,19);
+	wyswietlenieObrazka(ostrzezenie,-3,wysokoscOkna-wymiaryPlanszy.second.y/30-55,59,0,14,19);
+	wyswietlenieObrazka(ostrzezenie,-3,wysokoscOkna-h-50,90,0,19,19);
+
+	int x = (model->zwrocSmoka()->zwrocPozycje().x-wymiaryPlanszy.first.x)/30;
+	int rozpietoscX = fabs(wymiaryPlanszy.second.x-wymiaryPlanszy.first.x)/60;
+	wyswietlenieObrazka(ostrzezenie,szerokoscOkna/2-rozpietoscX,wysokoscOkna-16,54,0,7,19);
+	wyswietlenieObrazka(ostrzezenie,szerokoscOkna/2+rozpietoscX,wysokoscOkna-16,54,0,7,19);
+	wyswietlenieObrazka(ostrzezenie,szerokoscOkna/2-rozpietoscX+x-5,wysokoscOkna-16,90,0,19,19);
 }
 
 void Wideo::wyswietlenieHUD()
@@ -1282,12 +1291,14 @@ void Wideo::wyswietlenieEkranu()
 	wyswietlenieTarczObszarowych();
 
 	wyswietlenieMuru();
-	wyswietlenieZaslon();
 
 	wyswietlenieBalist();
 	wyswietlenieKaplanow();
 	wyswietlenieStrzelcow();
 	wyswietlenieTarczPersonalnych();
+
+	wyswietlenieZaslon();
+
 	wyswietlenieSmoka();
 	wyswietlenieStrzal();
 	wyswietleniePociskowBalistycznych();

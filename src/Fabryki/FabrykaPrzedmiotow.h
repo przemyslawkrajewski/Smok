@@ -33,6 +33,7 @@ public:
 						bmalyMur,malyMur,sredniMur,bduzyMur,
 						niskaWieza,sredniaWieza, wysokaWieza, bwysokaWieza,
 						zaslona, ulZaslona,
+						martwySmok,
 						tarczaPersonalna,tarczaPersonalnaRegen,tarczaObszarowa
 					   };
 
