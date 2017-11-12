@@ -20,8 +20,8 @@ public:
 	void obsluzZdarzenia();
 	void obsluzZegar();
 
-	void zmienStosunek();
-	void zmienTrybEkranu();
+	void obsluzZmianeStosunku();
+	void obsluzZmianePelnegoEkranu();
 
 
 private:
@@ -29,6 +29,8 @@ private:
 	Model *model;
 
 	bool zakonczenieAplikacji;
+	bool pelnyEkran;
+	Punkt wymiaryEkranu;
 	Uint32 timer;
 };
 

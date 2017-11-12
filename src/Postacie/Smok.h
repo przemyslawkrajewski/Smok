@@ -153,6 +153,8 @@ private:
 	double przerwaOgnia;
 	bool spopielenie;
 
+	int sila,wigor,zwinnosc,zdrowie;
+
 	Punkt klatkaAnimacjiGlowy;
 
 public:
@@ -178,8 +180,9 @@ public:
 	void ustawWymiaryManewruSmoka(Punkt min, Punkt maks) {maksymalnaPozycja=maks; minimalnaPozycja=min;}
 	std::pair<Punkt,Punkt> zwrocWymiaryManewruSmoka() {return std::pair<Punkt,Punkt>(minimalnaPozycja,maksymalnaPozycja);}
 	void ustawPoziom(int poziom);
+	void przeliczStatystykiSmoka();
 	void ustawSpopielenie (bool s) {spopielenie=s;}
-
+	std::vector<int> zwrocStatystyki() {std::vector<int> l; l.push_back(sila);l.push_back(wigor);l.push_back(zdrowie);l.push_back(zwinnosc);return l;}
 };
 
 #endif /* SMOK_H_ */

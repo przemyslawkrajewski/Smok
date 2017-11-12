@@ -17,7 +17,7 @@ public:
 	Klawiatura()
 	{
 		wcisnietoDol=wcisnietoGora=wcisnietoLewo=wcisnietoPrawo=false;
-		wcisnietoSpacje=false;
+		wcisnietoSpacje=wcisnietoEscape=false;
 		for(int i=0;i<ILOSC_KLAWISZY_FUNKCYJNYCH;i++) wcisnietoKlawiszFunkcyjny[i]=false;
 	}
 
@@ -26,6 +26,7 @@ public:
 	void ustawWcisnietoLewo(bool wcisnietoLewo) {this->wcisnietoLewo = wcisnietoLewo;}
 	void ustawWcisnietoPrawo(bool wcisnietoPrawo) {this->wcisnietoPrawo = wcisnietoPrawo;}
 	void ustawWcisnietoSpacje(bool wcisnietoSpacje) {this->wcisnietoSpacje = wcisnietoSpacje;}
+	void ustawWcisnietoEscape(bool wcisnietoEscape) {this->wcisnietoEscape = wcisnietoEscape;}
 	void ustawWcisnietoKlawiszFunkcyjny(bool wcisnietoKF,int ktory) {wcisnietoKlawiszFunkcyjny[ktory]=wcisnietoKF;}
 
 	bool czyWcisnietoDol()  {return wcisnietoDol;}
@@ -33,11 +34,12 @@ public:
 	bool czyWcisnietoLewo() {return wcisnietoLewo;}
 	bool czyWcisnietoPrawo(){return wcisnietoPrawo;}
 	bool czyWcisnietoSpacje(){return wcisnietoSpacje;}
+	bool czyWcisnietoEscape(){return wcisnietoEscape;}
 	bool czyWcisnietoKlawiszFunkcyjny(int ktory){return wcisnietoKlawiszFunkcyjny[ktory];}
 
 private:
 	bool wcisnietoGora,wcisnietoDol,wcisnietoLewo,wcisnietoPrawo;
-	bool wcisnietoSpacje;
+	bool wcisnietoSpacje,wcisnietoEscape;
 	bool wcisnietoKlawiszFunkcyjny[ILOSC_KLAWISZY_FUNKCYJNYCH];
 	
 	

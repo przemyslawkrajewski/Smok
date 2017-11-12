@@ -32,13 +32,13 @@ public:
 
 	//Mechanika gry
 	void wyznaczKolejnyStan();
+	void wyznaczKolejnyStanMenu();
 	void wyznaczKolejnyStanObiektow();
 	void wyznaczStanCelu();
 	void reset();
 	void wczytajPoziom(int numer);
-	void ustawWymiaryEkranu(Wymiary w) {wymiaryEkranu=w;}
+	void ustawMenu(int numer);
 	Wymiary zwrocWymiaryEkranu() { return wymiaryEkranu;}
-	void ustawPelnyEkran(bool p) {pelnyEkran=p;}
 	bool zwrocPelnyEkran() {return pelnyEkran;}
 
 	double zwrocWypelnienieCelownika() {return wypelnienieCelownika;}
@@ -53,6 +53,8 @@ public:
 	bool zwrocCzyWyswietlicZwycienstwo() { return czyWyswietlicZwycienstwo > 0;}
 	Obiekt* zwrocCelDoZniszczenia() {return celDoZniszczenia;}
 	Punkt zwrocCzas() {return czas;}
+	std::list<std::string> zwrocListeOpcjiMenu() {return listaOpcjiMenu;}
+	int zwrocZaznaczonaOpcjeMenu() {return zaznaczonaOpcjaMenu;}
 
 	//Metody dedykowane dla Obiektow
 	void usunZniszczonePociskiKasetowe();
@@ -116,6 +118,12 @@ private:
 	int numerPoziomu;
 	int czyWyswietlicTytulPoziomu;
 	int czyWyswietlicZwycienstwo;
+
+	int typMenu;
+	int zaznaczonaOpcjaMenu;
+	std::list<std::string> listaOpcjiMenu;
+	bool wcisznietyLPM;
+	int pozostaloPunktowDoRozdania;
 
 	Klawiatura klawiatura;
 	Myszka myszka;

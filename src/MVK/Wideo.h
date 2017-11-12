@@ -49,7 +49,7 @@ private:
 	void wyswietleniePiksela(int pozX, int pozY);
 	void wyswietleniePolProstej(Punkt p1,Punkt p2, double wypelnienie);
 	void wyswietleniePrzestrzeniKolizji(PrzestrzenKolizji *p, Punkt pozycjaKamery);
-	void wyswietlenieNapisu(int wysokosc, std::string napis);
+	void wyswietlenieNapisu(int wysokosc, std::string napis, bool podswietlony);
 	Punkt czyWychodziZaEkran(Punkt pozycjaKamery, Punkt p, Wektor v, int iloscObiektow);
 
 	void wyswietleniePierwszegoPlanu(int pozX,int pozY);
@@ -82,6 +82,8 @@ private:
 	void wyswietlenieHUD();
 	void wyswietlenieTytuluPoziomu();
 	void wyswietlenieOstrzezenia(Punkt pozycja,Punkt pozycjaKamery,int kolor);
+
+	void wyswietlenieMenu();
 
 	Model *model;
 

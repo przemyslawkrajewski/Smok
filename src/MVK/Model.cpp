@@ -12,9 +12,14 @@ ParametrySmoka Smok::parametry;
 
 Model::Model(int szerOkna,int wysOkna, bool ekran): wymiaryEkranu(Punkt(szerOkna,wysOkna)),pelnyEkran(ekran)
 {
+	wymiaryEkranu = Wymiary(1024,600);
+	pelnyEkran = false;
+
 	wypelnienieCelownika=false;
 	typScenerii=1;
 	typCelu=0;
+
+	typMenu=-1;
 
 	FabrykaPrzedmiotow::zwrocInstancje()->ustawKontenery(&mury,&zaslony, &tarczePersonalne, &tarczeObszarowe);
 	FabrykaPociskow::zwrocInstancje()->ustawKontenery(&plomienie,&strzaly, &belty, &pociskiBalistyczne, &pociskiKierowane, &pociskiKasetowe, &odlamki);
@@ -22,6 +27,7 @@ Model::Model(int szerOkna,int wysOkna, bool ekran): wymiaryEkranu(Punkt(szerOkna
 	FabrykaPoziomow::zwrocInstancje()->ustawSmoka(&smok);
 
 	reset();
+	pozostaloPunktowDoRozdania = 6;
 	wczytajPoziom(1);
 }
 
@@ -96,21 +102,91 @@ void Model::wczytajPoziom(int numer)
 }
 
 //####################################################KOLEJNY STAN#######################################################
-
 void Model::wyznaczKolejnyStan()
 {
 	if(klawiatura.czyWcisnietoSpacje()) wczytajPoziom(2);
 
-	//Menu
+	if(klawiatura.czyWcisnietoEscape())
+	{
+		if(typMenu != -1) ustawMenu(-1);
+		else ustawMenu(1);
+		klawiatura.ustawWcisnietoEscape(false);
+	}
 
-	//Mechanika gry
-	if(czyWyswietlicTytulPoziomu > 0) czyWyswietlicTytulPoziomu--;
-	else czyWyswietlicTytulPoziomu = 0;
-	if(czyWyswietlicZwycienstwo > 0) czyWyswietlicZwycienstwo--;
-	else czyWyswietlicZwycienstwo = 0;
+	if(typMenu != -1) //Menu
+	{
+		wyznaczKolejnyStanMenu();
+	}
+	else//Mechanika gry
+	{
+		if(czyWyswietlicTytulPoziomu > 0) czyWyswietlicTytulPoziomu--;
+		else czyWyswietlicTytulPoziomu = 0;
+		if(czyWyswietlicZwycienstwo > 0) czyWyswietlicZwycienstwo--;
+		else czyWyswietlicZwycienstwo = 0;
 
-	wyznaczStanCelu();
-	wyznaczKolejnyStanObiektow();
+		wyznaczStanCelu();
+		wyznaczKolejnyStanObiektow();
+	}
+
+}
+
+void Model::wyznaczKolejnyStanMenu()
+{
+	//Na ktory najechal kursorem
+	zaznaczonaOpcjaMenu = -1;
+	int wysokoscMenu = listaOpcjiMenu.size() * 90;
+	int h = wymiaryEkranu.y/2 - wysokoscMenu/2+40;
+	for(int i=0 ; i < listaOpcjiMenu.size() ; i++)
+	{
+		if(myszka.zwrocY() > h && myszka.zwrocY() < h + 90)
+		{
+			zaznaczonaOpcjaMenu = i;
+			break;
+		}
+		h += 90;
+	}
+	if(myszka.zwrocLPM() && !wcisznietyLPM)
+	{
+		if(typMenu == 0)
+		{
+
+		}
+		else if(typMenu == 1) //Menu w grze
+		{
+			if(zaznaczonaOpcjaMenu == 0) ustawMenu(-1); //Wznow gre
+			else if(zaznaczonaOpcjaMenu == 1)ustawMenu(5);
+			else if(zaznaczonaOpcjaMenu == 2) ustawMenu(2);
+		}
+		else if(typMenu == 2) //Opcje
+		{
+			if(zaznaczonaOpcjaMenu == 0)//Pelny ekran
+			{
+				pelnyEkran = !pelnyEkran;
+				ustawMenu(2);
+			}
+			else if(zaznaczonaOpcjaMenu == 1)//Proprorcje ekranu
+			{
+				if(wymiaryEkranu.y==600)
+					wymiaryEkranu = Wymiary(1024,768);
+				else
+					wymiaryEkranu = Wymiary(1024,600);
+				ustawMenu(2);
+			}
+			else if(zaznaczonaOpcjaMenu == 2);//Muzyka
+			else if(zaznaczonaOpcjaMenu == 3);//dzwiek
+			else if(zaznaczonaOpcjaMenu == 4) ustawMenu(1);//Wroc
+		}
+		else if(typMenu == 5) //Menu w grze
+		{
+			if(zaznaczonaOpcjaMenu == 0); //Pozostala ilosc punktow
+			else if(zaznaczonaOpcjaMenu == 1);//Wytrzymalosc
+			else if(zaznaczonaOpcjaMenu == 2);//Sila ognia
+			else if(zaznaczonaOpcjaMenu == 3);//Manewrowosc
+			else if(zaznaczonaOpcjaMenu == 4);//Wroc
+		}
+		wcisznietyLPM = true;
+	}
+	if(!myszka.zwrocLPM()) wcisznietyLPM = false;
 }
 
 void Model::wyznaczStanCelu()
@@ -695,6 +771,57 @@ void Model::kolizjaPlomieniazMurem(Obiekt *o,Obiekt *o2,Punkt punktKolizji)
 		o->ustawPunktZaczepu(o2);
 	}
 	o->zniszcz();
+}
+//#########################################################      MENU       ################################################################
+
+void Model::ustawMenu(int numer)
+{
+	listaOpcjiMenu.clear();
+	typMenu = numer;
+	//numer -1 gra
+	if(numer == 0) // glowne menu
+	{
+
+	}
+	else if(numer == 1) //menu w grze
+	{
+		listaOpcjiMenu.push_back("wzn%w");
+		listaOpcjiMenu.push_back("rozw%j smoka");
+		listaOpcjiMenu.push_back("opcje");
+		listaOpcjiMenu.push_back("zako$cz");
+	}
+	else if(numer == 2) //opcje
+	{
+		if(pelnyEkran) listaOpcjiMenu.push_back("pe]ny ekran w].");
+		else listaOpcjiMenu.push_back("pe]ny ekran wy].");
+		if(wymiaryEkranu.y == 600) listaOpcjiMenu.push_back("proporcje ekranu 16 9");
+		else listaOpcjiMenu.push_back("proporcje ekranu 4 3");
+		listaOpcjiMenu.push_back("dzwiek");
+		listaOpcjiMenu.push_back("muzyka");
+		listaOpcjiMenu.push_back("wr%@");
+	}
+	else if(numer == 5) //Rozwoj smoka
+	{
+		std::vector<int> statystyki = smok.zwrocStatystyki();
+		char a[3]; a[2]=0;
+		std::string liczba;
+
+		a[0] = pozostaloPunktowDoRozdania/10+48; a[1] = pozostaloPunktowDoRozdania%10+48; a[0]=a[0]=='0'?' ':a[0];liczba = a;
+		listaOpcjiMenu.push_back("pozostalo " + liczba);
+
+		a[0] = statystyki[0]/10+48; a[1] = statystyki[0]%10+48; a[0]=a[0]=='0'?' ':a[0];liczba = a;
+		listaOpcjiMenu.push_back("si]a " + liczba);
+
+		a[0] = statystyki[1]/10+48; a[1] = statystyki[1]%10+48; a[0]=a[0]=='0'?' ':a[0];liczba = a;
+		listaOpcjiMenu.push_back("wigor " + liczba);
+
+		a[0] = statystyki[2]/10+48; a[1] = statystyki[2]%10+48; a[0]=a[0]=='0'?' ':a[0];liczba = a;
+		listaOpcjiMenu.push_back("zdrowie " + liczba);
+
+		a[0] = statystyki[3]/10+48; a[1] = statystyki[3]%10+48; a[0]=a[0]=='0'?' ':a[0];liczba = a;
+		listaOpcjiMenu.push_back("zwinno^@ " + liczba);
+		listaOpcjiMenu.push_back("wr%@");
+	}
 }
 
 //#########################################################   ZWRACANIE     ################################################################

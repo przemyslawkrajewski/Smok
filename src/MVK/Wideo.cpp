@@ -629,7 +629,7 @@ void Wideo::wyswietleniePrzestrzeniKolizji(PrzestrzenKolizji *p, Punkt pozycjaKa
 	#endif
 }
 
-void Wideo::wyswietlenieNapisu(int wysokosc, std::string napis)
+void Wideo::wyswietlenieNapisu(int wysokosc, std::string napis, bool podswietlony = false)
 {
 	int dlugoscNapisu = 0;
 	int nasuniecie = 0;
@@ -641,7 +641,7 @@ void Wideo::wyswietlenieNapisu(int wysokosc, std::string napis)
 	int x = szerokoscOkna/2 - dlugoscNapisu/2;
 	for(std::string::iterator i = napis.begin() ; i!=napis.end(); i++)
 	{
-		wyswietlenieObrazka(alfabet,x,wysokosc,wymiaryLiter[*i].x,1,wymiaryLiter[*i].y,76);
+		wyswietlenieObrazka(alfabet,x,wysokosc,wymiaryLiter[*i].x,podswietlony?79:1,wymiaryLiter[*i].y,76);
 		x += wymiaryLiter[*i].y - nasuniecie;
 	}
 }
@@ -1266,15 +1266,18 @@ void Wideo::wyswietlenieHUD()
 
 void Wideo::wyswietlenieTytuluPoziomu()
 {
-	if(model->zwrocCzyWyswietlicZwycienstwo())
+	if(model->zwrocListeOpcjiMenu().empty())
 	{
-		if(model->zwrocSmoka()->czyZniszczony()) wyswietlenieNapisu(wysokoscOkna/2,"pora*ka");
-		else wyswietlenieNapisu(wysokoscOkna/2,"zwyci#stwo");
-	}
-	else if(model->zwrocCzyWyswietlicTytulPoziomu())
-	{
-		wyswietlenieNapisu(wysokoscOkna/2-60,model->zwrocNapisNumeruPoziomu());
-		wyswietlenieNapisu(wysokoscOkna/2+60,model->zwrocTytulPoziomu());
+		if(model->zwrocCzyWyswietlicZwycienstwo())
+		{
+			if(model->zwrocSmoka()->czyZniszczony()) wyswietlenieNapisu(wysokoscOkna/2,"pora*ka");
+			else wyswietlenieNapisu(wysokoscOkna/2,"zwyci#stwo");
+		}
+		else if(model->zwrocCzyWyswietlicTytulPoziomu())
+		{
+			wyswietlenieNapisu(wysokoscOkna/2-60,model->zwrocNapisNumeruPoziomu());
+			wyswietlenieNapisu(wysokoscOkna/2+60,model->zwrocTytulPoziomu());
+		}
 	}
 }
 
@@ -1282,6 +1285,24 @@ void Wideo::wyswietlenieOstrzezenia(Punkt pozycja, Punkt pozycjaKamery,int kolor
 {
 	int rozmiarKlatki = 17;
 	wyswietlenieKlatki(ostrzezenie,pozycja,pozycjaKamery,Punkt(kolor,0),rozmiarKlatki);
+}
+
+void Wideo::wyswietlenieMenu()
+{
+	int wysokoscNapisu = 90;
+	std::list<std::string> lista = model->zwrocListeOpcjiMenu();
+	if(!lista.empty())
+	{
+		int wysokoscMenu = lista.size() * wysokoscNapisu;
+		int h = wysokoscOkna/2 - wysokoscMenu/2+40;
+		int it = 0;
+		for(std::list<std::string>::iterator i = lista.begin(); i != lista.end(); i++)
+		{
+			wyswietlenieNapisu(h,*i,it==model->zwrocZaznaczonaOpcjeMenu());
+			h += wysokoscNapisu;
+			it++;
+		}
+	}
 }
 
 void Wideo::wyswietlenieEkranu()
@@ -1316,6 +1337,8 @@ void Wideo::wyswietlenieEkranu()
 	wyswietlenieHUD();
 	wyswietlenieTytuluPoziomu();
 	wyswietlenieWysokosciomierza();
+
+	wyswietlenieMenu();
 
 	SDL_RenderPresent(render);
 }

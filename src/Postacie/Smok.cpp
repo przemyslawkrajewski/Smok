@@ -93,17 +93,21 @@ void Smok::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 
 void Smok::ustawPoziom(int p)
 {
-	double maksymalnyPoziom = 10;
+	double maksymalnyPoziom = 20;
 	if(p > maksymalnyPoziom) p = maksymalnyPoziom;
 
 	poziom = p;
+	sila = p;
+	wigor = p;
+	zdrowie = p;
+	zwinnosc = p;
 	double mnoznik = ((double)poziom-1)/(maksymalnyPoziom-1);
 
 	//Zycie
 	zycie=500+1000*mnoznik;
 	parametry.maksymalnaIloscZdrowia=zycie;
 
-	//Ogien
+	//Sila
 	parametry.minimalnaPredkoscOgnia=25+10*mnoznik;
 	parametry.maksymalnaPredkoscOgnia=40+20*mnoznik;
 	parametry.odchyleniePredkosciOgnia=10+5*mnoznik;
@@ -139,6 +143,57 @@ void Smok::ustawPoziom(int p)
 	//parametry.predkoscOpadaniaPrzySzybowaniu=1;
 
 
+}
+
+void Smok::przeliczStatystykiSmoka()
+{
+	double maksymalnyPoziom = 20;
+
+	//Zycie
+	double mnoznik = ((double)zdrowie-1)/(maksymalnyPoziom-1);
+	zycie=500+1000*mnoznik;
+	parametry.maksymalnaIloscZdrowia=zycie;
+
+	//Wigor
+	double mnoznik = ((double)wigor-1)/(maksymalnyPoziom-1);
+	parametry.minimalnaPredkoscOgnia=25+10*mnoznik;
+	parametry.maksymalnaPredkoscOgnia=40+20*mnoznik;
+	parametry.odchyleniePredkosciOgnia=10+5*mnoznik;
+	parametry.sredniCzasTrwaniaOgnia=10;
+	parametry.odchylenieCzasuTrwaniaOgnia=3;
+	parametry.odchylenieKataOgnia=7*M_PI/180-3*M_PI/180*mnoznik;
+	parametry.maksymalnailoscOgnia=7.5+7.5*mnoznik;
+	parametry.regeneracjaOgnia=0.07+0.05*mnoznik;
+	parametry.zuzycieOgnia=0.05;
+
+	//Sila
+	double mnoznik = ((double)sila-1)/(maksymalnyPoziom-1);
+	obrazenia=0.3+0.9*mnoznik;
+
+	//Zwinnosc
+	double mnoznik = ((double)zwinnosc-1)/(maksymalnyPoziom-1);
+		//Maksymalna predkosc
+	parametry.maksymalnaPredkoscX=20+20*mnoznik;
+	parametry.maksymalnaPredkoscY=20+20*mnoznik;
+	parametry.predkoscZblizaniaSie=7+10*mnoznik;
+	parametry.maksymalnaPredkoscTylemX=5+15*mnoznik;
+	parametry.maksymalnaPredkoscY=20+20*mnoznik;
+	parametry.maksPredkoscChodu=4+6*mnoznik;
+
+		//Przyspieszenie
+	parametry.wspolczynnikRozpedzaniaSieX=0.15+0.15*mnoznik;
+	parametry.wspolczynnikRozpedzaniaSieY=0.15+0.3*mnoznik;
+	parametry.wspolczynnikHamowaniaX=0.3+0.6*mnoznik;
+	parametry.wspolczynnikHamowaniaY=1.2+1.0*mnoznik;
+	parametry.predkoscWznoszeniaSieY=1.2+1.0*mnoznik;
+	parametry.przyspieszenieChodu=0.4+0.4*mnoznik;
+	parametry.hamowanieChodu=5.0;
+
+	//Wybicie
+	parametry.silaWybicia=10+6*mnoznik;
+	parametry.wspolczynnikSilniejszegoUnoszenia=9+6*mnoznik;
+
+	//parametry.predkoscOpadaniaPrzySzybowaniu=1;
 }
 //#####################################################################################################
 //Podfunkcje Smoka Przeliczanie

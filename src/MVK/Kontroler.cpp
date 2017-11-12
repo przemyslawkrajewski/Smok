@@ -25,6 +25,7 @@ void Kontroler::glownaPetla()
 		wideo->wczytanieObrazow();
 		int typScenerii=1;
 		wideo->wczytanieObrazowScenerii(1);
+		wymiaryEkranu = model->zwrocWymiaryEkranu();
 		while(!zakonczenieAplikacji)
 		{
 			if(typScenerii != model->zwrocTypScenerii())
@@ -35,6 +36,8 @@ void Kontroler::glownaPetla()
 			obsluzZegar();
 			obsluzZdarzenia();
 
+			obsluzZmianePelnegoEkranu();
+			obsluzZmianeStosunku();
 		}
 	}
 	else
@@ -82,14 +85,11 @@ void Kontroler::obsluzZdarzenia()
             case SDLK_SPACE:
             	model->zwrocKlawiature()->ustawWcisnietoSpacje(true);
             	break;
+            case SDLK_ESCAPE:
+				model->zwrocKlawiature()->ustawWcisnietoEscape(true);
+				break;
             case SDLK_x:
             	model->zwrocKlawiature()->ustawWcisnietoKlawiszFunkcyjny(true,0);
-            	break;
-            case SDLK_r:
-            	zmienStosunek();
-            	break;
-            case SDLK_f:
-            	zmienTrybEkranu();
             	break;
             case SDLK_c:
             	if(model->zwrocWypelnienieCelownika()>=1)
@@ -204,21 +204,24 @@ void Kontroler::obsluzZegar()
 	std::cout << i << "\n";//*/
 }
 
-void Kontroler::zmienStosunek()
+void Kontroler::obsluzZmianeStosunku()
 {
-	if(model->zwrocWymiaryEkranu().y==600)
-		model->ustawWymiaryEkranu(Wymiary(1024,768));
-	else
-		model->ustawWymiaryEkranu(Wymiary(1024,600));
-	wideo->zamkniecieOkna();
-	wideo->inicjacjaOkna(model->zwrocWymiaryEkranu().x,model->zwrocWymiaryEkranu().y,24,model->zwrocPelnyEkran());
-	wideo->wczytanieObrazow();
-	wideo->wczytanieObrazowScenerii(model->zwrocTypScenerii());
-	wideo->pelnyEkran(model->zwrocPelnyEkran());
+	if(wymiaryEkranu.y != model->zwrocWymiaryEkranu().y)
+	{
+		wymiaryEkranu = model->zwrocWymiaryEkranu();
+		wideo->zamkniecieOkna();
+		wideo->inicjacjaOkna(wymiaryEkranu.x,wymiaryEkranu.y,24,model->zwrocPelnyEkran());
+		wideo->wczytanieObrazow();
+		wideo->wczytanieObrazowScenerii(model->zwrocTypScenerii());
+		wideo->pelnyEkran(model->zwrocPelnyEkran());
+	}
 }
 
-void Kontroler::zmienTrybEkranu()
+void Kontroler::obsluzZmianePelnegoEkranu()
 {
-	model->ustawPelnyEkran(!(model->zwrocPelnyEkran()));
-	wideo->pelnyEkran(model->zwrocPelnyEkran());
+	if(pelnyEkran != model->zwrocPelnyEkran())
+	{
+		pelnyEkran = model->zwrocPelnyEkran();
+		wideo->pelnyEkran(pelnyEkran);
+	}
 }
