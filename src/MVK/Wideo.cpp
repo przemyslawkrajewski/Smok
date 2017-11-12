@@ -1334,9 +1334,9 @@ void Wideo::wyswietlenieEkranu()
 
 	wyswietlenieCelownika();
 
-	wyswietlenieHUD();
+	if(model->zwrocTypMenu() != 0 && model->zwrocTypMenu() != 3) wyswietlenieHUD();
 	wyswietlenieTytuluPoziomu();
-	wyswietlenieWysokosciomierza();
+	if(model->zwrocTypMenu() != 0 && model->zwrocTypMenu() != 3) wyswietlenieWysokosciomierza();
 
 	wyswietlenieMenu();
 

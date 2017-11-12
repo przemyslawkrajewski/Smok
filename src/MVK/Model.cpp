@@ -20,6 +20,7 @@ Model::Model(int szerOkna,int wysOkna, bool ekran): wymiaryEkranu(Punkt(szerOkna
 	typCelu=0;
 
 	typMenu=-1;
+	wyjscie=false;
 
 	FabrykaPrzedmiotow::zwrocInstancje()->ustawKontenery(&mury,&zaslony, &tarczePersonalne, &tarczeObszarowe);
 	FabrykaPociskow::zwrocInstancje()->ustawKontenery(&plomienie,&strzaly, &belty, &pociskiBalistyczne, &pociskiKierowane, &pociskiKasetowe, &odlamki);
@@ -27,8 +28,8 @@ Model::Model(int szerOkna,int wysOkna, bool ekran): wymiaryEkranu(Punkt(szerOkna
 	FabrykaPoziomow::zwrocInstancje()->ustawSmoka(&smok);
 
 	reset();
-	pozostaloPunktowDoRozdania = 6;
-	wczytajPoziom(1);
+
+	ustawMenu(0);
 }
 
 void Model::reset()
@@ -50,7 +51,6 @@ void Model::reset()
 	tarczeObszarowe.wyczysc();
 
 	smok.reset();
-	smok.ustawPoziom(2);
 
 	kamera.ustawPozycje(smok.zwrocPozycje());
 	myszka.ustawX(wymiaryEkranu.x/2);
@@ -61,13 +61,9 @@ void Model::reset()
 
 void Model::wczytajPoziom(int numer)
 {
-	std::cout << "Podaj nr poziomu: ";
-	std::cin >> numer;
-
 	reset();
 	FabrykaPoziomow::zwrocInstancje()->stworzPoziom(numer);
 
-	smok.ustawPoziom((double) numer/2 + 0.5 );
 	if(numer>9) smok.ustawSpopielenie(true);
 	else smok.ustawSpopielenie(false);
 
@@ -99,17 +95,19 @@ void Model::wczytajPoziom(int numer)
 	else if(numer==18) {typScenerii=5;typCelu=0;tytulPoziomu=std::string("gospodarz");}
 	else if(numer==19) {typScenerii=5;typCelu=0;tytulPoziomu=std::string("g]%wna siedziba");}
 	else if(numer==20) {typScenerii=5;typCelu=2;tytulPoziomu=std::string("sprawca");celDoZniszczenia=&*(kaplani.zwrocObiekty()->begin());}
+	else if(numer==101){typScenerii=1;typCelu=0;tytulPoziomu=std::string("podstawy");}
 }
 
 //####################################################KOLEJNY STAN#######################################################
 void Model::wyznaczKolejnyStan()
 {
-	if(klawiatura.czyWcisnietoSpacje()) wczytajPoziom(2);
-
 	if(klawiatura.czyWcisnietoEscape())
 	{
-		if(typMenu != -1) ustawMenu(-1);
-		else ustawMenu(1);
+		if(typMenu != 6 && typMenu != 0 && typMenu != 3)
+		{
+			if(typMenu != -1) ustawMenu(-1);
+			else ustawMenu(1);
+		}
 		klawiatura.ustawWcisnietoEscape(false);
 	}
 
@@ -149,15 +147,31 @@ void Model::wyznaczKolejnyStanMenu()
 	{
 		if(typMenu == 0)
 		{
-
+			if(zaznaczonaOpcjaMenu == 0)//Nowa gra
+			{
+				ustawMenu(-1);
+				iloscPunktowDoRozdania = 0;
+				wczytajPoziom(1);
+				smok.ustawPoziom(1);
+			}
+			else if(zaznaczonaOpcjaMenu == 1)//Samouczek
+			{
+				ustawMenu(-1);
+				iloscPunktowDoRozdania = 0;
+				smok.ustawPoziom(101);
+				wczytajPoziom(1);
+			}
+			else if(zaznaczonaOpcjaMenu == 2) ustawMenu(3);//Opcje
+			else if(zaznaczonaOpcjaMenu == 3) wyjscie=true;//Wyjscie
 		}
 		else if(typMenu == 1) //Menu w grze
 		{
 			if(zaznaczonaOpcjaMenu == 0) ustawMenu(-1); //Wznow gre
-			else if(zaznaczonaOpcjaMenu == 1)ustawMenu(5);
-			else if(zaznaczonaOpcjaMenu == 2) ustawMenu(2);
+			else if(zaznaczonaOpcjaMenu == 1)ustawMenu(5);//Statsy
+			else if(zaznaczonaOpcjaMenu == 2) ustawMenu(2);//Opcje
+			else if(zaznaczonaOpcjaMenu == 3) ustawMenu(0);//wroc
 		}
-		else if(typMenu == 2) //Opcje
+		else if(typMenu == 2 || typMenu == 3) //Opcje
 		{
 			if(zaznaczonaOpcjaMenu == 0)//Pelny ekran
 			{
@@ -172,17 +186,58 @@ void Model::wyznaczKolejnyStanMenu()
 					wymiaryEkranu = Wymiary(1024,600);
 				ustawMenu(2);
 			}
-			else if(zaznaczonaOpcjaMenu == 2);//Muzyka
-			else if(zaznaczonaOpcjaMenu == 3);//dzwiek
+			else if(zaznaczonaOpcjaMenu == 2)//dzwiek
+			{
+				dzwiek = !dzwiek;
+				ustawMenu(2);
+			}
+			else if(zaznaczonaOpcjaMenu == 3)//Muzyka
+			{
+				muzyka = !muzyka;
+				ustawMenu(2);
+			}
+			else if(zaznaczonaOpcjaMenu == 4) ustawMenu(typMenu==2?1:0);//Wroc
+		}
+		else if(typMenu == 5) //Statystyki smoka
+		{
+			if(zaznaczonaOpcjaMenu == 0); //Sila
+			else if(zaznaczonaOpcjaMenu == 1);//Wigor
+			else if(zaznaczonaOpcjaMenu == 2);//Zdrowie
+			else if(zaznaczonaOpcjaMenu == 3);//Zwinnosc
 			else if(zaznaczonaOpcjaMenu == 4) ustawMenu(1);//Wroc
 		}
-		else if(typMenu == 5) //Menu w grze
+		else if(typMenu == 6) //Rozwoj smoka
 		{
 			if(zaznaczonaOpcjaMenu == 0); //Pozostala ilosc punktow
-			else if(zaznaczonaOpcjaMenu == 1);//Wytrzymalosc
-			else if(zaznaczonaOpcjaMenu == 2);//Sila ognia
-			else if(zaznaczonaOpcjaMenu == 3);//Manewrowosc
-			else if(zaznaczonaOpcjaMenu == 4);//Wroc
+			else if(zaznaczonaOpcjaMenu == 1 && iloscPunktowDoRozdania > 0 && smok.zwrocStatystyki()[0] < 20)//Sila
+			{
+				iloscPunktowDoRozdania--;
+				smok.zwiekszSile();
+				ustawMenu(6);
+			}
+			else if(zaznaczonaOpcjaMenu == 2 && iloscPunktowDoRozdania > 0 && smok.zwrocStatystyki()[1] < 20)//Wigor
+			{
+				iloscPunktowDoRozdania--;
+				smok.zwiekszWigor();
+				ustawMenu(6);
+			}
+			else if(zaznaczonaOpcjaMenu == 3 && iloscPunktowDoRozdania > 0 && smok.zwrocStatystyki()[2] < 20)//Zdrowie
+			{
+				iloscPunktowDoRozdania--;
+				smok.zwiekszZdrowie();
+				ustawMenu(6);
+			}
+			else if(zaznaczonaOpcjaMenu == 4 && iloscPunktowDoRozdania > 0 && smok.zwrocStatystyki()[3] < 20)//Zwinnosc
+			{
+				iloscPunktowDoRozdania--;
+				smok.zwiekszZwinnosc();
+				ustawMenu(6);
+			}
+			else if(zaznaczonaOpcjaMenu == 5)//Nastepny poziom
+			{
+				wczytajPoziom(numerPoziomu+1);
+				ustawMenu(-1);
+			}
 		}
 		wcisznietyLPM = true;
 	}
@@ -256,7 +311,18 @@ void Model::wyznaczStanCelu()
 	}
 	else if(typCelu==4) // Spacja
 	{
+		if(klawiatura.czyWcisnietoSpacje())
+		{
+			if(!smok.czyZniszczony())
+			{
+				iloscPunktowDoRozdania += 4;
+				ustawMenu(6);
+			}
+			else
+			{
 
+			}
+		}
 	}
 }
 
@@ -776,38 +842,51 @@ void Model::kolizjaPlomieniazMurem(Obiekt *o,Obiekt *o2,Punkt punktKolizji)
 
 void Model::ustawMenu(int numer)
 {
+	if(numer == 0)
+	{
+		reset();
+		typScenerii=0;
+		kamera.ustawPozycje(Punkt(5000,200));
+	}
+
 	listaOpcjiMenu.clear();
 	typMenu = numer;
 	//numer -1 gra
 	if(numer == 0) // glowne menu
 	{
-
+		listaOpcjiMenu.push_back("nowa gra");
+		listaOpcjiMenu.push_back("samouczek");
+		listaOpcjiMenu.push_back("opcje");
+		listaOpcjiMenu.push_back("wyj^cie");
 	}
 	else if(numer == 1) //menu w grze
 	{
 		listaOpcjiMenu.push_back("wzn%w");
-		listaOpcjiMenu.push_back("rozw%j smoka");
+		listaOpcjiMenu.push_back("statystyki smoka");
 		listaOpcjiMenu.push_back("opcje");
 		listaOpcjiMenu.push_back("zako$cz");
 	}
-	else if(numer == 2) //opcje
+	else if(numer == 2 || numer == 3) //opcje
 	{
 		if(pelnyEkran) listaOpcjiMenu.push_back("pe]ny ekran w].");
 		else listaOpcjiMenu.push_back("pe]ny ekran wy].");
+
 		if(wymiaryEkranu.y == 600) listaOpcjiMenu.push_back("proporcje ekranu 16 9");
 		else listaOpcjiMenu.push_back("proporcje ekranu 4 3");
-		listaOpcjiMenu.push_back("dzwiek");
-		listaOpcjiMenu.push_back("muzyka");
+
+		if(dzwiek) listaOpcjiMenu.push_back("d&wi#k w].");
+		else listaOpcjiMenu.push_back("d&wi#k wy].");
+
+		if(muzyka) listaOpcjiMenu.push_back("muzyka w].");
+		else listaOpcjiMenu.push_back("muzyka wy].");
+
 		listaOpcjiMenu.push_back("wr%@");
 	}
-	else if(numer == 5) //Rozwoj smoka
+	else if(numer == 5) //Statystyki smoka
 	{
 		std::vector<int> statystyki = smok.zwrocStatystyki();
 		char a[3]; a[2]=0;
 		std::string liczba;
-
-		a[0] = pozostaloPunktowDoRozdania/10+48; a[1] = pozostaloPunktowDoRozdania%10+48; a[0]=a[0]=='0'?' ':a[0];liczba = a;
-		listaOpcjiMenu.push_back("pozostalo " + liczba);
 
 		a[0] = statystyki[0]/10+48; a[1] = statystyki[0]%10+48; a[0]=a[0]=='0'?' ':a[0];liczba = a;
 		listaOpcjiMenu.push_back("si]a " + liczba);
@@ -821,6 +900,47 @@ void Model::ustawMenu(int numer)
 		a[0] = statystyki[3]/10+48; a[1] = statystyki[3]%10+48; a[0]=a[0]=='0'?' ':a[0];liczba = a;
 		listaOpcjiMenu.push_back("zwinno^@ " + liczba);
 		listaOpcjiMenu.push_back("wr%@");
+	}
+	else if(numer == 5) //Staty smoka
+	{
+		std::vector<int> statystyki = smok.zwrocStatystyki();
+		char a[3]; a[2]=0;
+		std::string liczba;
+
+		a[0] = statystyki[0]/10+48; a[1] = statystyki[0]%10+48; a[0]=a[0]=='0'?' ':a[0];liczba = a;
+		listaOpcjiMenu.push_back("si]a " + liczba);
+
+		a[0] = statystyki[1]/10+48; a[1] = statystyki[1]%10+48; a[0]=a[0]=='0'?' ':a[0];liczba = a;
+		listaOpcjiMenu.push_back("wigor " + liczba);
+
+		a[0] = statystyki[2]/10+48; a[1] = statystyki[2]%10+48; a[0]=a[0]=='0'?' ':a[0];liczba = a;
+		listaOpcjiMenu.push_back("zdrowie " + liczba);
+
+		a[0] = statystyki[3]/10+48; a[1] = statystyki[3]%10+48; a[0]=a[0]=='0'?' ':a[0];liczba = a;
+		listaOpcjiMenu.push_back("zwinno^@ " + liczba);
+		listaOpcjiMenu.push_back("wr%@");
+	}
+	else if(numer == 6) //Rozwoj smoka
+	{
+		std::vector<int> statystyki = smok.zwrocStatystyki();
+		char a[3]; a[2]=0;
+		std::string liczba;
+
+		a[0] = iloscPunktowDoRozdania/10+48; a[1] = iloscPunktowDoRozdania%10+48; a[0]=a[0]=='0'?' ':a[0];liczba = a;
+		listaOpcjiMenu.push_back("pozostalo " + liczba);
+
+		a[0] = statystyki[0]/10+48; a[1] = statystyki[0]%10+48; a[0]=a[0]=='0'?' ':a[0];liczba = a;
+		listaOpcjiMenu.push_back("si]a " + liczba);
+
+		a[0] = statystyki[1]/10+48; a[1] = statystyki[1]%10+48; a[0]=a[0]=='0'?' ':a[0];liczba = a;
+		listaOpcjiMenu.push_back("wigor " + liczba);
+
+		a[0] = statystyki[2]/10+48; a[1] = statystyki[2]%10+48; a[0]=a[0]=='0'?' ':a[0];liczba = a;
+		listaOpcjiMenu.push_back("zdrowie " + liczba);
+
+		a[0] = statystyki[3]/10+48; a[1] = statystyki[3]%10+48; a[0]=a[0]=='0'?' ':a[0];liczba = a;
+		listaOpcjiMenu.push_back("zwinno^@ " + liczba);
+		listaOpcjiMenu.push_back("nast#pna misja");
 	}
 }
 
@@ -870,6 +990,6 @@ std::string Model::zwrocNapisNumeruPoziomu()
 	case 20:
 		return std::string("poziom 20");
 	default:
-		return std::string("tutorial");
+		return std::string("samouczek");
 	}
 }

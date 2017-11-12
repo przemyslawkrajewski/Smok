@@ -181,6 +181,10 @@ public:
 	std::pair<Punkt,Punkt> zwrocWymiaryManewruSmoka() {return std::pair<Punkt,Punkt>(minimalnaPozycja,maksymalnaPozycja);}
 	void ustawPoziom(int poziom);
 	void przeliczStatystykiSmoka();
+	void zwiekszSile() {sila++;przeliczStatystykiSmoka();}
+	void zwiekszZdrowie() {zdrowie++;przeliczStatystykiSmoka();}
+	void zwiekszWigor() {wigor++;przeliczStatystykiSmoka();}
+	void zwiekszZwinnosc() {zwinnosc++;przeliczStatystykiSmoka();}
 	void ustawSpopielenie (bool s) {spopielenie=s;}
 	std::vector<int> zwrocStatystyki() {std::vector<int> l; l.push_back(sila);l.push_back(wigor);l.push_back(zdrowie);l.push_back(zwinnosc);return l;}
 };

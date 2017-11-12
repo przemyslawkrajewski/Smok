@@ -26,7 +26,7 @@ void Kontroler::glownaPetla()
 		int typScenerii=1;
 		wideo->wczytanieObrazowScenerii(1);
 		wymiaryEkranu = model->zwrocWymiaryEkranu();
-		while(!zakonczenieAplikacji)
+		while(!zakonczenieAplikacji && !model->zwrocWyjscie())
 		{
 			if(typScenerii != model->zwrocTypScenerii())
 			{
@@ -102,8 +102,13 @@ void Kontroler::obsluzZdarzenia()
             		model->ustawWypelnienieCelownika(1);
             	w = (model->zwrocWypelnienieCelownika());
             	break;
-            case SDLK_q:
-            	zakonczenieAplikacji=true;
+            case SDLK_p:
+				int numer;
+				std::cout << "Podaj nr poziomu: ";
+				std::cin >> numer;
+				model->wczytajPoziom(numer);
+				model->ustawMenu(-1);
+				model->zwrocSmoka()->ustawPoziom(numer);
             	break;
             default:
             	break;

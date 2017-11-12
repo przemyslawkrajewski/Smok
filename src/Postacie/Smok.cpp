@@ -10,6 +10,10 @@
 Smok::Smok(): Postac()
 {
 	reset();
+	obrazenia=0.1;
+	spopielenie = false;
+	maksymalnaPozycja= Punkt(30000,3000);
+	minimalnaPozycja= Punkt(1000,00);
 }
 
 void Smok::reset()
@@ -31,16 +35,14 @@ void Smok::reset()
 	zwroconyWPrawo=true;
 	zieje=false;
 
-	zycie=500;
-	obrazenia=0.1;
-	spopielenie = false;
-	maksymalnaPozycja= Punkt(30000,3000);
-	minimalnaPozycja= Punkt(1000,00);
+	zycie = parametry.maksymalnaIloscZdrowia;
+	iloscOgnia = parametry.maksymalnailoscOgnia;
 	predkosc=Punkt();
 }
 
 void Smok::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 {
+	zycie=6000;
 	//std::cout << pozycja.x << "  " << pozycja.y << "\n";
 	Punkt staraPredkosc(predkosc);
 	//zadane Y
@@ -151,8 +153,8 @@ void Smok::przeliczStatystykiSmoka()
 
 	//Zycie
 	double mnoznik = ((double)zdrowie-1)/(maksymalnyPoziom-1);
-	zycie=500+1000*mnoznik;
-	parametry.maksymalnaIloscZdrowia=zycie;
+	zycie = zycie + 500+1000*mnoznik - parametry.maksymalnaIloscZdrowia;
+	parametry.maksymalnaIloscZdrowia = 500+1000*mnoznik;
 
 	//Wigor
 	mnoznik = ((double)wigor-1)/(maksymalnyPoziom-1);

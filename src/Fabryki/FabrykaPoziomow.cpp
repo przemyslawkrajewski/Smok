@@ -622,13 +622,16 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 
 		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::glowa,Punkt(10000,poziomZiemi),3,true);
 	}
-	else if(numer==101) //################################ CUSTOM ##########################################
+	else if(numer==101) //################################ SAMOUCZEK ##########################################
 	{
-		smok->ustawPozycje(Punkt(2000,100));
-		smok->ustawPoziom(6);
-		smok->ustawWymiaryManewruSmoka(Punkt(1000,0),Punkt(30000,3000));
+		smok->ustawWymiaryManewruSmoka(Punkt(2000,0),Punkt(12000,1800));
+		smok->ustawPozycje(Punkt(7000,100));
+		smok->ustawCzyZwroconyWPrawo(false);
 
-		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::poborowyLucznik,Punkt(3000,poziomZiemi+100),0,true);
-
+		for(int i=0;i<1;i++)
+		{
+			int odchylenie = rand() % 1000-500;
+			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::poborowyLucznik,Punkt(6000+odchylenie,poziomZiemi),0);
+		}
 	}
 }

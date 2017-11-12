@@ -30,6 +30,10 @@ class Model
 public:
 	Model(int szerOkna, int wysOkna, bool ekran);
 
+	Wymiary zwrocWymiaryEkranu() { return wymiaryEkranu;}
+	bool zwrocPelnyEkran() {return pelnyEkran;}
+	bool zwrocWyjscie() {return wyjscie;}
+
 	//Mechanika gry
 	void wyznaczKolejnyStan();
 	void wyznaczKolejnyStanMenu();
@@ -38,8 +42,7 @@ public:
 	void reset();
 	void wczytajPoziom(int numer);
 	void ustawMenu(int numer);
-	Wymiary zwrocWymiaryEkranu() { return wymiaryEkranu;}
-	bool zwrocPelnyEkran() {return pelnyEkran;}
+	int zwrocTypMenu() {return typMenu;}
 
 	double zwrocWypelnienieCelownika() {return wypelnienieCelownika;}
 	void ustawWypelnienieCelownika(double wypelnienie) {wypelnienieCelownika=wypelnienie;}
@@ -55,6 +58,7 @@ public:
 	Punkt zwrocCzas() {return czas;}
 	std::list<std::string> zwrocListeOpcjiMenu() {return listaOpcjiMenu;}
 	int zwrocZaznaczonaOpcjeMenu() {return zaznaczonaOpcjaMenu;}
+	void ustawIloscPunktowDoRozdania(int p) { iloscPunktowDoRozdania=p;}
 
 	//Metody dedykowane dla Obiektow
 	void usunZniszczonePociskiKasetowe();
@@ -106,9 +110,11 @@ private:
 private:
 	Punkt wymiaryEkranu;
 	bool pelnyEkran;
+	bool dzwiek,muzyka;
 	double wypelnienieCelownika;
 	int typScenerii;
 	int typCelu;
+	bool wyjscie;
 
 	Punkt miejsceUcieczki;
 	Obiekt* celDoZniszczenia;
@@ -123,7 +129,7 @@ private:
 	int zaznaczonaOpcjaMenu;
 	std::list<std::string> listaOpcjiMenu;
 	bool wcisznietyLPM;
-	int pozostaloPunktowDoRozdania;
+	int iloscPunktowDoRozdania;
 
 	Klawiatura klawiatura;
 	Myszka myszka;

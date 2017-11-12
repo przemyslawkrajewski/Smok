@@ -45,6 +45,12 @@ void Zaslona::wyznaczPrzestrzenKolizji()
 			ustawPrzestrzenKolizji(prostokaty);
 		}
 	}
+	else
+	{
+		std::vector<ProstokatKolizji> prostokaty;
+		prostokaty.clear();
+		ustawPrzestrzenKolizji(prostokaty);
+	}
 }
 
 void Zaslona::wyznaczKolejnyStan()
