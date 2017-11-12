@@ -155,7 +155,7 @@ void Smok::przeliczStatystykiSmoka()
 	parametry.maksymalnaIloscZdrowia=zycie;
 
 	//Wigor
-	double mnoznik = ((double)wigor-1)/(maksymalnyPoziom-1);
+	mnoznik = ((double)wigor-1)/(maksymalnyPoziom-1);
 	parametry.minimalnaPredkoscOgnia=25+10*mnoznik;
 	parametry.maksymalnaPredkoscOgnia=40+20*mnoznik;
 	parametry.odchyleniePredkosciOgnia=10+5*mnoznik;
@@ -167,11 +167,11 @@ void Smok::przeliczStatystykiSmoka()
 	parametry.zuzycieOgnia=0.05;
 
 	//Sila
-	double mnoznik = ((double)sila-1)/(maksymalnyPoziom-1);
+	mnoznik = ((double)sila-1)/(maksymalnyPoziom-1);
 	obrazenia=0.3+0.9*mnoznik;
 
 	//Zwinnosc
-	double mnoznik = ((double)zwinnosc-1)/(maksymalnyPoziom-1);
+	mnoznik = ((double)zwinnosc-1)/(maksymalnyPoziom-1);
 		//Maksymalna predkosc
 	parametry.maksymalnaPredkoscX=20+20*mnoznik;
 	parametry.maksymalnaPredkoscY=20+20*mnoznik;
