@@ -176,7 +176,7 @@ void Model::wyznaczKolejnyStanMenu()
 			if(zaznaczonaOpcjaMenu == 0)//Pelny ekran
 			{
 				pelnyEkran = !pelnyEkran;
-				ustawMenu(2);
+				ustawMenu(typMenu);
 			}
 			else if(zaznaczonaOpcjaMenu == 1)//Proprorcje ekranu
 			{
@@ -184,17 +184,17 @@ void Model::wyznaczKolejnyStanMenu()
 					wymiaryEkranu = Wymiary(1024,768);
 				else
 					wymiaryEkranu = Wymiary(1024,600);
-				ustawMenu(2);
+				ustawMenu(typMenu);
 			}
 			else if(zaznaczonaOpcjaMenu == 2)//dzwiek
 			{
 				dzwiek = !dzwiek;
-				ustawMenu(2);
+				ustawMenu(typMenu);
 			}
 			else if(zaznaczonaOpcjaMenu == 3)//Muzyka
 			{
 				muzyka = !muzyka;
-				ustawMenu(2);
+				ustawMenu(typMenu);
 			}
 			else if(zaznaczonaOpcjaMenu == 4) ustawMenu(typMenu==2?1:0);//Wroc
 		}
@@ -871,8 +871,8 @@ void Model::ustawMenu(int numer)
 		if(pelnyEkran) listaOpcjiMenu.push_back("pe]ny ekran w].");
 		else listaOpcjiMenu.push_back("pe]ny ekran wy].");
 
-		if(wymiaryEkranu.y == 600) listaOpcjiMenu.push_back("proporcje ekranu 16 9");
-		else listaOpcjiMenu.push_back("proporcje ekranu 4 3");
+		if(wymiaryEkranu.y == 600) listaOpcjiMenu.push_back("proporcje ekranu 16:9");
+		else listaOpcjiMenu.push_back("proporcje ekranu 4:3");
 
 		if(dzwiek) listaOpcjiMenu.push_back("d&wi#k w].");
 		else listaOpcjiMenu.push_back("d&wi#k wy].");

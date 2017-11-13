@@ -42,8 +42,6 @@ void Smok::reset()
 
 void Smok::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 {
-	zycie=6000;
-	//std::cout << pozycja.x << "  " << pozycja.y << "\n";
 	Punkt staraPredkosc(predkosc);
 	//zadane Y
 	if(pozycja.y-zadaneY>70) zadaneY=pozycja.y-70;
@@ -739,8 +737,13 @@ void Smok::rozpedzanieNaZiemi(double przyspieszenie)
 	if(abs(predkosc.x)<parametry.maksPredkoscChodu)
 	{
 		predkosc.x+=przyspieszenie;
+		if(abs(predkosc.x)>parametry.maksPredkoscChodu)
+		{
+			if(przyspieszenie>0) predkosc.x=parametry.maksPredkoscChodu;
+			else predkosc.x=-parametry.maksPredkoscChodu;
+		}
 	}
-	else if (abs(predkosc.x)>parametry.maksPredkoscChodu+parametry.przyspieszenieChodu)
+	else if (abs(predkosc.x)>parametry.maksPredkoscChodu+parametry.hamowanieChodu)
 	{
 		if(predkosc.x>0) predkosc.x-=parametry.hamowanieChodu;
 		else predkosc.x+=parametry.hamowanieChodu;

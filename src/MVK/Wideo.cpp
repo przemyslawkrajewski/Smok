@@ -121,6 +121,7 @@ Wideo::Wideo(Model *nModel)
 	wymiaryLiter['0'] = Punkt(1845,47);
 	wymiaryLiter['.'] = Punkt(1893,12);
 	wymiaryLiter[' '] = Punkt(1906,45);
+	wymiaryLiter[':'] = Punkt(1952,12);
 
 }
 Wideo::~Wideo()
@@ -187,6 +188,68 @@ void Wideo::zamkniecieOkna()
 
 	SDL_DestroyWindow(okno);
 	SDL_Quit();
+	szerokoscOkna=0;
+	wysokoscOkna=0;
+	odlegloscOstrzezenia=20;
+	zasiegOstrzezenia=150000;
+
+
+	ekranWczytywania=0;
+	smokPP=0;
+	smokPL=0;
+	smokTP=0;
+	smokTL=0;
+	glowaSmokaP=0;
+	glowaSmokaL=0;
+	plomien=0;
+
+	for(int i=0;i<3;i++)
+	{
+		krzyzowiecP[i]=0;
+		krzyzowiecL[i]=0;
+		lucznikP[i]=0;
+		lucznikL[i]=0;
+		kaplanP[i]=0;
+		kaplanL[i]=0;
+	}
+	lucznikP[3]=0;
+	lucznikL[3]=0;
+
+	balistaP=0;
+	balistaL=0;
+	inzynierP=0;
+	inzynierL=0;
+	zebatka=0;
+
+	belt=0;
+	strzala=0;
+	pociskBalistyczny=0;
+	pociskKierowany=0;
+	pociskKasetowy=0;
+	swietaStrzala=0;
+
+	mur=0;
+	skala=0;
+	czarneTlo=0;
+	szareTlo=0;
+	zaslona=0;
+	tarczaPersonalna=0;
+	tarczaObszarowa=0;
+
+	instrukcja=0;
+
+	pasekOgnia=0;
+
+	ostrzezenie=0;
+	fiolkaHUD=0;
+	napisyHUD=0;
+	paskiHUD=0;
+	tloHUD=0;
+	alfabet=0;
+
+	pierwszyPlan=0;
+	drugiPlan=0;
+	tlo=0;
 }
 
 int Wideo::inicjacjaOkna(int szerOkna,int wysOkna,int glebiaKolorowOkna, bool fullscreen)
@@ -1348,6 +1411,6 @@ void Wideo::wyswietlenieEkranuWczytywania()
 	if( ekranWczytywania == 0 ) wczytanieObrazka("Grafika/Wczytywanie.bmp",&ekranWczytywania);
 
 	SDL_RenderClear(render);
-	wyswietlenieObrazka(ekranWczytywania,0,0,0,0,1024,768);
+	wyswietlenieObrazka(ekranWczytywania,0,0,0,0,1023,767);
 	SDL_RenderPresent(render);
 }
