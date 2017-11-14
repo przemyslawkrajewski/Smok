@@ -20,6 +20,7 @@ Wideo::Wideo(Model *nModel)
 	ekran=0;
 
 	ekranWczytywania=0;
+	for(int i=0 ; i < 4 ; i++)	instrukcja[i] = 0;
 
 	smokPP=0;
 	smokPL=0;
@@ -61,8 +62,6 @@ Wideo::Wideo(Model *nModel)
 	zaslona=0;
 	tarczaPersonalna=0;
 	tarczaObszarowa=0;
-
-	instrukcja=0;
 
 	pasekOgnia=0;
 
@@ -184,16 +183,14 @@ void Wideo::zamkniecieOkna()
 	SDL_DestroyTexture(fiolkaHUD);
 	SDL_DestroyTexture(alfabet);
 
-	SDL_DestroyTexture(instrukcja);
+	for(int i=0 ; i < 4 ; i++)	SDL_DestroyTexture(instrukcja[i]);
 
 	SDL_DestroyWindow(okno);
 	SDL_Quit();
 	szerokoscOkna=0;
 	wysokoscOkna=0;
-	odlegloscOstrzezenia=20;
-	zasiegOstrzezenia=150000;
 
-
+	for(int i=0 ; i < 4 ; i++)	instrukcja[i] = 0;
 	ekranWczytywania=0;
 	smokPP=0;
 	smokPL=0;
@@ -235,8 +232,6 @@ void Wideo::zamkniecieOkna()
 	zaslona=0;
 	tarczaPersonalna=0;
 	tarczaObszarowa=0;
-
-	instrukcja=0;
 
 	pasekOgnia=0;
 
@@ -338,8 +333,7 @@ void Wideo::wczytanieObrazow()
 	   wczytanieObrazka("Grafika/NapisyHUD.bmp",&napisyHUD) ||
 	   wczytanieObrazka("Grafika/PaskiHUD.bmp",&paskiHUD) ||
 	   wczytanieObrazka("Grafika/HUDTlo.bmp",&tloHUD) ||
-	   wczytanieObrazka("Grafika/Alfabet.bmp",&alfabet) ||
-	   wczytanieObrazka("Grafika/Instrukcja.bmp",&instrukcja)
+	   wczytanieObrazka("Grafika/Alfabet.bmp",&alfabet)
 	   )
 	{
 		std::cout << "Brak plikow z grafika\n";
@@ -370,6 +364,14 @@ void Wideo::wczytanieObrazow()
 	   wczytanieObrazka("Grafika/InzynierP.bmp",&inzynierP) ||
 	   wczytanieObrazka("Grafika/InzynierL.bmp",&inzynierL) ||
 	   wczytanieObrazka("Grafika/Zebatka.bmp",&zebatka))
+	{
+		std::cout << "Brak plikow z grafika\n";
+	}
+
+	if(wczytanieObrazka("Grafika/Instrukcja1.bmp",&instrukcja[0]) ||
+       wczytanieObrazka("Grafika/Instrukcja2.bmp",&instrukcja[1]) ||
+	   wczytanieObrazka("Grafika/Instrukcja3.bmp",&instrukcja[2]) ||
+	   wczytanieObrazka("Grafika/Instrukcja4.bmp",&instrukcja[3]))
 	{
 		std::cout << "Brak plikow z grafika\n";
 	}
@@ -1368,6 +1370,14 @@ void Wideo::wyswietlenieMenu()
 	}
 }
 
+void Wideo::wyswietlenieInstrukcji()
+{
+	if(model->zwrocTypMenu() == 20) wyswietlenieObrazka(instrukcja[0],0,100,0,0,1024,500);
+	if(model->zwrocTypMenu() == 21) wyswietlenieObrazka(instrukcja[1],0,100,0,0,1024,500);
+	if(model->zwrocTypMenu() == 22) wyswietlenieObrazka(instrukcja[2],0,100,0,0,1024,500);
+	if(model->zwrocTypMenu() == 23) wyswietlenieObrazka(instrukcja[3],0,100,0,0,1024,500);
+}
+
 void Wideo::wyswietlenieEkranu()
 {
 	SDL_RenderClear(render);
@@ -1400,6 +1410,8 @@ void Wideo::wyswietlenieEkranu()
 	if(model->zwrocTypMenu() != 0 && model->zwrocTypMenu() != 3) wyswietlenieHUD();
 	wyswietlenieTytuluPoziomu();
 	if(model->zwrocTypMenu() != 0 && model->zwrocTypMenu() != 3) wyswietlenieWysokosciomierza();
+
+	wyswietlenieInstrukcji();
 
 	wyswietlenieMenu();
 

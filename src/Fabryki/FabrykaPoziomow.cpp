@@ -622,16 +622,44 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 
 		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::glowa,Punkt(10000,poziomZiemi),3,true);
 	}
-	else if(numer==101) //################################ SAMOUCZEK ##########################################
+	else if(numer==101) //################################ PODSTAWY PORUSZANIA SIE ##########################################
+	{
+		smok->ustawWymiaryManewruSmoka(Punkt(2000,0),Punkt(12000,1800));
+		smok->ustawPozycje(Punkt(7000,100));
+		smok->ustawCzyZwroconyWPrawo(false);
+	}
+	else if(numer==102) //################################ CELOWANIE ##########################################
 	{
 		smok->ustawWymiaryManewruSmoka(Punkt(2000,0),Punkt(12000,1800));
 		smok->ustawPozycje(Punkt(7000,100));
 		smok->ustawCzyZwroconyWPrawo(false);
 
-		for(int i=0;i<1;i++)
-		{
-			int odchylenie = rand() % 1000-500;
-			FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::poborowyLucznik,Punkt(6000+odchylenie,poziomZiemi),0);
-		}
+		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::poborowyLucznik,Punkt(6000,poziomZiemi),0);
+	}
+	else if(numer==103) //################################ WZBIJANIE I NURKOWANIE ##########################################
+	{
+		smok->ustawWymiaryManewruSmoka(Punkt(2000,0),Punkt(12000,4000));
+		smok->ustawPozycje(Punkt(3000,100));
+		smok->ustawCzyZwroconyWPrawo(true);
+
+		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniaWieza,Punkt(7000,0));
+	}
+	else if(numer==104) //################################ DODATKOWE INFORMACJE ##########################################
+	{
+		smok->ustawWymiaryManewruSmoka(Punkt(2000,0),Punkt(12000,2400));
+		smok->ustawPozycje(Punkt(7000,2000));
+		smok->ustawCzyZwroconyWPrawo(false);
+
+		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniaWieza,Punkt(3000,0));
+		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniaWieza,Punkt(4000,0));
+		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniaWieza,Punkt(5000,0));
+		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniaWieza,Punkt(6000,0));
+		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniaWieza,Punkt(7000,0));
+		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniaWieza,Punkt(8000,0));
+		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniaWieza,Punkt(9000,0));
+		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniaWieza,Punkt(10000,0));
+		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniaWieza,Punkt(11000,0));
+
+		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::poborowyLucznik,Punkt(9500,poziomZiemi),0);
 	}
 }

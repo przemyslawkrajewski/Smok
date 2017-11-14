@@ -129,6 +129,7 @@ private:
 	int zaznaczonaOpcjaMenu;
 	std::list<std::string> listaOpcjiMenu;
 	bool wcisznietyLPM;
+	bool samouczek;
 	int iloscPunktowDoRozdania;
 
 	Klawiatura klawiatura;

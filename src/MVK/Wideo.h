@@ -82,6 +82,7 @@ private:
 	void wyswietlenieHUD();
 	void wyswietlenieTytuluPoziomu();
 	void wyswietlenieOstrzezenia(Punkt pozycja,Punkt pozycjaKamery,int kolor);
+	void wyswietlenieInstrukcji();
 
 	void wyswietlenieMenu();
 
@@ -99,6 +100,7 @@ private:
 	SDL_Texture * ekran;
 
 	SDL_Texture * ekranWczytywania;
+	SDL_Texture * instrukcja[4];
 
 	SDL_Texture * smokPP,* smokPL; //smok przod w prawo , przod w lewo
 	SDL_Texture * smokTP,* smokTL; // smok tyl w prawo, tyl w lewo
@@ -134,8 +136,6 @@ private:
 	SDL_Texture * fiolkaHUD;
 	SDL_Texture * tloHUD;
 	SDL_Texture * alfabet;
-
-	SDL_Texture * instrukcja;
 
 	SDL_Texture * pierwszyPlan;
 	SDL_Texture * drugiPlan;
