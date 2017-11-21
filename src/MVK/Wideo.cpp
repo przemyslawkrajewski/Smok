@@ -1313,7 +1313,8 @@ void Wideo::wyswietlenieHUD()
 	}
 
 	//Cel
-	int cel=model->zwrocTypCelu();
+	int cel = model->zwrocTypCelu();
+	if( cel == -1 ) cel = 4;
 	wyswietlenieObrazka(paskiHUD,450,50,0,50,500,25);
 	if(cel >= 0)
 	wyswietlenieObrazka(napisyHUD,450+130,50,0,25*cel,270,25);

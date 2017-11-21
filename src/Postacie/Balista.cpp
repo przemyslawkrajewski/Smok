@@ -116,6 +116,7 @@ std::pair<Klawiatura,Myszka> Balista::wyznaczSterowanie()
 	if(cel == 0) return std::pair<Klawiatura,Myszka>(k,m);
 
 	Punkt pozycjaCelu = cel->zwrocPozycjeCelu();
+	Punkt predkoscCelu = cel->zwrocPredkosc();
 
 	if(cel->czyZniszczony())
 	{
@@ -138,7 +139,7 @@ std::pair<Klawiatura,Myszka> Balista::wyznaczSterowanie()
 	m.ustawY(-sin(kat)*10000);
 
 
-	if(fabs(kat-katCelowania)<=parametry.predkoscCelowania && czyMozliwyStrzal && fabs(staraPredkoscCelu.x-cel->zwrocPredkosc().x) < 5 && fabs(staraPredkoscCelu.y-cel->zwrocPredkosc().y) < 10)
+	if(fabs(kat-katCelowania)<=parametry.predkoscCelowania && czyMozliwyStrzal && fabs(staraPredkoscCelu.x-cel->zwrocPredkosc().x) < 5 && fabs(staraPredkoscCelu.y-cel->zwrocPredkosc().y) < 5 && pozycjaCelu.y > pozycja.y + 150)
 	{
 		if(typZachowania==0)
 		{

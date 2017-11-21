@@ -91,8 +91,8 @@ void Kaplan::wyznaczKolejnyStan(Klawiatura *klawiatura, Myszka *myszka)
 					p.x=pozycja.x+(parametry.minimalnaOdleglosc)*cos(kat);
 					p.y=pozycja.y+(parametry.minimalnaOdleglosc)*sin(kat);
 					Punkt v;
-					v.x=parametry.predkoscPocisku*2*cos(kat);
-					v.y=parametry.predkoscPocisku*2*sin(kat);
+					v.x=1.5*parametry.predkoscPocisku*2*cos(kat);
+					v.y=1.5*parametry.predkoscPocisku*2*sin(kat);
 					if(kat>6.28) kat-=6.28;
 					FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::pociskKasetowy,p,v,parametry.czasTrwaniaPocisku,kat,parametry.obrazeniaKasetowegoPocisku,cel);
 				}
@@ -277,7 +277,7 @@ std::pair<Klawiatura,Myszka> Kaplan::wyznaczSterowanie()
 	}
 	else if(typZachowania==1) // StacjonarnyKaplan
 	{
-		double progOdleglosci = 6000;
+		double progOdleglosci = 12000;
 
 		if(pozycjaCelu.x<pozycja.x && zwroconyWPrawo==true && stanRzucaniaZaklec<2)
 		{

@@ -57,10 +57,10 @@ FabrykaLudzi::FabrykaLudzi()
 	parametryLucznikaLv3.czasTrwaniaStrzaly=300;
 	parametryLucznikaLv3.spust=false;
 
-	parametryLucznikaLv4.maxZycia=1000;
+	parametryLucznikaLv4.maxZycia=1500;
 	parametryLucznikaLv4.obrazenia=50;
 	parametryLucznikaLv4.celnosc=0;
-	parametryLucznikaLv4.predkoscStrzaly=50;
+	parametryLucznikaLv4.predkoscStrzaly=55;
 	parametryLucznikaLv4.maxNaciagniecie=12;
 	parametryLucznikaLv4.maxCelowania=12;
 	parametryLucznikaLv4.predkoscAnimacjiBiegu1=0.5;//0.5
@@ -73,7 +73,7 @@ FabrykaLudzi::FabrykaLudzi()
 	parametryRycerzaLv1.obrazenia=12;
 	parametryRycerzaLv1.celnosc=3.14/32;
 	parametryRycerzaLv1.czasTrwaniaStrzaly=200;
-	parametryRycerzaLv1.predkoscStrzaly=35;
+	parametryRycerzaLv1.predkoscStrzaly=37;
 	parametryRycerzaLv1.maxNaciagniecie=60;
 	parametryRycerzaLv1.maxCelowania=20;
 	parametryRycerzaLv1.predkoscAnimacjiBiegu1=0.4;
@@ -85,7 +85,7 @@ FabrykaLudzi::FabrykaLudzi()
 	parametryRycerzaLv2.obrazenia=20;
 	parametryRycerzaLv2.celnosc=3.14/64;
 	parametryRycerzaLv2.czasTrwaniaStrzaly=300;
-	parametryRycerzaLv2.predkoscStrzaly=40;
+	parametryRycerzaLv2.predkoscStrzaly=42;
 	parametryRycerzaLv2.maxNaciagniecie=60;
 	parametryRycerzaLv2.maxCelowania=20;
 	parametryRycerzaLv2.predkoscAnimacjiBiegu1=0.4;
@@ -99,8 +99,8 @@ FabrykaLudzi::FabrykaLudzi()
 	parametryRycerzaLv3.obrazenia=25;
 	parametryRycerzaLv3.celnosc=0;
 	parametryRycerzaLv3.czasTrwaniaStrzaly=400;
-	parametryRycerzaLv3.predkoscStrzaly=50;
-	parametryRycerzaLv3.maxNaciagniecie=60;
+	parametryRycerzaLv3.predkoscStrzaly=47;
+	parametryRycerzaLv3.maxNaciagniecie=65;
 	parametryRycerzaLv3.maxCelowania=20;
 	parametryRycerzaLv3.predkoscAnimacjiBiegu1=0.4;
 	parametryRycerzaLv3.predkoscAnimacjiBiegu2=0.2;
@@ -114,11 +114,11 @@ FabrykaLudzi::FabrykaLudzi()
 	parametryBalistyLv1.obnizoneObrazenia=0;
 	parametryBalistyLv1.rozrzut=3.14/16;
 	parametryBalistyLv1.iloscPociskow=5;
-	parametryBalistyLv1.predkoscStrzaly=60;
-	parametryBalistyLv1.predkoscCelowania=0.004;
+	parametryBalistyLv1.predkoscStrzaly=75;
+	parametryBalistyLv1.predkoscCelowania=0.020;
 	parametryBalistyLv1.maxKatCelowania=1.29;
 	parametryBalistyLv1.minKatCelowania=0.15;
-	parametryBalistyLv1.maxNaciagania=250;
+	parametryBalistyLv1.maxNaciagania=200;
 
 	parametryBalistyLv2.maxZycia=10;
 	parametryBalistyLv2.obrazenia=500;

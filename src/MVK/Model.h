@@ -46,7 +46,8 @@ public:
 
 	double zwrocWypelnienieCelownika() {return wypelnienieCelownika;}
 	void ustawWypelnienieCelownika(double wypelnienie) {wypelnienieCelownika=wypelnienie;}
-	bool czyWyswietlacPrzeciwnikow() {return klawiatura.czyWcisnietoKlawiszFunkcyjny(0);}
+	bool czyWyswietlacPrzeciwnikow() {return wyswietlacPrzeciwnikow;}
+	int zmienCzyWyswietlacPrzeciwnikow() { wyswietlacPrzeciwnikow = !wyswietlacPrzeciwnikow; }
 
 	int zwrocTypScenerii() {return typScenerii;}
 	int zwrocTypCelu() {return typCelu;}
@@ -131,6 +132,7 @@ private:
 	bool wcisznietyLPM;
 	bool samouczek;
 	int iloscPunktowDoRozdania;
+	bool wyswietlacPrzeciwnikow;
 
 	Klawiatura klawiatura;
 	Myszka myszka;

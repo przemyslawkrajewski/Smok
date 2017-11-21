@@ -89,7 +89,7 @@ void Kontroler::obsluzZdarzenia()
 				model->zwrocKlawiature()->ustawWcisnietoEscape(true);
 				break;
             case SDLK_x:
-            	model->zwrocKlawiature()->ustawWcisnietoKlawiszFunkcyjny(true,0);
+            	model->zmienCzyWyswietlacPrzeciwnikow();
             	break;
             case SDLK_c:
             	if(model->zwrocWypelnienieCelownika()>=1)

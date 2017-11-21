@@ -79,17 +79,17 @@ void Model::wczytajPoziom(int numer)
 	else if(numer==2)  {typScenerii=3;typCelu=1;samouczek=false;tytulPoziomu=std::string("ob]awa cz.2");miejsceUcieczki=Punkt(5000,-1);}
 	else if(numer==3)  {typScenerii=3;typCelu=1;samouczek=false;tytulPoziomu=std::string("wygnanie");miejsceUcieczki=Punkt(12000,1);}
 	else if(numer==4)  {typScenerii=1;typCelu=0;samouczek=false;tytulPoziomu=std::string("g]%d");}
-	else if(numer==5)  {typScenerii=2;typCelu=3;samouczek=false;tytulPoziomu=std::string("napad");czas=Punkt(10000,10000);}
+	else if(numer==5)  {typScenerii=2;typCelu=3;samouczek=false;tytulPoziomu=std::string("napad");czas=Punkt(2500,2500);}
 	else if(numer==6)  {typScenerii=1;typCelu=0;samouczek=false;tytulPoziomu=std::string("przysi#ga zemsty");}
 	else if(numer==7)  {typScenerii=1;typCelu=0;samouczek=false;tytulPoziomu=std::string("obl#*enie");}
 	else if(numer==8)  {typScenerii=2;typCelu=0;samouczek=false;tytulPoziomu=std::string("obl#*enie cz.2");}
 	else if(numer==9)  {typScenerii=4;typCelu=2;samouczek=false;tytulPoziomu=std::string("zemsta");celDoZniszczenia=&*(strzelcy.zwrocObiekty()->begin());}
 	else if(numer==10) {typScenerii=4;typCelu=1;samouczek=false;tytulPoziomu=std::string("nowa koronacja");miejsceUcieczki=Punkt(3000,15000);}
 	else if(numer==11) {typScenerii=1;typCelu=0;samouczek=false;tytulPoziomu=std::string("mobilizacja wojsk");}
-	else if(numer==12) {typScenerii=3;typCelu=0;samouczek=false;tytulPoziomu=std::string("nauki");}
+	else if(numer==12) {typScenerii=3;typCelu=2;samouczek=false;tytulPoziomu=std::string("nauki");celDoZniszczenia=&*(kaplani.zwrocObiekty()->begin());}
 	else if(numer==13) {typScenerii=3;typCelu=2;samouczek=false;tytulPoziomu=std::string("zlecenie");celDoZniszczenia=&*(strzelcy.zwrocObiekty()->begin());}
 	else if(numer==14) {typScenerii=2;typCelu=0;samouczek=false;tytulPoziomu=std::string("droga do fanatyk%w");}
-	else if(numer==15) {typScenerii=2;typCelu=3;samouczek=false;tytulPoziomu=std::string("rze&");czas=Punkt(1000,1000);}
+	else if(numer==15) {typScenerii=2;typCelu=3;samouczek=false;tytulPoziomu=std::string("rze&");czas=Punkt(6000,6000);}
 	else if(numer==16) {typScenerii=4;typCelu=0;samouczek=false;tytulPoziomu=std::string("&rod]o kultu");}
 	else if(numer==17) {typScenerii=5;typCelu=1;samouczek=false;tytulPoziomu=std::string("alarm");miejsceUcieczki=Punkt(3000,-1);}
 	else if(numer==18) {typScenerii=5;typCelu=0;samouczek=false;tytulPoziomu=std::string("gospodarz");}
@@ -192,17 +192,7 @@ void Model::wyznaczKolejnyStanMenu()
 					wymiaryEkranu = Wymiary(1024,600);
 				ustawMenu(typMenu);
 			}
-			else if(zaznaczonaOpcjaMenu == 2)//dzwiek
-			{
-				dzwiek = !dzwiek;
-				ustawMenu(typMenu);
-			}
-			else if(zaznaczonaOpcjaMenu == 3)//Muzyka
-			{
-				muzyka = !muzyka;
-				ustawMenu(typMenu);
-			}
-			else if(zaznaczonaOpcjaMenu == 4) ustawMenu(typMenu==2?1:0);//Wroc
+			else if(zaznaczonaOpcjaMenu == 2) ustawMenu(typMenu==2?1:0);//Wroc
 		}
 		else if(typMenu == 5) //Statystyki smoka
 		{
@@ -346,8 +336,25 @@ void Model::wyznaczStanCelu()
 			}
 			else
 			{
-				ustawMenu(0);
+				if(numerPoziomu < 6) numerPoziomu = 1;
+				else numerPoziomu -= 5;
+
+				smok.ustawPoziom(numerPoziomu);
+				wczytajPoziom(numerPoziomu);
+				ustawMenu(-1);
 			}
+		}
+	}
+	else if(typCelu==-1)
+	{
+		if(klawiatura.czyWcisnietoSpacje())
+		{
+			if(numerPoziomu < 3) numerPoziomu = 1;
+			else numerPoziomu -= 2;
+
+			smok.ustawPoziom(numerPoziomu);
+			wczytajPoziom(numerPoziomu);
+			ustawMenu(-1);
 		}
 	}
 }
@@ -609,9 +616,9 @@ void Model::obsluzKolizje()
 	for(std::list<TarczaObszarowa>::iterator i=listaTarczObszarowych->begin();i!=listaTarczObszarowych->end();i++)
 	{
 		plomienie.sprawdzKolizje((Obiekt*)&(*i),rozbijPociskOTarcze,zadajObrazenia,PrzestrzenKolizji::okrag,true);
-		//strzaly.sprawdzKolizje((Obiekt*)&(*i),usun,zadajObrazenia,PrzestrzenKolizji::okrag,true);
-		//belty.sprawdzKolizje((Obiekt*)&(*i),usun,zadajObrazenia,PrzestrzenKolizji::okrag,true);
-		//pociskiBalistyczne.sprawdzKolizje((Obiekt*)&(*i),usun,zadajObrazenia,PrzestrzenKolizji::okrag,true);
+		strzaly.sprawdzKolizje((Obiekt*)&(*i),usun,zadajObrazenia,PrzestrzenKolizji::okrag,true);
+		belty.sprawdzKolizje((Obiekt*)&(*i),usun,zadajObrazenia,PrzestrzenKolizji::okrag,true);
+		pociskiBalistyczne.sprawdzKolizje((Obiekt*)&(*i),usun,zadajObrazenia,PrzestrzenKolizji::okrag,true);
 		pociskiKierowane.sprawdzKolizje((Obiekt*)&(*i),usun,zadajObrazenia,PrzestrzenKolizji::okrag,true);
 		pociskiKasetowe.sprawdzKolizje((Obiekt*)&(*i),usun,zadajObrazenia,PrzestrzenKolizji::okrag,true);
 		odlamki.sprawdzKolizje((Obiekt*)&(*i),usun,zadajObrazenia,PrzestrzenKolizji::okrag,true);
@@ -899,12 +906,6 @@ void Model::ustawMenu(int numer)
 
 		if(wymiaryEkranu.y == 600) listaOpcjiMenu.push_back("proporcje ekranu 16:9");
 		else listaOpcjiMenu.push_back("proporcje ekranu 4:3");
-
-		if(dzwiek) listaOpcjiMenu.push_back("d&wi#k w].");
-		else listaOpcjiMenu.push_back("d&wi#k wy].");
-
-		if(muzyka) listaOpcjiMenu.push_back("muzyka w].");
-		else listaOpcjiMenu.push_back("muzyka wy].");
 
 		listaOpcjiMenu.push_back("wr%@");
 	}
