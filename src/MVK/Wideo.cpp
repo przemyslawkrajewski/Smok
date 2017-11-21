@@ -71,6 +71,7 @@ Wideo::Wideo(Model *nModel)
 	paskiHUD=0;
 	tloHUD=0;
 	alfabet=0;
+	tytul=0;
 
 	pierwszyPlan=0;
 	drugiPlan=0;
@@ -182,6 +183,7 @@ void Wideo::zamkniecieOkna()
 	SDL_DestroyTexture(paskiHUD);
 	SDL_DestroyTexture(fiolkaHUD);
 	SDL_DestroyTexture(alfabet);
+	SDL_DestroyTexture(tytul);
 
 	for(int i=0 ; i < 4 ; i++)	SDL_DestroyTexture(instrukcja[i]);
 
@@ -241,6 +243,7 @@ void Wideo::zamkniecieOkna()
 	paskiHUD=0;
 	tloHUD=0;
 	alfabet=0;
+	tytul=0;
 
 	pierwszyPlan=0;
 	drugiPlan=0;
@@ -333,7 +336,8 @@ void Wideo::wczytanieObrazow()
 	   wczytanieObrazka("Grafika/NapisyHUD.bmp",&napisyHUD) ||
 	   wczytanieObrazka("Grafika/PaskiHUD.bmp",&paskiHUD) ||
 	   wczytanieObrazka("Grafika/HUDTlo.bmp",&tloHUD) ||
-	   wczytanieObrazka("Grafika/Alfabet.bmp",&alfabet)
+	   wczytanieObrazka("Grafika/Alfabet.bmp",&alfabet) ||
+	   wczytanieObrazka("Grafika/Tytul.bmp",&tytul)
 	   )
 	{
 		std::cout << "Brak plikow z grafika\n";
@@ -1330,6 +1334,11 @@ void Wideo::wyswietlenieHUD()
 
 }
 
+void Wideo::wyswietlenieTytulu()
+{
+	wyswietlenieObrazka(tytul,0,0,0,0,1024,130);
+}
+
 void Wideo::wyswietlenieTytuluPoziomu()
 {
 	if(model->zwrocListeOpcjiMenu().empty())
@@ -1408,9 +1417,13 @@ void Wideo::wyswietlenieEkranu()
 
 	wyswietlenieCelownika();
 
-	if(model->zwrocTypMenu() != 0 && model->zwrocTypMenu() != 3) wyswietlenieHUD();
+	if(model->zwrocTypMenu() != 0 && model->zwrocTypMenu() != 3)
+	{
+		wyswietlenieHUD();
+		wyswietlenieWysokosciomierza();
+	}
+	else wyswietlenieTytulu();
 	wyswietlenieTytuluPoziomu();
-	if(model->zwrocTypMenu() != 0 && model->zwrocTypMenu() != 3) wyswietlenieWysokosciomierza();
 
 	wyswietlenieInstrukcji();
 

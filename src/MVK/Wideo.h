@@ -79,6 +79,7 @@ private:
 	void wyswietlenieCelownika();
 	void wyswietlenieWysokosciomierza();
 
+	void wyswietlenieTytulu();
 	void wyswietlenieHUD();
 	void wyswietlenieTytuluPoziomu();
 	void wyswietlenieOstrzezenia(Punkt pozycja,Punkt pozycjaKamery,int kolor);
@@ -136,6 +137,7 @@ private:
 	SDL_Texture * fiolkaHUD;
 	SDL_Texture * tloHUD;
 	SDL_Texture * alfabet;
+	SDL_Texture * tytul;
 
 	SDL_Texture * pierwszyPlan;
 	SDL_Texture * drugiPlan;
