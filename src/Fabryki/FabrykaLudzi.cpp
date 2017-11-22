@@ -155,10 +155,10 @@ FabrykaLudzi::FabrykaLudzi()
 
 	parametryKaplanaLv3.maxZycia=2000;
 	parametryKaplanaLv3.predkoscPocisku=25;
-	parametryKaplanaLv3.czasRzucaniaKierowanegoPocisku=20;
+	parametryKaplanaLv3.czasRzucaniaKierowanegoPocisku=18;
 	parametryKaplanaLv3.obrazeniaKierowanegoPocisku=60;
 	parametryKaplanaLv3.czasTrwaniaPocisku=200;
-	parametryKaplanaLv3.czasRzucaniaKasetowegoPocisku=30;
+	parametryKaplanaLv3.czasRzucaniaKasetowegoPocisku=25;
 	parametryKaplanaLv3.obrazeniaKasetowegoPocisku=8;
 	parametryKaplanaLv3.czasRzucaniaPersonalnejTarczy=10;
 	parametryKaplanaLv3.czasRzucaniaObszarowejTarczy=20;

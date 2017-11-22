@@ -14,6 +14,8 @@ Kontroler::Kontroler(Wideo *nWideo, Model *nModel)
 	model=nModel;
 	zakonczenieAplikacji=false;
 
+	pelnyEkran=false;
+	wymiaryEkranu = Punkt(1024,768);
 	timer=0;
 }
 
@@ -102,14 +104,14 @@ void Kontroler::obsluzZdarzenia()
             		model->ustawWypelnienieCelownika(1);
             	w = (model->zwrocWypelnienieCelownika());
             	break;
-            case SDLK_p:
+            /*case SDLK_p:
 				int numer;
 				std::cout << "Podaj nr poziomu: ";
 				std::cin >> numer;
 				model->wczytajPoziom(numer);
 				model->ustawMenu(-1);
 				model->zwrocSmoka()->ustawPoziom(numer);
-            	break;
+            	break;*/
             default:
             	break;
             }

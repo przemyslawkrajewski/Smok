@@ -629,6 +629,15 @@ void FabrykaPoziomow::stworzPoziom(int numer)
 
 		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::glowa,Punkt(10000,poziomZiemi),3,true);
 	}
+	else if(numer==21) //################################ POZIOM 21: ZAKONCZENIE ##########################################
+	{
+		smok->ustawWymiaryManewruSmoka(Punkt(3000,0),Punkt(20000,1500));
+		smok->ustawPozycje(Punkt(6000,1650));
+		smok->ustawCzyZwroconyWPrawo(false);
+
+		FabrykaPrzedmiotow::zwrocInstancje()->stworzPrzedmiot(FabrykaPrzedmiotow::sredniaWieza,Punkt(6000,0));
+
+	}
 	else if(numer==101) //################################ PODSTAWY PORUSZANIA SIE ##########################################
 	{
 		smok->ustawWymiaryManewruSmoka(Punkt(2000,0),Punkt(12000,1800));

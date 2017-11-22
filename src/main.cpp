@@ -16,7 +16,7 @@ int main(int argc, char *args[])
 	Model *model;
 	Wideo *wideo;
 	Kontroler *kontroler;
-	model = new Model(1024,600,false);
+	model = new Model(1024,768,false);
 	wideo=new Wideo(model);
 	kontroler=new Kontroler(wideo,model);
 

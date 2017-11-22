@@ -1119,8 +1119,12 @@ void Wideo::wyswietlenieOdlamkow()
 		if(!i->czyZniszczony())
 			p=czyWychodziZaEkran(pozycjaKamery,pozycja,i->zwrocPredkosc(),1);
 
-		if(p!=pozycja) wyswietlenieOstrzezenia(p, pozycjaKamery,2);
-		else wyswietlenieKlatki(pociskKasetowy,p,pozycjaKamery,klatka,rozmiarKlatki);
+		if(model->zwrocNumerPoziomu() == 21) wyswietlenieKlatki(pociskKasetowy,pozycja,pozycjaKamery,klatka,rozmiarKlatki);
+		else
+		{
+			if(p!=pozycja) wyswietlenieOstrzezenia(p, pozycjaKamery,2);
+			else wyswietlenieKlatki(pociskKasetowy,p,pozycjaKamery,klatka,rozmiarKlatki);
+		}
 
 		wyswietleniePrzestrzeniKolizji(i->zwrocPrzestrzenKolizji(),pozycjaKamery);
 	}
@@ -1417,12 +1421,12 @@ void Wideo::wyswietlenieEkranu()
 
 	wyswietlenieCelownika();
 
-	if(model->zwrocTypMenu() != 0 && model->zwrocTypMenu() != 3)
+	if(model->zwrocTypMenu() != 0 && model->zwrocTypMenu() != 3 && model->zwrocNumerPoziomu() != 21)
 	{
 		wyswietlenieHUD();
 		wyswietlenieWysokosciomierza();
 	}
-	else wyswietlenieTytulu();
+	else if(model->zwrocNumerPoziomu() != 21) wyswietlenieTytulu();
 	wyswietlenieTytuluPoziomu();
 
 	wyswietlenieInstrukcji();

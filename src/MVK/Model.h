@@ -43,6 +43,7 @@ public:
 	void wczytajPoziom(int numer);
 	void ustawMenu(int numer);
 	int zwrocTypMenu() {return typMenu;}
+	int zwrocNumerPoziomu() {return numerPoziomu;}
 
 	double zwrocWypelnienieCelownika() {return wypelnienieCelownika;}
 	void ustawWypelnienieCelownika(double wypelnienie) {wypelnienieCelownika=wypelnienie;}
@@ -125,6 +126,7 @@ private:
 	int numerPoziomu;
 	int czyWyswietlicTytulPoziomu;
 	int czyWyswietlicZwycienstwo;
+	int licznikCzasuWybychu;
 
 	int typMenu;
 	int zaznaczonaOpcjaMenu;

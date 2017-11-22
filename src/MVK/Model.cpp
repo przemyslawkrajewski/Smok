@@ -12,8 +12,8 @@ ParametrySmoka Smok::parametry;
 
 Model::Model(int szerOkna,int wysOkna, bool ekran): wymiaryEkranu(Punkt(szerOkna,wysOkna)),pelnyEkran(ekran)
 {
-	wymiaryEkranu = Wymiary(1024,600);
-	pelnyEkran = false;
+	wymiaryEkranu = Wymiary(1024,768);
+	pelnyEkran = true;
 
 	wypelnienieCelownika=false;
 	typScenerii=1;
@@ -21,6 +21,8 @@ Model::Model(int szerOkna,int wysOkna, bool ekran): wymiaryEkranu(Punkt(szerOkna
 
 	typMenu=-1;
 	wyjscie=false;
+
+	licznikCzasuWybychu = 0;
 
 	FabrykaPrzedmiotow::zwrocInstancje()->ustawKontenery(&mury,&zaslony, &tarczePersonalne, &tarczeObszarowe);
 	FabrykaPociskow::zwrocInstancje()->ustawKontenery(&plomienie,&strzaly, &belty, &pociskiBalistyczne, &pociskiKierowane, &pociskiKasetowe, &odlamki);
@@ -95,6 +97,7 @@ void Model::wczytajPoziom(int numer)
 	else if(numer==18) {typScenerii=5;typCelu=0;samouczek=false;tytulPoziomu=std::string("gospodarz");}
 	else if(numer==19) {typScenerii=5;typCelu=0;samouczek=false;tytulPoziomu=std::string("g]%wna siedziba");}
 	else if(numer==20) {typScenerii=5;typCelu=2;samouczek=false;tytulPoziomu=std::string("sprawca");celDoZniszczenia=&*(kaplani.zwrocObiekty()->begin());}
+	else if(numer==21) {typScenerii=4;typCelu=5;samouczek=false;tytulPoziomu=std::string(" ");}
 
 	else if(numer==101){typScenerii=1;typCelu=1;samouczek=true;tytulPoziomu=std::string("podstawy poruszania si#");miejsceUcieczki=Punkt(2000,12000);}
 	else if(numer==102){typScenerii=1;typCelu=0;samouczek=true;tytulPoziomu=std::string("celowanie");}
@@ -125,6 +128,8 @@ void Model::wyznaczKolejnyStan()
 		else czyWyswietlicTytulPoziomu = 0;
 		if(czyWyswietlicZwycienstwo > 0) czyWyswietlicZwycienstwo--;
 		else czyWyswietlicZwycienstwo = 0;
+
+		if(numerPoziomu == 21) czyWyswietlicTytulPoziomu = 1;
 
 		if(samouczek && czyWyswietlicTytulPoziomu == 0) ustawMenu(numerPoziomu-81);
 
@@ -319,7 +324,16 @@ void Model::wyznaczStanCelu()
 		{
 			if(!smok.czyZniszczony())
 			{
-				if(numerPoziomu < 100)
+				if(numerPoziomu == 21)
+				{
+					ustawMenu(0);
+				}
+				else if(numerPoziomu == 20)
+				{
+					wczytajPoziom(21);
+					ustawMenu(-1);
+				}
+				else if(numerPoziomu < 101)
 				{
 					iloscPunktowDoRozdania += 4;
 					ustawMenu(6);
@@ -345,6 +359,10 @@ void Model::wyznaczStanCelu()
 			}
 		}
 	}
+	else if(typCelu==5)
+	{
+		if(!klawiatura.czyWcisnietoSpacje()) typCelu=4;
+	}
 	else if(typCelu==-1)
 	{
 		if(klawiatura.czyWcisnietoSpacje())
@@ -361,6 +379,30 @@ void Model::wyznaczStanCelu()
 
 void Model::wyznaczKolejnyStanObiektow()
 {
+	if(numerPoziomu == 21 && typMenu == -1)
+	{
+		klawiatura.ustawWcisnietoLewo(false);
+		klawiatura.ustawWcisnietoPrawo(false);
+		klawiatura.ustawWcisnietoDol(false);
+		klawiatura.ustawWcisnietoGora(false);
+		myszka.ustawLPM(false);
+		myszka.ustawPPM(false);
+		myszka.ustawX(wymiaryEkranu.x/4);
+		myszka.ustawY(wymiaryEkranu.y/3);
+	}
+
+    if(numerPoziomu == 21)
+    {
+		if(licznikCzasuWybychu < 0)
+		{
+			int x = rand()%1050-525;
+			int y = rand()%300-150;
+			FabrykaPociskow::zwrocInstancje()->stworzPocisk(FabrykaPociskow::wybuch,Punkt(5750+x,1850+y),Punkt(),0,0,0);
+			licznikCzasuWybychu = 60;
+		}
+		else licznikCzasuWybychu--;
+    }
+
 	//Liczymy wspolrzedne myszki wzgledem glowy Smoka i Wyznaczamy kolejny stan Smoka
 	Punkt punktMyszkiSmoka;
 	if(kamera.zwrocY()<wymiaryEkranu.y/2) {punktMyszkiSmoka.y=wymiaryEkranu.y-smok.zwrocPozycje().y+smok.zwrocPozycjeGlowy().y-myszka.zwrocY();}
@@ -449,7 +491,8 @@ void Model::wyznaczKolejnyStanObiektow()
 		FabrykaLudzi::zwrocInstancje()->stworzCzlowieka(FabrykaLudzi::krzyzowiec,Punkt(x,130));
 	}
 	//*/
-	obsluzKolizje();
+
+    obsluzKolizje();
 }
 //##########################################################DEDYKOWANE######################################################
 void Model::usunZniszczonePociskiKasetowe()
@@ -1016,6 +1059,8 @@ std::string Model::zwrocNapisNumeruPoziomu()
 		return std::string("poziom 19");
 	case 20:
 		return std::string("poziom 20");
+	case 21:
+		return std::string("gratulacje");
 	default:
 		return std::string("samouczek");
 	}

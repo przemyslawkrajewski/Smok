@@ -117,5 +117,11 @@ void FabrykaPociskow::stworzPocisk(TypPocisku typ,Punkt nPozycja, Punkt nPredkos
 		o->wyznaczPrzestrzenKolizji();
 		o->ustawObrazenia(obrazenia);
 		break;
+	case wybuch:
+		assert("Kontener 'PociskKasetowy' nie ustawiony" && pociskiKasetowe!=0);
+		pkas = pociskiKasetowe->dodaj(PociskKasetowy(nPozycja,nPredkosc,0,0));
+		pkas->ustawCel(cel);
+		pkas->ustawObrazenia(0);
+		break;
 	}
 }
