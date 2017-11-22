@@ -40,8 +40,8 @@ Przed uruchomieniem należy skompilować ze źródeł ( https://github.com/przem
 
 	mkdir build
 	cd build
-	make
 	cmake ..
+	make
 	./Smok
 
 --------------------------------------------------------------------------
